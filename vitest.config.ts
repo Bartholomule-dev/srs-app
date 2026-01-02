@@ -7,10 +7,6 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./tests/setup.ts'],
     include: ['tests/**/*.test.ts', 'tests/**/*.test.tsx'],
-    environmentMatchGlobs: [
-      ['tests/integration/**', 'node'],
-      ['tests/unit/**/*.tsx', 'jsdom'],
-    ],
   },
   resolve: {
     alias: {

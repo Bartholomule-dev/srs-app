@@ -21,7 +21,7 @@ describe('Database Helpers', () => {
     });
 
     it('converts Supabase errors', () => {
-      const pgError = { code: '23505', message: 'duplicate', details: '', hint: '' };
+      const pgError = { code: '23505', message: 'duplicate', details: '', hint: '' } as any;
       const result = dbResult.fromSupabase(null, pgError);
       expect(result.ok).toBe(false);
       expect(result.error?.code).toBe('23505');
