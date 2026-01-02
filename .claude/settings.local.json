@@ -9,6 +9,51 @@
     "context7@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
     "superpowers@superpowers-marketplace": true,
-    "playwright@claude-plugins-official": true
+    "playwright@claude-plugins-official": false
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'SessionStart:Callback hook success: Success'"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat .claude/session-start-context.md 2>/dev/null || true"
+          }
+        ],
+        "onlyOnce": true
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[Daem0n] Check memories before modifying'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[Daem0n] Consider calling remember()'"
+          }
+        ]
+      }
+    ]
   }
 }
