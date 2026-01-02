@@ -4,6 +4,7 @@
  * SAFETY: These tests are designed for LOCAL Supabase only.
  * The default keys are local Supabase demo keys that won't work on real projects.
  */
+import '@testing-library/jest-dom/vitest';
 
 // Warn if tests might be running against a real Supabase project
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
