@@ -11,7 +11,7 @@ interface UseProfileReturn {
   loading: boolean;
   error: Error | null;
   updateProfile: (updates: Partial<Omit<Profile, 'id' | 'createdAt'>>) => Promise<Profile>;
-  refetch: () => Promise<void>;
+  refetch: () => void;
 }
 
 export function useProfile(): UseProfileReturn {
@@ -68,7 +68,7 @@ export function useProfile(): UseProfileReturn {
   // Loading is true if auth is loading OR profile is loading
   const loading = authLoading || profileLoading;
 
-  const refetch = useCallback(async () => {
+  const refetch = useCallback(() => {
     setFetchTrigger((prev) => prev + 1);
   }, []);
 
