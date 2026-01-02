@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
-import type { User } from "@supabase/supabase-js";
+import { useAuth } from "@/lib/hooks/useAuth";
 
 type CheckStatus = "pending" | "success" | "error" | "not-configured";
 
@@ -45,8 +45,7 @@ function StatusCard({ title, check }: { title: string; check: SystemCheck }) {
 }
 
 export default function Home() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, loading, signIn, signOut } = useAuth();
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
@@ -77,20 +76,6 @@ export default function Home() {
         },
       }));
     });
-
-    // Auth state management (existing logic)
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user);
-      setLoading(false);
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
   }, []);
 
   const handleMagicLink = async (e: React.FormEvent) => {
@@ -98,19 +83,22 @@ export default function Home() {
     setSending(true);
     setMessage("");
 
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: window.location.origin,
-      },
-    });
-
-    if (error) {
-      setMessage(`Error: ${error.message}`);
-    } else {
+    try {
+      await signIn(email);
       setMessage("Check your email for the login link!");
+    } catch (error) {
+      setMessage(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setSending(false);
     }
-    setSending(false);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      setMessage(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   };
 
   return (
@@ -145,7 +133,7 @@ export default function Home() {
               </p>
               <p className="text-zinc-600 dark:text-zinc-400">{user.email}</p>
               <button
-                onClick={() => supabase.auth.signOut().then(() => setUser(null))}
+                onClick={handleSignOut}
                 className="rounded-full border border-zinc-300 px-4 py-2 text-sm hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
               >
                 Sign Out
