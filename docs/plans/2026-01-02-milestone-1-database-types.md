@@ -11,16 +11,16 @@
 | Task | Status | Notes |
 |------|--------|-------|
 | Task 1: Install Vitest | ✅ Complete | `vitest.config.ts`, `tests/setup.ts`, package.json scripts |
-| Task 2: Profiles Migration | ✅ Complete | Migration + test file created |
+| Task 2: Profiles Migration | ✅ Complete | Migration + test file created, trigger uses `public.profiles` |
 | Task 3: Exercises Migration | ✅ Complete | Migration + test file created |
-| Task 4: User Progress Migration | ✅ Complete | Migration + test file created |
-| Task 5: RLS Tests | ⏳ Pending | Waiting for Docker/Supabase |
+| Task 4: User Progress Migration | ✅ Complete | Migration + test file created, tests use real auth users |
+| Task 5: RLS Tests | ⏳ Ready | Docker working, Supabase running |
 | Task 6: Seed Data | ⏳ Pending | |
 | Task 7: Generate Types | ⏳ Pending | Requires `pnpm db:start` |
 | Task 8: Database Helpers | ⏳ Pending | |
 | Task 9: Final Verification | ⏳ Pending | |
 
-**Current Blocker:** Docker permissions in WSL2 — need to restart terminal after `usermod -aG docker $USER`
+**Current Status:** Docker working, Supabase running, all 12 migration tests passing
 
 **Files Created So Far:**
 - `vitest.config.ts`
@@ -33,11 +33,11 @@
 - `supabase/migrations/20260102000003_create_user_progress.sql`
 
 **Next Steps:**
-1. Restart terminal to get Docker permissions
-2. Run `pnpm db:start` to start local Supabase
-3. Run `pnpm db:reset` to apply migrations
-4. Run `pnpm test:run` to verify tests pass
-5. Continue with Tasks 5-9
+1. Continue with Task 5: RLS Tests
+2. Task 6: Seed Data
+3. Task 7: Generate Types
+4. Task 8: Database Helpers
+5. Task 9: Final Verification
 
 **Architecture:** Migrations define the schema, Supabase CLI auto-generates types (snake_case matching DB), app types provide camelCase wrappers with mapping utilities. Tests verify constraints and security.
 

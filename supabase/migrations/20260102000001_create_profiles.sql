@@ -42,7 +42,7 @@ CREATE POLICY "Users can insert own profile"
 CREATE OR REPLACE FUNCTION handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO profiles (id)
+  INSERT INTO public.profiles (id)
   VALUES (NEW.id);
   RETURN NEW;
 END;

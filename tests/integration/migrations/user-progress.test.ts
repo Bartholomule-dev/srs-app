@@ -11,13 +11,32 @@ const supabase = createClient(
   { auth: { persistSession: false } }
 );
 
+/**
+ * Create a test user in auth.users (profile is auto-created by trigger)
+ */
+async function createTestUser(): Promise<string> {
+  const { data, error } = await supabase.auth.admin.createUser({
+    email: `test-${crypto.randomUUID()}@example.com`,
+    email_confirm: true,
+  });
+  if (error) throw error;
+  return data.user.id;
+}
+
+/**
+ * Delete a test user (cascades to profile and user_progress)
+ */
+async function deleteTestUser(userId: string): Promise<void> {
+  await supabase.auth.admin.deleteUser(userId);
+}
+
 describe('User Progress Migration', () => {
   let testUserId: string;
   let testExerciseId: string;
 
   beforeAll(async () => {
-    testUserId = crypto.randomUUID();
-    await supabase.from('profiles').insert({ id: testUserId });
+    // Create a real auth user (profile is auto-created by trigger)
+    testUserId = await createTestUser();
 
     const { data } = await supabase
       .from('exercises')
@@ -37,7 +56,7 @@ describe('User Progress Migration', () => {
   afterAll(async () => {
     await supabase.from('user_progress').delete().eq('user_id', testUserId);
     await supabase.from('exercises').delete().eq('id', testExerciseId);
-    await supabase.from('profiles').delete().eq('id', testUserId);
+    await deleteTestUser(testUserId);
   });
 
   describe('Schema', () => {
@@ -62,7 +81,7 @@ describe('User Progress Migration', () => {
 
       expect(error).toBeNull();
       expect(data).toMatchObject({
-        ease_factor: '2.50',
+        ease_factor: 2.5,
         interval: 0,
         repetitions: 0,
         times_seen: 0,
@@ -107,14 +126,16 @@ describe('User Progress Migration', () => {
     });
 
     it('cascades delete when profile is deleted', async () => {
-      const tempUserId = crypto.randomUUID();
-      await supabase.from('profiles').insert({ id: tempUserId });
+      // Create a separate test user for cascade test
+      const tempUserId = await createTestUser();
+
       await supabase.from('user_progress').insert({
         user_id: tempUserId,
         exercise_id: testExerciseId,
       });
 
-      await supabase.from('profiles').delete().eq('id', tempUserId);
+      // Delete the user (cascades to profile and user_progress)
+      await deleteTestUser(tempUserId);
 
       const { data } = await supabase
         .from('user_progress')
