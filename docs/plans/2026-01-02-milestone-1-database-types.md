@@ -11,33 +11,44 @@
 | Task | Status | Notes |
 |------|--------|-------|
 | Task 1: Install Vitest | ✅ Complete | `vitest.config.ts`, `tests/setup.ts`, package.json scripts |
-| Task 2: Profiles Migration | ✅ Complete | Migration + test file created, trigger uses `public.profiles` |
-| Task 3: Exercises Migration | ✅ Complete | Migration + test file created |
-| Task 4: User Progress Migration | ✅ Complete | Migration + test file created, tests use real auth users |
-| Task 5: RLS Tests | ⏳ Ready | Docker working, Supabase running |
-| Task 6: Seed Data | ⏳ Pending | |
-| Task 7: Generate Types | ⏳ Pending | Requires `pnpm db:start` |
-| Task 8: Database Helpers | ⏳ Pending | |
-| Task 9: Final Verification | ⏳ Pending | |
+| Task 2: Profiles Migration | ✅ Complete | Migration + test file, trigger uses `public.profiles` |
+| Task 3: Exercises Migration | ✅ Complete | Migration + test file |
+| Task 4: User Progress Migration | ✅ Complete | Migration + test file, tests use real auth users |
+| Task 5: RLS Tests | ✅ Complete | 10 tests for profiles and user_progress RLS policies |
+| Task 6: Seed Data | ✅ Complete | 16 Python exercises across 6 categories |
+| Task 7: Generate Types | ✅ Complete | Auto-generated + camelCase app types + mappers |
+| Task 8: Database Helpers | ✅ Complete | DbResult type + helpers + 8 unit tests |
+| Task 9: Final Verification | ✅ Complete | 33 tests, typecheck, lint, build all pass |
 
-**Current Status:** Docker working, Supabase running, all 12 migration tests passing
+**Status:** ✅ MILESTONE 1 COMPLETE
 
-**Files Created So Far:**
+**All Files Created:**
 - `vitest.config.ts`
 - `tests/setup.ts`
 - `tests/integration/migrations/profiles.test.ts`
 - `tests/integration/migrations/exercises.test.ts`
 - `tests/integration/migrations/user-progress.test.ts`
+- `tests/integration/rls/test-utils.ts`
+- `tests/integration/rls/profiles-rls.test.ts`
+- `tests/integration/rls/user-progress-rls.test.ts`
+- `tests/integration/seed/exercises-seed.test.ts`
+- `tests/unit/helpers.test.ts`
 - `supabase/migrations/20260102000001_create_profiles.sql`
 - `supabase/migrations/20260102000002_create_exercises.sql`
 - `supabase/migrations/20260102000003_create_user_progress.sql`
+- `supabase/seed.sql`
+- `src/lib/types/database.generated.ts`
+- `src/lib/types/app.types.ts`
+- `src/lib/types/index.ts`
+- `src/lib/supabase/helpers.ts`
+- `src/lib/supabase/mappers.ts`
+- `src/lib/supabase/index.ts`
 
-**Next Steps:**
-1. Continue with Task 5: RLS Tests
-2. Task 6: Seed Data
-3. Task 7: Generate Types
-4. Task 8: Database Helpers
-5. Task 9: Final Verification
+**Verification Results:**
+- Tests: 33 passing
+- TypeScript: No errors
+- ESLint: No errors
+- Build: Successful
 
 **Architecture:** Migrations define the schema, Supabase CLI auto-generates types (snake_case matching DB), app types provide camelCase wrappers with mapping utilities. Tests verify constraints and security.
 
