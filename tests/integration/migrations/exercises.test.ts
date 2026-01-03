@@ -39,6 +39,7 @@ describe('Exercises Migration', () => {
           category: 'loops',
           difficulty: 1,
           title: 'Test Exercise',
+          slug: 'test-exercise-all-fields',
           prompt: 'Write a for loop',
           expected_answer: 'for i in range(5):',
           hints: ['Use range()'],
@@ -64,6 +65,7 @@ describe('Exercises Migration', () => {
           category: 'basics',
           difficulty: 1,
           title: 'Minimal Exercise',
+          slug: 'test-minimal-defaults',
           prompt: 'Test',
           expected_answer: 'answer',
         })
@@ -86,12 +88,35 @@ describe('Exercises Migration', () => {
           category: 'test',
           difficulty: 6, // Invalid: must be 1-5
           title: 'Test',
+          slug: 'test-difficulty-constraint',
           prompt: 'Test',
           expected_answer: 'test',
         });
 
       expect(error).not.toBeNull();
       expect(error?.code).toBe('23514'); // check_violation
+    });
+
+    it('has slug column with unique constraint per language', async () => {
+      const { data, error } = await supabase
+        .from('exercises')
+        .select('slug')
+        .eq('language', 'python');
+
+      expect(error).toBeNull();
+      expect(data).not.toBeNull();
+      expect(data!.length).toBeGreaterThan(0);
+
+      // Verify all slugs are non-null
+      for (const exercise of data!) {
+        expect(exercise.slug).toBeTruthy();
+        expect(typeof exercise.slug).toBe('string');
+      }
+
+      // Verify slugs are unique within language
+      const slugs = data!.map(e => e.slug);
+      const uniqueSlugs = new Set(slugs);
+      expect(uniqueSlugs.size).toBe(slugs.length);
     });
   });
 });
