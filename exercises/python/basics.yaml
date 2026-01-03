@@ -1,0 +1,52 @@
+# exercises/python/basics.yaml
+language: python
+category: basics
+
+exercises:
+  - slug: print-hello-world
+    title: Print Hello World
+    difficulty: 1
+    prompt: Print the text "Hello, World!" to the console
+    expected_answer: print("Hello, World!")
+    hints:
+      - Use the print() function
+      - Put the text in quotes
+    tags: [print, strings, beginner]
+
+  - slug: variable-assignment
+    title: Variable Assignment
+    difficulty: 1
+    prompt: Assign the value 42 to a variable named answer
+    expected_answer: answer = 42
+    hints:
+      - Use the = operator
+      - Variable name goes on the left
+    tags: [variables, assignment, beginner]
+
+  - slug: string-variable
+    title: String Variable
+    difficulty: 1
+    prompt: Create a variable called name with the value "Alice"
+    expected_answer: name = "Alice"
+    hints:
+      - Use quotes for strings
+    tags: [variables, strings, beginner]
+
+  - slug: type-check
+    title: Type Check
+    difficulty: 1
+    prompt: Get the type of the variable x
+    expected_answer: type(x)
+    hints:
+      - Use the type() function
+    tags: [types, functions, beginner]
+
+  - slug: user-input
+    title: User Input
+    difficulty: 2
+    prompt: Get input from user with the prompt "Enter name:"
+    expected_answer: input("Enter name:")
+    hints:
+      - Use the input() function
+      - Pass the prompt as a string argument
+    tags: [input, functions, beginner]
