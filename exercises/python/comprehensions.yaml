@@ -1,0 +1,50 @@
+# exercises/python/comprehensions.yaml
+language: python
+category: comprehensions
+
+exercises:
+  - slug: list-comp-basic
+    title: List Comprehension Basic
+    difficulty: 2
+    prompt: Create a list of squares from 1 to 5 using comprehension
+    expected_answer: "[x**2 for x in range(1, 6)]"
+    hints:
+      - Use [expression for item in iterable]
+    tags: [comprehensions, lists, intermediate]
+
+  - slug: list-comp-conditional
+    title: List Comprehension Conditional
+    difficulty: 2
+    prompt: Create a list of even numbers from 1 to 10 using comprehension
+    expected_answer: "[x for x in range(1, 11) if x % 2 == 0]"
+    hints:
+      - Add if condition at the end
+    tags: [comprehensions, conditionals, intermediate]
+
+  - slug: dict-comp-basic
+    title: Dict Comprehension
+    difficulty: 3
+    prompt: Create a dict mapping numbers 1-3 to their squares
+    expected_answer: "{x: x**2 for x in range(1, 4)}"
+    hints:
+      - Use {key: value for item in iterable}
+    tags: [comprehensions, dicts, advanced]
+
+  - slug: set-comp-basic
+    title: Set Comprehension
+    difficulty: 3
+    prompt: Create a set of first letters from list of words
+    expected_answer: "{word[0] for word in words}"
+    hints:
+      - Use curly braces like dict but without colon
+    tags: [comprehensions, sets, advanced]
+
+  - slug: nested-comp
+    title: Nested Comprehension
+    difficulty: 3
+    prompt: Flatten a 2D list called matrix using comprehension
+    expected_answer: "[item for row in matrix for item in row]"
+    hints:
+      - Use multiple for clauses
+      - Outer loop comes first
+    tags: [comprehensions, nested, advanced]
