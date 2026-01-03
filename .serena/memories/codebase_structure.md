@@ -23,11 +23,16 @@ src/
 │   ├── layout.tsx            # Root layout with providers (Auth, Toast)
 │   ├── page.tsx              # Home/auth page (client component)
 │   ├── globals.css           # Tailwind imports & CSS variables
+│   ├── auth/
+│   │   └── callback/
+│   │       └── route.ts      # Magic link PKCE code exchange
 │   ├── dashboard/
 │   │   └── page.tsx          # Dashboard with stats + practice CTA
 │   ├── practice/
 │   │   └── page.tsx          # Practice session flow
 │   └── favicon.ico
+│
+├── middleware.ts             # Supabase session refresh middleware
 │
 ├── components/               # Reusable UI components
 │   ├── index.ts              # Barrel export (all components)
@@ -120,7 +125,8 @@ src/
     │
     ├── supabase/             # Supabase client & utilities
     │   ├── index.ts          # Barrel export
-    │   ├── client.ts         # Supabase client initialization
+    │   ├── client.ts         # Browser client (createBrowserClient from @supabase/ssr)
+    │   ├── server.ts         # Server client (createServerClient with cookies)
     │   ├── helpers.ts        # DbResult helper, type guards
     │   └── mappers.ts        # snake_case → camelCase mappers
     │

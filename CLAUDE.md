@@ -92,8 +92,10 @@ src/
 ├── app/
 │   ├── layout.tsx        # Root layout (AuthProvider, ToastProvider)
 │   ├── page.tsx          # Home/auth page
+│   ├── auth/callback/route.ts  # Magic link PKCE code exchange
 │   ├── dashboard/page.tsx # Dashboard with stats + practice CTA
 │   └── practice/page.tsx  # Practice session flow
+├── middleware.ts         # Supabase session refresh
 ├── components/
 │   ├── layout/           # Header, LandingHeader
 │   ├── landing/          # Hero, Features, HowItWorks, AuthForm
@@ -108,7 +110,7 @@ src/
     ├── session/          # Session types, interleaving
     ├── stats/            # Stats queries, streak calculation
     ├── errors/           # AppError, handleSupabaseError
-    └── supabase/         # Client, helpers, mappers
+    └── supabase/         # Client (browser), server, helpers, mappers
 
 tests/
 ├── unit/                 # Vitest unit tests
@@ -126,8 +128,20 @@ tests/
 
 ## Key Patterns
 
-### Authentication
-Using Supabase Magic Link (passwordless email OTP). Auth state managed via `onAuthStateChange`.
+### Authentication (Magic Link with SSR)
+Using Supabase Magic Link (passwordless email OTP) with `@supabase/ssr` for production-ready SSR support.
+
+**Key Files:**
+- `lib/supabase/client.ts` - Browser client (`createBrowserClient`)
+- `lib/supabase/server.ts` - Server client (`createServerClient` with cookies)
+- `app/auth/callback/route.ts` - PKCE code exchange endpoint
+- `src/middleware.ts` - Session refresh on page load
+
+**Supabase Dashboard Config Required:**
+1. Site URL: `https://your-app.vercel.app`
+2. Redirect URLs: Add `https://your-app.vercel.app/auth/callback`
+
+Auth state managed via `onAuthStateChange`.
 
 ### Styling
 Tailwind CSS 4 with CSS variables for theming. Dark mode via `prefers-color-scheme`.
