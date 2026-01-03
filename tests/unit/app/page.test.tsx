@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import Home from '@/app/page';
 import { AuthProvider } from '@/lib/context/AuthContext';
 
@@ -18,6 +18,23 @@ vi.mock('@/lib/supabase/client', () => ({
   },
 }));
 
+// Mock next/navigation
+const mockReplace = vi.fn();
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    replace: mockReplace,
+    push: vi.fn(),
+  }),
+}));
+
+// Mock landing page components
+vi.mock('@/components', () => ({
+  LandingHeader: () => <header data-testid="landing-header">Header</header>,
+  Hero: () => <section data-testid="hero">Hero with AuthForm</section>,
+  Features: () => <section data-testid="features">Features</section>,
+  HowItWorks: () => <section data-testid="how-it-works">How It Works</section>,
+}));
+
 import { supabase } from '@/lib/supabase/client';
 
 const renderWithAuth = (component: React.ReactElement) => {
@@ -27,9 +44,10 @@ const renderWithAuth = (component: React.ReactElement) => {
 describe('Home Page', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockReplace.mockClear();
   });
 
-  it('shows login form when not authenticated', async () => {
+  it('shows landing page when not authenticated', async () => {
     vi.mocked(supabase.auth.getUser).mockResolvedValue({
       data: { user: null },
       error: null,
@@ -38,13 +56,15 @@ describe('Home Page', () => {
     renderWithAuth(<Home />);
 
     await waitFor(() => {
-      expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
+      expect(screen.getByTestId('landing-header')).toBeInTheDocument();
     });
 
-    expect(screen.getByRole('button', { name: /send magic link/i })).toBeInTheDocument();
+    expect(screen.getByTestId('hero')).toBeInTheDocument();
+    expect(screen.getByTestId('features')).toBeInTheDocument();
+    expect(screen.getByTestId('how-it-works')).toBeInTheDocument();
   });
 
-  it('shows user info when authenticated', async () => {
+  it('redirects to dashboard when authenticated', async () => {
     const mockUser = { id: 'test-id', email: 'test@example.com' };
     vi.mocked(supabase.auth.getUser).mockResolvedValue({
       data: { user: mockUser as any },
@@ -54,61 +74,36 @@ describe('Home Page', () => {
     renderWithAuth(<Home />);
 
     await waitFor(() => {
-      expect(screen.getByText('test@example.com')).toBeInTheDocument();
+      expect(mockReplace).toHaveBeenCalledWith('/dashboard');
     });
-
-    expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument();
   });
 
-  it('calls signIn when form is submitted', async () => {
-    vi.mocked(supabase.auth.getUser).mockResolvedValue({
-      data: { user: null },
-      error: null,
-    } as any);
-    vi.mocked(supabase.auth.signInWithOtp).mockResolvedValue({
-      data: { user: null, session: null },
-      error: null,
-    } as any);
+  it('shows loading state initially', async () => {
+    // Use a promise that doesn't resolve immediately to simulate loading
+    vi.mocked(supabase.auth.getUser).mockImplementation(
+      () => new Promise(() => {})
+    );
 
     renderWithAuth(<Home />);
 
-    await waitFor(() => {
-      expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
-    });
-
-    const emailInput = screen.getByPlaceholderText(/email/i);
-    const submitButton = screen.getByRole('button', { name: /send magic link/i });
-
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.click(submitButton);
-
-    await waitFor(() => {
-      expect(supabase.auth.signInWithOtp).toHaveBeenCalledWith(
-        expect.objectContaining({
-          email: 'test@example.com',
-        })
-      );
-    });
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
 
-  it('calls signOut when sign out button is clicked', async () => {
+  it('renders nothing while redirect is in progress', async () => {
     const mockUser = { id: 'test-id', email: 'test@example.com' };
     vi.mocked(supabase.auth.getUser).mockResolvedValue({
       data: { user: mockUser as any },
       error: null,
     } as any);
-    vi.mocked(supabase.auth.signOut).mockResolvedValue({ error: null });
 
     renderWithAuth(<Home />);
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument();
+      expect(mockReplace).toHaveBeenCalledWith('/dashboard');
     });
 
-    fireEvent.click(screen.getByRole('button', { name: /sign out/i }));
-
-    await waitFor(() => {
-      expect(supabase.auth.signOut).toHaveBeenCalled();
-    });
+    // After redirect initiated, page renders null (no visible content)
+    expect(screen.queryByTestId('landing-header')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('hero')).not.toBeInTheDocument();
   });
 });

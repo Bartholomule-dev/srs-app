@@ -11,13 +11,12 @@ vi.mock('@/components', () => ({
   ErrorBoundary: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="error-boundary">{children}</div>
   ),
-  DueCardsBanner: ({ dueCount, newCount }: { dueCount: number; newCount: number }) => (
-    <div data-testid="due-cards-banner">
+  Header: () => <header data-testid="header">Header</header>,
+  Greeting: () => <div data-testid="greeting">Welcome back!</div>,
+  PracticeCTA: ({ dueCount, newCount }: { dueCount: number; newCount: number }) => (
+    <div data-testid="practice-cta">
       Due: {dueCount}, New: {newCount}
     </div>
-  ),
-  EmptyState: ({ variant }: { variant: string }) => (
-    <div data-testid="empty-state">{variant}</div>
   ),
   StatsGrid: ({ stats, loading }: { stats: unknown; loading: boolean }) => (
     <div data-testid="stats-grid">
@@ -47,6 +46,11 @@ vi.mock('@/lib/supabase/client', () => ({
 vi.mock('@/lib/supabase/mappers', () => ({
   mapExercise: vi.fn((e) => e),
   mapUserProgress: vi.fn((p) => p),
+}));
+
+vi.mock('@/lib/srs', () => ({
+  getDueCards: vi.fn(() => []),
+  getNewCards: vi.fn(() => []),
 }));
 
 vi.mock('next/navigation', () => ({
@@ -107,6 +111,30 @@ describe('DashboardPage', () => {
 
     await waitFor(() => {
       expect(screen.getByTestId('error-boundary')).toBeInTheDocument();
+    });
+  });
+
+  it('renders Header component', async () => {
+    render(<DashboardPage />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('header')).toBeInTheDocument();
+    });
+  });
+
+  it('renders Greeting component', async () => {
+    render(<DashboardPage />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('greeting')).toBeInTheDocument();
+    });
+  });
+
+  it('renders PracticeCTA component', async () => {
+    render(<DashboardPage />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('practice-cta')).toBeInTheDocument();
     });
   });
 });
