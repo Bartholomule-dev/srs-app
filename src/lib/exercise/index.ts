@@ -1,3 +1,3 @@
 // src/lib/exercise/index.ts
 export type { AnswerResult, QualityInputs } from './types';
-export { normalizePython } from './matching';
+export { normalizePython, checkAnswer } from './matching';
