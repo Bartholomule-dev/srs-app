@@ -1,0 +1,53 @@
+# exercises/python/strings.yaml
+language: python
+category: strings
+
+exercises:
+  - slug: string-indexing
+    title: String Indexing
+    difficulty: 1
+    prompt: Get the first character of string s
+    expected_answer: s[0]
+    hints:
+      - Use square bracket indexing
+      - Indices start at 0
+    tags: [strings, indexing, beginner]
+
+  - slug: string-slicing
+    title: String Slicing
+    difficulty: 2
+    prompt: Get characters from index 1 to 4 (exclusive) of string s
+    expected_answer: s[1:4]
+    hints:
+      - Use slice notation [start:end]
+      - End index is exclusive
+    tags: [strings, slicing, intermediate]
+
+  - slug: string-upper
+    title: String Uppercase
+    difficulty: 1
+    prompt: Convert string s to uppercase
+    expected_answer: s.upper()
+    hints:
+      - Use the upper() method
+    tags: [strings, methods, beginner]
+
+  - slug: f-string-basic
+    title: F-String Basic
+    difficulty: 2
+    prompt: Create an f-string that includes the variable name
+    expected_answer: f"Hello, {name}"
+    hints:
+      - Start string with f
+      - Use curly braces for variables
+    tags: [strings, f-strings, intermediate]
+
+  - slug: string-split
+    title: String Split
+    difficulty: 2
+    prompt: Split string s by comma
+    expected_answer: s.split(",")
+    hints:
+      - Use the split() method
+      - Pass the delimiter as argument
+    tags: [strings, methods, intermediate]
