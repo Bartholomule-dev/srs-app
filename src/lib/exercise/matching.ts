@@ -7,14 +7,18 @@ import type { AnswerResult } from './types';
  * - Converts CRLF to LF
  * - Converts tabs to 4 spaces
  * - Removes trailing whitespace per line
+ * - Collapses 3+ consecutive newlines to 2 (single blank line)
+ * - Trims leading/trailing whitespace from entire string
  */
 export function normalizePython(code: string): string {
   if (!code) return '';
 
   return code
-    .replace(/\r\n/g, '\n')      // CRLF → LF
-    .replace(/\t/g, '    ')      // Tabs → 4 spaces
-    .replace(/ +$/gm, '');       // Remove trailing spaces per line
+    .replace(/\r\n/g, '\n')           // CRLF → LF
+    .replace(/\t/g, '    ')           // Tabs → 4 spaces
+    .replace(/ +$/gm, '')             // Remove trailing spaces per line
+    .replace(/\n{3,}/g, '\n\n')       // Collapse 3+ newlines to 2
+    .trim();                          // Trim leading/trailing whitespace
 }
 
 /**

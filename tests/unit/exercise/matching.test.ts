@@ -12,7 +12,7 @@ describe('normalizePython', () => {
   });
 
   it('converts tabs to 4 spaces', () => {
-    expect(normalizePython('\tprint(x)')).toBe('    print(x)');
+    expect(normalizePython('x\n\tprint(x)')).toBe('x\n    print(x)');
   });
 
   it('removes trailing spaces per line', () => {
@@ -20,8 +20,8 @@ describe('normalizePython', () => {
     expect(normalizePython('a   \nb   ')).toBe('a\nb');
   });
 
-  it('preserves leading spaces (indentation)', () => {
-    expect(normalizePython('    print(x)')).toBe('    print(x)');
+  it('preserves leading spaces (indentation) within multi-line code', () => {
+    expect(normalizePython('def foo():\n    print(x)')).toBe('def foo():\n    print(x)');
   });
 
   it('preserves internal spaces', () => {
@@ -35,7 +35,7 @@ describe('normalizePython', () => {
   });
 
   it('normalizes multiple consecutive tabs', () => {
-    expect(normalizePython('\t\tprint(x)')).toBe('        print(x)');
+    expect(normalizePython('x\n\t\tprint(x)')).toBe('x\n        print(x)');
   });
 
   it('trims leading and trailing whitespace from entire answer', () => {
@@ -96,8 +96,8 @@ describe('checkAnswer', () => {
   describe('result properties', () => {
     it('includes normalized versions of both answers', () => {
       const result = checkAnswer('\tprint(x)  ', '    print(x)');
-      expect(result.normalizedUserAnswer).toBe('    print(x)');
-      expect(result.normalizedExpectedAnswer).toBe('    print(x)');
+      expect(result.normalizedUserAnswer).toBe('print(x)');
+      expect(result.normalizedExpectedAnswer).toBe('print(x)');
     });
 
     it('includes normalized versions even when incorrect', () => {
