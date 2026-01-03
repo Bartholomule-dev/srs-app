@@ -1,5 +1,26 @@
 // tests/unit/stats/index.test.ts
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+
+// Mock supabase before importing stats (updateProfile imports supabase)
+vi.mock('@/lib/supabase', () => ({
+  supabase: {
+    from: vi.fn(() => ({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          single: vi.fn().mockResolvedValue({ data: {}, error: null }),
+        })),
+      })),
+      update: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          select: vi.fn(() => ({
+            single: vi.fn().mockResolvedValue({ data: {}, error: null }),
+          })),
+        })),
+      })),
+    })),
+  },
+}));
+
 import * as stats from '@/lib/stats';
 
 describe('Stats barrel export', () => {
@@ -23,5 +44,9 @@ describe('Stats barrel export', () => {
   it('exports streak utilities', () => {
     expect(typeof stats.shouldIncrementStreak).toBe('function');
     expect(typeof stats.calculateUpdatedStreak).toBe('function');
+  });
+
+  it('exports updateProfileStats', () => {
+    expect(typeof stats.updateProfileStats).toBe('function');
   });
 });

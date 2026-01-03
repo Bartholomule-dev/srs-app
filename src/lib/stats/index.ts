@@ -7,3 +7,7 @@ export {
   type StreakUpdateInput,
   type StreakUpdateResult,
 } from './streak';
+export {
+  updateProfileStats,
+  type UpdateProfileStatsInput,
+} from './updateProfile';
