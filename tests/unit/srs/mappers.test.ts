@@ -1,6 +1,6 @@
 // tests/unit/srs/mappers.test.ts
 import { describe, it, expect } from 'vitest';
-import { toDbUserProgressUpdate, cardStateToProgressUpdate } from '@/lib/supabase/mappers';
+import { toDbUserProgressUpdate, cardStateToProgressUpdate, mapExercise } from '@/lib/supabase/mappers';
 import type { CardState } from '@/lib/srs/types';
 
 describe('toDbUserProgressUpdate', () => {
@@ -78,5 +78,29 @@ describe('cardStateToProgressUpdate', () => {
     const result = cardStateToProgressUpdate(state);
 
     expect(result.last_reviewed).toBeNull();
+  });
+});
+
+describe('mapExercise', () => {
+  it('maps slug field', () => {
+    const dbExercise = {
+      id: 'test-id',
+      slug: 'for-loop-range',
+      language: 'python',
+      category: 'loops',
+      difficulty: 1,
+      title: 'For Loop Range',
+      prompt: 'Write a for loop',
+      expected_answer: 'for i in range(5):',
+      hints: ['Use range()'],
+      explanation: null,
+      tags: ['loops'],
+      times_practiced: 0,
+      avg_success_rate: null,
+      created_at: '2026-01-01T00:00:00Z',
+      updated_at: '2026-01-01T00:00:00Z',
+    };
+    const result = mapExercise(dbExercise);
+    expect(result.slug).toBe('for-loop-range');
   });
 });
