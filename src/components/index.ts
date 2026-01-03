@@ -11,5 +11,8 @@ export {
   HintButton,
 } from './exercise';
 
+// Session components
+export { SessionProgress, SessionSummary } from './session';
+
 // Dashboard components
-export { DueCardsBanner } from './dashboard';
+export { DueCardsBanner, EmptyState } from './dashboard';
