@@ -48,3 +48,6 @@ node_modules/
 /playwright/.cache/
 /playwright/.auth/
 supabase/.branches/
+
+# Supabase local config
+supabase/.temp/
