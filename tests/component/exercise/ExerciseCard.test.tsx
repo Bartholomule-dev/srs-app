@@ -233,4 +233,99 @@ describe('ExerciseCard', () => {
       expect(screen.queryByRole('button', { name: /hint/i })).not.toBeInTheDocument();
     });
   });
+
+  describe('exercise prop change (sequential questions)', () => {
+    const secondExercise: Exercise = {
+      id: 'ex-2',
+      slug: 'list-append',
+      language: 'Python',
+      category: 'Lists',
+      difficulty: 1,
+      title: 'List Append',
+      prompt: 'Append "item" to the list `my_list`',
+      expectedAnswer: 'my_list.append("item")',
+      hints: ['Use the append() method'],
+      explanation: null,
+      tags: ['lists'],
+      timesPracticed: 0,
+      avgSuccessRate: null,
+      createdAt: '2026-01-01T00:00:00Z',
+      updatedAt: '2026-01-01T00:00:00Z',
+    };
+
+    it('resets to answering phase when exercise changes', async () => {
+      const handleComplete = vi.fn();
+      const { rerender } = render(
+        <ExerciseCard exercise={mockExercise} onComplete={handleComplete} />
+      );
+
+      // Answer wrong and go to feedback phase
+      await act(async () => {
+        fireEvent.change(screen.getByRole('textbox'), { target: { value: 'wrong answer' } });
+        fireEvent.click(screen.getByRole('button', { name: /submit/i }));
+      });
+
+      // Verify we're in feedback phase
+      expect(screen.getByText(/incorrect/i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /continue/i })).toBeInTheDocument();
+
+      // Click continue (which triggers onComplete and should move to next question)
+      await act(async () => {
+        fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+      });
+
+      // Now rerender with new exercise (simulating what happens when currentIndex changes)
+      rerender(<ExerciseCard exercise={secondExercise} onComplete={handleComplete} />);
+
+      // Should be back in answering phase with new exercise prompt
+      expect(screen.getByText('Append "item" to the list `my_list`')).toBeInTheDocument();
+      expect(screen.getByRole('textbox')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument();
+      // Should NOT still be in feedback phase
+      expect(screen.queryByText(/incorrect/i)).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /continue/i })).not.toBeInTheDocument();
+    });
+
+    it('clears user input when exercise changes', async () => {
+      const handleComplete = vi.fn();
+      const { rerender } = render(
+        <ExerciseCard exercise={mockExercise} onComplete={handleComplete} />
+      );
+
+      // Type something
+      await act(async () => {
+        fireEvent.change(screen.getByRole('textbox'), { target: { value: 'some input' } });
+      });
+
+      expect(screen.getByRole('textbox')).toHaveValue('some input');
+
+      // Rerender with new exercise
+      rerender(<ExerciseCard exercise={secondExercise} onComplete={handleComplete} />);
+
+      // Input should be cleared
+      expect(screen.getByRole('textbox')).toHaveValue('');
+    });
+
+    it('resets hint state when exercise changes', async () => {
+      const handleComplete = vi.fn();
+      const { rerender } = render(
+        <ExerciseCard exercise={mockExercise} onComplete={handleComplete} />
+      );
+
+      // Reveal hint
+      await act(async () => {
+        fireEvent.click(screen.getByRole('button', { name: /hint/i }));
+      });
+
+      expect(screen.getByText('Use the print() function')).toBeInTheDocument();
+
+      // Rerender with new exercise
+      rerender(<ExerciseCard exercise={secondExercise} onComplete={handleComplete} />);
+
+      // Hint should NOT be revealed for new exercise
+      expect(screen.queryByText('Use the append() method')).not.toBeInTheDocument();
+      // Hint button should be available
+      expect(screen.getByRole('button', { name: /hint/i })).toBeInTheDocument();
+    });
+  });
 });

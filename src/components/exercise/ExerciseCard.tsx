@@ -25,6 +25,17 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
 
   const pauseStartRef = useRef<number | null>(null);
 
+  // Reset state when exercise changes (critical for sequential questions)
+  useEffect(() => {
+    setPhase('answering');
+    setUserAnswer('');
+    setHintUsed(false);
+    setStartTime(null);
+    setPausedMs(0);
+    setAnswerResult(null);
+    pauseStartRef.current = null;
+  }, [exercise.id]);
+
   // Track page visibility for pausing timer
   useEffect(() => {
     const handleVisibilityChange = () => {
