@@ -1,6 +1,6 @@
 // tests/unit/hooks/useSession.test.tsx
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
+import { renderHook, waitFor, act } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { AuthProvider } from '@/lib/context/AuthContext';
 import { ToastProvider } from '@/lib/context/ToastContext';
@@ -314,6 +314,208 @@ describe('useSession', () => {
 
       expect(result.current.cards).toHaveLength(0);
       expect(result.current.currentCard).toBeNull();
+    });
+  });
+
+  describe('recordResult', () => {
+    const setupWithCards = () => {
+      const mockFrom = vi.mocked(supabase.from);
+      mockFrom.mockImplementation((table: string) => {
+        if (table === 'exercises') {
+          return {
+            select: vi.fn().mockResolvedValue({
+              data: mockExercisesDb,
+              error: null,
+            }),
+          } as any;
+        }
+        if (table === 'user_progress') {
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                lte: vi.fn().mockResolvedValue({
+                  data: mockProgressDb,
+                  error: null,
+                }),
+                single: vi.fn().mockResolvedValue({ data: mockProgressDb[0], error: null }),
+              }),
+            }),
+            upsert: vi.fn().mockReturnValue({
+              select: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({ data: {}, error: null }),
+              }),
+            }),
+          } as any;
+        }
+        return {} as any;
+      });
+    };
+
+    it('advances currentIndex after recording', async () => {
+      setupWithCards();
+      const { result } = renderHook(() => useSession(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      const initialIndex = result.current.currentIndex;
+      expect(initialIndex).toBe(0);
+
+      await act(async () => {
+        await result.current.recordResult(4);
+      });
+
+      expect(result.current.currentIndex).toBe(initialIndex + 1);
+    });
+
+    it('increments completed count', async () => {
+      setupWithCards();
+      const { result } = renderHook(() => useSession(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      expect(result.current.stats.completed).toBe(0);
+
+      await act(async () => {
+        await result.current.recordResult(4);
+      });
+
+      expect(result.current.stats.completed).toBe(1);
+    });
+
+    it('increments correct count for quality >= 3', async () => {
+      setupWithCards();
+      const { result } = renderHook(() => useSession(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      expect(result.current.stats.correct).toBe(0);
+
+      await act(async () => {
+        await result.current.recordResult(3);
+      });
+
+      expect(result.current.stats.correct).toBe(1);
+      expect(result.current.stats.incorrect).toBe(0);
+    });
+
+    it('increments incorrect count for quality < 3', async () => {
+      setupWithCards();
+      const { result } = renderHook(() => useSession(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      expect(result.current.stats.incorrect).toBe(0);
+
+      await act(async () => {
+        await result.current.recordResult(2);
+      });
+
+      expect(result.current.stats.incorrect).toBe(1);
+      expect(result.current.stats.correct).toBe(0);
+    });
+
+    it('sets isComplete when last card is answered', async () => {
+      // Setup with only 1 card (just ex-1, due card)
+      const mockFrom = vi.mocked(supabase.from);
+      mockFrom.mockImplementation((table: string) => {
+        if (table === 'exercises') {
+          return {
+            select: vi.fn().mockResolvedValue({
+              data: [mockExercisesDb[0]], // Only 1 exercise
+              error: null,
+            }),
+          } as any;
+        }
+        if (table === 'user_progress') {
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                lte: vi.fn().mockResolvedValue({
+                  data: mockProgressDb,
+                  error: null,
+                }),
+                single: vi.fn().mockResolvedValue({ data: mockProgressDb[0], error: null }),
+              }),
+            }),
+            upsert: vi.fn().mockReturnValue({
+              select: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({ data: {}, error: null }),
+              }),
+            }),
+          } as any;
+        }
+        return {} as any;
+      });
+
+      const { result } = renderHook(() => useSession(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      expect(result.current.isComplete).toBe(false);
+
+      await act(async () => {
+        await result.current.recordResult(4);
+      });
+
+      expect(result.current.isComplete).toBe(true);
+    });
+
+    it('sets endTime when session completes', async () => {
+      // Setup with only 1 card
+      const mockFrom = vi.mocked(supabase.from);
+      mockFrom.mockImplementation((table: string) => {
+        if (table === 'exercises') {
+          return {
+            select: vi.fn().mockResolvedValue({
+              data: [mockExercisesDb[0]],
+              error: null,
+            }),
+          } as any;
+        }
+        if (table === 'user_progress') {
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                lte: vi.fn().mockResolvedValue({
+                  data: mockProgressDb,
+                  error: null,
+                }),
+                single: vi.fn().mockResolvedValue({ data: mockProgressDb[0], error: null }),
+              }),
+            }),
+            upsert: vi.fn().mockReturnValue({
+              select: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({ data: {}, error: null }),
+              }),
+            }),
+          } as any;
+        }
+        return {} as any;
+      });
+
+      const { result } = renderHook(() => useSession(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      expect(result.current.stats.endTime).toBeUndefined();
+
+      await act(async () => {
+        await result.current.recordResult(4);
+      });
+
+      expect(result.current.stats.endTime).toBeInstanceOf(Date);
     });
   });
 });

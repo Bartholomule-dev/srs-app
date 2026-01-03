@@ -10,6 +10,8 @@ import type { Quality, Exercise, UserProgress } from '@/lib/types';
 import { AppError, ErrorCode } from '@/lib/errors';
 import { handleSupabaseError } from '@/lib/errors/handleSupabaseError';
 import { useAuth } from './useAuth';
+import { useSRS } from './useSRS';
+import { useToast } from '@/lib/context/ToastContext';
 
 const NEW_CARDS_LIMIT = 5;
 
@@ -49,6 +51,8 @@ function createInitialStats(): SessionStats {
 
 export function useSession(): UseSessionReturn {
   const { user, loading: authLoading } = useAuth();
+  const { recordAnswer } = useSRS();
+  const { showToast } = useToast();
   const [cards, setCards] = useState<SessionCard[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [stats, setStats] = useState<SessionStats>(createInitialStats);
@@ -168,9 +172,37 @@ export function useSession(): UseSessionReturn {
     };
   }, [user, authLoading, fetchKey]);
 
-  const recordResult = useCallback(async (_quality: Quality) => {
-    // To be implemented in Task 5
-  }, []);
+  const recordResult = useCallback(
+    async (quality: Quality) => {
+      const card = cards[currentIndex];
+      if (!card) return;
+
+      const isCorrect = quality >= 3;
+      const newCompleted = stats.completed + 1;
+      const willComplete = newCompleted >= cards.length;
+
+      // Update local stats immediately (optimistic)
+      setStats((prev) => ({
+        ...prev,
+        completed: newCompleted,
+        correct: isCorrect ? prev.correct + 1 : prev.correct,
+        incorrect: !isCorrect ? prev.incorrect + 1 : prev.incorrect,
+        endTime: willComplete ? new Date() : undefined,
+      }));
+
+      // Advance to next card immediately
+      setCurrentIndex((prev) => prev + 1);
+
+      // Persist to database (fire-and-forget with error handling)
+      try {
+        await recordAnswer(card.exercise.id, quality);
+      } catch {
+        showToast({ type: 'error', message: 'Failed to save progress' });
+        // Session continues even if save fails
+      }
+    },
+    [cards, currentIndex, stats.completed, recordAnswer, showToast]
+  );
 
   const endSession = useCallback(() => {
     // To be implemented in Task 6
