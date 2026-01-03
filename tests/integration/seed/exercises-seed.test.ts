@@ -12,33 +12,77 @@ const supabase = createClient(
 );
 
 describe('Exercise Seed Data', () => {
-  it('has Python exercises seeded', async () => {
+  it('has at least 50 Python exercises', async () => {
     const { data, error } = await supabase
       .from('exercises')
       .select('id')
       .eq('language', 'python');
 
     expect(error).toBeNull();
-    expect(data!.length).toBeGreaterThanOrEqual(10);
+    expect(data!.length).toBeGreaterThanOrEqual(50);
   });
 
-  it('has exercises in multiple categories', async () => {
+  it('has exercises in all 10 categories', async () => {
     const { data } = await supabase
       .from('exercises')
       .select('category')
       .eq('language', 'python');
 
     const categories = new Set(data!.map(e => e.category));
-    expect(categories.size).toBeGreaterThanOrEqual(4);
+    const expectedCategories = [
+      'basics', 'operators', 'strings', 'lists', 'dictionaries',
+      'loops', 'functions', 'classes', 'comprehensions', 'exceptions'
+    ];
+
+    for (const cat of expectedCategories) {
+      expect(categories.has(cat)).toBe(true);
+    }
   });
 
-  it('has exercises at different difficulty levels', async () => {
+  it('has exercises at all difficulty levels (1, 2, 3)', async () => {
     const { data } = await supabase
       .from('exercises')
       .select('difficulty')
       .eq('language', 'python');
 
     const difficulties = new Set(data!.map(e => e.difficulty));
-    expect(difficulties.size).toBeGreaterThanOrEqual(2);
+    expect(difficulties.has(1)).toBe(true);
+    expect(difficulties.has(2)).toBe(true);
+    expect(difficulties.has(3)).toBe(true);
+  });
+
+  it('all exercises have valid slugs', async () => {
+    const { data } = await supabase
+      .from('exercises')
+      .select('slug')
+      .eq('language', 'python');
+
+    const slugRegex = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+    for (const exercise of data!) {
+      expect(exercise.slug).toMatch(slugRegex);
+    }
+  });
+
+  it('all exercises have at least one hint', async () => {
+    const { data } = await supabase
+      .from('exercises')
+      .select('hints, slug')
+      .eq('language', 'python');
+
+    for (const exercise of data!) {
+      const hints = exercise.hints as string[];
+      expect(hints.length).toBeGreaterThanOrEqual(1);
+    }
+  });
+
+  it('slugs are unique within language', async () => {
+    const { data } = await supabase
+      .from('exercises')
+      .select('slug')
+      .eq('language', 'python');
+
+    const slugs = data!.map(e => e.slug);
+    const uniqueSlugs = new Set(slugs);
+    expect(uniqueSlugs.size).toBe(slugs.length);
   });
 });
