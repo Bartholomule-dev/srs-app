@@ -59,9 +59,11 @@ export function useSession(): UseSessionReturn {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AppError | null>(null);
   const [fetchKey, setFetchKey] = useState(0);
+  const [forceComplete, setForceComplete] = useState(false);
 
   const currentCard = cards[currentIndex] ?? null;
-  const isComplete = currentIndex >= cards.length && cards.length > 0;
+  const isComplete =
+    forceComplete || (currentIndex >= cards.length && cards.length > 0);
 
   // Fetch exercises and progress, build session queue
   useEffect(() => {
@@ -205,7 +207,11 @@ export function useSession(): UseSessionReturn {
   );
 
   const endSession = useCallback(() => {
-    // To be implemented in Task 6
+    setForceComplete(true);
+    setStats((prev) => ({
+      ...prev,
+      endTime: new Date(),
+    }));
   }, []);
 
   const retry = useCallback(() => {

@@ -611,4 +611,130 @@ describe('useSession', () => {
       });
     });
   });
+
+  describe('endSession', () => {
+    it('marks session as complete', async () => {
+      const mockFrom = vi.mocked(supabase.from);
+      mockFrom.mockImplementation((table: string) => {
+        if (table === 'exercises') {
+          return {
+            select: vi.fn().mockResolvedValue({
+              data: mockExercisesDb,
+              error: null,
+            }),
+          } as any;
+        }
+        if (table === 'user_progress') {
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockResolvedValue({
+                data: mockProgressDb,
+                error: null,
+              }),
+            }),
+          } as any;
+        }
+        return {} as any;
+      });
+
+      const { result } = renderHook(() => useSession(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      expect(result.current.isComplete).toBe(false);
+
+      act(() => {
+        result.current.endSession();
+      });
+
+      expect(result.current.isComplete).toBe(true);
+    });
+
+    it('sets endTime when ending early', async () => {
+      const mockFrom = vi.mocked(supabase.from);
+      mockFrom.mockImplementation((table: string) => {
+        if (table === 'exercises') {
+          return {
+            select: vi.fn().mockResolvedValue({
+              data: mockExercisesDb,
+              error: null,
+            }),
+          } as any;
+        }
+        if (table === 'user_progress') {
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockResolvedValue({
+                data: mockProgressDb,
+                error: null,
+              }),
+            }),
+          } as any;
+        }
+        return {} as any;
+      });
+
+      const { result } = renderHook(() => useSession(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      expect(result.current.stats.endTime).toBeUndefined();
+
+      act(() => {
+        result.current.endSession();
+      });
+
+      expect(result.current.stats.endTime).toBeInstanceOf(Date);
+    });
+
+    it('preserves partial stats when ending early', async () => {
+      const mockFrom = vi.mocked(supabase.from);
+      mockFrom.mockImplementation((table: string) => {
+        if (table === 'exercises') {
+          return {
+            select: vi.fn().mockResolvedValue({
+              data: mockExercisesDb,
+              error: null,
+            }),
+          } as any;
+        }
+        if (table === 'user_progress') {
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockResolvedValue({
+                data: mockProgressDb,
+                error: null,
+              }),
+            }),
+          } as any;
+        }
+        return {} as any;
+      });
+
+      const { result } = renderHook(() => useSession(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // Answer one card first
+      await act(async () => {
+        await result.current.recordResult(4);
+      });
+
+      expect(result.current.stats.completed).toBe(1);
+
+      act(() => {
+        result.current.endSession();
+      });
+
+      // Stats should still show the partial progress
+      expect(result.current.stats.completed).toBe(1);
+      expect(result.current.stats.total).toBe(2);
+    });
+  });
 });
