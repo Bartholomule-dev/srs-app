@@ -54,3 +54,4 @@ supabase/.temp/
 
 # Debates (debate-hall MCP)
 debates/
+.env.test.local

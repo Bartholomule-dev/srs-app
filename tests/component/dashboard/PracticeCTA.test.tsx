@@ -22,10 +22,10 @@ describe('PracticeCTA', () => {
     expect(screen.getByText(/learn new cards/i)).toBeInTheDocument();
   });
 
-  it('shows check back later when no cards at all', () => {
+  it('shows all caught up with browse link when no cards at all', () => {
     render(<PracticeCTA dueCount={0} newCount={0} />);
-    expect(screen.getByText(/no cards due/i)).toBeInTheDocument();
-    expect(screen.getByText(/check back later/i)).toBeInTheDocument();
+    expect(screen.getByText(/all caught up/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /browse exercises/i })).toHaveAttribute('href', '/practice');
   });
 
   it('links to practice page', () => {

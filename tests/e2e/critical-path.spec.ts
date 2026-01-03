@@ -22,11 +22,9 @@ test.describe('Critical Path: Login → Dashboard → Practice', () => {
     // Step 1: Navigate to home page and verify it loads
     await page.goto('/');
 
-    // Wait for landing page to load - look for hero heading or auth form
+    // Wait for landing page to load - look for hero heading
     await expect(
       page.getByRole('heading', { name: /Keep Your Code Skills Sharp/i })
-        .or(page.getByRole('button', { name: /Send Magic Link/i }))
-        .or(page.getByText(/Loading/i))
     ).toBeVisible({ timeout: 10000 });
 
     // Step 2: Sign in programmatically via Supabase client (Node.js side)
@@ -40,43 +38,49 @@ test.describe('Critical Path: Login → Dashboard → Practice', () => {
       throw new Error(`Failed to sign in test user: ${signInError.message}`);
     }
 
-    // Step 3: Inject the session into the browser's localStorage
+    // Step 3: Inject the session into browser cookies (@supabase/ssr uses cookies, not localStorage)
     const session = signInData.session;
-    await page.evaluate(({ url, session }) => {
-      // Supabase stores session in localStorage with key pattern: sb-<project-ref>-auth-token
-      const projectRef = new URL(url).hostname.split('.')[0];
-      const storageKey = `sb-${projectRef}-auth-token`;
-      localStorage.setItem(storageKey, JSON.stringify(session));
-    }, { url: supabaseUrl, session });
+    const projectRef = new URL(supabaseUrl).hostname.split('.')[0];
+    const cookieName = `sb-${projectRef}-auth-token`;
+
+    // Set the session cookie - Supabase SSR stores the full session object as JSON
+    await page.context().addCookies([
+      {
+        name: cookieName,
+        value: encodeURIComponent(JSON.stringify(session)),
+        domain: 'localhost',
+        path: '/',
+        httpOnly: false,
+        secure: false,
+        sameSite: 'Lax',
+      },
+    ]);
 
     // Step 4: Navigate to dashboard (this will pick up the session)
     await page.goto('/dashboard');
 
-    // Step 5: Verify dashboard loads - look for greeting heading or SyntaxSRS branding
+    // Step 5: Verify dashboard loads - look for greeting heading
     await expect(
       page.getByRole('heading', { name: /Good (morning|afternoon|evening|night)/i })
-        .or(page.getByRole('link', { name: /SyntaxSRS/i }))
-        .or(page.getByText(/Ready to practice/i))
     ).toBeVisible({ timeout: 15000 });
 
-    // Step 6: Look for practice button/link or "no cards" state
-    const practiceButton = page.getByRole('link', { name: /start practice/i })
-      .or(page.getByRole('link', { name: /learn new cards/i }));
-    const noCardsText = page.getByText(/no cards due|all caught up|check back later/i);
+    // Step 6: Look for practice button/link - could be "Learn new cards", "Start Practice", or "Browse exercises"
+    const practiceButton = page.getByRole('link', { name: /learn new cards|start practice|browse exercises/i });
 
-    // Wait for either state
-    await expect(practiceButton.or(noCardsText)).toBeVisible({ timeout: 10000 });
+    // Wait for practice button to be visible - it should always be present
+    await expect(practiceButton).toBeVisible({ timeout: 10000 });
 
-    // If practice is available, test the flow
-    if (await practiceButton.isVisible()) {
+    // Click practice button and verify navigation
+    {
       await practiceButton.click();
       await expect(page).toHaveURL(/practice/);
 
-      // Verify practice page loads - look for Submit button, End Session link, or no cards state
+      // Verify practice page loads - look for Submit button or no cards state
       const submitButton = page.getByRole('button', { name: /submit/i });
-      const endSessionLink = page.getByRole('link', { name: /end session/i });
       const noCardsOnPractice = page.getByText(/no cards to practice/i);
-      await expect(submitButton.or(endSessionLink).or(noCardsOnPractice)).toBeVisible({ timeout: 10000 });
+
+      // Wait for either submit button or no cards message
+      await expect(submitButton.or(noCardsOnPractice)).toBeVisible({ timeout: 10000 });
 
       // If there's an exercise (Submit button visible), try to interact with it
       if (await submitButton.isVisible({ timeout: 3000 }).catch(() => false)) {

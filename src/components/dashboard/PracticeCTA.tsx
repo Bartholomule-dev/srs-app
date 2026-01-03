@@ -9,9 +9,15 @@ export function PracticeCTA({ dueCount, newCount }: PracticeCTAProps) {
   if (dueCount === 0 && newCount === 0) {
     return (
       <div className="p-6 bg-gray-50 dark:bg-gray-800 rounded-xl text-center">
-        <p className="text-gray-600 dark:text-gray-400">
-          No cards due. Check back later!
+        <p className="text-gray-600 dark:text-gray-400 mb-4">
+          All caught up! No cards due right now.
         </p>
+        <Link
+          href="/practice"
+          className="inline-block py-2 px-6 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg"
+        >
+          Browse exercises
+        </Link>
       </div>
     );
   }

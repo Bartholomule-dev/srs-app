@@ -1,4 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
+
+// Load environment variables for E2E tests (local Supabase)
+dotenv.config({ path: path.resolve(__dirname, '.env.test.local') });
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -27,5 +32,8 @@ export default defineConfig({
     url: 'http://localhost:3000',
     reuseExistingServer: true,
     timeout: 120000,
+    env: {
+      ...process.env as Record<string, string>,
+    },
   },
 });

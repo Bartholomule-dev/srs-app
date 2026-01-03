@@ -65,7 +65,6 @@ describe('Profiles Migration', () => {
       expect(error).toBeNull();
       expect(data).toMatchObject({
         id: testId,
-        username: null,
         display_name: null,
         avatar_url: null,
         preferred_language: 'python',
@@ -75,6 +74,8 @@ describe('Profiles Migration', () => {
         longest_streak: 0,
         total_exercises_completed: 0,
       });
+      // Username is auto-generated from the first 8 chars of the user ID
+      expect(data?.username).toMatch(/^user_[a-f0-9]{8}$/);
       expect(data?.created_at).toBeDefined();
       expect(data?.updated_at).toBeDefined();
     });
