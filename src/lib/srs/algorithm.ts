@@ -1,7 +1,7 @@
 // src/lib/srs/algorithm.ts
-import type { CardState, ReviewResult, SRSConfig } from './types';
+import type { CardState, ReviewResult, SRSConfig, DueCard } from './types';
 import { DEFAULT_SRS_CONFIG } from './types';
-import type { Quality } from '@/lib/types';
+import type { Quality, UserProgress, Exercise } from '@/lib/types';
 
 /**
  * Create initial state for a new card
@@ -109,4 +109,55 @@ function addDays(date: Date, days: number): Date {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
+}
+
+/**
+ * Get cards due for review (nextReview <= now)
+ * Sorted by nextReview ascending (most overdue first)
+ */
+export function getDueCards(userProgress: UserProgress[]): DueCard[] {
+  const now = new Date();
+
+  return userProgress
+    .filter((progress) => new Date(progress.nextReview) <= now)
+    .sort((a, b) => new Date(a.nextReview).getTime() - new Date(b.nextReview).getTime())
+    .map((progress) => ({
+      exerciseId: progress.exerciseId,
+      state: progressToCardState(progress),
+      isNew: false,
+    }));
+}
+
+/**
+ * Get new cards (exercises without any progress) up to a limit
+ */
+export function getNewCards(
+  exercises: Exercise[],
+  existingProgress: UserProgress[],
+  limit: number,
+  config: SRSConfig = DEFAULT_SRS_CONFIG
+): DueCard[] {
+  const progressExerciseIds = new Set(existingProgress.map((p) => p.exerciseId));
+
+  return exercises
+    .filter((exercise) => !progressExerciseIds.has(exercise.id))
+    .slice(0, limit)
+    .map((exercise) => ({
+      exerciseId: exercise.id,
+      state: createInitialCardState(config),
+      isNew: true,
+    }));
+}
+
+/**
+ * Convert UserProgress to CardState
+ */
+function progressToCardState(progress: UserProgress): CardState {
+  return {
+    easeFactor: progress.easeFactor,
+    interval: progress.interval,
+    repetitions: progress.repetitions,
+    nextReview: new Date(progress.nextReview),
+    lastReviewed: progress.lastReviewed ? new Date(progress.lastReviewed) : null,
+  };
 }
