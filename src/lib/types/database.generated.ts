@@ -46,6 +46,7 @@ export type Database = {
           id: string
           language: string
           prompt: string
+          slug: string
           tags: string[] | null
           times_practiced: number | null
           title: string
@@ -62,6 +63,7 @@ export type Database = {
           id?: string
           language: string
           prompt: string
+          slug: string
           tags?: string[] | null
           times_practiced?: number | null
           title: string
@@ -78,6 +80,7 @@ export type Database = {
           id?: string
           language?: string
           prompt?: string
+          slug?: string
           tags?: string[] | null
           times_practiced?: number | null
           title?: string
