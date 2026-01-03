@@ -1,6 +1,7 @@
 // src/app/practice/page.tsx
 'use client';
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ProtectedRoute, ExerciseCard, SessionProgress, SessionSummary } from '@/components';
 import { useSession } from '@/lib/hooks';
@@ -92,28 +93,37 @@ function PracticeSessionContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
-      <div className="max-w-2xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <SessionProgress
-            current={stats.completed}
-            total={stats.total}
-            className="flex-1 mr-4"
-          />
-          <button
-            onClick={endSession}
-            className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-          >
-            End Session
-          </button>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+      {/* Immersive progress bar header */}
+      <div className="sticky top-0 z-10 bg-gray-50/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
+        <div className="max-w-3xl mx-auto px-4 py-3">
+          <div className="flex items-center gap-4">
+            <SessionProgress
+              current={stats.completed}
+              total={stats.total}
+              className="flex-1"
+            />
+            <Link
+              href="/dashboard"
+              onClick={endSession}
+              className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+            >
+              End Session
+            </Link>
+          </div>
         </div>
+      </div>
 
-        {currentCard && (
-          <ExerciseCard
-            exercise={currentCard.exercise}
-            onComplete={(exerciseId, quality) => recordResult(quality)}
-          />
-        )}
+      {/* Centered exercise card with generous whitespace */}
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-8">
+        <div className="w-full max-w-2xl">
+          {currentCard && (
+            <ExerciseCard
+              exercise={currentCard.exercise}
+              onComplete={(exerciseId, quality) => recordResult(quality)}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
