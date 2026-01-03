@@ -1,0 +1,50 @@
+# exercises/python/classes.yaml
+language: python
+category: classes
+
+exercises:
+  - slug: define-class
+    title: Define Class
+    difficulty: 2
+    prompt: Define a class called Person
+    expected_answer: "class Person:"
+    hints:
+      - Use the class keyword
+    tags: [classes, oop, intermediate]
+
+  - slug: init-method
+    title: Init Method
+    difficulty: 2
+    prompt: Define __init__ that takes self and name parameter
+    expected_answer: "def __init__(self, name):"
+    hints:
+      - Use double underscores
+      - self is always first parameter
+    tags: [classes, init, intermediate]
+
+  - slug: instance-attribute
+    title: Instance Attribute
+    difficulty: 2
+    prompt: Set self.name to the name parameter inside __init__
+    expected_answer: self.name = name
+    hints:
+      - Use self.attribute = value
+    tags: [classes, attributes, intermediate]
+
+  - slug: instance-method
+    title: Instance Method
+    difficulty: 2
+    prompt: Define a method called greet that takes self
+    expected_answer: "def greet(self):"
+    hints:
+      - Methods always take self as first parameter
+    tags: [classes, methods, intermediate]
+
+  - slug: class-inheritance
+    title: Class Inheritance
+    difficulty: 3
+    prompt: Define class Student that inherits from Person
+    expected_answer: "class Student(Person):"
+    hints:
+      - Put parent class in parentheses
+    tags: [classes, inheritance, advanced]
