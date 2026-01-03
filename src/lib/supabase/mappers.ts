@@ -3,6 +3,7 @@
  */
 
 import type { DbProfile, DbExercise, DbUserProgress, Profile, Exercise, UserProgress } from '../types/app.types';
+import type { CardState } from '../srs/types';
 
 /**
  * Map database profile to app profile
@@ -81,4 +82,32 @@ export function toDbProfileUpdate(app: Partial<Omit<Profile, 'id' | 'createdAt'>
   if (app.longestStreak !== undefined) db.longest_streak = app.longestStreak;
   if (app.totalExercisesCompleted !== undefined) db.total_exercises_completed = app.totalExercisesCompleted;
   return db;
+}
+
+/**
+ * Map app user progress updates to database format
+ */
+export function toDbUserProgressUpdate(app: Partial<Omit<UserProgress, 'id' | 'userId' | 'exerciseId' | 'createdAt'>>) {
+  const db: Record<string, unknown> = {};
+  if (app.easeFactor !== undefined) db.ease_factor = app.easeFactor;
+  if (app.interval !== undefined) db.interval = app.interval;
+  if (app.repetitions !== undefined) db.repetitions = app.repetitions;
+  if (app.nextReview !== undefined) db.next_review = new Date(app.nextReview).toISOString();
+  if (app.lastReviewed !== undefined) db.last_reviewed = app.lastReviewed ? new Date(app.lastReviewed).toISOString() : null;
+  if (app.timesSeen !== undefined) db.times_seen = app.timesSeen;
+  if (app.timesCorrect !== undefined) db.times_correct = app.timesCorrect;
+  return db;
+}
+
+/**
+ * Convert CardState to database update format
+ */
+export function cardStateToProgressUpdate(state: CardState) {
+  return {
+    ease_factor: state.easeFactor,
+    interval: state.interval,
+    repetitions: state.repetitions,
+    next_review: state.nextReview.toISOString(),
+    last_reviewed: state.lastReviewed ? state.lastReviewed.toISOString() : null,
+  };
 }
