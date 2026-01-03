@@ -1,0 +1,54 @@
+# exercises/python/exceptions.yaml
+language: python
+category: exceptions
+
+exercises:
+  - slug: try-except-basic
+    title: Try Except Basic
+    difficulty: 2
+    prompt: Write a try block that catches any exception
+    expected_answer: |
+      try:
+          pass
+      except:
+          pass
+    hints:
+      - Use try and except keywords
+    tags: [exceptions, try, intermediate]
+
+  - slug: except-specific
+    title: Except Specific Error
+    difficulty: 2
+    prompt: Catch a ValueError exception
+    expected_answer: "except ValueError:"
+    hints:
+      - Specify the exception type after except
+    tags: [exceptions, specific, intermediate]
+
+  - slug: raise-exception
+    title: Raise Exception
+    difficulty: 2
+    prompt: Raise a ValueError with message "Invalid value"
+    expected_answer: raise ValueError("Invalid value")
+    hints:
+      - Use the raise keyword
+      - Pass message to exception constructor
+    tags: [exceptions, raise, intermediate]
+
+  - slug: try-finally
+    title: Try Finally
+    difficulty: 3
+    prompt: Write a finally block that always runs
+    expected_answer: "finally:"
+    hints:
+      - finally runs whether exception occurs or not
+    tags: [exceptions, finally, advanced]
+
+  - slug: except-as
+    title: Except with Alias
+    difficulty: 2
+    prompt: Catch Exception and assign it to variable e
+    expected_answer: "except Exception as e:"
+    hints:
+      - Use as to give exception a name
+    tags: [exceptions, alias, intermediate]
