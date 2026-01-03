@@ -10,3 +10,6 @@ export {
   ExerciseFeedback,
   HintButton,
 } from './exercise';
+
+// Dashboard components
+export { DueCardsBanner } from './dashboard';
