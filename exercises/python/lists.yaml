@@ -1,0 +1,52 @@
+# exercises/python/lists.yaml
+language: python
+category: lists
+
+exercises:
+  - slug: list-creation
+    title: List Creation
+    difficulty: 1
+    prompt: Create a list called numbers containing 1, 2, 3
+    expected_answer: numbers = [1, 2, 3]
+    hints:
+      - Use square brackets
+    tags: [lists, creation, beginner]
+
+  - slug: list-append
+    title: List Append
+    difficulty: 1
+    prompt: Add the value 4 to the end of the list numbers
+    expected_answer: numbers.append(4)
+    hints:
+      - Use the append() method
+    tags: [lists, methods, beginner]
+
+  - slug: list-indexing
+    title: List Indexing
+    difficulty: 1
+    prompt: Get the second element of list items
+    expected_answer: items[1]
+    hints:
+      - Use square bracket indexing
+      - Remember indices start at 0
+    tags: [lists, indexing, beginner]
+
+  - slug: list-slicing
+    title: List Slicing
+    difficulty: 2
+    prompt: Get the first 3 elements of list items
+    expected_answer: items[:3]
+    hints:
+      - Use slice notation
+      - Omit start to begin at 0
+    tags: [lists, slicing, intermediate]
+
+  - slug: list-extend
+    title: List Extend
+    difficulty: 2
+    prompt: Add all elements from list b to list a
+    expected_answer: a.extend(b)
+    hints:
+      - Use extend() to add multiple items
+      - Don't use append() for lists
+    tags: [lists, methods, intermediate]
