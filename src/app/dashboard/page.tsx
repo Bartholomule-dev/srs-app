@@ -1,9 +1,15 @@
 // src/app/dashboard/page.tsx
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { ProtectedRoute, DueCardsBanner, EmptyState, ErrorBoundary, StatsGrid } from '@/components';
+import {
+  ProtectedRoute,
+  ErrorBoundary,
+  Header,
+  Greeting,
+  PracticeCTA,
+  StatsGrid,
+} from '@/components';
 import { useAuth, useStats } from '@/lib/hooks';
 import { supabase } from '@/lib/supabase/client';
 import { mapExercise, mapUserProgress } from '@/lib/supabase/mappers';
@@ -13,12 +19,10 @@ import type { Exercise, UserProgress } from '@/lib/types';
 const NEW_CARDS_LIMIT = 5;
 
 function DashboardContent() {
-  const router = useRouter();
   const { user } = useAuth();
   const { stats, loading: statsLoading } = useStats();
   const [dueCount, setDueCount] = useState(0);
   const [newCount, setNewCount] = useState(0);
-  const [totalExercises, setTotalExercises] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -53,7 +57,6 @@ function DashboardContent() {
 
         setDueCount(dueCards.length);
         setNewCount(newCards.length);
-        setTotalExercises(exercises.length);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load dashboard');
       } finally {
@@ -64,102 +67,56 @@ function DashboardContent() {
     fetchStats();
   }, [user]);
 
-  const handleStartPractice = () => {
-    router.push('/practice');
-  };
-
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="animate-pulse text-gray-600 dark:text-gray-400">
-          Loading dashboard...
-        </div>
-      </div>
+      <>
+        <Header />
+        <main className="max-w-4xl mx-auto px-4 py-8">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-48 mb-2" />
+            <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-32 mb-8" />
+            <div className="h-32 bg-gray-200 dark:bg-gray-700 rounded mb-8" />
+            <div className="grid grid-cols-3 gap-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="h-24 bg-gray-200 dark:bg-gray-700 rounded" />
+              ))}
+            </div>
+          </div>
+        </main>
+      </>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="text-center">
-          <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
-          >
-            Retry
-          </button>
-        </div>
-      </div>
+      <>
+        <Header />
+        <main className="max-w-4xl mx-auto px-4 py-8">
+          <div className="text-center py-12">
+            <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
+            >
+              Retry
+            </button>
+          </div>
+        </main>
+      </>
     );
   }
 
-  const hasReviewedAllExercises = totalExercises > 0 && dueCount === 0 && newCount === 0;
-  const hasDueOrNewCards = dueCount > 0 || newCount > 0;
-
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-          Dashboard
-        </h1>
-
-        {/* Stats Grid */}
-        <div className="mb-8">
+    <>
+      <Header />
+      <main className="max-w-4xl mx-auto px-4 py-8">
+        <Greeting />
+        <PracticeCTA dueCount={dueCount} newCount={newCount} />
+        <div className="mt-8">
           <StatsGrid stats={stats} loading={statsLoading} />
         </div>
-
-        {/* Practice CTA or Empty State */}
-        {hasDueOrNewCards ? (
-          <DueCardsBanner
-            dueCount={dueCount}
-            newCount={newCount}
-            onStartPractice={handleStartPractice}
-          />
-        ) : hasReviewedAllExercises ? (
-          <EmptyState variant="mastered-all" />
-        ) : dueCount === 0 && totalExercises > 0 ? (
-          <EmptyState
-            variant="all-caught-up"
-            newCardsAvailable={newCount}
-            onLearnNew={handleStartPractice}
-          />
-        ) : (
-          <div className="text-center p-8 bg-gray-100 dark:bg-gray-800 rounded-lg">
-            <p className="text-gray-600 dark:text-gray-400">
-              No exercises available yet.
-            </p>
-          </div>
-        )}
-
-        <div className="mt-8 grid grid-cols-3 gap-4">
-          <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow text-center">
-            <div className="text-2xl font-bold text-gray-900 dark:text-white">
-              {totalExercises}
-            </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              Total Exercises
-            </div>
-          </div>
-          <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow text-center">
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              {dueCount}
-            </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              Due for Review
-            </div>
-          </div>
-          <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow text-center">
-            <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-              {newCount}
-            </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              New Cards
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      </main>
+    </>
   );
 }
 
