@@ -1,0 +1,51 @@
+# exercises/python/functions.yaml
+language: python
+category: functions
+
+exercises:
+  - slug: define-function
+    title: Define Function
+    difficulty: 1
+    prompt: Define a function called greet that takes a name parameter
+    expected_answer: "def greet(name):"
+    hints:
+      - Start with the def keyword
+    tags: [functions, def, beginner]
+
+  - slug: function-return
+    title: Function with Return
+    difficulty: 2
+    prompt: Define a function add that takes a and b, returns their sum
+    expected_answer: |
+      def add(a, b):
+          return a + b
+    hints:
+      - Use return to send back a value
+    tags: [functions, return, parameters]
+
+  - slug: default-parameter
+    title: Default Parameter
+    difficulty: 2
+    prompt: Define greet(name, greeting="Hello") with a default greeting
+    expected_answer: 'def greet(name, greeting="Hello"):'
+    hints:
+      - Default values use =
+    tags: [functions, defaults, intermediate]
+
+  - slug: args-function
+    title: Variable Arguments
+    difficulty: 3
+    prompt: Define a function sum_all that accepts any number of arguments
+    expected_answer: "def sum_all(*args):"
+    hints:
+      - Use *args for variable arguments
+    tags: [functions, args, advanced]
+
+  - slug: kwargs-function
+    title: Keyword Arguments
+    difficulty: 3
+    prompt: Define a function config that accepts any keyword arguments
+    expected_answer: "def config(**kwargs):"
+    hints:
+      - Use **kwargs for keyword arguments
+    tags: [functions, kwargs, advanced]
