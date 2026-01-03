@@ -38,18 +38,20 @@ describe('User Progress Migration', () => {
     // Create a real auth user (profile is auto-created by trigger)
     testUserId = await createTestUser();
 
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('exercises')
       .insert({
         language: 'python',
         category: 'test',
         difficulty: 1,
         title: 'Test',
+        slug: `test-exercise-${crypto.randomUUID()}`,
         prompt: 'Test',
         expected_answer: 'test',
       })
       .select('id')
       .single();
+    if (error) throw new Error(`Failed to create test exercise: ${error.message}`);
     testExerciseId = data!.id;
   });
 

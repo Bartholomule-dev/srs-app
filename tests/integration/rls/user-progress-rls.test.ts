@@ -15,18 +15,20 @@ describe('User Progress RLS Policies', () => {
     userId = await createTestUser();
     otherUserId = await createTestUser();
 
-    const { data } = await serviceClient
+    const { data, error } = await serviceClient
       .from('exercises')
       .insert({
         language: 'python',
         category: 'test',
         difficulty: 1,
         title: 'RLS Test',
+        slug: `rls-test-exercise-${crypto.randomUUID()}`,
         prompt: 'Test',
         expected_answer: 'test',
       })
       .select('id')
       .single();
+    if (error) throw new Error(`Failed to create test exercise: ${error.message}`);
     exerciseId = data!.id;
 
     // Create progress for user
