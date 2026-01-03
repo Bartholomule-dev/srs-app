@@ -31,6 +31,7 @@ export function mapProfile(db: DbProfile): Profile {
 export function mapExercise(db: DbExercise): Exercise {
   return {
     id: db.id,
+    slug: db.slug,
     language: db.language,
     category: db.category,
     difficulty: db.difficulty,

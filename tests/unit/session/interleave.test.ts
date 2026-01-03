@@ -8,6 +8,7 @@ import type { CardState } from '@/lib/srs';
 function createMockCard(id: string, isNew: boolean): SessionCard {
   const exercise: Exercise = {
     id,
+    slug: `exercise-${id}`,
     language: 'python',
     category: 'basics',
     difficulty: 1,

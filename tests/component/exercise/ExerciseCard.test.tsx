@@ -7,6 +7,7 @@ import type { Exercise } from '@/lib/types';
 describe('ExerciseCard', () => {
   const mockExercise: Exercise = {
     id: 'ex-1',
+    slug: 'print-variable',
     language: 'Python',
     category: 'Variables',
     difficulty: 1,

@@ -8,6 +8,7 @@ describe('session types', () => {
       const card: SessionCard = {
         exercise: {
           id: 'ex-1',
+          slug: 'print-statement',
           language: 'python',
           category: 'basics',
           difficulty: 1,

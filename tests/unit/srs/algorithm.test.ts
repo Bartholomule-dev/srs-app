@@ -477,6 +477,7 @@ describe('getNewCards', () => {
 function createMockExercise(id: string): Exercise {
   return {
     id,
+    slug: `exercise-${id}`,
     language: 'python',
     category: 'basics',
     difficulty: 1,
