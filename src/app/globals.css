@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import '@pikoloo/darwin-ui/styles';
 
 :root {
   --background: #ffffff;
