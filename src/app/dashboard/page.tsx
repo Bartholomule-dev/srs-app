@@ -3,8 +3,8 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { ProtectedRoute, DueCardsBanner, EmptyState, ErrorBoundary } from '@/components';
-import { useAuth } from '@/lib/hooks';
+import { ProtectedRoute, DueCardsBanner, EmptyState, ErrorBoundary, StatsGrid } from '@/components';
+import { useAuth, useStats } from '@/lib/hooks';
 import { supabase } from '@/lib/supabase/client';
 import { mapExercise, mapUserProgress } from '@/lib/supabase/mappers';
 import { getDueCards, getNewCards } from '@/lib/srs';
@@ -15,6 +15,7 @@ const NEW_CARDS_LIMIT = 5;
 function DashboardContent() {
   const router = useRouter();
   const { user } = useAuth();
+  const { stats, loading: statsLoading } = useStats();
   const [dueCount, setDueCount] = useState(0);
   const [newCount, setNewCount] = useState(0);
   const [totalExercises, setTotalExercises] = useState(0);
@@ -103,6 +104,12 @@ function DashboardContent() {
           Dashboard
         </h1>
 
+        {/* Stats Grid */}
+        <div className="mb-8">
+          <StatsGrid stats={stats} loading={statsLoading} />
+        </div>
+
+        {/* Practice CTA or Empty State */}
         {hasDueOrNewCards ? (
           <DueCardsBanner
             dueCount={dueCount}

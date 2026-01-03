@@ -15,4 +15,4 @@ export {
 export { SessionProgress, SessionSummary } from './session';
 
 // Dashboard components
-export { DueCardsBanner, EmptyState } from './dashboard';
+export { DueCardsBanner, EmptyState, StatsGrid } from './dashboard';
