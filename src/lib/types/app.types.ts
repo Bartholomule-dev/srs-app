@@ -33,6 +33,7 @@ export interface Profile {
  */
 export interface Exercise {
   id: string;
+  slug: string;
   language: string;
   category: string;
   difficulty: number;
