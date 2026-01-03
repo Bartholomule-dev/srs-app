@@ -51,3 +51,6 @@ supabase/.branches/
 
 # Supabase local config
 supabase/.temp/
+
+# Debates (debate-hall MCP)
+debates/

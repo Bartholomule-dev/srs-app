@@ -50,7 +50,7 @@ Use `mcp__obsidian__*` tools to read/update documentation:
 
 A gamified web platform for practicing code syntax through spaced repetition. Target users are AI-assisted developers who want to maintain their programming fundamentals.
 
-**Current Status:** Production Ready - Full practice flow complete with 50 Python exercises, 377+ tests passing, Vercel + Supabase deployment configured.
+**Current Status:** Production Ready - Full practice flow complete with 50 Python exercises, 429 tests passing, UI/UX redesign complete, Vercel + Supabase deployment configured.
 
 ---
 
@@ -62,7 +62,7 @@ A gamified web platform for practicing code syntax through spaced repetition. Ta
 | Language | TypeScript 5 (strict mode) |
 | UI | React 19, Tailwind CSS 4 |
 | Backend | Supabase (PostgreSQL + Auth + Realtime) |
-| Testing | Vitest (377+ unit/integration) + Playwright (E2E) |
+| Testing | Vitest (429 unit/integration) + Playwright (E2E) |
 | Deployment | Vercel + GitHub Actions CI/E2E |
 | Package Manager | pnpm |
 
@@ -75,7 +75,7 @@ pnpm dev              # Start dev server (localhost:3000)
 pnpm build            # Production build
 pnpm lint             # ESLint check
 pnpm typecheck        # TypeScript type checking
-pnpm test             # Run Vitest tests (377+ tests)
+pnpm test             # Run Vitest tests (429 tests)
 pnpm test:e2e         # Run Playwright E2E tests
 pnpm test:e2e:headed  # Run E2E with browser visible
 pnpm db:start         # Start local Supabase
@@ -95,9 +95,11 @@ src/
 │   ├── dashboard/page.tsx # Dashboard with stats + practice CTA
 │   └── practice/page.tsx  # Practice session flow
 ├── components/
+│   ├── layout/           # Header, LandingHeader
+│   ├── landing/          # Hero, Features, HowItWorks, AuthForm
 │   ├── exercise/         # ExerciseCard, CodeInput, etc.
-│   ├── session/          # SessionProgress, SessionSummary
-│   ├── dashboard/        # DueCardsBanner, EmptyState
+│   ├── session/          # SessionProgress, SessionSummary (immersive mode)
+│   ├── dashboard/        # Greeting, PracticeCTA, DueCardsBanner, EmptyState
 │   └── stats/            # StatsCard, StatsGrid
 └── lib/
     ├── hooks/            # useAuth, useProfile, useSRS, useSession, useStats
@@ -432,6 +434,7 @@ Core scheduling logic (see `Architecture.md`):
 6. ✅ Exercise Library - 50 Python exercises in YAML
 7. ✅ Basic Stats - StatsGrid, useStats, streak/accuracy
 8. ✅ MVP Deployment - Vercel, GitHub Actions CI/E2E, Playwright
+9. ✅ UI/UX Redesign - Landing page (Hero, Features, HowItWorks), dashboard with Greeting/PracticeCTA, immersive practice mode, celebration session summary
 
 ## Next Steps
 

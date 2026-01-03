@@ -4,11 +4,12 @@
 ```
 srs-app/
 ├── src/                  # Application source code
-├── tests/                # Test files
+├── tests/                # Test files (unit, integration, e2e)
 ├── supabase/             # Supabase configuration & migrations
-├── exercises/            # YAML exercise definitions (planned)
+├── exercises/            # YAML exercise definitions
 ├── public/               # Static assets
-├── docs/                 # Implementation plans
+├── docs/                 # Implementation plans & deployment guide
+├── .github/              # GitHub Actions workflows
 ├── .claude/              # Claude Code settings
 ├── .serena/              # Serena memories
 ├── .daem0nmcp/           # Daem0n MCP memory store
@@ -34,6 +35,18 @@ src/
 │   ├── ErrorBoundary.tsx     # React error boundary
 │   ├── Toast.tsx             # Toast notification component
 │   │
+│   ├── layout/               # Layout components
+│   │   ├── index.ts          # Barrel export
+│   │   ├── Header.tsx        # Auth header with user stats + sign out
+│   │   └── LandingHeader.tsx # Simple header for landing page
+│   │
+│   ├── landing/              # Landing page components
+│   │   ├── index.ts          # Barrel export
+│   │   ├── Hero.tsx          # Hero section with tagline + CTA
+│   │   ├── Features.tsx      # Feature cards grid
+│   │   ├── HowItWorks.tsx    # 3-step explanation
+│   │   └── AuthForm.tsx      # Magic link auth form
+│   │
 │   ├── exercise/             # Exercise display components
 │   │   ├── index.ts          # Barrel export
 │   │   ├── CodeInput.tsx     # Textarea with Enter-to-submit
@@ -45,12 +58,19 @@ src/
 │   ├── session/              # Session flow components
 │   │   ├── index.ts          # Barrel export
 │   │   ├── SessionProgress.tsx # Progress bar with counter
-│   │   └── SessionSummary.tsx  # End-of-session stats
+│   │   └── SessionSummary.tsx  # End-of-session celebration + stats
 │   │
-│   └── dashboard/            # Dashboard components
+│   ├── dashboard/            # Dashboard components
+│   │   ├── index.ts          # Barrel export
+│   │   ├── DueCardsBanner.tsx # CTA with due/new counts
+│   │   ├── EmptyState.tsx    # All-caught-up / mastered-all states
+│   │   ├── Greeting.tsx      # Time-based greeting ("Good morning, user!")
+│   │   └── PracticeCTA.tsx   # Practice button with card counts
+│   │
+│   └── stats/                # Stats display components
 │       ├── index.ts          # Barrel export
-│       ├── DueCardsBanner.tsx # CTA with due/new counts
-│       └── EmptyState.tsx    # All-caught-up / mastered-all states
+│       ├── StatsCard.tsx     # Individual stat with icon
+│       └── StatsGrid.tsx     # Grid layout (streak, accuracy, today, total)
 │
 └── lib/                      # Shared libraries
     ├── context/              # React context providers
@@ -66,7 +86,8 @@ src/
     │   ├── useProfile.ts     # User profile CRUD
     │   ├── useRequireAuth.ts # Auth guard with redirect
     │   ├── useSRS.ts         # SRS session management (due cards)
-    │   └── useSession.ts     # Practice session state
+    │   ├── useSession.ts     # Practice session state
+    │   └── useStats.ts       # User stats fetching
     │
     ├── errors/               # Error handling utilities
     │   ├── index.ts          # Barrel export
@@ -90,6 +111,13 @@ src/
     │   ├── types.ts          # SessionCard, SessionStats types
     │   └── interleave.ts     # interleaveCards (spread new among due)
     │
+    ├── stats/                # Stats calculation library
+    │   ├── index.ts          # Barrel export
+    │   ├── types.ts          # UserStats, DailyStats types
+    │   ├── queries.ts        # getCardsReviewedToday, getTotalAccuracy
+    │   ├── streak.ts         # calculateCurrentStreak, calculateLongestStreak
+    │   └── updateProfile.ts  # updateProfileStats (on session end)
+    │
     ├── supabase/             # Supabase client & utilities
     │   ├── index.ts          # Barrel export
     │   ├── client.ts         # Supabase client initialization
@@ -106,68 +134,40 @@ src/
 ```
 tests/
 ├── setup.ts                  # Vitest setup, safety checks
-├── example.spec.ts           # Playwright E2E example
 │
-├── unit/
+├── unit/                     # Unit tests
 │   ├── app/                  # App component tests
-│   │   ├── page.test.tsx
-│   │   └── layout.test.tsx
-│   ├── components/           # Component tests
-│   │   ├── ProtectedRoute.test.tsx
-│   │   ├── ErrorBoundary.test.tsx
-│   │   ├── Toast.test.tsx
-│   │   ├── exercise/         # Exercise component tests
-│   │   │   ├── CodeInput.test.tsx
-│   │   │   ├── ExercisePrompt.test.tsx
-│   │   │   ├── HintButton.test.tsx
-│   │   │   ├── ExerciseFeedback.test.tsx
-│   │   │   └── ExerciseCard.test.tsx
-│   │   ├── session/          # Session component tests
-│   │   │   ├── SessionProgress.test.tsx
-│   │   │   └── SessionSummary.test.tsx
-│   │   └── dashboard/        # Dashboard component tests
-│   │       ├── DueCardsBanner.test.tsx
-│   │       └── EmptyState.test.tsx
+│   ├── components/           # Component tests (exercise/, session/, dashboard/, stats/)
 │   ├── hooks/                # Hook tests
-│   │   ├── useAuth.test.tsx
-│   │   ├── useProfile.test.tsx
-│   │   ├── useRequireAuth.test.tsx
-│   │   ├── useSRS.test.tsx
-│   │   └── useSession.test.tsx
 │   ├── errors/               # Error handling tests
-│   │   ├── AppError.test.ts
-│   │   └── handleSupabaseError.test.ts
 │   ├── context/              # Context tests
-│   │   └── auth.types.test.ts
 │   ├── srs/                  # SRS algorithm tests
-│   │   ├── algorithm.test.ts
-│   │   ├── types.test.ts
-│   │   └── mappers.test.ts
 │   ├── exercise/             # Exercise library tests
-│   │   ├── normalize.test.ts
-│   │   ├── matching.test.ts
-│   │   └── quality.test.ts
 │   ├── session/              # Session library tests
-│   │   └── interleave.test.ts
+│   ├── stats/                # Stats library tests
 │   └── helpers.test.ts       # Supabase helper tests
 │
-└── integration/
-    ├── migrations/           # Database migration tests
-    │   ├── profiles.test.ts
-    │   ├── exercises.test.ts
-    │   └── user-progress.test.ts
-    ├── hooks/                # Hook integration tests
-    │   └── profile-creation.test.ts
-    ├── srs/                  # SRS flow tests
-    │   └── srs-flow.test.ts
-    ├── rls/                  # Row-level security tests
-    │   ├── test-utils.ts
-    │   ├── profiles-rls.test.ts
-    │   └── user-progress-rls.test.ts
-    ├── session/              # Session integration tests
-    │   └── session-flow.test.ts
-    └── seed/
-        └── exercises-seed.test.ts
+├── integration/              # Integration tests
+│   ├── migrations/           # Database migration tests
+│   ├── hooks/                # Hook integration tests
+│   ├── srs/                  # SRS flow tests
+│   ├── rls/                  # Row-level security tests
+│   ├── session/              # Session integration tests
+│   └── seed/                 # Seed data tests
+│
+└── e2e/                      # Playwright E2E tests
+    ├── critical-path.spec.ts # Login → Dashboard → Practice → Submit → Feedback
+    └── utils/
+        ├── auth.ts           # Test user create/delete via admin API
+        └── index.ts          # Barrel export
+```
+
+## GitHub Actions (`.github/`)
+```
+.github/
+└── workflows/
+    ├── ci.yml                # Unit tests, typecheck, lint on PR
+    └── e2e.yml               # Playwright E2E on Vercel deployment
 ```
 
 ## Supabase (`supabase/`)
@@ -175,10 +175,27 @@ tests/
 supabase/
 ├── config.toml               # Local Supabase configuration
 ├── migrations/               # Database migrations (SQL)
+│   └── 20260103100001_auto_generate_username.sql  # Username auto-gen trigger
 └── seed.sql                  # Seed data (references YAML import)
 ```
 
-## Key Files
+## Exercises (`exercises/`)
+```
+exercises/
+└── python/                   # Python exercises (50 total)
+    ├── basics.yaml           # 5 exercises
+    ├── operators.yaml        # 5 exercises
+    ├── strings.yaml          # 5 exercises
+    ├── lists.yaml            # 5 exercises
+    ├── dictionaries.yaml     # 5 exercises
+    ├── loops.yaml            # 5 exercises
+    ├── functions.yaml        # 5 exercises
+    ├── classes.yaml          # 5 exercises
+    ├── comprehensions.yaml   # 5 exercises
+    └── exceptions.yaml       # 5 exercises
+```
+
+## Key Configuration Files
 | File | Purpose |
 |------|---------|
 | `package.json` | Dependencies and scripts |
@@ -186,7 +203,9 @@ supabase/
 | `next.config.ts` | Next.js configuration |
 | `vitest.config.ts` | Vitest test configuration |
 | `playwright.config.ts` | Playwright E2E config |
+| `vercel.json` | Vercel deployment config |
 | `CLAUDE.md` | Claude Code project context |
+| `docs/DEPLOYMENT.md` | Deployment guide |
 | `.env.local` | Environment variables (not committed) |
 
 ## Import Conventions
