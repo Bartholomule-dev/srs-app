@@ -21,16 +21,14 @@ describe('SessionSummary', () => {
     vi.clearAllMocks();
   });
 
-  it('displays correct count', () => {
+  it('displays correct count in breakdown', () => {
     render(<SessionSummary stats={createStats()} onDashboard={mockOnDashboard} />);
-    expect(screen.getByText('8')).toBeInTheDocument();
-    expect(screen.getByText(/^correct$/i)).toBeInTheDocument();
+    expect(screen.getByText(/\+8 correct/)).toBeInTheDocument();
   });
 
-  it('displays incorrect count', () => {
+  it('displays incorrect count as "to review"', () => {
     render(<SessionSummary stats={createStats()} onDashboard={mockOnDashboard} />);
-    expect(screen.getByText('2')).toBeInTheDocument();
-    expect(screen.getByText(/incorrect/i)).toBeInTheDocument();
+    expect(screen.getByText(/2 to review/)).toBeInTheDocument();
   });
 
   it('calculates and displays accuracy percentage', () => {
@@ -61,7 +59,7 @@ describe('SessionSummary', () => {
         onDashboard={mockOnDashboard}
       />
     );
-    // Should show current duration or fallback
+    // Should show current duration or fallback - check that Time label exists
     expect(screen.getByText(/time/i)).toBeInTheDocument();
   });
 
@@ -71,8 +69,54 @@ describe('SessionSummary', () => {
     expect(mockOnDashboard).toHaveBeenCalledTimes(1);
   });
 
-  it('shows completion message', () => {
+  it('shows completion message with celebration emoji', () => {
     render(<SessionSummary stats={createStats()} onDashboard={mockOnDashboard} />);
     expect(screen.getByText(/session complete/i)).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: /celebration/i })).toBeInTheDocument();
+  });
+
+  it('displays number of cards reviewed', () => {
+    render(<SessionSummary stats={createStats()} onDashboard={mockOnDashboard} />);
+    expect(screen.getByText('10')).toBeInTheDocument();
+    expect(screen.getByText(/reviewed/i)).toBeInTheDocument();
+  });
+
+  describe('encouraging messages', () => {
+    it('shows perfect score message and special emoji for 100% accuracy', () => {
+      render(
+        <SessionSummary
+          stats={createStats({ correct: 10, incorrect: 0 })}
+          onDashboard={mockOnDashboard}
+        />
+      );
+      expect(screen.getByText('100%')).toBeInTheDocument();
+      expect(screen.getByText(/perfect score/i)).toBeInTheDocument();
+      expect(screen.getByText(/flawless/i)).toBeInTheDocument();
+    });
+
+    it('shows good work message for 80%+ accuracy', () => {
+      render(<SessionSummary stats={createStats()} onDashboard={mockOnDashboard} />);
+      expect(screen.getByText(/great work/i)).toBeInTheDocument();
+    });
+
+    it('shows progress message for 60-79% accuracy', () => {
+      render(
+        <SessionSummary
+          stats={createStats({ correct: 6, incorrect: 4 })}
+          onDashboard={mockOnDashboard}
+        />
+      );
+      expect(screen.getByText(/good effort/i)).toBeInTheDocument();
+    });
+
+    it('shows keep practicing message for under 60% accuracy', () => {
+      render(
+        <SessionSummary
+          stats={createStats({ correct: 5, incorrect: 5 })}
+          onDashboard={mockOnDashboard}
+        />
+      );
+      expect(screen.getByText(/keep practicing/i)).toBeInTheDocument();
+    });
   });
 });
