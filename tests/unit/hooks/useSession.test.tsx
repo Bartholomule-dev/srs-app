@@ -33,6 +33,12 @@ vi.mock('@/lib/context/ToastContext', async (importOriginal) => {
   };
 });
 
+// Mock updateProfileStats
+const mockUpdateProfileStats = vi.fn();
+vi.mock('@/lib/stats', () => ({
+  updateProfileStats: (...args: unknown[]) => mockUpdateProfileStats(...args),
+}));
+
 // Mock Supabase client
 vi.mock('@/lib/supabase/client', () => ({
   supabase: {
@@ -123,6 +129,7 @@ describe('useSession', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockRecordAnswer.mockResolvedValue(undefined);
+    mockUpdateProfileStats.mockResolvedValue(undefined);
     mockShowToast.mockClear();
     vi.mocked(supabase.auth.getUser).mockResolvedValue({
       data: { user: mockUser as any },
@@ -735,6 +742,169 @@ describe('useSession', () => {
       // Stats should still show the partial progress
       expect(result.current.stats.completed).toBe(1);
       expect(result.current.stats.total).toBe(2);
+    });
+
+    it('updates profile stats when session ends with completed cards', async () => {
+      const mockFrom = vi.mocked(supabase.from);
+      mockFrom.mockImplementation((table: string) => {
+        if (table === 'exercises') {
+          return {
+            select: vi.fn().mockResolvedValue({
+              data: mockExercisesDb,
+              error: null,
+            }),
+          } as any;
+        }
+        if (table === 'user_progress') {
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                order: vi.fn().mockReturnValue({
+                  limit: vi.fn().mockResolvedValue({
+                    data: mockProgressDb,
+                    error: null,
+                  }),
+                }),
+                lte: vi.fn().mockResolvedValue({
+                  data: mockProgressDb,
+                  error: null,
+                }),
+              }),
+            }),
+          } as any;
+        }
+        return {} as any;
+      });
+
+      const { result } = renderHook(() => useSession(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // Answer one card first
+      await act(async () => {
+        await result.current.recordResult(4);
+      });
+
+      expect(result.current.stats.completed).toBe(1);
+
+      // End session
+      await act(async () => {
+        await result.current.endSession();
+      });
+
+      // Verify updateProfileStats was called with correct arguments
+      expect(mockUpdateProfileStats).toHaveBeenCalledTimes(1);
+      expect(mockUpdateProfileStats).toHaveBeenCalledWith({
+        userId: mockUser.id,
+        exercisesCompleted: 1,
+        lastPracticed: expect.any(Date),
+      });
+    });
+
+    it('does not update profile stats when session has no completed cards', async () => {
+      const mockFrom = vi.mocked(supabase.from);
+      mockFrom.mockImplementation((table: string) => {
+        if (table === 'exercises') {
+          return {
+            select: vi.fn().mockResolvedValue({
+              data: mockExercisesDb,
+              error: null,
+            }),
+          } as any;
+        }
+        if (table === 'user_progress') {
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                order: vi.fn().mockReturnValue({
+                  limit: vi.fn().mockResolvedValue({
+                    data: mockProgressDb,
+                    error: null,
+                  }),
+                }),
+                lte: vi.fn().mockResolvedValue({
+                  data: mockProgressDb,
+                  error: null,
+                }),
+              }),
+            }),
+          } as any;
+        }
+        return {} as any;
+      });
+
+      const { result } = renderHook(() => useSession(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // End session immediately without answering any cards
+      await act(async () => {
+        await result.current.endSession();
+      });
+
+      // Verify updateProfileStats was NOT called
+      expect(mockUpdateProfileStats).not.toHaveBeenCalled();
+    });
+
+    it('shows error toast when updateProfileStats fails', async () => {
+      mockUpdateProfileStats.mockRejectedValueOnce(new Error('Database error'));
+
+      const mockFrom = vi.mocked(supabase.from);
+      mockFrom.mockImplementation((table: string) => {
+        if (table === 'exercises') {
+          return {
+            select: vi.fn().mockResolvedValue({
+              data: mockExercisesDb,
+              error: null,
+            }),
+          } as any;
+        }
+        if (table === 'user_progress') {
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                order: vi.fn().mockReturnValue({
+                  limit: vi.fn().mockResolvedValue({
+                    data: mockProgressDb,
+                    error: null,
+                  }),
+                }),
+                lte: vi.fn().mockResolvedValue({
+                  data: mockProgressDb,
+                  error: null,
+                }),
+              }),
+            }),
+          } as any;
+        }
+        return {} as any;
+      });
+
+      const { result } = renderHook(() => useSession(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // Answer one card first
+      await act(async () => {
+        await result.current.recordResult(4);
+      });
+
+      // End session
+      await act(async () => {
+        await result.current.endSession();
+      });
+
+      // Verify error toast was shown
+      expect(mockShowToast).toHaveBeenCalledWith({
+        type: 'error',
+        message: 'Failed to update stats',
+      });
     });
   });
 });

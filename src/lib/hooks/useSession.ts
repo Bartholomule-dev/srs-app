@@ -12,6 +12,7 @@ import { handleSupabaseError } from '@/lib/errors/handleSupabaseError';
 import { useAuth } from './useAuth';
 import { useSRS } from './useSRS';
 import { useToast } from '@/lib/context/ToastContext';
+import { updateProfileStats } from '@/lib/stats';
 
 const NEW_CARDS_LIMIT = 5;
 
@@ -33,7 +34,7 @@ export interface UseSessionReturn {
   /** Record answer + advance to next card */
   recordResult: (quality: Quality) => Promise<void>;
   /** Mark session complete early */
-  endSession: () => void;
+  endSession: () => Promise<void>;
   /** Retry failed fetch */
   retry: () => void;
 }
@@ -206,13 +207,38 @@ export function useSession(): UseSessionReturn {
     [cards, currentIndex, stats.completed, recordAnswer, showToast]
   );
 
-  const endSession = useCallback(() => {
+  const endSession = useCallback(async () => {
     setForceComplete(true);
     setStats((prev) => ({
       ...prev,
       endTime: new Date(),
     }));
-  }, []);
+
+    // Update profile stats if any cards were completed
+    if (stats.completed > 0 && user) {
+      try {
+        // Get last practiced date from user progress (approximate)
+        const { data: progressData } = await supabase
+          .from('user_progress')
+          .select('last_reviewed')
+          .eq('user_id', user.id)
+          .order('last_reviewed', { ascending: false })
+          .limit(1);
+
+        const lastPracticed = progressData?.[0]?.last_reviewed
+          ? new Date(progressData[0].last_reviewed)
+          : null;
+
+        await updateProfileStats({
+          userId: user.id,
+          exercisesCompleted: stats.completed,
+          lastPracticed,
+        });
+      } catch {
+        showToast({ type: 'error', message: 'Failed to update stats' });
+      }
+    }
+  }, [stats.completed, user, showToast]);
 
   const retry = useCallback(() => {
     setFetchKey((k) => k + 1);
