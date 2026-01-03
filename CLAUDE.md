@@ -2,6 +2,31 @@
 
 > Spaced Repetition Code Syntax Practice Platform
 
+---
+
+## CRITICAL: Documentation Must Stay Current
+
+**This is extremely high priority.** All three documentation sources MUST be kept up to date:
+
+1. **Obsidian Vault (`/SRS-app/`)** - Project docs, architecture, features, status
+2. **Serena Memories (`.serena/memories/`)** - Codebase structure, conventions, overview
+3. **CLAUDE.md** - Quick reference, commands, patterns, milestones
+
+**Requirements:**
+- Factor documentation updates into ALL implementation plans
+- Update docs immediately after completing any feature or milestone
+- When making changes, update all three sources (not just one)
+- Include doc updates in task completion checklists
+
+**After any significant work:**
+```
+1. Update Obsidian: Index.md status, Features.md checkboxes, relevant docs
+2. Update Serena: project_overview.md, codebase_structure.md if structure changed
+3. Update CLAUDE.md: Status, structure, milestones, any new patterns
+```
+
+---
+
 ## Source of Truth
 
 **Obsidian Vault: `/SRS-app/`** - All project documentation lives in Obsidian.
@@ -25,7 +50,7 @@ Use `mcp__obsidian__*` tools to read/update documentation:
 
 A gamified web platform for practicing code syntax through spaced repetition. Target users are AI-assisted developers who want to maintain their programming fundamentals.
 
-**Current Status:** Early development - Auth scaffold complete, core SRS features pending.
+**Current Status:** Production Ready - Full practice flow complete with 50 Python exercises, 377+ tests passing, Vercel + Supabase deployment configured.
 
 ---
 
@@ -37,7 +62,8 @@ A gamified web platform for practicing code syntax through spaced repetition. Ta
 | Language | TypeScript 5 (strict mode) |
 | UI | React 19, Tailwind CSS 4 |
 | Backend | Supabase (PostgreSQL + Auth + Realtime) |
-| Testing | Playwright |
+| Testing | Vitest (377+ unit/integration) + Playwright (E2E) |
+| Deployment | Vercel + GitHub Actions CI/E2E |
 | Package Manager | pnpm |
 
 ---
@@ -45,10 +71,16 @@ A gamified web platform for practicing code syntax through spaced repetition. Ta
 ## Commands
 
 ```bash
-pnpm dev          # Start dev server (localhost:3000)
-pnpm build        # Production build
-pnpm lint         # ESLint check
-pnpm test         # Run Playwright tests
+pnpm dev              # Start dev server (localhost:3000)
+pnpm build            # Production build
+pnpm lint             # ESLint check
+pnpm typecheck        # TypeScript type checking
+pnpm test             # Run Vitest tests (377+ tests)
+pnpm test:e2e         # Run Playwright E2E tests
+pnpm test:e2e:headed  # Run E2E with browser visible
+pnpm db:start         # Start local Supabase
+pnpm db:reset         # Reset database with migrations
+pnpm db:import-exercises  # Import exercises from YAML
 ```
 
 ---
@@ -58,18 +90,34 @@ pnpm test         # Run Playwright tests
 ```
 src/
 ├── app/
-│   ├── layout.tsx      # Root layout with fonts/metadata
-│   ├── page.tsx        # Home/auth page (client component)
-│   └── globals.css     # Tailwind imports
+│   ├── layout.tsx        # Root layout (AuthProvider, ToastProvider)
+│   ├── page.tsx          # Home/auth page
+│   ├── dashboard/page.tsx # Dashboard with stats + practice CTA
+│   └── practice/page.tsx  # Practice session flow
+├── components/
+│   ├── exercise/         # ExerciseCard, CodeInput, etc.
+│   ├── session/          # SessionProgress, SessionSummary
+│   ├── dashboard/        # DueCardsBanner, EmptyState
+│   └── stats/            # StatsCard, StatsGrid
 └── lib/
-    └── supabase/
-        └── client.ts   # Supabase client initialization
-
-supabase/
-└── config.toml         # Local Supabase configuration
+    ├── hooks/            # useAuth, useProfile, useSRS, useSession, useStats
+    ├── srs/              # SM-2 algorithm
+    ├── exercise/         # Answer matching, quality inference
+    ├── session/          # Session types, interleaving
+    ├── stats/            # Stats queries, streak calculation
+    ├── errors/           # AppError, handleSupabaseError
+    └── supabase/         # Client, helpers, mappers
 
 tests/
-└── example.spec.ts     # Playwright E2E tests
+├── unit/                 # Vitest unit tests
+├── integration/          # Vitest integration tests
+└── e2e/                  # Playwright E2E tests
+    ├── critical-path.spec.ts
+    └── utils/auth.ts     # Test user creation
+
+.github/workflows/
+├── ci.yml               # Unit tests, lint, typecheck
+└── e2e.yml              # E2E on Vercel deployment
 ```
 
 ---
@@ -252,6 +300,68 @@ Query up-to-date docs for any library/framework.
 - `mcp__ide__getDiagnostics` - Get TypeScript/ESLint errors (optionally for specific file)
 - `mcp__ide__executeCode` - Execute Python in Jupyter kernel (for notebooks)
 
+### Debate Hall (Multi-Perspective Deliberation)
+
+Structured AI-mediated debates using Wind/Wall/Door dialectic for architectural decisions, design exploration, and RFC ratification.
+
+**The Three Roles:**
+- **Wind (PATHOS)**: Expansive visionary - "What if..." - explores possibilities without constraints
+- **Wall (ETHOS)**: Grounding critic - "Yes, but..." - identifies obstacles and practical limits
+- **Door (LOGOS)**: Synthesizing decider - "Therefore..." - integrates viewpoints into action
+
+**Core Operations:**
+- `mcp__debate-hall__init_debate` - Start debate (thread_id must be `YYYY-MM-DD-topic` format)
+- `mcp__debate-hall__add_turn` - Record contribution (role: Wind/Wall/Door, cognition: PATHOS/ETHOS/LOGOS)
+- `mcp__debate-hall__get_debate` - View state and transcript
+- `mcp__debate-hall__close_debate` - Finalize with Door's synthesis
+
+**Orchestration:**
+- `mcp__debate-hall__pick_next_speaker` - Control speaker sequence (mediated mode only)
+
+**Administrative:**
+- `mcp__debate-hall__force_close_debate` - Emergency shutdown
+- `mcp__debate-hall__tombstone_turn` - Redact content preserving hash chain
+
+**GitHub Integration:**
+- `mcp__debate-hall__github_sync_debate` - Post turns to Discussions/Issues
+- `mcp__debate-hall__ratify_rfc` - Generate ADR as PR from closed debate
+- `mcp__debate-hall__human_interject` - Inject human GitHub comments into debate
+
+**Modes:**
+- **Fixed**: Predetermined Wind→Wall→Door progression (default)
+- **Mediated**: Dynamic speaker selection via `pick_next_speaker`
+
+**Multi-Agent Debates with CLI Tools:**
+
+Claude can autonomously orchestrate multi-model debates using `gemini` and `codex` CLIs:
+
+```bash
+# CLI commands for non-interactive AI responses:
+gemini -p "prompt"       # Gemini response
+codex exec "prompt"      # Codex response
+```
+
+**Autonomous orchestration flow:**
+1. Claude initializes debate via `init_debate`
+2. Claude plays Wind (visionary) and adds turn
+3. Claude runs `gemini -p "..."` → captures Wall's critique → adds turn
+4. Claude runs `codex exec "..."` → captures Door's synthesis → adds turn
+5. Claude closes debate with final synthesis
+
+**Role assignments by model strength:**
+
+| Role | Model | Why |
+|------|-------|-----|
+| Wind (PATHOS) | Claude | Strong at expansive thinking, exploring possibilities |
+| Wall (ETHOS) | Gemini | Practical constraints, grounding, broad knowledge |
+| Door (LOGOS) | Codex | Code-focused, action-oriented, implementation details |
+
+**Use Cases:**
+- Architectural decisions requiring multiple perspectives
+- RFC exploration before implementation
+- Risk analysis (Wind=opportunity, Wall=risk, Door=mitigation)
+- Design review with structured critique
+
 ---
 
 ## Tool Selection Guide
@@ -280,17 +390,15 @@ Query up-to-date docs for any library/framework.
 
 ---
 
-## Database (Planned)
+## Database (Implemented)
 
 See `Database-Schema.md` in Obsidian for full schema. Key tables:
 
-- `profiles` - Extended user data, preferences, stats
-- `exercises` - Exercise content and metadata
+- `profiles` - User data with auto-generated username, stats (streak, accuracy, total)
+- `exercises` - Exercise content with slug-based identity (50 Python exercises)
 - `user_progress` - SRS state per user/exercise (SM-2 algorithm)
-- `sessions` - Practice session logs
-- `achievements` - Gamification unlocks
 
-RLS enabled on all user tables.
+RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UUID prefix).
 
 ---
 
@@ -314,13 +422,22 @@ Core scheduling logic (see `Architecture.md`):
 
 ---
 
-## Next Implementation Steps
+## Completed Milestones
 
-1. Create database migrations (profiles, exercises, user_progress)
-2. Build SRS algorithm in `src/lib/srs/`
-3. Create exercise UI components
-4. Implement practice session flow
-5. Add basic stats dashboard
+1. ✅ Database & Types - Migrations, RLS, auto-generated types
+2. ✅ Auth & Hooks - Magic Link, useAuth, useProfile, ProtectedRoute
+3. ✅ SRS Engine - SM-2 algorithm, useSRS hook
+4. ✅ Exercise Engine - CodeInput, ExerciseCard, answer matching
+5. ✅ Practice Session - useSession, /dashboard, /practice pages
+6. ✅ Exercise Library - 50 Python exercises in YAML
+7. ✅ Basic Stats - StatsGrid, useStats, streak/accuracy
+8. ✅ MVP Deployment - Vercel, GitHub Actions CI/E2E, Playwright
+
+## Next Steps
+
+1. Username selection UI (auto-generated for now)
+2. Advanced gamification (achievements, leaderboards)
+3. Additional languages (JavaScript/TypeScript, SQL)
 
 ---
 

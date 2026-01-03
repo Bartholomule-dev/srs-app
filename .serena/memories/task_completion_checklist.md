@@ -18,10 +18,24 @@ Before considering a task complete, verify the following:
 - [ ] TypeScript types regenerated: `pnpm db:types`
 - [ ] Mappers updated in `src/lib/supabase/mappers.ts` if new tables
 
-## 4. Documentation
-- [ ] Update relevant Obsidian docs if architecture/features changed
-- [ ] Update CLAUDE.md if new patterns/conventions introduced
-- [ ] Code comments for complex logic
+## 4. Documentation (CRITICAL - All Three Sources)
+**All three must be updated after any significant work:**
+
+- [ ] **Obsidian Vault** (`/SRS-app/`)
+  - Index.md - Update status, recent changes
+  - Features.md - Check off completed items
+  - Relevant topic docs (Architecture, Database-Schema, etc.)
+
+- [ ] **Serena Memories** (`.serena/memories/`)
+  - project_overview.md - Current status, milestones
+  - codebase_structure.md - If file structure changed
+
+- [ ] **CLAUDE.md**
+  - Project status
+  - Commands (if new scripts added)
+  - Structure (if new directories/files)
+  - Milestones (if feature completed)
+  - Patterns (if new conventions)
 
 ## 5. Git
 - [ ] Conventional commit message used
