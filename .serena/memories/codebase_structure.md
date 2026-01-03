@@ -18,22 +18,52 @@ srs-app/
 ```
 src/
 ├── app/                      # Next.js App Router
-│   ├── layout.tsx            # Root layout with fonts/metadata
+│   ├── layout.tsx            # Root layout with providers (Auth, Toast)
 │   ├── page.tsx              # Home/auth page (client component)
 │   ├── globals.css           # Tailwind imports & CSS variables
 │   └── favicon.ico
 │
+├── components/               # Reusable UI components
+│   ├── index.ts              # Barrel export
+│   ├── ProtectedRoute.tsx    # Auth-gated route wrapper
+│   ├── ErrorBoundary.tsx     # React error boundary
+│   └── Toast.tsx             # Toast notification component
+│
 └── lib/                      # Shared libraries
-    ├── supabase/
+    ├── context/              # React context providers
+    │   ├── index.ts          # Barrel export
+    │   ├── AuthContext.tsx   # Auth state provider
+    │   ├── auth.types.ts     # Auth type definitions
+    │   ├── ToastContext.tsx  # Toast notification provider
+    │   └── toast.types.ts    # Toast type definitions
+    │
+    ├── hooks/                # Custom React hooks
+    │   ├── index.ts          # Barrel export
+    │   ├── useAuth.ts        # Auth context consumer
+    │   ├── useProfile.ts     # User profile CRUD
+    │   ├── useRequireAuth.ts # Auth guard with redirect
+    │   └── useSRS.ts         # SRS session management
+    │
+    ├── errors/               # Error handling utilities
+    │   ├── index.ts          # Barrel export
+    │   ├── AppError.ts       # Custom error class with codes
+    │   └── handleSupabaseError.ts  # Supabase error mapper
+    │
+    ├── srs/                  # SM-2 spaced repetition algorithm
+    │   ├── index.ts          # Barrel export
+    │   ├── types.ts          # CardState, DueCard, SRSConfig
+    │   └── algorithm.ts      # calculateNextReview, getDueCards, getNewCards
+    │
+    ├── supabase/             # Supabase client & utilities
+    │   ├── index.ts          # Barrel export
     │   ├── client.ts         # Supabase client initialization
     │   ├── helpers.ts        # DbResult helper, type guards
-    │   ├── mappers.ts        # snake_case → camelCase mappers
-    │   └── index.ts          # Barrel export
+    │   └── mappers.ts        # snake_case → camelCase mappers
     │
-    └── types/
+    └── types/                # Type definitions
+        ├── index.ts          # Barrel export
         ├── database.generated.ts  # Auto-generated from Supabase
-        ├── app.types.ts           # App-level types (camelCase)
-        └── index.ts               # Barrel export
+        └── app.types.ts      # App-level types (Profile, Exercise, etc.)
 ```
 
 ## Tests (`tests/`)
@@ -43,21 +73,44 @@ tests/
 ├── example.spec.ts           # Playwright E2E example
 │
 ├── unit/
-│   └── helpers.test.ts       # Unit tests for helpers
+│   ├── app/                  # App component tests
+│   │   ├── page.test.tsx
+│   │   └── layout.test.tsx
+│   ├── components/           # Component tests
+│   │   ├── ProtectedRoute.test.tsx
+│   │   ├── ErrorBoundary.test.tsx
+│   │   └── Toast.test.tsx
+│   ├── hooks/                # Hook tests
+│   │   ├── useAuth.test.tsx
+│   │   ├── useProfile.test.tsx
+│   │   ├── useRequireAuth.test.tsx
+│   │   └── useSRS.test.tsx
+│   ├── errors/               # Error handling tests
+│   │   ├── AppError.test.ts
+│   │   └── handleSupabaseError.test.ts
+│   ├── context/              # Context tests
+│   │   └── auth.types.test.ts
+│   ├── srs/                  # SRS algorithm tests
+│   │   ├── algorithm.test.ts
+│   │   ├── types.test.ts
+│   │   └── mappers.test.ts
+│   └── helpers.test.ts       # Supabase helper tests
 │
 └── integration/
-    ├── migrations/
-    │   ├── profiles.test.ts       # Profile table tests
-    │   ├── exercises.test.ts      # Exercise table tests
-    │   └── user-progress.test.ts  # User progress tests
-    │
-    ├── rls/
-    │   ├── test-utils.ts          # RLS test utilities
-    │   ├── profiles-rls.test.ts   # Profile RLS policy tests
-    │   └── user-progress-rls.test.ts  # Progress RLS tests
-    │
+    ├── migrations/           # Database migration tests
+    │   ├── profiles.test.ts
+    │   ├── exercises.test.ts
+    │   └── user-progress.test.ts
+    ├── hooks/                # Hook integration tests
+    │   └── profile-creation.test.ts
+    ├── srs/                  # SRS flow tests
+    │   └── srs-flow.test.ts
+    ├── rls/                  # Row-level security tests
+    │   ├── test-utils.ts
+    │   ├── profiles-rls.test.ts
+    │   └── user-progress-rls.test.ts
     └── seed/
-        └── exercises-seed.test.ts # Seed data verification
+        └── exercises-seed.test.ts
 ```
 
 ## Supabase (`supabase/`)
@@ -79,16 +132,7 @@ supabase/
 | `CLAUDE.md` | Claude Code project context |
 | `.env.local` | Environment variables (not committed) |
 
-## Planned Future Directories
-```
-src/
-├── app/
-│   ├── dashboard/            # User dashboard
-│   ├── practice/             # Exercise session
-│   └── settings/             # User preferences
-│
-└── lib/
-    ├── srs/                  # SM-2 algorithm implementation
-    ├── exercises/            # Exercise loading/evaluation
-    └── hooks/                # React hooks (useAuth, useExercise)
-```
+## Import Conventions
+- Use barrel exports for cleaner imports: `from '@/lib/srs'`
+- Direct imports acceptable for specific items: `from '@/lib/supabase/client'`
+- Types use barrel exports: `from '@/lib/types'`

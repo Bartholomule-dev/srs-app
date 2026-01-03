@@ -253,9 +253,15 @@ describe('useProfile', () => {
         error: null,
       } as any);
 
+      // PostgrestError requires code, details, hint, and message fields
       const singleMock = vi.fn().mockResolvedValue({
         data: null,
-        error: { message: 'Update failed', code: 'PGRST116' },
+        error: { 
+          message: 'Update failed', 
+          code: 'PGRST116',
+          details: null,
+          hint: null,
+        },
       });
       const selectMock = vi.fn().mockReturnValue({ single: singleMock });
       const eqMock = vi.fn().mockReturnValue({ select: selectMock });
@@ -282,10 +288,10 @@ describe('useProfile', () => {
         expect(result.current.loading).toBe(false);
       });
 
-      // Attempt to update profile - should throw
+      // PGRST116 is mapped to "Resource not found" by handleSupabaseError
       await expect(
         result.current.updateProfile({ displayName: 'New Name' })
-      ).rejects.toThrow('Update failed');
+      ).rejects.toThrow('Resource not found');
     });
   });
 

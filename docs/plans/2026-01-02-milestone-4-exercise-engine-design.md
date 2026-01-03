@@ -30,13 +30,16 @@
 - `isCorrect: boolean`
 - `hintUsed: boolean`
 - `responseTimeMs: number`
+- `usedAstMatch: boolean`
 
 **Rules:**
 
 | Condition | Quality | SM-2 Meaning |
 |-----------|---------|--------------|
-| Correct, no hint, <10s | 5 | Perfect recall |
-| Correct, no hint, >=10s | 4 | Hesitation |
+| Correct, no hint, <15s | 5 | Perfect recall |
+| Correct, no hint, 15–30s | 4 | Hesitation |
+| Correct, no hint, >=30s | 3 | Struggle |
+| Correct, AST match (format differs) | 4 | Minor format mismatch |
 | Correct, with hint | 3 | Difficulty |
 | Incorrect / Give up | 2 | Failed |
 
@@ -66,18 +69,20 @@ The orchestrator component.
 - `phase: 'answering' | 'feedback'`
 - `userAnswer: string`
 - `hintUsed: boolean`
-- `startTime: number` (Date.now() on mount)
+- `startTime: number` (set on first input)
+- `pausedMs: number` (accumulated time while tab is hidden)
 
 **Flow:**
-1. Mount → record startTime
-2. User types in CodeInput
-3. Optional: user clicks HintButton (sets hintUsed=true)
-4. User submits (Enter) or clicks Give Up
-5. Check answer with normalizeCode()
-6. Transition to feedback phase
-7. User clicks Continue
-8. Calculate quality via inferQuality()
-9. Call onComplete(exerciseId, quality)
+1. Mount → wait for first input
+2. User types in CodeInput → record startTime
+3. Track visibility changes to pause timing
+4. Optional: user clicks HintButton (sets hintUsed=true)
+5. User submits (Enter) or clicks Give Up
+6. Check answer with normalizePython() and AST match
+7. Transition to feedback phase
+8. User clicks Continue
+9. Calculate quality via inferQuality()
+10. Call onComplete(exerciseId, quality)
 
 ### ExercisePrompt
 
@@ -93,6 +98,7 @@ Controlled textarea component.
 - Enter to submit (propagates to parent)
 - Shift+Enter for newline
 - Auto-focus on mount
+- Subtle helper text: "Python: indentation matters"
 
 ### ExerciseFeedback
 
@@ -101,6 +107,7 @@ Post-submission display.
 - Green "Correct!" or red "Incorrect" banner
 - User's answer (always shown)
 - Correct answer (shown if incorrect)
+- Optional "Show whitespace" toggle
 - "Next review: X days" info
 - Continue button
 
@@ -112,44 +119,54 @@ Post-submission display.
 
 ---
 
-## Answer Matching Logic
+## Answer Matching Logic (Python-First)
 
 **Location:** `src/lib/exercise/matching.ts`
 
 ```typescript
-function normalizeCode(code: string): string {
+function normalizePython(code: string): string {
   return code
-    .trim()                          // Remove leading/trailing whitespace
     .replace(/\r\n/g, '\n')          // Normalize line endings
     .replace(/\t/g, '    ')          // Tabs → 4 spaces
-    .replace(/ +$/gm, '')            // Remove trailing spaces per line
-    .replace(/\n+/g, '\n')           // Collapse multiple blank lines
-    .toLowerCase();                   // Case-insensitive
+    .replace(/ +$/gm, '');           // Remove trailing spaces per line
 }
 
-function checkAnswer(userAnswer: string, correctAnswer: string): boolean {
-  return normalizeCode(userAnswer) === normalizeCode(correctAnswer);
+function checkAnswerPython(userAnswer: string, correctAnswer: string): boolean {
+  const normalizedUser = normalizePython(userAnswer);
+  const normalizedCorrect = normalizePython(correctAnswer);
+
+  const userAst = tryParsePythonAst(normalizedUser);
+  const correctAst = tryParsePythonAst(normalizedCorrect);
+
+  if (userAst && correctAst) {
+    // Semantic match ignores formatting; still case-sensitive.
+    return astDump(userAst) === astDump(correctAst);
+  }
+
+  return normalizedUser === normalizedCorrect;
 }
 ```
 
 **Future Enhancements (not MVP):**
 - Multiple accepted answers per exercise
 - Regex-based pattern matching
-- AST comparison for semantic equivalence
+- Language-specific matching (beyond Python)
 
 ---
 
-## Quality Inference Algorithm
+## Quality Inference Algorithm (Python-First)
 
 **Location:** `src/lib/exercise/quality.ts`
 
 ```typescript
-const FAST_THRESHOLD_MS = 10_000;  // 10 seconds
+const FAST_THRESHOLD_MS = 15_000;  // 15 seconds
+const SLOW_THRESHOLD_MS = 30_000;  // 30 seconds
 
 function inferQuality(
   isCorrect: boolean,
   hintUsed: boolean,
-  responseTimeMs: number
+  responseTimeMs: number,
+  usedAstMatch: boolean
 ): number {
   if (!isCorrect) {
     return 2;
@@ -159,11 +176,19 @@ function inferQuality(
     return 3;
   }
 
+  if (usedAstMatch) {
+    return 4;
+  }
+
   if (responseTimeMs < FAST_THRESHOLD_MS) {
     return 5;
   }
 
-  return 4;
+  if (responseTimeMs < SLOW_THRESHOLD_MS) {
+    return 4;
+  }
+
+  return 3;
 }
 ```
 
@@ -263,7 +288,7 @@ ExerciseCard is stateless regarding SRS - it just reports quality. The useSRS ho
 src/
 ├── lib/
 │   └── exercise/
-│       ├── matching.ts      # normalizeCode, checkAnswer
+│       ├── matching.ts      # normalizePython, checkAnswerPython
 │       ├── quality.ts       # inferQuality
 │       └── index.ts         # barrel export
 │
@@ -293,9 +318,9 @@ tests/
 
 | Area | Key Test Cases |
 |------|---------------|
-| `normalizeCode` | Whitespace, tabs, case, line endings |
-| `checkAnswer` | Exact match, normalized match, edge cases |
-| `inferQuality` | All 4 quality paths (5/4/3/2) |
+| `normalizePython` | Whitespace, tabs, line endings |
+| `checkAnswerPython` | Exact match, normalized match, AST match, edge cases |
+| `inferQuality` | All quality paths (5/4/3/2), AST cap |
 | `ExerciseCard` | Full flow: answer → feedback → complete |
 | `CodeInput` | Enter to submit, Shift+Enter for newline |
 | `HintButton` | Click reveals, disables after use |

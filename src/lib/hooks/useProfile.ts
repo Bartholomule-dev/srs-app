@@ -4,12 +4,14 @@ import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/lib/supabase/client';
 import { useAuth } from './useAuth';
 import { mapProfile, toDbProfileUpdate } from '@/lib/supabase/mappers';
+import { handleSupabaseError } from '@/lib/errors';
 import type { Profile, DbProfile } from '@/lib/types';
+import type { AppError } from '@/lib/errors';
 
 interface UseProfileReturn {
   profile: Profile | null;
   loading: boolean;
-  error: Error | null;
+  error: AppError | null;
   updateProfile: (updates: Partial<Omit<Profile, 'id' | 'createdAt'>>) => Promise<Profile>;
   refetch: () => void;
 }
@@ -18,7 +20,7 @@ export function useProfile(): UseProfileReturn {
   const { user, loading: authLoading } = useAuth();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [profileLoading, setProfileLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<AppError | null>(null);
 
   // Track fetch trigger for refetch functionality
   const [fetchTrigger, setFetchTrigger] = useState(0);
@@ -51,7 +53,7 @@ export function useProfile(): UseProfileReturn {
       if (cancelled) return;
 
       if (fetchError) {
-        setError(new Error(fetchError.message));
+        setError(handleSupabaseError(fetchError));
         setProfile(null);
       } else if (data) {
         setProfile(mapProfile(data as DbProfile));
@@ -75,7 +77,7 @@ export function useProfile(): UseProfileReturn {
   const updateProfile = useCallback(
     async (updates: Partial<Omit<Profile, 'id' | 'createdAt'>>): Promise<Profile> => {
       if (!user) {
-        throw new Error('Must be authenticated to update profile');
+        throw handleSupabaseError(new Error('Must be authenticated to update profile'));
       }
 
       const dbUpdates = toDbProfileUpdate(updates);
@@ -88,7 +90,7 @@ export function useProfile(): UseProfileReturn {
         .single();
 
       if (updateError) {
-        throw new Error(updateError.message);
+        throw handleSupabaseError(updateError);
       }
 
       const updatedProfile = mapProfile(data as DbProfile);
