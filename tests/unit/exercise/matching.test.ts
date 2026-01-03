@@ -37,6 +37,23 @@ describe('normalizePython', () => {
   it('normalizes multiple consecutive tabs', () => {
     expect(normalizePython('\t\tprint(x)')).toBe('        print(x)');
   });
+
+  it('trims leading and trailing whitespace from entire answer', () => {
+    expect(normalizePython('  print(x)  ')).toBe('print(x)');
+    expect(normalizePython('\n\nprint(x)\n\n')).toBe('print(x)');
+  });
+
+  it('collapses multiple consecutive blank lines to single blank line', () => {
+    const input = 'def foo():\n    pass\n\n\n\ndef bar():\n    pass';
+    const expected = 'def foo():\n    pass\n\ndef bar():\n    pass';
+    expect(normalizePython(input)).toBe(expected);
+  });
+
+  it('handles real-world multi-line with all normalizations', () => {
+    const input = '  for i in range(5):\r\n\tprint(i)  \n\n';
+    const expected = 'for i in range(5):\n    print(i)';
+    expect(normalizePython(input)).toBe(expected);
+  });
 });
 
 describe('checkAnswer', () => {
