@@ -14,7 +14,8 @@
     "db:start": "npx supabase start",
     "db:stop": "npx supabase stop",
     "db:reset": "npx supabase db reset",
-    "db:types": "npx supabase gen types typescript --local > src/lib/types/database.generated.ts"
+    "db:types": "npx supabase gen types typescript --local > src/lib/types/database.generated.ts",
+    "db:import-exercises": "npx tsx scripts/import-exercises.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.89.0",
@@ -44,6 +45,7 @@
     "jsdom": "^27.4.0",
     "supabase": "^2.70.5",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5",
     "vitest": "^4.0.16"
   }
