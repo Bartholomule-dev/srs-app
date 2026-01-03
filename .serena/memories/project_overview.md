@@ -10,9 +10,25 @@ SRS-App is a gamified web platform for practicing code syntax through spaced rep
 - **Auth System:** ✅ Complete (Magic Link via Supabase)
 - **Database Schema:** ✅ Complete (profiles, exercises, user_progress)
 - **TypeScript Types:** ✅ Complete (auto-generated + camelCase mappers)
-- **Test Infrastructure:** ✅ Complete (Vitest + 33 tests)
-- **Core SRS Engine:** ⏳ Next up
+- **Test Infrastructure:** ✅ Complete (Vitest + 304 tests passing)
+- **Error Handling:** ✅ Complete (AppError + ErrorBoundary + Toast)
+- **Core SRS Engine:** ✅ Complete (SM-2 algorithm + useSRS hook)
+- **Exercise Engine:** ✅ Complete (ExerciseCard + components)
+- **Practice Session:** ✅ Complete (useSession + /dashboard + /practice)
 - **Seed Data:** 16 Python exercises across 6 categories
+
+## Completed Milestones
+1. **Milestone 1: Database & Types** - Migrations, RLS, types, seed data
+2. **Milestone 2: Auth & Hooks** - AuthContext, useAuth, useProfile, ProtectedRoute
+3. **Milestone 3: SRS Engine & Error Handling** - SM-2 algorithm, useSRS, AppError, Toast
+4. **Milestone 4: Exercise Engine** - normalizePython, checkAnswer, ExerciseCard components
+5. **Milestone 5: Practice Session** - useSession, SessionProgress, /dashboard, /practice pages
+6. **Milestone 6: Exercise Library** - 50 Python exercises in YAML, import script, validation
+
+## Next Up
+- **Gamification:** Scoring system, streaks, achievements
+- **Username Selection UI**
+- **E2E Tests**
 
 ## Tech Stack
 | Layer | Technology |
@@ -29,6 +45,7 @@ SRS-App is a gamified web platform for practicing code syntax through spaced rep
 - **Auth:** Passwordless Magic Link (email OTP)
 - **Database:** PostgreSQL with Row-Level Security (RLS) for data isolation
 - **Client:** React Compiler enabled for auto-optimization
+- **Exercise Library:** YAML files per category, slug-based identity, imported via pnpm script
 
 ## Documentation
 Primary documentation lives in Obsidian vault at `/SRS-app/`:
