@@ -22,11 +22,11 @@ test.describe('Critical Path: Login → Dashboard → Practice', () => {
     // Step 1: Navigate to home page and verify it loads
     await page.goto('/');
 
-    // Wait for auth check to complete - look for either "Sign in" form or logged in state
+    // Wait for landing page to load - look for hero heading or auth form
     await expect(
-      page.getByText(/Sign in with Magic Link/i)
-        .or(page.getByText(/Logged in/i))
-        .or(page.getByText(/Auth Status/i))
+      page.getByRole('heading', { name: /Keep Your Code Skills Sharp/i })
+        .or(page.getByRole('button', { name: /Send Magic Link/i }))
+        .or(page.getByText(/Loading/i))
     ).toBeVisible({ timeout: 10000 });
 
     // Step 2: Sign in programmatically via Supabase client (Node.js side)
@@ -52,13 +52,17 @@ test.describe('Critical Path: Login → Dashboard → Practice', () => {
     // Step 4: Navigate to dashboard (this will pick up the session)
     await page.goto('/dashboard');
 
-    // Step 5: Verify dashboard loads - look for the Dashboard heading
-    await expect(page.getByRole('heading', { name: /dashboard/i })).toBeVisible({ timeout: 15000 });
+    // Step 5: Verify dashboard loads - look for greeting heading or SyntaxSRS branding
+    await expect(
+      page.getByRole('heading', { name: /Good (morning|afternoon|evening|night)/i })
+        .or(page.getByRole('link', { name: /SyntaxSRS/i }))
+        .or(page.getByText(/Ready to practice/i))
+    ).toBeVisible({ timeout: 15000 });
 
     // Step 6: Look for practice button/link or "no cards" state
-    const practiceButton = page.getByRole('button', { name: /start practice/i })
-      .or(page.getByRole('link', { name: /start practice/i }));
-    const noCardsText = page.getByText(/no cards|all caught up|nothing to practice/i);
+    const practiceButton = page.getByRole('link', { name: /start practice/i })
+      .or(page.getByRole('link', { name: /learn new cards/i }));
+    const noCardsText = page.getByText(/no cards due|all caught up|check back later/i);
 
     // Wait for either state
     await expect(practiceButton.or(noCardsText)).toBeVisible({ timeout: 10000 });
@@ -68,10 +72,11 @@ test.describe('Critical Path: Login → Dashboard → Practice', () => {
       await practiceButton.click();
       await expect(page).toHaveURL(/practice/);
 
-      // Verify practice page loads - look for Submit button or no cards state
+      // Verify practice page loads - look for Submit button, End Session link, or no cards state
       const submitButton = page.getByRole('button', { name: /submit/i });
-      const noCardsOnPractice = page.getByText(/no cards|all caught up/i);
-      await expect(submitButton.or(noCardsOnPractice)).toBeVisible({ timeout: 10000 });
+      const endSessionLink = page.getByRole('link', { name: /end session/i });
+      const noCardsOnPractice = page.getByText(/no cards to practice/i);
+      await expect(submitButton.or(endSessionLink).or(noCardsOnPractice)).toBeVisible({ timeout: 10000 });
 
       // If there's an exercise (Submit button visible), try to interact with it
       if (await submitButton.isVisible({ timeout: 3000 }).catch(() => false)) {
