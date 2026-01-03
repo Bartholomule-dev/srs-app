@@ -1,0 +1,56 @@
+# exercises/python/loops.yaml
+language: python
+category: loops
+
+exercises:
+  - slug: for-loop-range
+    title: For Loop Range
+    difficulty: 1
+    prompt: Write a for loop that prints numbers 0 through 4
+    expected_answer: |
+      for i in range(5):
+          print(i)
+    hints:
+      - Use range() to generate numbers
+      - range(5) gives 0-4
+    tags: [loops, range, for]
+
+  - slug: for-loop-list
+    title: For Loop List
+    difficulty: 1
+    prompt: Iterate over a list called items and print each item
+    expected_answer: |
+      for item in items:
+          print(item)
+    hints:
+      - Use for x in list syntax
+    tags: [loops, lists, for]
+
+  - slug: while-loop
+    title: While Loop
+    difficulty: 2
+    prompt: Write a while loop that runs while count < 5
+    expected_answer: "while count < 5:"
+    hints:
+      - Use the while keyword
+      - Condition comes after while
+    tags: [loops, while, conditions]
+
+  - slug: enumerate-loop
+    title: Enumerate Loop
+    difficulty: 2
+    prompt: Loop over items with both index and value using enumerate
+    expected_answer: "for i, item in enumerate(items):"
+    hints:
+      - enumerate() gives index and value
+      - Use tuple unpacking
+    tags: [loops, enumerate, intermediate]
+
+  - slug: break-statement
+    title: Break Statement
+    difficulty: 2
+    prompt: Exit a loop early using a statement
+    expected_answer: break
+    hints:
+      - Use the break keyword
+    tags: [loops, control, intermediate]
