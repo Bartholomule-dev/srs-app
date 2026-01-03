@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/lib/hooks/useAuth';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Alert } from '@/components/ui/Alert';
 
 export function AuthForm() {
   const { signIn } = useAuth();
@@ -31,32 +34,28 @@ export function AuthForm() {
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-sm" id="auth">
       <div className="flex flex-col gap-3">
-        <input
+        <Input
           type="email"
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
-        <button
+        <Button
           type="submit"
           disabled={sending}
-          className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full"
         >
           {sending ? 'Sending...' : 'Send Magic Link'}
-        </button>
+        </Button>
       </div>
       {message && (
-        <p
-          className={`mt-3 text-sm ${
-            message.type === 'success'
-              ? 'text-green-600 dark:text-green-400'
-              : 'text-red-600 dark:text-red-400'
-          }`}
+        <Alert
+          variant={message.type === 'success' ? 'success' : 'error'}
+          className="mt-3"
         >
           {message.text}
-        </p>
+        </Alert>
       )}
     </form>
   );

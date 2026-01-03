@@ -1,6 +1,8 @@
 'use client';
 
 import { StatsCard } from './StatsCard';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Skeleton } from '@/components/ui/Skeleton';
 import type { UserStats } from '@/lib/stats';
 
 export interface StatsGridProps {
@@ -10,13 +12,12 @@ export interface StatsGridProps {
 
 function StatsSkeleton() {
   return (
-    <div
-      data-testid="stats-skeleton"
-      className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 animate-pulse"
-    >
-      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-16 mb-2" />
-      <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-12" />
-    </div>
+    <Card data-testid="stats-skeleton">
+      <CardContent className="p-4">
+        <Skeleton className="h-4 w-16 mb-2" />
+        <Skeleton className="h-8 w-12" />
+      </CardContent>
+    </Card>
   );
 }
 
