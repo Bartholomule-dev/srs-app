@@ -39,4 +39,12 @@ describe('components barrel export', () => {
     expect(components.Features).toBeDefined();
     expect(components.HowItWorks).toBeDefined();
   });
+
+  it('exports dashboard components', () => {
+    expect(components.DueCardsBanner).toBeDefined();
+    expect(components.EmptyState).toBeDefined();
+    expect(components.Greeting).toBeDefined();
+    expect(components.PracticeCTA).toBeDefined();
+    expect(components.StatsGrid).toBeDefined();
+  });
 });

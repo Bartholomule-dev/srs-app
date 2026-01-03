@@ -15,7 +15,13 @@ export {
 export { SessionProgress, SessionSummary } from './session';
 
 // Dashboard components
-export { DueCardsBanner, EmptyState, StatsGrid } from './dashboard';
+export {
+  DueCardsBanner,
+  EmptyState,
+  Greeting,
+  PracticeCTA,
+  StatsGrid,
+} from './dashboard';
 
 // Layout components
 export { Header, LandingHeader } from './layout';

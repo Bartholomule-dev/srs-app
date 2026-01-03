@@ -1,5 +1,6 @@
 export { DueCardsBanner } from './DueCardsBanner';
 export { EmptyState } from './EmptyState';
+export { Greeting } from './Greeting';
 export { PracticeCTA } from './PracticeCTA';
 export { StatsCard } from './StatsCard';
 export type { StatsCardProps } from './StatsCard';
