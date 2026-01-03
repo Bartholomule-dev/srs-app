@@ -32,4 +32,11 @@ describe('components barrel export', () => {
   it('exports LandingHeader', () => {
     expect(components.LandingHeader).toBeDefined();
   });
+
+  it('exports landing components', () => {
+    expect(components.AuthForm).toBeDefined();
+    expect(components.Hero).toBeDefined();
+    expect(components.Features).toBeDefined();
+    expect(components.HowItWorks).toBeDefined();
+  });
 });

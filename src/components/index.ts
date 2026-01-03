@@ -19,3 +19,6 @@ export { DueCardsBanner, EmptyState, StatsGrid } from './dashboard';
 
 // Layout components
 export { Header, LandingHeader } from './layout';
+
+// Landing components
+export { AuthForm, Hero, Features, HowItWorks } from './landing';
