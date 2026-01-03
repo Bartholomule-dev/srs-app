@@ -5,6 +5,34 @@ import type { ReactNode } from 'react';
 import { AuthProvider } from '@/lib/context/AuthContext';
 import { ToastProvider } from '@/lib/context/ToastContext';
 
+// Mock useSRS hook to avoid its internal Supabase queries
+const mockRecordAnswer = vi.fn();
+vi.mock('@/lib/hooks/useSRS', () => ({
+  useSRS: () => ({
+    dueCards: [],
+    currentCard: null,
+    loading: false,
+    error: null,
+    recordAnswer: mockRecordAnswer,
+    refetch: vi.fn(),
+    remainingCount: 0,
+  }),
+}));
+
+// Mock showToast for verification
+const mockShowToast = vi.fn();
+vi.mock('@/lib/context/ToastContext', async (importOriginal) => {
+  const original = await importOriginal<typeof import('@/lib/context/ToastContext')>();
+  return {
+    ...original,
+    useToast: () => ({
+      toasts: [],
+      showToast: mockShowToast,
+      dismissToast: vi.fn(),
+    }),
+  };
+});
+
 // Mock Supabase client
 vi.mock('@/lib/supabase/client', () => ({
   supabase: {
@@ -94,6 +122,8 @@ const wrapper = ({ children }: { children: ReactNode }) => (
 describe('useSession', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockRecordAnswer.mockResolvedValue(undefined);
+    mockShowToast.mockClear();
     vi.mocked(supabase.auth.getUser).mockResolvedValue({
       data: { user: mockUser as any },
       error: null,
@@ -516,6 +546,69 @@ describe('useSession', () => {
       });
 
       expect(result.current.stats.endTime).toBeInstanceOf(Date);
+    });
+
+    it('shows error toast when database persistence fails but still advances session', async () => {
+      // Setup mock to fail on recordAnswer
+      mockRecordAnswer.mockRejectedValueOnce(new Error('Database error'));
+
+      const mockFrom = vi.mocked(supabase.from);
+      mockFrom.mockImplementation((table: string) => {
+        if (table === 'exercises') {
+          return {
+            select: vi.fn().mockResolvedValue({
+              data: mockExercisesDb,
+              error: null,
+            }),
+          } as any;
+        }
+        if (table === 'user_progress') {
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                lte: vi.fn().mockResolvedValue({
+                  data: mockProgressDb,
+                  error: null,
+                }),
+                single: vi.fn().mockResolvedValue({ data: mockProgressDb[0], error: null }),
+              }),
+            }),
+            upsert: vi.fn().mockReturnValue({
+              select: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({ data: {}, error: null }),
+              }),
+            }),
+          } as any;
+        }
+        return {} as any;
+      });
+
+      const { result } = renderHook(() => useSession(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      const initialIndex = result.current.currentIndex;
+      const initialCompleted = result.current.stats.completed;
+
+      // Record result - should fail to persist but still advance
+      await act(async () => {
+        await result.current.recordResult(4);
+      });
+
+      // Session state should still advance (optimistic update preserved)
+      expect(result.current.currentIndex).toBe(initialIndex + 1);
+      expect(result.current.stats.completed).toBe(initialCompleted + 1);
+
+      // Verify recordAnswer was called and rejected
+      expect(mockRecordAnswer).toHaveBeenCalledWith(expect.any(String), 4);
+
+      // Verify error toast was shown
+      expect(mockShowToast).toHaveBeenCalledWith({
+        type: 'error',
+        message: 'Failed to save progress',
+      });
     });
   });
 });
