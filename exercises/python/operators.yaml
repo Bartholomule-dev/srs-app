@@ -1,0 +1,50 @@
+# exercises/python/operators.yaml
+language: python
+category: operators
+
+exercises:
+  - slug: floor-division
+    title: Floor Division
+    difficulty: 1
+    prompt: Divide 17 by 5 using floor division
+    expected_answer: 17 // 5
+    hints:
+      - Use // for floor division
+    tags: [operators, division, beginner]
+
+  - slug: modulo-operator
+    title: Modulo Operator
+    difficulty: 1
+    prompt: Get the remainder of 17 divided by 5
+    expected_answer: 17 % 5
+    hints:
+      - Use % for modulo
+    tags: [operators, modulo, beginner]
+
+  - slug: exponentiation
+    title: Exponentiation
+    difficulty: 1
+    prompt: Calculate 2 to the power of 10
+    expected_answer: 2 ** 10
+    hints:
+      - Use ** for exponentiation
+    tags: [operators, power, beginner]
+
+  - slug: comparison-chain
+    title: Comparison Chain
+    difficulty: 2
+    prompt: Check if x is between 1 and 10 (inclusive) using chained comparison
+    expected_answer: 1 <= x <= 10
+    hints:
+      - Python supports chained comparisons
+      - Use <= for inclusive bounds
+    tags: [operators, comparison, intermediate]
+
+  - slug: logical-and
+    title: Logical And
+    difficulty: 1
+    prompt: Check if both a and b are True
+    expected_answer: a and b
+    hints:
+      - Use the 'and' keyword
+    tags: [operators, logical, beginner]
