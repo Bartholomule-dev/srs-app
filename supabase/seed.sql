@@ -4,10 +4,11 @@
 --
 -- It will NOT run in production.
 
-INSERT INTO exercises (language, category, difficulty, title, prompt, expected_answer, hints, explanation, tags) VALUES
+INSERT INTO exercises (language, category, difficulty, title, slug, prompt, expected_answer, hints, explanation, tags) VALUES
 
 -- Basics
 ('python', 'basics', 1, 'Print Statement',
+ 'basics-print-statement',
  'Print the text "Hello, World!" to the console',
  'print("Hello, World!")',
  '["Use the print() function", "Put the text in quotes"]',
@@ -15,6 +16,7 @@ INSERT INTO exercises (language, category, difficulty, title, prompt, expected_a
  ARRAY['print', 'strings', 'beginner']),
 
 ('python', 'basics', 1, 'Variable Assignment',
+ 'basics-variable-assignment',
  'Assign the value 42 to a variable named answer',
  'answer = 42',
  '["Use the = operator", "Variable name goes on the left"]',
@@ -22,6 +24,7 @@ INSERT INTO exercises (language, category, difficulty, title, prompt, expected_a
  ARRAY['variables', 'assignment', 'beginner']),
 
 ('python', 'basics', 1, 'String Variable',
+ 'basics-string-variable',
  'Create a variable called name with the value "Alice"',
  'name = "Alice"',
  '["Use quotes for strings"]',
@@ -30,6 +33,7 @@ INSERT INTO exercises (language, category, difficulty, title, prompt, expected_a
 
 -- Loops
 ('python', 'loops', 1, 'For Loop Range',
+ 'loops-for-loop-range',
  'Write a for loop that prints numbers 0 through 4',
  'for i in range(5):\n    print(i)',
  '["Use range() to generate numbers", "range(5) gives 0-4"]',
@@ -37,6 +41,7 @@ INSERT INTO exercises (language, category, difficulty, title, prompt, expected_a
  ARRAY['loops', 'range', 'for']),
 
 ('python', 'loops', 2, 'For Loop List',
+ 'loops-for-loop-list',
  'Iterate over a list called items and print each item',
  'for item in items:\n    print(item)',
  '["Use: for x in list:"]',
@@ -44,6 +49,7 @@ INSERT INTO exercises (language, category, difficulty, title, prompt, expected_a
  ARRAY['loops', 'lists', 'for']),
 
 ('python', 'loops', 2, 'While Loop',
+ 'loops-while-loop',
  'Write a while loop that runs while count < 5',
  'while count < 5:',
  '["Use while keyword"]',
@@ -51,6 +57,7 @@ INSERT INTO exercises (language, category, difficulty, title, prompt, expected_a
  ARRAY['loops', 'while', 'conditions']),
 
 ('python', 'loops', 3, 'Enumerate',
+ 'loops-enumerate',
  'Loop over items with both index and value using enumerate',
  'for i, item in enumerate(items):',
  '["enumerate() gives index and value"]',
@@ -59,6 +66,7 @@ INSERT INTO exercises (language, category, difficulty, title, prompt, expected_a
 
 -- Functions
 ('python', 'functions', 1, 'Define Function',
+ 'functions-define-function',
  'Define a function called greet that takes a name parameter',
  'def greet(name):',
  '["Start with def keyword"]',
@@ -66,6 +74,7 @@ INSERT INTO exercises (language, category, difficulty, title, prompt, expected_a
  ARRAY['functions', 'def', 'beginner']),
 
 ('python', 'functions', 2, 'Function with Return',
+ 'functions-function-with-return',
  'Define a function add that takes a and b, returns their sum',
  'def add(a, b):\n    return a + b',
  '["Use return to send back a value"]',
@@ -73,6 +82,7 @@ INSERT INTO exercises (language, category, difficulty, title, prompt, expected_a
  ARRAY['functions', 'return', 'parameters']),
 
 ('python', 'functions', 2, 'Default Parameter',
+ 'functions-default-parameter',
  'Define greet(name, greeting="Hello") with a default greeting',
  'def greet(name, greeting="Hello"):',
  '["Default values use ="]',
@@ -81,6 +91,7 @@ INSERT INTO exercises (language, category, difficulty, title, prompt, expected_a
 
 -- Lists
 ('python', 'lists', 1, 'Create List',
+ 'lists-create-list',
  'Create a list called numbers containing 1, 2, 3',
  'numbers = [1, 2, 3]',
  '["Use square brackets"]',
@@ -88,6 +99,7 @@ INSERT INTO exercises (language, category, difficulty, title, prompt, expected_a
  ARRAY['lists', 'creation', 'beginner']),
 
 ('python', 'lists', 1, 'Append to List',
+ 'lists-append-to-list',
  'Add the value 4 to the end of the list numbers',
  'numbers.append(4)',
  '["Use the append() method"]',
@@ -96,6 +108,7 @@ INSERT INTO exercises (language, category, difficulty, title, prompt, expected_a
 
 -- Dictionaries
 ('python', 'dictionaries', 1, 'Create Dictionary',
+ 'dictionaries-create-dictionary',
  'Create a dict called person with name="Alice" and age=30',
  'person = {"name": "Alice", "age": 30}',
  '["Use curly braces", "key: value pairs"]',
@@ -103,6 +116,7 @@ INSERT INTO exercises (language, category, difficulty, title, prompt, expected_a
  ARRAY['dictionaries', 'creation', 'beginner']),
 
 ('python', 'dictionaries', 1, 'Access Dictionary',
+ 'dictionaries-access-dictionary',
  'Get the value of "name" from the person dictionary',
  'person["name"]',
  '["Use square brackets with the key"]',
@@ -111,6 +125,7 @@ INSERT INTO exercises (language, category, difficulty, title, prompt, expected_a
 
 -- Comprehensions
 ('python', 'comprehensions', 2, 'List Comprehension Basic',
+ 'comprehensions-list-comprehension-basic',
  'Create a list of squares from 1 to 5 using comprehension',
  '[x**2 for x in range(1, 6)]',
  '["[expression for item in iterable]"]',
@@ -119,6 +134,7 @@ INSERT INTO exercises (language, category, difficulty, title, prompt, expected_a
 
 -- Classes
 ('python', 'classes', 2, 'Define Class',
+ 'classes-define-class',
  'Define a class called Person',
  'class Person:',
  '["Use class keyword"]',
