@@ -24,4 +24,12 @@ describe('components barrel export', () => {
     expect(components.ExerciseFeedback).toBeDefined();
     expect(components.HintButton).toBeDefined();
   });
+
+  it('exports Header', () => {
+    expect(components.Header).toBeDefined();
+  });
+
+  it('exports LandingHeader', () => {
+    expect(components.LandingHeader).toBeDefined();
+  });
 });
