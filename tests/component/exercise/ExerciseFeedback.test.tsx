@@ -26,10 +26,11 @@ describe('ExerciseFeedback', () => {
       expect(screen.getByText(/correct/i)).toBeInTheDocument();
     });
 
-    it('shows success styling', () => {
+    it('shows success alert', () => {
       render(<ExerciseFeedback {...correctProps} />);
-      const banner = screen.getByText(/correct/i).closest('div');
-      expect(banner).toHaveClass('bg-green-50');
+      const alert = screen.getByRole('alert');
+      expect(alert).toBeInTheDocument();
+      expect(alert).toHaveTextContent(/correct/i);
     });
 
     it('shows user answer', () => {
@@ -56,10 +57,11 @@ describe('ExerciseFeedback', () => {
       expect(screen.getByText(/incorrect/i)).toBeInTheDocument();
     });
 
-    it('shows error styling', () => {
+    it('shows error alert', () => {
       render(<ExerciseFeedback {...incorrectProps} />);
-      const banner = screen.getByText(/incorrect/i).closest('div');
-      expect(banner).toHaveClass('bg-red-50');
+      const alert = screen.getByRole('alert');
+      expect(alert).toBeInTheDocument();
+      expect(alert).toHaveTextContent(/incorrect/i);
     });
 
     it('shows both user answer and expected answer', () => {

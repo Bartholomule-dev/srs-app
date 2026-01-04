@@ -10,45 +10,43 @@ describe('Progress', () => {
     expect(progress).toBeInTheDocument();
   });
 
-  it('supports value prop', () => {
+  it('displays percentage as aria-valuenow', () => {
     render(<Progress value={75} max={100} />);
     const progress = screen.getByRole('progressbar');
     expect(progress).toHaveAttribute('aria-valuenow', '75');
   });
 
-  it('supports max prop', () => {
+  it('calculates percentage correctly with custom max', () => {
     render(<Progress value={50} max={200} />);
     const progress = screen.getByRole('progressbar');
-    expect(progress).toHaveAttribute('aria-valuemax', '200');
+    // 50/200 = 25%
+    expect(progress).toHaveAttribute('aria-valuenow', '25');
+    expect(progress).toHaveAttribute('aria-valuemax', '100');
   });
 
   it('applies custom className', () => {
-    render(<Progress value={50} className="custom-progress" data-testid="progress" />);
-    // Note: darwin-ui Progress applies className to the container, not progressbar role element
+    render(<Progress value={50} className="custom-progress" />);
     const progress = screen.getByRole('progressbar');
-    expect(progress).toBeInTheDocument();
+    expect(progress).toHaveClass('custom-progress');
   });
 
-  it('supports different sizes', () => {
-    render(<Progress value={50} size="lg" />);
+  it('has correct aria attributes', () => {
+    render(<Progress value={50} />);
     const progress = screen.getByRole('progressbar');
-    expect(progress).toBeInTheDocument();
+    expect(progress).toHaveAttribute('aria-valuemin', '0');
+    expect(progress).toHaveAttribute('aria-valuemax', '100');
+    expect(progress).toHaveAttribute('aria-valuenow', '50');
   });
 
-  it('supports different variants', () => {
-    render(<Progress value={50} variant="success" />);
+  it('supports aria-label', () => {
+    render(<Progress value={50} aria-label="Loading progress" />);
     const progress = screen.getByRole('progressbar');
-    expect(progress).toBeInTheDocument();
+    expect(progress).toHaveAttribute('aria-label', 'Loading progress');
   });
 
-  it('supports indeterminate state', () => {
-    render(<Progress indeterminate />);
+  it('handles zero max gracefully', () => {
+    render(<Progress value={0} max={0} />);
     const progress = screen.getByRole('progressbar');
-    expect(progress).toBeInTheDocument();
-  });
-
-  it('shows value when showValue is true', () => {
-    render(<Progress value={75} showValue />);
-    expect(screen.getByText('75%')).toBeInTheDocument();
+    expect(progress).toHaveAttribute('aria-valuenow', '0');
   });
 });
