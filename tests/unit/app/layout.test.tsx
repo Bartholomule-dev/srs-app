@@ -1,11 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { ReactNode } from 'react';
 
-// Mock next/font/google
-vi.mock('next/font/google', () => ({
-  Geist: () => ({ variable: '--font-geist-sans' }),
-  Geist_Mono: () => ({ variable: '--font-geist-mono' }),
-}));
+// Mock Fontsource variable fonts (loaded via CSS imports in layout)
+vi.mock('@fontsource-variable/space-grotesk', () => ({}));
+vi.mock('@fontsource-variable/dm-sans', () => ({}));
+vi.mock('@fontsource-variable/jetbrains-mono', () => ({}));
 
 // Mock darwin-ui ToastProvider
 vi.mock('@pikoloo/darwin-ui', () => ({
@@ -66,8 +65,8 @@ describe('RootLayout', () => {
     const layout = RootLayout({ children: <div>Test</div> });
     const body = layout.props.children;
 
-    expect(body.props.className).toContain('--font-geist-sans');
-    expect(body.props.className).toContain('--font-geist-mono');
+    // New theme uses font-body (DM Sans) from Tailwind CSS 4 theme config
+    expect(body.props.className).toContain('font-body');
     expect(body.props.className).toContain('antialiased');
   });
 });
