@@ -13,24 +13,25 @@ describe('StatsGrid', () => {
     totalExercisesCompleted: 150,
   };
 
-  it('renders all four stat cards', () => {
+  it('renders all four stat cards in 2x2 bento layout', () => {
     render(<StatsGrid stats={mockStats} />);
-
-    // Cards reviewed today
-    expect(screen.getByText('Today')).toBeInTheDocument();
-    expect(screen.getByText('15')).toBeInTheDocument();
-
-    // Accuracy
-    expect(screen.getByText('Accuracy')).toBeInTheDocument();
-    expect(screen.getByText('87%')).toBeInTheDocument();
 
     // Streak
     expect(screen.getByText('Streak')).toBeInTheDocument();
     expect(screen.getByText('7')).toBeInTheDocument();
 
+    // Accuracy with progress ring
+    expect(screen.getByText('Accuracy')).toBeInTheDocument();
+    expect(screen.getByText('87')).toBeInTheDocument();
+    expect(screen.getByText('%')).toBeInTheDocument();
+
     // Total
     expect(screen.getByText('Total')).toBeInTheDocument();
     expect(screen.getByText('150')).toBeInTheDocument();
+
+    // Today
+    expect(screen.getByText('Today')).toBeInTheDocument();
+    expect(screen.getByText('15')).toBeInTheDocument();
   });
 
   it('renders loading skeleton when loading', () => {
@@ -53,6 +54,46 @@ describe('StatsGrid', () => {
 
     // Should show "0" values, not be empty
     const zeros = screen.getAllByText('0');
-    expect(zeros.length).toBeGreaterThanOrEqual(2); // At least Today and Streak
+    // At least Streak, Accuracy (without %), Total, and Today
+    expect(zeros.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it('renders skeleton when stats is null', () => {
+    render(<StatsGrid stats={null} />);
+
+    const skeletons = screen.getAllByTestId('stats-skeleton');
+    expect(skeletons).toHaveLength(4);
+  });
+
+  it('has 2x2 grid layout', () => {
+    const { container } = render(<StatsGrid stats={mockStats} />);
+
+    const grid = container.querySelector('.grid');
+    expect(grid).toHaveClass('grid-cols-2');
+    // Should NOT have 4 columns on medium screens anymore (bento style)
+    expect(grid).not.toHaveClass('md:grid-cols-4');
+  });
+
+  it('renders accuracy card with progress ring', () => {
+    const { container } = render(<StatsGrid stats={mockStats} />);
+
+    // The accuracy card has a progress ring with 2 circles
+    // The target icon has 3 circles (concentric target rings)
+    // Total: 2 (progress ring) + 3 (target) = 5 circles
+    // But we're using showRing for accuracy instead of target icon, so no target
+    // And we have other icons that may have circles
+    // Let's just verify we have the progress ring SVG circles
+    const circles = container.querySelectorAll('circle');
+    // At least 2 circles for the progress ring, plus additional from check icon
+    expect(circles.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('renders SVG icons for non-accuracy cards', () => {
+    const { container } = render(<StatsGrid stats={mockStats} />);
+
+    // Should have multiple SVG elements (icons + progress ring)
+    const svgs = container.querySelectorAll('svg');
+    // 3 icon SVGs (fire, chart, check) + 1 progress ring SVG
+    expect(svgs.length).toBeGreaterThanOrEqual(4);
   });
 });

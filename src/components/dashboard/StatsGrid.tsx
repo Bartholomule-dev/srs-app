@@ -12,10 +12,13 @@ export interface StatsGridProps {
 
 function StatsSkeleton() {
   return (
-    <Card data-testid="stats-skeleton">
-      <CardContent className="p-4">
-        <Skeleton className="h-4 w-16 mb-2" />
-        <Skeleton className="h-8 w-12" />
+    <Card elevation={2} data-testid="stats-skeleton">
+      <CardContent className="p-5">
+        <div className="flex items-center justify-between mb-3">
+          <Skeleton className="h-8 w-8 rounded-full" />
+          <Skeleton className="h-4 w-16" />
+        </div>
+        <Skeleton className="h-9 w-16" />
       </CardContent>
     </Card>
   );
@@ -24,7 +27,7 @@ function StatsSkeleton() {
 export function StatsGrid({ stats, loading = false }: StatsGridProps) {
   if (loading || !stats) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         <StatsSkeleton />
         <StatsSkeleton />
         <StatsSkeleton />
@@ -34,27 +37,30 @@ export function StatsGrid({ stats, loading = false }: StatsGridProps) {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <StatsCard
-        label="Today"
-        value={stats.cardsReviewedToday}
-        icon="check"
-      />
-      <StatsCard
-        label="Accuracy"
-        value={stats.accuracyPercent}
-        suffix="%"
-        icon="target"
-      />
+    <div className="grid grid-cols-2 gap-4">
+      {/* Row 1 */}
       <StatsCard
         label="Streak"
         value={stats.currentStreak}
         icon="fire"
       />
       <StatsCard
+        label="Accuracy"
+        value={stats.accuracyPercent}
+        suffix="%"
+        showRing
+      />
+
+      {/* Row 2 */}
+      <StatsCard
         label="Total"
         value={stats.totalExercisesCompleted}
-        icon="trophy"
+        icon="chart"
+      />
+      <StatsCard
+        label="Today"
+        value={stats.cardsReviewedToday}
+        icon="check"
       />
     </div>
   );
