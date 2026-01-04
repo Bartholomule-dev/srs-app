@@ -33,4 +33,32 @@ describe('Button', () => {
     render(<Button loading>Loading</Button>);
     expect(screen.getByRole('button')).toBeDisabled();
   });
+
+  describe('animations and effects', () => {
+    it('applies transition classes by default', () => {
+      render(<Button>Animated</Button>);
+      const button = screen.getByRole('button');
+      expect(button.className).toContain('transition-all');
+    });
+
+    it('applies glow effect when glow prop is true on primary variant', () => {
+      render(<Button variant="primary" glow>Glowing</Button>);
+      const button = screen.getByRole('button');
+      expect(button.className).toContain('shadow-');
+    });
+
+    it('does not apply glow effect on non-primary variants', () => {
+      render(<Button variant="secondary" glow>No Glow</Button>);
+      const button = screen.getByRole('button');
+      // The shadow class should not be present for non-primary variants
+      expect(button.className).not.toContain('shadow-[0_0_20px');
+    });
+
+    it('merges custom className with default classes', () => {
+      render(<Button className="custom-class">Custom</Button>);
+      const button = screen.getByRole('button');
+      expect(button.className).toContain('custom-class');
+      expect(button.className).toContain('transition-all');
+    });
+  });
 });
