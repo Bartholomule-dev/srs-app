@@ -1,7 +1,6 @@
 'use client';
 
-import { useRef, useEffect, type KeyboardEvent, type ChangeEvent } from 'react';
-import { Textarea } from '@/components/ui/Textarea';
+import { CodeEditor } from '@/components/ui/CodeEditor';
 
 interface CodeInputProps {
   value: string;
@@ -10,35 +9,26 @@ interface CodeInputProps {
   disabled?: boolean;
 }
 
+/**
+ * CodeInput - A thin wrapper around CodeEditor for exercise answer input.
+ *
+ * Provides the IDE-styled code editor with exercise-specific defaults:
+ * - Line numbers enabled for better code visibility
+ * - Auto-focus on mount
+ * - Enter to submit, Shift+Enter for newline
+ */
 export function CodeInput({ value, onChange, onSubmit, disabled = false }: CodeInputProps) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    textareaRef.current?.focus();
-  }, []);
-
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    onChange(e.target.value);
-  };
-
-  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey && !disabled) {
-      e.preventDefault();
-      onSubmit();
-    }
-  };
-
   return (
-    <Textarea
-      ref={textareaRef}
+    <CodeEditor
       value={value}
-      onChange={handleChange}
-      onKeyDown={handleKeyDown}
+      onChange={onChange}
+      onSubmit={onSubmit}
       disabled={disabled}
+      showLineNumbers={true}
+      autoFocus={true}
+      minLines={3}
       placeholder="Type your answer... (Enter to submit, Shift+Enter for newline)"
       aria-label="Code answer input"
-      monospace
-      className="w-full min-h-[100px] resize-y"
     />
   );
 }
