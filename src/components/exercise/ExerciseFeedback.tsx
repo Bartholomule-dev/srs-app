@@ -1,5 +1,8 @@
 'use client';
 
+import { Alert } from '@/components/ui/Alert';
+import { Button } from '@/components/ui/Button';
+
 interface ExerciseFeedbackProps {
   isCorrect: boolean;
   userAnswer: string;
@@ -20,19 +23,12 @@ export function ExerciseFeedback({
   return (
     <div className="space-y-4">
       {/* Result Banner */}
-      <div
-        role="alert"
-        className={`flex items-center gap-2 p-4 rounded-lg ${
-          isCorrect
-            ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-400'
-            : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-400'
-        }`}
-      >
+      <Alert variant={isCorrect ? 'success' : 'error'}>
         <span className="text-xl" aria-hidden="true">
-          {isCorrect ? '✓' : '✗'}
+          {isCorrect ? '\u2713' : '\u2717'}
         </span>
         <span className="font-semibold">{isCorrect ? 'Correct!' : 'Incorrect'}</span>
-      </div>
+      </Alert>
 
       {/* Answer Display */}
       <div className={isCorrect ? 'space-y-2' : 'grid grid-cols-2 gap-4'}>
@@ -58,13 +54,14 @@ export function ExerciseFeedback({
       </p>
 
       {/* Continue Button */}
-      <button
+      <Button
         type="button"
+        variant="primary"
         onClick={onContinue}
-        className="w-full py-2 px-4 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        className="w-full"
       >
-        Continue →
-      </button>
+        Continue
+      </Button>
     </div>
   );
 }

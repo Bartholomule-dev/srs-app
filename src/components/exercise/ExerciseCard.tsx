@@ -3,6 +3,8 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import type { Exercise, Quality } from '@/lib/types';
 import { checkAnswer, inferQuality, type QualityInputs } from '@/lib/exercise';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { CodeInput } from './CodeInput';
 import { ExercisePrompt } from './ExercisePrompt';
 import { HintButton } from './HintButton';
@@ -94,57 +96,61 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
 
   if (phase === 'answering') {
     return (
-      <div className="p-6 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm space-y-6">
-        <ExercisePrompt
-          category={exercise.category}
-          language={exercise.language}
-          prompt={exercise.prompt}
-        />
+      <Card>
+        <CardContent className="p-6 space-y-6">
+          <ExercisePrompt
+            category={exercise.category}
+            language={exercise.language}
+            prompt={exercise.prompt}
+          />
 
-        <CodeInput
-          value={userAnswer}
-          onChange={handleInputChange}
-          onSubmit={handleSubmit}
-        />
+          <CodeInput
+            value={userAnswer}
+            onChange={handleInputChange}
+            onSubmit={handleSubmit}
+          />
 
-        <div className="flex items-start justify-between gap-4">
-          {firstHint && (
-            <HintButton
-              hint={firstHint}
-              revealed={hintUsed}
-              onReveal={handleHintReveal}
-            />
-          )}
-          <div className="flex gap-2 ml-auto">
-            <button
-              type="button"
-              onClick={handleGiveUp}
-              className="px-4 py-2 text-sm rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-            >
-              Give Up
-            </button>
-            <button
-              type="button"
-              onClick={handleSubmit}
-              className="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700"
-            >
-              Submit ↵
-            </button>
+          <div className="flex items-start justify-between gap-4">
+            {firstHint && (
+              <HintButton
+                hint={firstHint}
+                revealed={hintUsed}
+                onReveal={handleHintReveal}
+              />
+            )}
+            <div className="flex gap-2 ml-auto">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={handleGiveUp}
+              >
+                Give Up
+              </Button>
+              <Button
+                type="button"
+                variant="primary"
+                onClick={handleSubmit}
+              >
+                Submit
+              </Button>
+            </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <div className="p-6 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm">
-      <ExerciseFeedback
-        isCorrect={answerResult?.isCorrect ?? false}
-        userAnswer={userAnswer}
-        expectedAnswer={exercise.expectedAnswer}
-        nextReviewDays={nextReviewDays}
-        onContinue={handleContinue}
-      />
-    </div>
+    <Card>
+      <CardContent className="p-6">
+        <ExerciseFeedback
+          isCorrect={answerResult?.isCorrect ?? false}
+          userAnswer={userAnswer}
+          expectedAnswer={exercise.expectedAnswer}
+          nextReviewDays={nextReviewDays}
+          onContinue={handleContinue}
+        />
+      </CardContent>
+    </Card>
   );
 }
