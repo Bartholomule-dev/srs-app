@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, waitFor, act } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { AuthProvider } from '@/lib/context/AuthContext';
-import { ToastProvider } from '@/lib/context/ToastContext';
+import { ToastProvider } from '@pikoloo/darwin-ui';
 
 // Mock useSRS hook to avoid its internal Supabase queries
 const mockRecordAnswer = vi.fn();
@@ -21,14 +21,12 @@ vi.mock('@/lib/hooks/useSRS', () => ({
 
 // Mock showToast for verification
 const mockShowToast = vi.fn();
-vi.mock('@/lib/context/ToastContext', async (importOriginal) => {
-  const original = await importOriginal<typeof import('@/lib/context/ToastContext')>();
+vi.mock('@pikoloo/darwin-ui', async (importOriginal) => {
+  const original = await importOriginal<typeof import('@pikoloo/darwin-ui')>();
   return {
     ...original,
     useToast: () => ({
-      toasts: [],
       showToast: mockShowToast,
-      dismissToast: vi.fn(),
     }),
   };
 });
@@ -611,11 +609,11 @@ describe('useSession', () => {
       // Verify recordAnswer was called and rejected
       expect(mockRecordAnswer).toHaveBeenCalledWith(expect.any(String), 4);
 
-      // Verify error toast was shown
-      expect(mockShowToast).toHaveBeenCalledWith({
-        type: 'error',
-        message: 'Failed to save progress',
-      });
+      // Verify error toast was shown (darwin-ui API)
+      expect(mockShowToast).toHaveBeenCalledWith(
+        'Failed to save progress',
+        { type: 'error' }
+      );
     });
   });
 
@@ -900,11 +898,11 @@ describe('useSession', () => {
         await result.current.endSession();
       });
 
-      // Verify error toast was shown
-      expect(mockShowToast).toHaveBeenCalledWith({
-        type: 'error',
-        message: 'Failed to update stats',
-      });
+      // Verify error toast was shown (darwin-ui API)
+      expect(mockShowToast).toHaveBeenCalledWith(
+        'Failed to update stats',
+        { type: 'error' }
+      );
     });
   });
 });

@@ -1,9 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import type { ReactNode } from 'react';
 
 // Mock next/font/google
 vi.mock('next/font/google', () => ({
   Geist: () => ({ variable: '--font-geist-sans' }),
   Geist_Mono: () => ({ variable: '--font-geist-mono' }),
+}));
+
+// Mock darwin-ui ToastProvider
+vi.mock('@pikoloo/darwin-ui', () => ({
+  ToastProvider: ({ children }: { children: ReactNode }) => children,
 }));
 
 // Mock Supabase client

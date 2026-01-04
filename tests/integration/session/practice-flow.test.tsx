@@ -2,7 +2,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { waitFor, act } from '@testing-library/react';
 import { AuthProvider } from '@/lib/context/AuthContext';
-import { ToastProvider } from '@/lib/context/ToastContext';
+import { ToastProvider } from '@pikoloo/darwin-ui';
 import type { ReactNode } from 'react';
 
 // Mock Next.js router

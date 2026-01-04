@@ -11,7 +11,7 @@ import { AppError, ErrorCode } from '@/lib/errors';
 import { handleSupabaseError } from '@/lib/errors/handleSupabaseError';
 import { useAuth } from './useAuth';
 import { useSRS } from './useSRS';
-import { useToast } from '@/lib/context/ToastContext';
+import { useToast } from '@pikoloo/darwin-ui';
 import { updateProfileStats } from '@/lib/stats';
 
 const NEW_CARDS_LIMIT = 5;
@@ -200,7 +200,7 @@ export function useSession(): UseSessionReturn {
       try {
         await recordAnswer(card.exercise.id, quality);
       } catch {
-        showToast({ type: 'error', message: 'Failed to save progress' });
+        showToast('Failed to save progress', { type: 'error' });
         // Session continues even if save fails
       }
     },
@@ -235,7 +235,7 @@ export function useSession(): UseSessionReturn {
           lastPracticed,
         });
       } catch {
-        showToast({ type: 'error', message: 'Failed to update stats' });
+        showToast('Failed to update stats', { type: 'error' });
       }
     }
   }, [stats.completed, user, showToast]);

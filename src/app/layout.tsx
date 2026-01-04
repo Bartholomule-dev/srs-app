@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AuthProvider } from "@/lib/context/AuthContext";
-import { ToastProvider } from "@/lib/context/ToastContext";
-import { Toast } from "@/components/Toast";
+import { ToastProvider } from "@pikoloo/darwin-ui";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -33,7 +32,6 @@ export default function RootLayout({
         <AuthProvider>
           <ToastProvider>
             {children}
-            <Toast />
           </ToastProvider>
         </AuthProvider>
       </body>
