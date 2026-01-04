@@ -79,7 +79,7 @@ export function HowItWorks() {
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
   return (
-    <section ref={sectionRef} className="py-24 px-4 bg-[var(--bg-base)]">
+    <section id="how-it-works" ref={sectionRef} className="py-24 px-4 bg-[var(--bg-base)]">
       <div className="max-w-5xl mx-auto">
         {/* Section header */}
         <motion.div
