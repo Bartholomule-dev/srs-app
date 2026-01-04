@@ -8,7 +8,7 @@
 
 **This is extremely high priority.** All three documentation sources MUST be kept up to date:
 
-1. **Obsidian Vault (`/SRS-app/`)** - Project docs, architecture, features, status
+1. **Obsidian Vault (`/home/brett/GoogleDrive/Obsidian Vault/SRS-app/`)** - Project docs, architecture, features, status
 2. **Serena Memories (`.serena/memories/`)** - Codebase structure, conventions, overview
 3. **CLAUDE.md** - Quick reference, commands, patterns, milestones
 
@@ -29,7 +29,7 @@
 
 ## Source of Truth
 
-**Obsidian Vault: `/SRS-app/`** - All project documentation lives in Obsidian.
+**Obsidian Vault: `/home/brett/GoogleDrive/Obsidian Vault/SRS-app/`** - All project documentation lives in Obsidian.
 
 Use `mcp__obsidian__*` tools to read/update documentation:
 - `Index.md` - Project hub and status overview
@@ -246,7 +246,7 @@ Persistent semantic memory for decisions, patterns, warnings, and learnings acro
 
 ### Obsidian (Documentation Vault)
 
-All project documentation lives in Obsidian vault `/SRS-app/`.
+All project documentation lives in Obsidian vault `/home/brett/GoogleDrive/Obsidian Vault/SRS-app/`.
 
 **Reading:**
 - `mcp__obsidian__read_note` - Read a single note
