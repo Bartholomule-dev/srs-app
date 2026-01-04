@@ -12,30 +12,59 @@ vi.mock('@/lib/hooks/useAuth', () => ({
   }),
 }));
 
+// Mock framer-motion to avoid animation issues in tests
+vi.mock('framer-motion', () => ({
+  motion: {
+    div: ({
+      children,
+      className,
+    }: {
+      children: React.ReactNode;
+      className?: string;
+    }) => <div className={className}>{children}</div>,
+  },
+  useInView: () => true,
+}));
+
 describe('HowItWorks', () => {
   it('renders section heading', () => {
     render(<HowItWorks />);
-    expect(screen.getByText('How it works')).toBeInTheDocument();
+    expect(screen.getByText('How It Works')).toBeInTheDocument();
   });
 
-  it('shows step 1 about daily exercises', () => {
+  it('renders section subheading', () => {
     render(<HowItWorks />);
-    expect(screen.getByText(/daily exercises/i)).toBeInTheDocument();
+    expect(
+      screen.getByText('Three simple steps to keep your syntax sharp')
+    ).toBeInTheDocument();
   });
 
-  it('shows step 2 about typing code', () => {
+  it('renders all 3 step titles', () => {
     render(<HowItWorks />);
-    expect(screen.getByText(/type the code/i)).toBeInTheDocument();
+    expect(screen.getByText('Get Daily Exercises')).toBeInTheDocument();
+    expect(screen.getByText('Type From Memory')).toBeInTheDocument();
+    expect(screen.getByText('Algorithm Adapts')).toBeInTheDocument();
   });
 
-  it('shows step 3 about algorithm adjusting', () => {
+  it('renders all 3 step descriptions', () => {
     render(<HowItWorks />);
-    expect(screen.getByText(/algorithm adjusts/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Personalized practice based on your schedule and progress.'
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Write actual code syntax without peeking at references.'
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('Smart scheduling adjusts based on your accuracy.')
+    ).toBeInTheDocument();
   });
 
-  it('displays all three steps', () => {
+  it('displays all three step number badges', () => {
     render(<HowItWorks />);
-    // Check that all three step numbers are rendered
     expect(screen.getByText('1')).toBeInTheDocument();
     expect(screen.getByText('2')).toBeInTheDocument();
     expect(screen.getByText('3')).toBeInTheDocument();
