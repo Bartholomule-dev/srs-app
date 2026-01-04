@@ -7,22 +7,18 @@ import {
   ErrorBoundary,
   Header,
   Greeting,
-  PracticeCTA,
   StatsGrid,
 } from '@/components';
 import { useAuth, useStats } from '@/lib/hooks';
 import { supabase } from '@/lib/supabase/client';
-import { mapExercise, mapUserProgress } from '@/lib/supabase/mappers';
-import { getDueCards, getNewCards } from '@/lib/srs';
-import type { Exercise, UserProgress } from '@/lib/types';
-
-const NEW_CARDS_LIMIT = 5;
+import { mapUserProgress } from '@/lib/supabase/mappers';
+import { getDueCards } from '@/lib/srs';
+import type { UserProgress } from '@/lib/types';
 
 function DashboardContent() {
   const { user } = useAuth();
   const { stats, loading: statsLoading } = useStats();
   const [dueCount, setDueCount] = useState(0);
-  const [newCount, setNewCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,13 +30,6 @@ function DashboardContent() {
       setError(null);
 
       try {
-        // Fetch exercises
-        const { data: exercisesData, error: exercisesError } = await supabase
-          .from('exercises')
-          .select('*');
-
-        if (exercisesError) throw exercisesError;
-
         // Fetch user progress
         const { data: progressData, error: progressError } = await supabase
           .from('user_progress')
@@ -49,14 +38,11 @@ function DashboardContent() {
 
         if (progressError) throw progressError;
 
-        const exercises: Exercise[] = (exercisesData ?? []).map(mapExercise);
         const progress: UserProgress[] = (progressData ?? []).map(mapUserProgress);
 
         const dueCards = getDueCards(progress);
-        const newCards = getNewCards(exercises, progress, NEW_CARDS_LIMIT);
 
         setDueCount(dueCards.length);
-        setNewCount(newCards.length);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load dashboard');
       } finally {
@@ -110,8 +96,7 @@ function DashboardContent() {
     <>
       <Header />
       <main className="max-w-4xl mx-auto px-4 py-8">
-        <Greeting />
-        <PracticeCTA dueCount={dueCount} newCount={newCount} />
+        <Greeting dueCount={dueCount} isLoading={loading} />
         <div className="mt-8">
           <StatsGrid stats={stats} loading={statsLoading} />
         </div>

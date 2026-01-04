@@ -12,10 +12,9 @@ vi.mock('@/components', () => ({
     <div data-testid="error-boundary">{children}</div>
   ),
   Header: () => <header data-testid="header">Header</header>,
-  Greeting: () => <div data-testid="greeting">Welcome back!</div>,
-  PracticeCTA: ({ dueCount, newCount }: { dueCount: number; newCount: number }) => (
-    <div data-testid="practice-cta">
-      Due: {dueCount}, New: {newCount}
+  Greeting: ({ dueCount, isLoading }: { dueCount: number; isLoading: boolean }) => (
+    <div data-testid="greeting">
+      Welcome back! {isLoading ? 'Loading...' : `Due: ${dueCount}`}
     </div>
   ),
   StatsGrid: ({ stats, loading }: { stats: unknown; loading: boolean }) => (
@@ -50,7 +49,6 @@ vi.mock('@/lib/supabase/mappers', () => ({
 
 vi.mock('@/lib/srs', () => ({
   getDueCards: vi.fn(() => []),
-  getNewCards: vi.fn(() => []),
 }));
 
 vi.mock('next/navigation', () => ({
@@ -130,11 +128,12 @@ describe('DashboardPage', () => {
     });
   });
 
-  it('renders PracticeCTA component', async () => {
+  it('passes dueCount to Greeting component', async () => {
     render(<DashboardPage />);
 
     await waitFor(() => {
-      expect(screen.getByTestId('practice-cta')).toBeInTheDocument();
+      expect(screen.getByTestId('greeting')).toBeInTheDocument();
+      expect(screen.getByText(/Due: 0/)).toBeInTheDocument();
     });
   });
 });
