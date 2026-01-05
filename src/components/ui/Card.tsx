@@ -20,10 +20,10 @@ export interface CardProps extends ComponentProps<typeof DarwinCard> {
 }
 
 const elevationStyles: Record<CardElevation, string> = {
-  flat: 'bg-transparent shadow-none',
-  1: 'bg-[var(--bg-surface-1)] shadow-[0_2px_12px_rgba(0,0,0,0.3)]',
-  2: 'bg-[var(--bg-surface-2)] shadow-[0_4px_24px_rgba(0,0,0,0.4)]',
-  3: 'bg-[var(--bg-surface-3)] shadow-[0_8px_32px_rgba(0,0,0,0.5)]',
+  flat: 'bg-transparent shadow-none border-transparent',
+  1: 'bg-[var(--bg-surface-1)] border border-[var(--border)] shadow-[0_1px_3px_rgba(0,0,0,0.2)]',
+  2: 'bg-[var(--bg-surface-2)] border border-[var(--border)] shadow-[0_2px_8px_rgba(0,0,0,0.25)]',
+  3: 'bg-[var(--bg-surface-3)] border border-[var(--border)] shadow-[0_4px_12px_rgba(0,0,0,0.3)]',
 };
 
 export function Card({
@@ -41,8 +41,8 @@ export function Card({
         interactive && [
           'cursor-pointer',
           'hover:-translate-y-0.5',
-          'hover:shadow-[0_8px_32px_rgba(0,0,0,0.5)]',
-          'hover:border-[rgba(59,130,246,0.3)]',
+          'hover:shadow-[0_4px_16px_rgba(0,0,0,0.3)]',
+          'hover:border-[var(--accent-primary)]/30',
         ],
         className
       )}
