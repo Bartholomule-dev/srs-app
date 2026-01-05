@@ -96,3 +96,26 @@ export function checkAnswerWithAlternatives(
     matchedAlternative: null,
   };
 }
+
+/**
+ * Check if a fill-in-the-blank answer is correct
+ * @param userAnswer - User's input for the blank
+ * @param expectedAnswer - Expected answer
+ * @param acceptedAlternatives - Optional alternative correct answers
+ */
+export function checkFillInAnswer(
+  userAnswer: string,
+  expectedAnswer: string,
+  acceptedAlternatives: string[] = []
+): boolean {
+  const normalized = userAnswer.trim();
+  const expected = expectedAnswer.trim();
+
+  // Check against primary answer
+  if (normalized === expected) {
+    return true;
+  }
+
+  // Check against alternatives
+  return acceptedAlternatives.some(alt => normalized === alt.trim());
+}
