@@ -1,3 +1,4 @@
+Connecting to db 5432
 export type Json =
   | string
   | number
@@ -36,6 +37,7 @@ export type Database = {
     Tables: {
       exercises: {
         Row: {
+          accepted_solutions: string[] | null
           avg_success_rate: number | null
           category: string
           created_at: string | null
@@ -53,6 +55,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          accepted_solutions?: string[] | null
           avg_success_rate?: number | null
           category: string
           created_at?: string | null
@@ -70,6 +73,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          accepted_solutions?: string[] | null
           avg_success_rate?: number | null
           category?: string
           created_at?: string | null
