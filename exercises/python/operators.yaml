@@ -11,6 +11,12 @@ exercises:
     hints:
       - Use // for floor division
     tags: [operators, division, beginner]
+    concept: foundations
+    subconcept: operators
+    level: intro
+    prereqs: []
+    type: write
+    pattern: arithmetic
 
   - slug: modulo-operator
     title: Modulo Operator
@@ -20,6 +26,12 @@ exercises:
     hints:
       - Use % for modulo
     tags: [operators, modulo, beginner]
+    concept: foundations
+    subconcept: operators
+    level: intro
+    prereqs: []
+    type: write
+    pattern: arithmetic
 
   - slug: exponentiation
     title: Exponentiation
@@ -29,6 +41,12 @@ exercises:
     hints:
       - Use ** for exponentiation
     tags: [operators, power, beginner]
+    concept: foundations
+    subconcept: operators
+    level: intro
+    prereqs: []
+    type: write
+    pattern: arithmetic
 
   - slug: comparison-chain
     title: Comparison Chain
@@ -39,6 +57,12 @@ exercises:
       - Python supports chained comparisons
       - Use <= for inclusive bounds
     tags: [operators, comparison, intermediate]
+    concept: foundations
+    subconcept: operators
+    level: practice
+    prereqs: []
+    type: write
+    pattern: comparison
 
   - slug: logical-and
     title: Logical And
@@ -48,3 +72,9 @@ exercises:
     hints:
       - Use the 'and' keyword
     tags: [operators, logical, beginner]
+    concept: foundations
+    subconcept: operators
+    level: intro
+    prereqs: []
+    type: write
+    pattern: logical
