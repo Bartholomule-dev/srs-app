@@ -3,7 +3,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Exercise, Quality } from '@/lib/types';
-import { checkAnswer, inferQuality, type QualityInputs } from '@/lib/exercise';
+import { checkAnswerWithAlternatives, inferQuality, type QualityInputs } from '@/lib/exercise';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { CodeInput } from './CodeInput';
@@ -79,10 +79,14 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
   }, []);
 
   const handleSubmit = useCallback(() => {
-    const result = checkAnswer(userAnswer, exercise.expectedAnswer);
+    const result = checkAnswerWithAlternatives(
+      userAnswer,
+      exercise.expectedAnswer,
+      exercise.acceptedSolutions
+    );
     setAnswerResult({ isCorrect: result.isCorrect, usedAstMatch: result.usedAstMatch });
     setPhase('feedback');
-  }, [userAnswer, exercise.expectedAnswer]);
+  }, [userAnswer, exercise.expectedAnswer, exercise.acceptedSolutions]);
 
   const handleGiveUp = useCallback(() => {
     setAnswerResult({ isCorrect: false, usedAstMatch: false });
