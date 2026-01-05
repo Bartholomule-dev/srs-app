@@ -12,6 +12,12 @@ exercises:
       - Use curly braces
       - Use key: value pairs
     tags: [dictionaries, creation, beginner]
+    concept: collections
+    subconcept: dicts
+    level: intro
+    prereqs: []
+    type: write
+    pattern: construction
 
   - slug: dict-access
     title: Dictionary Access
@@ -21,6 +27,12 @@ exercises:
     hints:
       - Use square brackets with the key
     tags: [dictionaries, access, beginner]
+    concept: collections
+    subconcept: dicts
+    level: intro
+    prereqs: []
+    type: write
+    pattern: lookup
 
   - slug: dict-get
     title: Dictionary Get
@@ -31,6 +43,12 @@ exercises:
       - Use the get() method
       - Second argument is the default
     tags: [dictionaries, methods, intermediate]
+    concept: collections
+    subconcept: dicts
+    level: practice
+    prereqs: [dicts]
+    type: write
+    pattern: lookup
 
   - slug: dict-keys
     title: Dictionary Keys
@@ -40,6 +58,12 @@ exercises:
     hints:
       - Use the keys() method
     tags: [dictionaries, methods, beginner]
+    concept: collections
+    subconcept: dicts
+    level: intro
+    prereqs: []
+    type: write
+    pattern: iteration
 
   - slug: dict-update
     title: Dictionary Update
@@ -50,3 +74,9 @@ exercises:
       - Use the update() method
       - Pass a dict as argument
     tags: [dictionaries, methods, intermediate]
+    concept: collections
+    subconcept: dicts
+    level: practice
+    prereqs: [dicts]
+    type: write
+    pattern: mutation
