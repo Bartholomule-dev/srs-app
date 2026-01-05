@@ -160,7 +160,7 @@ function DashboardContent() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.4 }}
           >
             <Greeting dueCount={dueCount} isLoading={loading} />
           </motion.div>
@@ -169,7 +169,7 @@ function DashboardContent() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
             className="flex items-center justify-between"
           >
             <h2 className="text-xl font-semibold text-[var(--text-primary)]">
@@ -181,7 +181,7 @@ function DashboardContent() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
           >
             <StatsGrid stats={stats} loading={statsLoading} />
           </motion.div>
@@ -190,7 +190,7 @@ function DashboardContent() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
             className="grid grid-cols-1 md:grid-cols-2 gap-4"
           >
             <QuickActionCard
@@ -261,7 +261,7 @@ function QuickActionCard({ title, description, icon, accentColor, progress }: Qu
                   style={{ backgroundColor: accentColor }}
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
-                  transition={{ duration: 0.8, delay: 0.5 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
                 />
               </div>
             </div>
