@@ -112,22 +112,30 @@ interface AnimatedCounterProps {
 const isTestEnv = typeof process !== 'undefined' && process.env.NODE_ENV === 'test';
 
 function AnimatedCounter({ value, suffix = '' }: AnimatedCounterProps) {
+  // In test environment, skip animation entirely and just show the value
+  if (isTestEnv) {
+    return (
+      <span className="text-3xl font-bold font-display text-[var(--text-primary)]">
+        {value}
+        {suffix && <span className="text-xl ml-0.5">{suffix}</span>}
+      </span>
+    );
+  }
+
+  return <AnimatedCounterInternal value={value} suffix={suffix} />;
+}
+
+// Internal component that handles the actual animation (only used in non-test environments)
+function AnimatedCounterInternal({ value, suffix = '' }: AnimatedCounterProps) {
   const spring = useSpring(0, { damping: 30, stiffness: 100 });
   const display = useTransform(spring, (current) => Math.round(current));
-  // In test environment, show value immediately; otherwise animate
-  const [displayValue, setDisplayValue] = useState(isTestEnv ? value : 0);
+  const [displayValue, setDisplayValue] = useState(0);
 
   useEffect(() => {
-    if (isTestEnv) {
-      // Skip animation in tests
-      setDisplayValue(value);
-      return;
-    }
     spring.set(value);
   }, [spring, value]);
 
   useEffect(() => {
-    if (isTestEnv) return; // Skip subscription in tests
     const unsubscribe = display.on('change', (v) => setDisplayValue(v));
     return unsubscribe;
   }, [display]);

@@ -24,18 +24,31 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
   const [startTime, setStartTime] = useState<number | null>(null);
   const [pausedMs, setPausedMs] = useState(0);
   const [answerResult, setAnswerResult] = useState<{ isCorrect: boolean; usedAstMatch: boolean } | null>(null);
+  const [prevExerciseId, setPrevExerciseId] = useState(exercise.id);
 
   const pauseStartRef = useRef<number | null>(null);
+  const prevIdForRef = useRef(exercise.id);
 
   // Reset state when exercise changes (critical for sequential questions)
-  useEffect(() => {
+  // Using the "adjusting state based on props" pattern recommended by React docs
+  // instead of useEffect to avoid cascading renders
+  if (exercise.id !== prevExerciseId) {
+    setPrevExerciseId(exercise.id);
     setPhase('answering');
     setUserAnswer('');
     setHintUsed(false);
     setStartTime(null);
     setPausedMs(0);
     setAnswerResult(null);
-    pauseStartRef.current = null;
+  }
+
+  // Reset pause timer ref when exercise changes
+  // This runs after render, which is when refs should be updated
+  useEffect(() => {
+    if (prevIdForRef.current !== exercise.id) {
+      pauseStartRef.current = null;
+      prevIdForRef.current = exercise.id;
+    }
   }, [exercise.id]);
 
   // Track page visibility for pausing timer
