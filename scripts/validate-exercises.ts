@@ -1,17 +1,24 @@
 // scripts/validate-exercises.ts
 import Ajv from 'ajv';
-import { readFileSync, readdirSync } from 'fs';
+import { existsSync, readFileSync, readdirSync } from 'fs';
 import { parse } from 'yaml';
 import { join } from 'path';
 
 const ajv = new Ajv({ allErrors: true });
 
-async function validateExercises() {
+function validateExercises() {
   const schemaPath = join(process.cwd(), 'exercises/schema.json');
   const schema = JSON.parse(readFileSync(schemaPath, 'utf-8'));
   const validate = ajv.compile(schema);
 
   const exercisesDir = join(process.cwd(), 'exercises/python');
+
+  // Check if exercises directory exists
+  if (!existsSync(exercisesDir)) {
+    console.error(`\n❌ Exercises directory not found: ${exercisesDir}`);
+    process.exit(1);
+  }
+
   const files = readdirSync(exercisesDir).filter(f => f.endsWith('.yaml'));
 
   let hasErrors = false;
@@ -20,7 +27,17 @@ async function validateExercises() {
   for (const file of files) {
     const filePath = join(exercisesDir, file);
     const content = readFileSync(filePath, 'utf-8');
-    const data = parse(content);
+
+    // Handle YAML parse errors gracefully
+    let data;
+    try {
+      data = parse(content);
+    } catch (parseError) {
+      console.error(`\n❌ ${file}: YAML parse error`);
+      console.error(`  ${parseError instanceof Error ? parseError.message : parseError}`);
+      hasErrors = true;
+      continue;
+    }
 
     const valid = validate(data);
     if (!valid) {
