@@ -11,6 +11,12 @@ exercises:
     hints:
       - Start with the def keyword
     tags: [functions, def, beginner]
+    concept: functions
+    subconcept: basics
+    level: intro
+    prereqs: [foundations]
+    type: write
+    pattern: definition
 
   - slug: function-return
     title: Function with Return
@@ -22,6 +28,12 @@ exercises:
     hints:
       - Use return to send back a value
     tags: [functions, return, parameters]
+    concept: functions
+    subconcept: basics
+    level: intro
+    prereqs: [foundations]
+    type: write
+    pattern: definition
 
   - slug: default-parameter
     title: Default Parameter
@@ -31,6 +43,12 @@ exercises:
     hints:
       - Default values use =
     tags: [functions, defaults, intermediate]
+    concept: functions
+    subconcept: arguments
+    level: practice
+    prereqs: [foundations, functions/basics]
+    type: write
+    pattern: definition
 
   - slug: args-function
     title: Variable Arguments
@@ -40,6 +58,12 @@ exercises:
     hints:
       - Use *args for variable arguments
     tags: [functions, args, advanced]
+    concept: functions
+    subconcept: arguments
+    level: practice
+    prereqs: [foundations, functions/basics]
+    type: write
+    pattern: definition
 
   - slug: kwargs-function
     title: Keyword Arguments
@@ -49,3 +73,9 @@ exercises:
     hints:
       - Use **kwargs for keyword arguments
     tags: [functions, kwargs, advanced]
+    concept: functions
+    subconcept: arguments
+    level: edge
+    prereqs: [foundations, functions/basics, functions/arguments]
+    type: write
+    pattern: definition
