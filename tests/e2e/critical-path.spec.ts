@@ -24,7 +24,7 @@ test.describe('Critical Path: Login → Dashboard → Practice', () => {
 
     // Wait for landing page to load - look for hero heading
     await expect(
-      page.getByRole('heading', { name: /Keep Your Code Skills Sharp/i })
+      page.getByRole('heading', { name: /Keep Your Code Sharp/i })
     ).toBeVisible({ timeout: 10000 });
 
     // Step 2: Sign in programmatically via Supabase client (Node.js side)
@@ -65,10 +65,15 @@ test.describe('Critical Path: Login → Dashboard → Practice', () => {
     ).toBeVisible({ timeout: 15000 });
 
     // Step 6: Look for practice button/link - could be "Learn new cards", "Start Practice", or "Browse exercises"
-    const practiceButton = page.getByRole('link', { name: /learn new cards|start practice|browse exercises/i });
+    // It could be either a button or a link depending on the component
+    const practiceLink = page.getByRole('link', { name: /learn new cards|start practice|browse exercises/i });
+    const practiceBtn = page.getByRole('button', { name: /learn new cards|start practice/i });
 
-    // Wait for practice button to be visible - it should always be present
-    await expect(practiceButton).toBeVisible({ timeout: 10000 });
+    // Wait for either button or link to be visible
+    await expect(practiceLink.or(practiceBtn)).toBeVisible({ timeout: 10000 });
+
+    // Determine which one to click
+    const practiceButton = await practiceBtn.isVisible() ? practiceBtn : practiceLink;
 
     // Click practice button and verify navigation
     {

@@ -225,11 +225,50 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 
 | Server | Purpose | Key Tool |
 |--------|---------|----------|
-| **Daem0n MCP** | Project memory - decisions, patterns, warnings | `get_briefing` (call first each session) |
+| **Daem0n MCP** | Project memory - decisions, patterns, warnings | `get_briefing`, `remember`, `recall` |
 | **Obsidian** | Documentation vault at `/home/brett/GoogleDrive/Obsidian Vault/SRS-app/` | `read_note`, `patch_note` |
 | **Serena** | Semantic code analysis - prefer over raw file ops | `get_symbols_overview`, `find_symbol` |
 | **Context7** | Library docs lookup | `resolve-library-id` → `query-docs` |
 | **Debate Hall** | Multi-perspective deliberation (Wind/Wall/Door) | For architectural decisions |
+
+### Multi-AI Consultation
+
+**CLI Tools for external AI perspectives:**
+```bash
+# Codex (OpenAI) - use 'exec' for non-interactive
+codex exec "Your prompt here"
+
+# Gemini - use '-p' flag for prompt
+gemini -p "Your prompt here"
+```
+
+**Debate Hall MCP - Wind/Wall/Door pattern:**
+```typescript
+// Thread ID MUST be date-first: YYYY-MM-DD-topic
+init_debate({ thread_id: "2026-01-05-feature-name", topic: "..." })
+
+// Fixed mode order: Wind (advocate) → Wall (skeptic) → Door (synthesizer)
+add_turn({ role: "Wind", content: "...", cognition: "PATHOS" })
+add_turn({ role: "Wall", content: "...", cognition: "ETHOS" })
+add_turn({ role: "Door", content: "...", cognition: "LOGOS" })
+
+close_debate({ synthesis: "Final recommendation..." })
+```
+
+**Daem0n MCP - Sacred Covenant (CRITICAL):**
+
+**ALWAYS call `context_check()` BEFORE `remember()` or `add_rule()`:**
+```typescript
+// Step 1: REQUIRED - Seek counsel first
+context_check({ description: "Recording decision about X" })
+
+// Step 2: Only AFTER context_check succeeds, call remember
+remember({ category: "decision", content: "...", rationale: "..." })
+```
+
+**If you skip context_check, the call WILL BE BLOCKED.** The covenant prevents contradicting existing project wisdom.
+
+To disable (not recommended): `export DAEM0NMCP_DISABLE_COVENANT=1` in `~/.bashrc`
 
 ---
 
