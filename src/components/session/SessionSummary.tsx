@@ -57,7 +57,7 @@ function StatCard({
     <motion.div
       initial={{ opacity: 0, y: 20, scale: 0.9 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay, type: 'spring', stiffness: 200 }}
+      transition={{ delay, duration: 0.3, ease: [0.25, 1, 0.5, 1] }}
       className={`text-center p-4 rounded-xl ${colorClasses[color]}`}
     >
       <div className="text-2xl font-bold font-display">{value}</div>
@@ -100,7 +100,7 @@ export function SessionSummary({ stats, onDashboard }: SessionSummaryProps) {
             <motion.span
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ type: 'spring', delay: 0.2, stiffness: 300 }}
+              transition={{ delay: 0.2, duration: 0.3, ease: [0.2, 0, 0, 1] }}
               className="text-5xl mb-3 block"
               role="img"
               aria-label="celebration"
