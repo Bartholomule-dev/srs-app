@@ -15,6 +15,12 @@ exercises:
     hints:
       - Use try and except keywords
     tags: [exceptions, try, intermediate]
+    concept: error-handling
+    subconcept: try-except
+    level: intro
+    prereqs: [functions]
+    type: write
+    pattern: handling
 
   - slug: except-specific
     title: Except Specific Error
@@ -24,6 +30,12 @@ exercises:
     hints:
       - Specify the exception type after except
     tags: [exceptions, specific, intermediate]
+    concept: error-handling
+    subconcept: try-except
+    level: intro
+    prereqs: [functions]
+    type: write
+    pattern: handling
 
   - slug: raise-exception
     title: Raise Exception
@@ -34,6 +46,12 @@ exercises:
       - Use the raise keyword
       - Pass message to exception constructor
     tags: [exceptions, raise, intermediate]
+    concept: error-handling
+    subconcept: raising
+    level: practice
+    prereqs: [functions]
+    type: write
+    pattern: handling
 
   - slug: try-finally
     title: Try Finally
@@ -43,6 +61,12 @@ exercises:
     hints:
       - finally runs whether exception occurs or not
     tags: [exceptions, finally, advanced]
+    concept: error-handling
+    subconcept: try-except
+    level: practice
+    prereqs: [functions]
+    type: write
+    pattern: handling
 
   - slug: except-as
     title: Except with Alias
@@ -52,3 +76,9 @@ exercises:
     hints:
       - Use as to give exception a name
     tags: [exceptions, alias, intermediate]
+    concept: error-handling
+    subconcept: try-except
+    level: practice
+    prereqs: [functions]
+    type: write
+    pattern: handling
