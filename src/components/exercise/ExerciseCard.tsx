@@ -3,10 +3,11 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Exercise, Quality } from '@/lib/types';
-import { checkAnswerWithAlternatives, inferQuality, type QualityInputs } from '@/lib/exercise';
+import { checkAnswerWithAlternatives, checkFillInAnswer, inferQuality, type QualityInputs } from '@/lib/exercise';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { CodeInput } from './CodeInput';
+import { FillInExercise } from './FillInExercise';
 import { ExercisePrompt } from './ExercisePrompt';
 import { HintButton } from './HintButton';
 import { ExerciseFeedback } from './ExerciseFeedback';
@@ -93,6 +94,23 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
     setPhase('feedback');
   }, []);
 
+  const handleFillInSubmit = useCallback((answer: string) => {
+    // Start timer if not already started
+    if (startTime === null) {
+      setStartTime(Date.now());
+    }
+
+    const isCorrect = checkFillInAnswer(
+      answer,
+      exercise.expectedAnswer,
+      exercise.acceptedSolutions
+    );
+
+    setUserAnswer(answer);
+    setAnswerResult({ isCorrect, usedAstMatch: false });
+    setPhase('feedback');
+  }, [exercise.expectedAnswer, exercise.acceptedSolutions, startTime]);
+
   const handleContinue = useCallback(() => {
     const responseTimeMs = startTime !== null ? Date.now() - startTime - pausedMs : 0;
 
@@ -134,11 +152,20 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
                 prompt={exercise.prompt}
               />
 
-              <CodeInput
-                value={userAnswer}
-                onChange={handleInputChange}
-                onSubmit={handleSubmit}
-              />
+              {exercise.exerciseType === 'fill-in' && exercise.template ? (
+                <FillInExercise
+                  template={exercise.template}
+                  blankPosition={exercise.blankPosition ?? 0}
+                  onSubmit={handleFillInSubmit}
+                  disabled={phase !== 'answering'}
+                />
+              ) : (
+                <CodeInput
+                  value={userAnswer}
+                  onChange={handleInputChange}
+                  onSubmit={handleSubmit}
+                />
+              )}
 
               <div className="flex items-start justify-between gap-4">
                 {firstHint && (
