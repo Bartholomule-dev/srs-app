@@ -126,3 +126,80 @@ body {
       border-color var(--duration-normal), color var(--duration-normal);
   }
 }
+
+/* =============================================================================
+   Darwin-UI Blue → Amber Override
+
+   Darwin-ui has pre-compiled Tailwind classes with blue colors baked in.
+   We override them here with higher specificity to enforce our gold theme.
+   ============================================================================= */
+
+/* Override bg-blue-* classes used by darwin-ui buttons */
+.bg-blue-500 {
+  background-color: #f59e0b !important; /* amber-500 */
+}
+.bg-blue-500\/90,
+.hover\:bg-blue-500\/90:hover {
+  background-color: rgba(245, 158, 11, 0.9) !important;
+}
+.bg-blue-600 {
+  background-color: #d97706 !important; /* amber-600 */
+}
+.bg-blue-400 {
+  background-color: #fbbf24 !important; /* amber-400 */
+}
+
+/* Override blue text colors */
+.text-blue-500 {
+  color: #f59e0b !important;
+}
+.text-blue-400 {
+  color: #fbbf24 !important;
+}
+.text-blue-600 {
+  color: #d97706 !important;
+}
+.text-blue-300 {
+  color: #fcd34d !important;
+}
+
+/* Override blue border colors */
+.border-blue-500 {
+  border-color: #f59e0b !important;
+}
+.border-blue-500\/30 {
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+.border-blue-500\/20 {
+  border-color: rgba(245, 158, 11, 0.2) !important;
+}
+
+/* Override blue background with opacity */
+.bg-blue-500\/20 {
+  background-color: rgba(245, 158, 11, 0.2) !important;
+}
+.bg-blue-500\/10 {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+}
+.bg-blue-500\/15 {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+}
+
+/* Override focus ring colors */
+.focus-visible\:ring-blue-500\/50:focus-visible {
+  --tw-ring-color: rgba(245, 158, 11, 0.5) !important;
+}
+.focus\:ring-blue-500:focus {
+  --tw-ring-color: #f59e0b !important;
+}
+
+/* Override hover states */
+.hover\:bg-blue-500:hover {
+  background-color: #f59e0b !important;
+}
+.hover\:bg-blue-600:hover {
+  background-color: #d97706 !important;
+}
+.hover\:text-blue-500:hover {
+  color: #f59e0b !important;
+}
