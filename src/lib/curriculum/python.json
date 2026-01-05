@@ -1,0 +1,76 @@
+{
+  "language": "python",
+  "version": "1.0.0",
+  "concepts": [
+    {
+      "slug": "foundations",
+      "name": "Foundations",
+      "description": "Variables, operators, expressions, and basic I/O",
+      "prereqs": [],
+      "subconcepts": ["variables", "operators", "expressions", "io"]
+    },
+    {
+      "slug": "strings",
+      "name": "Strings",
+      "description": "String manipulation, formatting, and f-strings",
+      "prereqs": ["foundations"],
+      "subconcepts": ["basics", "indexing", "slicing", "methods", "fstrings"]
+    },
+    {
+      "slug": "numbers-booleans",
+      "name": "Numbers & Booleans",
+      "description": "Numeric types, boolean logic, and type conversion",
+      "prereqs": ["foundations"],
+      "subconcepts": ["integers", "floats", "booleans", "conversion"]
+    },
+    {
+      "slug": "collections",
+      "name": "Collections",
+      "description": "Lists, tuples, dictionaries, and sets",
+      "prereqs": ["strings", "numbers-booleans"],
+      "subconcepts": ["lists", "tuples", "dicts", "sets", "unpacking"]
+    },
+    {
+      "slug": "control-flow",
+      "name": "Control Flow",
+      "description": "Conditionals, loops, and iteration",
+      "prereqs": ["collections"],
+      "subconcepts": ["conditionals", "for", "while", "iteration"]
+    },
+    {
+      "slug": "functions",
+      "name": "Functions",
+      "description": "Function definitions, parameters, and scope",
+      "prereqs": ["collections"],
+      "subconcepts": ["basics", "arguments", "scope", "lambda", "typehints"]
+    },
+    {
+      "slug": "comprehensions",
+      "name": "Comprehensions",
+      "description": "List, dict, and set comprehensions",
+      "prereqs": ["control-flow", "functions"],
+      "subconcepts": ["list-comp", "dict-comp", "set-comp", "generator-exp"]
+    },
+    {
+      "slug": "error-handling",
+      "name": "Error Handling",
+      "description": "Exception handling and error management",
+      "prereqs": ["comprehensions"],
+      "subconcepts": ["try-except", "finally", "raising"]
+    },
+    {
+      "slug": "oop",
+      "name": "OOP",
+      "description": "Classes, objects, and inheritance",
+      "prereqs": ["comprehensions"],
+      "subconcepts": ["classes", "methods", "inheritance", "classmethod", "properties"]
+    },
+    {
+      "slug": "modules-files",
+      "name": "Modules & Files",
+      "description": "Imports, file I/O, and context managers",
+      "prereqs": ["error-handling", "oop"],
+      "subconcepts": ["imports", "reading", "writing", "context"]
+    }
+  ]
+}
