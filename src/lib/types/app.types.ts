@@ -40,6 +40,7 @@ export interface Exercise {
   title: string;
   prompt: string;
   expectedAnswer: string;
+  acceptedSolutions: string[];  // Alternative valid answers
   hints: string[];
   explanation: string | null;
   tags: string[];

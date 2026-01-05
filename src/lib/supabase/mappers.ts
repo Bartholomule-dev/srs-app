@@ -38,6 +38,7 @@ export function mapExercise(db: DbExercise): Exercise {
     title: db.title,
     prompt: db.prompt,
     expectedAnswer: db.expected_answer,
+    acceptedSolutions: db.accepted_solutions ?? [],
     hints: (db.hints as string[]) ?? [],
     explanation: db.explanation,
     tags: db.tags ?? [],
