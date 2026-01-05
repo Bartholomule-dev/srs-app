@@ -70,7 +70,7 @@ function ErrorState({ message, onRetry, onDashboard }: { message: string; onRetr
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ type: 'spring', delay: 0.1 }}
+              transition={{ duration: 0.3, ease: [0.2, 0, 0, 1], delay: 0.1 }}
               className="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--accent-error)]/10
                         flex items-center justify-center"
             >
@@ -115,7 +115,7 @@ function EmptyState({ onDashboard }: { onDashboard: () => void }) {
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ type: 'spring', delay: 0.1 }}
+              transition={{ duration: 0.3, ease: [0.2, 0, 0, 1], delay: 0.1 }}
               className="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--accent-success)]/10
                         flex items-center justify-center"
             >
