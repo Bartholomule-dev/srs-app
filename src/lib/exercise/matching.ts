@@ -8,7 +8,12 @@ import type { AnswerResult } from './types';
  * - Converts tabs to 4 spaces
  * - Removes trailing whitespace per line
  * - Collapses 3+ consecutive newlines to 2 (single blank line)
+ * - Normalizes comma spacing to single space after comma
+ * - Normalizes colon spacing (removes space before, ensures space after)
  * - Trims leading/trailing whitespace from entire string
+ *
+ * Note: These regex-based normalizations will also affect content inside strings.
+ * For exercises where this matters, use accepted_solutions to provide alternatives.
  */
 export function normalizePython(code: string): string {
   if (!code) return '';
@@ -18,6 +23,9 @@ export function normalizePython(code: string): string {
     .replace(/\t/g, '    ')           // Tabs → 4 spaces
     .replace(/ +$/gm, '')             // Remove trailing spaces per line
     .replace(/\n{3,}/g, '\n\n')       // Collapse 3+ newlines to 2
+    .replace(/, */g, ', ')            // Comma spacing: ensure single space after
+    .replace(/ +:/g, ':')             // Pre-colon: remove spaces before colon
+    .replace(/:(?![\n$]) */g, ': ')   // Post-colon: ensure single space after (but not at EOL)
     .trim();                          // Trim leading/trailing whitespace
 }
 
