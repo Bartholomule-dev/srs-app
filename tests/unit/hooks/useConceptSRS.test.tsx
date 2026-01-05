@@ -189,7 +189,7 @@ describe('useConceptSRS', () => {
       });
 
       await act(async () => {
-        await result.current.recordSubconceptResult('for-loops', 4, 'ex-1', true);
+        await result.current.recordSubconceptResult('for-loops', 'control-flow', 4, 'ex-1', true);
       });
 
       expect(mockFrom).toHaveBeenCalledWith('subconcept_progress');

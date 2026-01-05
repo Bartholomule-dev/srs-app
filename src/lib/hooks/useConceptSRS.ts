@@ -54,6 +54,7 @@ export interface UseConceptSRSReturn {
   error: AppError | null;
   recordSubconceptResult: (
     subconceptSlug: string,
+    conceptSlug: ConceptSlug,
     quality: Quality,
     exerciseSlug: string,
     wasCorrect: boolean
@@ -184,6 +185,7 @@ export function useConceptSRS(): UseConceptSRSReturn {
   const recordSubconceptResult = useCallback(
     async (
       subconceptSlug: string,
+      conceptSlug: ConceptSlug,
       quality: Quality,
       exerciseSlug: string,
       wasCorrect: boolean
@@ -218,13 +220,10 @@ export function useConceptSRS(): UseConceptSRSReturn {
         if (existingData) {
           currentProgress = mapDbToSubconceptProgress(existingData as DbSubconceptProgress);
         } else {
-          // Need to determine concept_slug from exercise or default
-          // For now, we'll need this to be passed in or derive it
-          // This is a limitation - in practice, the caller should ensure
-          // progress exists or we need the concept_slug
+          // Create initial state with the provided concept slug
           currentProgress = createInitialSubconceptState(
             subconceptSlug,
-            'foundations', // Default concept - caller should ensure progress exists
+            conceptSlug,
             user.id
           );
         }
