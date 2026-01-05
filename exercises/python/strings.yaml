@@ -12,6 +12,12 @@ exercises:
       - Use square bracket indexing
       - Indices start at 0
     tags: [strings, indexing, beginner]
+    concept: strings
+    subconcept: indexing
+    level: intro
+    prereqs: [strings.basics]
+    type: write
+    pattern: indexing
 
   - slug: string-slicing
     title: String Slicing
@@ -22,6 +28,12 @@ exercises:
       - Use slice notation [start:end]
       - End index is exclusive
     tags: [strings, slicing, intermediate]
+    concept: strings
+    subconcept: slicing
+    level: practice
+    prereqs: [strings.indexing]
+    type: write
+    pattern: indexing
 
   - slug: string-upper
     title: String Uppercase
@@ -31,6 +43,12 @@ exercises:
     hints:
       - Use the upper() method
     tags: [strings, methods, beginner]
+    concept: strings
+    subconcept: methods
+    level: intro
+    prereqs: [strings.basics]
+    type: write
+    pattern: mutation
 
   - slug: f-string-basic
     title: F-String Basic
@@ -43,6 +61,12 @@ exercises:
       - Start string with f
       - Use curly braces for variables
     tags: [strings, f-strings, intermediate]
+    concept: strings
+    subconcept: fstrings
+    level: practice
+    prereqs: [strings.basics]
+    type: write
+    pattern: construction
 
   - slug: string-split
     title: String Split
@@ -55,3 +79,9 @@ exercises:
       - Use the split() method
       - Pass the delimiter as argument
     tags: [strings, methods, intermediate]
+    concept: strings
+    subconcept: methods
+    level: practice
+    prereqs: [strings.basics]
+    type: write
+    pattern: conversion
