@@ -41,7 +41,7 @@ describe('RootLayout', () => {
     expect(layout.props.lang).toBe('en');
   });
 
-  it('wraps children with AuthProvider', async () => {
+  it('wraps children with Providers (AuthProvider + ToastProvider)', async () => {
     const { default: RootLayout } = await import('@/app/layout');
 
     const layout = RootLayout({ children: <div>Test Child</div> });
@@ -51,12 +51,12 @@ describe('RootLayout', () => {
     expect(body).toBeDefined();
     expect(body.type).toBe('body');
 
-    // The body should contain AuthProvider which wraps children
-    // AuthProvider is a function component, so we check it exists
-    const authProvider = body.props.children;
-    expect(authProvider).toBeDefined();
-    // AuthProvider's displayName or name should indicate it's the auth provider
-    expect(authProvider.type.name || authProvider.type.displayName || authProvider.type).toBe('AuthProvider');
+    // The body should contain Providers which wraps AuthProvider and ToastProvider
+    const providers = body.props.children;
+    expect(providers).toBeDefined();
+    // Providers wraps AuthProvider and ToastProvider
+    const providerName = providers.type.name || providers.type.displayName || providers.type;
+    expect(providerName).toBe('Providers');
   });
 
   it('includes proper font classes on body', async () => {

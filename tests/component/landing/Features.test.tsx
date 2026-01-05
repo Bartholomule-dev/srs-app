@@ -13,26 +13,55 @@ vi.mock('@/lib/hooks/useAuth', () => ({
 }));
 
 describe('Features', () => {
-  it('renders three feature cards', () => {
+  it('renders all feature titles', () => {
     render(<Features />);
-    const headings = screen.getAllByRole('heading', { level: 3 });
-    expect(headings).toHaveLength(3);
+    expect(screen.getByText('Spaced Repetition')).toBeInTheDocument();
+    expect(screen.getByText('Code Syntax Focus')).toBeInTheDocument();
+    expect(screen.getByText('Track Progress')).toBeInTheDocument();
   });
 
-  it('mentions spaced repetition', () => {
+  it('renders three feature cards with headings', () => {
     render(<Features />);
-    expect(screen.getByText(/spaced repetition/i)).toBeInTheDocument();
+    const featureHeadings = screen.getAllByRole('heading', { level: 3 });
+    expect(featureHeadings).toHaveLength(3);
   });
 
-  it('mentions code syntax', () => {
+  it('renders section header', () => {
     render(<Features />);
-    expect(screen.getByText(/code syntax/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: /why syntaxsrs/i })).toBeInTheDocument();
+    expect(
+      screen.getByText(/built specifically for developers who want to maintain their syntax fluency/i)
+    ).toBeInTheDocument();
   });
 
-  it('mentions progress tracking', () => {
+  it('has id="features" for anchor link', () => {
+    const { container } = render(<Features />);
+    const section = container.querySelector('section#features');
+    expect(section).toBeInTheDocument();
+  });
+
+  it('renders CTA button', () => {
     render(<Features />);
-    // Multiple elements match (title and description), so use getAllByText
-    const matches = screen.getAllByText(/track.*progress|progress.*track|streaks/i);
-    expect(matches.length).toBeGreaterThan(0);
+    expect(screen.getByRole('button', { name: /try free/i })).toBeInTheDocument();
+  });
+
+  it('renders CTA card with "Ready to start?" text', () => {
+    render(<Features />);
+    expect(screen.getByText(/ready to start/i)).toBeInTheDocument();
+  });
+
+  it('mentions spaced repetition in description', () => {
+    render(<Features />);
+    expect(screen.getByText(/science-backed algorithm/i)).toBeInTheDocument();
+  });
+
+  it('mentions code syntax in description', () => {
+    render(<Features />);
+    expect(screen.getByText(/practice real programming patterns/i)).toBeInTheDocument();
+  });
+
+  it('mentions progress tracking in description', () => {
+    render(<Features />);
+    expect(screen.getByText(/build consistency with daily streaks/i)).toBeInTheDocument();
   });
 });

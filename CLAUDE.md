@@ -79,7 +79,9 @@ src/
     ├── session/          # Session types, interleaving
     ├── stats/            # Stats queries, streak calculation
     ├── errors/           # AppError, handleSupabaseError
-    └── supabase/         # Client (browser), server, helpers, mappers
+    ├── supabase/         # Client (browser), server, helpers, mappers
+    ├── confetti.ts       # Celebration effects (fireConfetti, fireConfettiMini)
+    └── utils.ts          # cn() class utility
 
 tests/
 ├── unit/                 # Vitest unit tests
@@ -112,8 +114,35 @@ Using Supabase Magic Link (passwordless email OTP) with `@supabase/ssr` for prod
 
 Auth state managed via `onAuthStateChange`.
 
-### Styling
-Tailwind CSS 4 with CSS variables for theming. Dark mode via `prefers-color-scheme`.
+### Styling & Theme System
+
+**Tailwind CSS 4** with CSS variables defined in `globals.css`. Dark mode is the default.
+
+**Theme CSS Variables (use these, not hardcoded colors):**
+```css
+/* Backgrounds */
+--bg-base, --bg-surface-1, --bg-surface-2, --bg-surface-3
+
+/* Text */
+--text-primary, --text-secondary, --text-tertiary
+
+/* Accents */
+--accent-primary, --accent-success, --accent-warning, --accent-error
+
+/* Syntax highlighting */
+--syntax-keyword, --syntax-string, --syntax-function, --syntax-number, --syntax-comment
+```
+
+**Font Stack:**
+- `font-display` - Space Grotesk (headings, hero text)
+- `font-body` - DM Sans (body text, default)
+- `font-mono` - JetBrains Mono (code)
+
+**cn() Utility:** Use `cn()` from `@/lib/utils` for conditional class merging:
+```tsx
+import { cn } from '@/lib/utils';
+className={cn('base-classes', condition && 'conditional-class')}
+```
 
 ### Components
 - Use `"use client"` directive for interactive components
@@ -143,12 +172,32 @@ import { Button, Card, Input } from '@/components/ui';
 **Custom Implementations (exceptions):**
 - `Toast/ToastProvider` - Keep custom (darwin-ui requires breaking context change)
 - `Progress` - Custom wrapper for proper aria-progressbar attributes
+- `CodeEditor` - IDE-styled textarea with line numbers, focus glow
 
 **When creating new UI:**
 1. Check if darwin-ui has the component first
 2. If yes, use it via `@/components/ui/` wrapper
 3. If no, build custom with Tailwind following darwin-ui aesthetic
 4. Never duplicate functionality darwin-ui already provides
+
+### Component Patterns
+
+**Card Elevation:** Use `elevation` prop (1, 2, 3) for progressive depth:
+```tsx
+<Card elevation={2} interactive>Content</Card>
+```
+
+**CodeEditor:** IDE-styled input for code:
+```tsx
+<CodeEditor value={code} onChange={setCode} onSubmit={handleSubmit} showLineNumbers />
+```
+
+**Confetti Celebration:** Use for success moments:
+```tsx
+import { fireConfetti, fireConfettiMini } from '@/lib/confetti';
+fireConfetti();           // Large burst (session complete)
+fireConfettiMini();       // Small burst (correct answer)
+```
 
 ---
 
@@ -216,8 +265,9 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 6. ✅ Exercise Library - 50 Python exercises in YAML
 7. ✅ Basic Stats - StatsGrid, useStats, streak/accuracy
 8. ✅ MVP Deployment - Vercel, GitHub Actions CI/E2E, Playwright
-9. ✅ UI/UX Redesign - Landing page (Hero, Features, HowItWorks), dashboard with Greeting/PracticeCTA, immersive practice mode, celebration session summary
+9. ✅ UI/UX Redesign - "IDE-Inspired Premium" aesthetic with dark-first theme, Space Grotesk/DM Sans/JetBrains Mono fonts, bento grids, segmented progress bars, confetti celebrations
 10. ✅ darwin-ui Migration - Migrated to @pikoloo/darwin-ui for macOS-inspired aesthetic, wrapper components in src/components/ui/
+11. ✅ Theme System - CSS variables for colors/fonts, cn() utility, CodeEditor component, Card elevation variants
 
 ## Next Steps
 

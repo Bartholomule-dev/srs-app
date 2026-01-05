@@ -1,43 +1,148 @@
 'use client';
 
-import { Card, CardContent } from '@/components/ui/Card';
+import { motion } from 'framer-motion';
+import { Card, CardContent, Button } from '@/components/ui';
 
 const features = [
   {
     title: 'Spaced Repetition',
-    description: 'Science-backed algorithm schedules reviews at optimal intervals for long-term retention.',
-    icon: '🧠',
+    description:
+      'Science-backed algorithm schedules reviews at optimal intervals for long-term retention.',
+    icon: BrainIcon,
   },
   {
     title: 'Code Syntax Focus',
-    description: 'Practice real programming patterns, not trivia. Write actual code from memory.',
-    icon: '💻',
+    description: 'Practice real programming patterns. Write actual code from memory.',
+    icon: CodeIcon,
   },
   {
-    title: 'Track Progress & Streaks',
+    title: 'Track Progress',
     description: 'Build consistency with daily streaks. Watch your accuracy improve over time.',
-    icon: '📈',
+    icon: ChartIcon,
   },
 ];
 
-export function Features() {
+function BrainIcon({ className }: { className?: string }) {
   return (
-    <section className="py-16 px-4 bg-gray-50 dark:bg-gray-900/50">
-      <div className="max-w-5xl mx-auto">
-        <div className="grid md:grid-cols-3 gap-8">
-          {features.map((feature) => (
-            <Card key={feature.title}>
-              <CardContent className="p-6">
-                <div className="text-3xl mb-4">{feature.icon}</div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {feature.description}
-                </p>
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      aria-hidden="true"
+    >
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
+      <path d="M12 6c-2.5 0-4 1.5-4 3.5 0 1.5.5 2.5 2 3.5-1.5 1-2 2-2 3.5 0 2 1.5 3.5 4 3.5s4-1.5 4-3.5c0-1.5-.5-2.5-2-3.5 1.5-1 2-2 2-3.5 0-2-1.5-3.5-4-3.5z" />
+    </svg>
+  );
+}
+
+function CodeIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      aria-hidden="true"
+    >
+      <polyline points="16 18 22 12 16 6" />
+      <polyline points="8 6 2 12 8 18" />
+    </svg>
+  );
+}
+
+function ChartIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      aria-hidden="true"
+    >
+      <path d="M3 3v18h18" />
+      <path d="M18 17V9" />
+      <path d="M13 17V5" />
+      <path d="M8 17v-3" />
+    </svg>
+  );
+}
+
+export function Features() {
+  const scrollToAuthForm = () => {
+    const emailInput = document.querySelector('input[type="email"]') as HTMLInputElement | null;
+    if (emailInput) {
+      emailInput.focus();
+      emailInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
+  return (
+    <section id="features" className="py-24 px-4 bg-[var(--bg-surface-1)]">
+      <div className="max-w-6xl mx-auto">
+        {/* Section header */}
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">Why SyntaxSRS?</h2>
+          <p className="text-[var(--text-secondary)] text-lg max-w-2xl mx-auto">
+            Built specifically for developers who want to maintain their syntax fluency.
+          </p>
+        </motion.div>
+
+        {/* Bento Grid - use responsive spans instead of named areas */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {features.map((feature, index) => (
+            <motion.div
+              key={feature.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className={
+                // On desktop: first and last cards span 2 rows
+                index === 0 || index === 2 ? 'md:row-span-2' : ''
+              }
+            >
+              <Card elevation={2} interactive className="h-full">
+                <CardContent className="p-8 h-full flex flex-col">
+                  <feature.icon className="w-10 h-10 text-[var(--accent-primary)] mb-6" />
+                  <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
+                  <p className="text-[var(--text-secondary)] leading-relaxed">
+                    {feature.description}
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+
+          {/* CTA Card - always comes last on mobile, slots into center on desktop */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="md:col-start-2 md:row-start-2"
+          >
+            <Card
+              elevation={2}
+              className="h-full bg-gradient-to-br from-[var(--accent-primary)]/10 to-purple-500/10"
+            >
+              <CardContent className="p-8 h-full flex flex-col justify-center items-center text-center">
+                <p className="text-lg font-medium mb-4">Ready to start?</p>
+                <Button glow onClick={scrollToAuthForm}>
+                  Try Free
+                </Button>
               </CardContent>
             </Card>
-          ))}
+          </motion.div>
         </div>
       </div>
     </section>

@@ -1,8 +1,10 @@
 'use client';
 
+import { useEffect } from 'react';
 import type { SessionStats } from '@/lib/session';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { fireConfetti } from '@/lib/confetti';
 
 interface SessionSummaryProps {
   /** Session statistics */
@@ -39,6 +41,11 @@ export function SessionSummary({ stats, onDashboard }: SessionSummaryProps) {
       : 0;
 
   const isPerfectScore = accuracy === 100 && stats.completed > 0;
+
+  // Fire confetti celebration on mount
+  useEffect(() => {
+    fireConfetti(isPerfectScore);
+  }, [isPerfectScore]);
 
   return (
     <Card className="max-w-md mx-auto">

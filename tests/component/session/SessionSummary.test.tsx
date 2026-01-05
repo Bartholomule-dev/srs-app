@@ -4,6 +4,20 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { SessionSummary } from '@/components/session';
 import type { SessionStats } from '@/lib/session';
 
+// Mock canvas-confetti module - factory must not reference external variables
+vi.mock('canvas-confetti', () => {
+  const mockFn = vi.fn();
+  return {
+    default: Object.assign(mockFn, {
+      reset: vi.fn(),
+    }),
+  };
+});
+
+// Import the mocked module to access it in tests
+import confetti from 'canvas-confetti';
+const mockConfetti = confetti as unknown as ReturnType<typeof vi.fn>;
+
 const mockOnDashboard = vi.fn();
 
 const createStats = (overrides: Partial<SessionStats> = {}): SessionStats => ({
@@ -19,6 +33,7 @@ const createStats = (overrides: Partial<SessionStats> = {}): SessionStats => ({
 describe('SessionSummary', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockConfetti.mockClear();
   });
 
   it('displays correct count in breakdown', () => {
@@ -117,6 +132,47 @@ describe('SessionSummary', () => {
         />
       );
       expect(screen.getByText(/keep practicing/i)).toBeInTheDocument();
+    });
+  });
+
+  describe('confetti celebration', () => {
+    it('fires confetti on mount', () => {
+      render(<SessionSummary stats={createStats()} onDashboard={mockOnDashboard} />);
+      expect(mockConfetti).toHaveBeenCalled();
+    });
+
+    it('fires standard confetti for regular completion', () => {
+      render(<SessionSummary stats={createStats()} onDashboard={mockOnDashboard} />);
+      // Standard burst has particleCount of 100
+      expect(mockConfetti).toHaveBeenCalledWith(
+        expect.objectContaining({
+          particleCount: 100,
+        })
+      );
+    });
+
+    it('fires enhanced confetti for perfect score', () => {
+      render(
+        <SessionSummary
+          stats={createStats({ correct: 10, incorrect: 0 })}
+          onDashboard={mockOnDashboard}
+        />
+      );
+      // Perfect score has particleCount of 150
+      expect(mockConfetti).toHaveBeenCalledWith(
+        expect.objectContaining({
+          particleCount: 150,
+        })
+      );
+    });
+
+    it('includes disableForReducedMotion option', () => {
+      render(<SessionSummary stats={createStats()} onDashboard={mockOnDashboard} />);
+      expect(mockConfetti).toHaveBeenCalledWith(
+        expect.objectContaining({
+          disableForReducedMotion: true,
+        })
+      );
     });
   });
 });

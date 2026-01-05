@@ -5,7 +5,7 @@ export { Button } from './Button';
 export type { ButtonProps, ButtonVariant } from './Button';
 
 export { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from './Card';
-export type { CardProps, CardHeaderProps, CardContentProps, CardFooterProps, CardTitleProps, CardDescriptionProps } from './Card';
+export type { CardProps, CardElevation, CardHeaderProps, CardContentProps, CardFooterProps, CardTitleProps, CardDescriptionProps } from './Card';
 
 export { Input } from './Input';
 export type { InputProps } from './Input';
@@ -27,3 +27,6 @@ export type { SkeletonProps } from './Skeleton';
 
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './Tooltip';
 export type { TooltipProps, TooltipTriggerProps, TooltipContentProps, TooltipProviderProps } from './Tooltip';
+
+export { CodeEditor } from './CodeEditor';
+export type { CodeEditorProps } from './CodeEditor';

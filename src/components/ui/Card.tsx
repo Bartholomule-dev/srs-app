@@ -9,14 +9,45 @@ import {
   CardDescription as DarwinCardDescription,
 } from '@pikoloo/darwin-ui';
 import type { ComponentProps, ReactNode } from 'react';
+import { cn } from '@/lib/utils';
+
+export type CardElevation = 'flat' | 1 | 2 | 3;
 
 export interface CardProps extends ComponentProps<typeof DarwinCard> {
   children: ReactNode;
+  elevation?: CardElevation;
+  interactive?: boolean;
 }
 
-export function Card({ children, className = '', ...props }: CardProps) {
+const elevationStyles: Record<CardElevation, string> = {
+  flat: 'bg-transparent shadow-none',
+  1: 'bg-[var(--bg-surface-1)] shadow-[0_2px_12px_rgba(0,0,0,0.3)]',
+  2: 'bg-[var(--bg-surface-2)] shadow-[0_4px_24px_rgba(0,0,0,0.4)]',
+  3: 'bg-[var(--bg-surface-3)] shadow-[0_8px_32px_rgba(0,0,0,0.5)]',
+};
+
+export function Card({
+  children,
+  elevation = 1,
+  interactive = false,
+  className = '',
+  ...props
+}: CardProps) {
   return (
-    <DarwinCard className={className} {...props}>
+    <DarwinCard
+      className={cn(
+        elevationStyles[elevation],
+        'transition-all duration-200',
+        interactive && [
+          'cursor-pointer',
+          'hover:-translate-y-0.5',
+          'hover:shadow-[0_8px_32px_rgba(0,0,0,0.5)]',
+          'hover:border-[rgba(59,130,246,0.3)]',
+        ],
+        className
+      )}
+      {...props}
+    >
       {children}
     </DarwinCard>
   );

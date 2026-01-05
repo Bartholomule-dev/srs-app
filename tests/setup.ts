@@ -5,6 +5,24 @@
  * The default keys are local Supabase demo keys that won't work on real projects.
  */
 import '@testing-library/jest-dom/vitest';
+import { vi } from 'vitest';
+
+// Mock IntersectionObserver for framer-motion's whileInView feature
+class MockIntersectionObserver implements IntersectionObserver {
+  readonly root: Element | Document | null = null;
+  readonly rootMargin: string = '';
+  readonly thresholds: ReadonlyArray<number> = [];
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {}
+
+  observe(): void {}
+  unobserve(): void {}
+  disconnect(): void {}
+  takeRecords(): IntersectionObserverEntry[] { return []; }
+}
+
+vi.stubGlobal('IntersectionObserver', MockIntersectionObserver);
 
 // Warn if tests might be running against a real Supabase project
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
