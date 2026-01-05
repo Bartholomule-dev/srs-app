@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { DURATION, EASE } from '@/lib/motion';
 import { Button } from '@/components/ui';
 import { AuthForm } from './AuthForm';
 
@@ -39,7 +40,7 @@ export function Hero() {
             className="lg:col-span-3 space-y-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: DURATION.page }}
           >
             {/* Badge */}
             <motion.span
@@ -120,7 +121,7 @@ export function Hero() {
             className="lg:col-span-2 relative hidden lg:block"
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            transition={{ duration: DURATION.page, delay: 0.3 }}
           >
             <CodeMockup />
           </motion.div>
@@ -224,7 +225,7 @@ function CodeMockup() {
               <motion.div
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
-                transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+                transition={{ duration: DURATION.normal, ease: EASE.emphasized }}
                 className="w-16 h-16 rounded-full bg-[var(--accent-success)]
                            flex items-center justify-center shadow-lg"
               >
