@@ -23,7 +23,7 @@ export function LandingHeader() {
         <Link href="/" className="flex items-center gap-2">
           <span
             className="text-xl font-display font-bold
-                          bg-gradient-to-r from-[var(--accent-primary)] to-purple-500
+                          bg-gradient-to-r from-[var(--accent-primary)] to-orange-500
                           bg-clip-text text-transparent"
           >
             SyntaxSRS

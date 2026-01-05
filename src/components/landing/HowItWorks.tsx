@@ -101,7 +101,7 @@ export function HowItWorks() {
           {/* Connecting line (desktop only) */}
           <div className="hidden md:block absolute top-16 left-[calc(16.67%+24px)] right-[calc(16.67%+24px)] h-0.5">
             <motion.div
-              className="h-full bg-gradient-to-r from-[var(--accent-primary)] to-purple-500"
+              className="h-full bg-gradient-to-r from-[var(--accent-primary)] to-orange-500"
               initial={{ scaleX: 0 }}
               animate={isInView ? { scaleX: 1 } : {}}
               transition={{ duration: 0.5, delay: 0.3 }}

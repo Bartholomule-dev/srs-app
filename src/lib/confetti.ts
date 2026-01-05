@@ -5,17 +5,17 @@
  * - fireConfetti(): Large burst for session completion
  * - fireConfettiMini(): Small burst for correct answers
  *
- * Colors match the app theme (blues, greens, purples)
+ * Colors match the app theme (warm gold palette)
  */
 import confetti from 'canvas-confetti';
 
-// Theme colors matching the app palette
+// Theme colors matching the warm gold app palette
 const THEME_COLORS = [
-  '#3B82F6', // blue-500
-  '#10B981', // green-500
-  '#8B5CF6', // purple-500
-  '#06B6D4', // cyan-500
-  '#F59E0B', // amber-500
+  '#F59E0B', // amber-500 (primary)
+  '#F97316', // orange-500 (secondary)
+  '#FACC15', // yellow-400
+  '#10B981', // green-500 (success)
+  '#CA8A04', // yellow-600
 ];
 
 /**

@@ -15,13 +15,13 @@ function PracticeBackground() {
   return (
     <>
       {/* Deep gradient base */}
-      <div className="fixed inset-0 bg-gradient-to-br from-[#0a0a12] via-[#0f1419] to-[#0a0a12] -z-10" />
-      {/* Subtle blue spotlight from top */}
+      <div className="fixed inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#14120a] to-[#0a0a0a] -z-10" />
+      {/* Subtle gold spotlight from top */}
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] -z-10
-                     bg-[radial-gradient(ellipse,rgba(59,130,246,0.08)_0%,transparent_70%)]" />
+                     bg-[radial-gradient(ellipse,rgba(245,158,11,0.08)_0%,transparent_70%)]" />
       {/* Accent glow from bottom corners */}
       <div className="fixed bottom-0 left-0 w-[400px] h-[400px] -z-10
-                     bg-[radial-gradient(circle,rgba(139,92,246,0.06)_0%,transparent_70%)]" />
+                     bg-[radial-gradient(circle,rgba(249,115,22,0.06)_0%,transparent_70%)]" />
       <div className="fixed bottom-0 right-0 w-[400px] h-[400px] -z-10
                      bg-[radial-gradient(circle,rgba(34,197,94,0.04)_0%,transparent_70%)]" />
     </>

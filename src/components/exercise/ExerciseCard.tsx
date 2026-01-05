@@ -115,7 +115,7 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
   return (
     <Card className="overflow-hidden">
       {/* Category indicator bar */}
-      <div className="h-1 bg-gradient-to-r from-[var(--accent-primary)] to-purple-500" />
+      <div className="h-1 bg-gradient-to-r from-[var(--accent-primary)] to-orange-500" />
 
       <CardContent className="p-6">
         <AnimatePresence mode="wait">

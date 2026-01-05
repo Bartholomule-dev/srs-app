@@ -20,18 +20,18 @@ function DashboardBackground() {
   return (
     <>
       {/* Aurora gradient background */}
-      <div className="fixed inset-0 bg-gradient-to-br from-[var(--bg-base)] via-[#1a1a2e] to-[#0f1419] -z-10" />
+      <div className="fixed inset-0 bg-gradient-to-br from-[var(--bg-base)] via-[#1a1710] to-[#14120a] -z-10" />
 
       {/* Spotlight effect from top-right */}
       <div
         className="fixed top-0 right-0 w-[600px] h-[600px] -z-10
-                      bg-[radial-gradient(circle,rgba(59,130,246,0.12)_0%,transparent_70%)]"
+                      bg-[radial-gradient(circle,rgba(245,158,11,0.12)_0%,transparent_70%)]"
       />
 
       {/* Secondary glow from bottom-left */}
       <div
         className="fixed bottom-0 left-0 w-[500px] h-[500px] -z-10
-                      bg-[radial-gradient(circle,rgba(139,92,246,0.08)_0%,transparent_70%)]"
+                      bg-[radial-gradient(circle,rgba(249,115,22,0.08)_0%,transparent_70%)]"
       />
 
       {/* Accent glow following user focus area */}

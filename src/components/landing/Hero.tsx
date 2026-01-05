@@ -16,18 +16,18 @@ export function Hero() {
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden">
       {/* Aurora gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[var(--bg-base)] via-[#1a1a2e] to-[#0f1419]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[var(--bg-base)] via-[#1a1710] to-[#14120a]" />
 
       {/* Spotlight effect from top-right */}
       <div
         className="absolute top-0 right-0 w-[600px] h-[600px]
-                      bg-[radial-gradient(circle,rgba(59,130,246,0.15)_0%,transparent_70%)]"
+                      bg-[radial-gradient(circle,rgba(245,158,11,0.15)_0%,transparent_70%)]"
       />
 
       {/* Secondary glow from bottom-left */}
       <div
         className="absolute bottom-0 left-0 w-[400px] h-[400px]
-                      bg-[radial-gradient(circle,rgba(139,92,246,0.1)_0%,transparent_70%)]"
+                      bg-[radial-gradient(circle,rgba(249,115,22,0.1)_0%,transparent_70%)]"
       />
 
       {/* Grain texture overlay */}
@@ -61,7 +61,7 @@ export function Hero() {
             >
               Keep Your{' '}
               <span
-                className="bg-gradient-to-r from-[var(--accent-primary)] to-purple-500
+                className="bg-gradient-to-r from-[var(--accent-primary)] to-orange-500
                               bg-clip-text text-transparent"
               >
                 Code Sharp

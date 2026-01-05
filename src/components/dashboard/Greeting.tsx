@@ -55,7 +55,7 @@ export function Greeting({ dueCount: propDueCount, isLoading: propLoading }: Gre
       {/* Decorative gradient accent */}
       <div
         className="absolute top-0 right-0 w-[300px] h-[300px]
-                      bg-[radial-gradient(circle,rgba(59,130,246,0.15)_0%,transparent_70%)]"
+                      bg-[radial-gradient(circle,rgba(245,158,11,0.15)_0%,transparent_70%)]"
       />
 
       <div className="relative p-6 md:p-8">
@@ -70,7 +70,7 @@ export function Greeting({ dueCount: propDueCount, isLoading: propLoading }: Gre
             >
               {greeting},{' '}
               <span
-                className="bg-gradient-to-r from-[var(--accent-primary)] to-purple-500
+                className="bg-gradient-to-r from-[var(--accent-primary)] to-orange-500
                               bg-clip-text text-transparent"
               >
                 {username}

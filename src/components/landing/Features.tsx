@@ -133,7 +133,7 @@ export function Features() {
           >
             <Card
               elevation={2}
-              className="h-full bg-gradient-to-br from-[var(--accent-primary)]/10 to-purple-500/10"
+              className="h-full bg-gradient-to-br from-[var(--accent-primary)]/10 to-orange-500/10"
             >
               <CardContent className="p-8 h-full flex flex-col justify-center items-center text-center">
                 <p className="text-lg font-medium mb-4">Ready to start?</p>

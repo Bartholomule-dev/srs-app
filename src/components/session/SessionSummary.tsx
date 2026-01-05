@@ -50,7 +50,7 @@ function StatCard({
   const colorClasses = {
     blue: 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]',
     green: 'bg-[var(--accent-success)]/10 text-[var(--accent-success)]',
-    purple: 'bg-purple-500/10 text-purple-400',
+    purple: 'bg-orange-500/10 text-orange-400',
   };
 
   return (
@@ -87,7 +87,7 @@ export function SessionSummary({ stats, onDashboard }: SessionSummaryProps) {
     >
       <Card className="max-w-md mx-auto overflow-hidden">
         {/* Decorative gradient header */}
-        <div className="h-2 bg-gradient-to-r from-[var(--accent-primary)] via-purple-500 to-[var(--accent-success)]" />
+        <div className="h-2 bg-gradient-to-r from-[var(--accent-primary)] via-orange-500 to-[var(--accent-success)]" />
 
         <CardContent className="p-6">
           {/* Celebration Header */}

@@ -8,7 +8,7 @@ export function ExercisePrompt({ category, language, prompt }: ExercisePromptPro
   return (
     <div>
       <header className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400 mb-4" role="banner">
-        <span className="font-medium text-blue-600 dark:text-blue-400">{language}</span>
+        <span className="font-medium text-amber-600 dark:text-amber-400">{language}</span>
         <span aria-hidden="true">/</span>
         <span>{category}</span>
       </header>

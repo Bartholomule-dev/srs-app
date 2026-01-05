@@ -19,6 +19,7 @@
   --color-text-tertiary: var(--text-tertiary);
 
   --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
   --color-accent-success: var(--accent-success);
   --color-accent-warning: var(--accent-warning);
   --color-accent-error: var(--accent-error);
@@ -50,9 +51,10 @@
   --text-tertiary: #5c5c6b;
 
   /* Accent colors */
-  --accent-primary: #3b82f6;
+  --accent-primary: #f59e0b;
+  --accent-secondary: #f97316;
   --accent-success: #22c55e;
-  --accent-warning: #f59e0b;
+  --accent-warning: #fbbf24;
   --accent-error: #ef4444;
 
   /* Syntax highlighting */
@@ -80,9 +82,10 @@
   --text-tertiary: #7a7a8c;
 
   /* Accent colors (adjusted for WCAG AA contrast) */
-  --accent-primary: #2563eb;
+  --accent-primary: #d97706;
+  --accent-secondary: #ea580c;
   --accent-success: #16a34a;
-  --accent-warning: #d97706;
+  --accent-warning: #ca8a04;
   --accent-error: #dc2626;
 
   /* Syntax highlighting (adjusted for light backgrounds) */
