@@ -4,6 +4,12 @@
  */
 
 import type { Database } from './database.generated';
+import type {
+  ConceptSlug,
+  ExerciseLevel,
+  ExerciseType,
+  ExercisePattern,
+} from '../curriculum/types';
 
 // Extract row types from generated types
 export type DbProfile = Database['public']['Tables']['profiles']['Row'];
@@ -40,7 +46,7 @@ export interface Exercise {
   title: string;
   prompt: string;
   expectedAnswer: string;
-  acceptedSolutions: string[];  // Alternative valid answers
+  acceptedSolutions: string[]; // Alternative valid answers
   hints: string[];
   explanation: string | null;
   tags: string[];
@@ -48,6 +54,18 @@ export interface Exercise {
   avgSuccessRate: number | null;
   createdAt: string;
   updatedAt: string;
+
+  // New taxonomy fields
+  concept: ConceptSlug;
+  subconcept: string;
+  level: ExerciseLevel;
+  prereqs: string[];
+  exerciseType: ExerciseType; // 'type' is reserved, use 'exerciseType'
+  pattern: ExercisePattern;
+
+  // Fill-in specific (optional)
+  template: string | null;
+  blankPosition: number | null;
 }
 
 /**
