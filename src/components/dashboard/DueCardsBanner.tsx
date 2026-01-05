@@ -23,7 +23,7 @@ export function DueCardsBanner({
   const totalCards = dueCount + newCount;
 
   return (
-    <Card className="bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg text-white border-0">
+    <Card className="bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-primary)]/80 shadow-lg text-white border-0">
       <CardContent className="p-6">
         <div className="flex justify-between items-center">
           <div>
@@ -35,14 +35,14 @@ export function DueCardsBanner({
               <span>
                 <strong>{newCount}</strong> new
               </span>
-              <span className="text-blue-100">({totalCards} cards total)</span>
+              <span className="opacity-70">({totalCards} cards total)</span>
             </div>
           </div>
           <Button
             onClick={onStartPractice}
             disabled={loading}
             variant="secondary"
-            className="bg-white text-blue-600 hover:bg-blue-50"
+            className="bg-white text-[var(--accent-primary)] hover:bg-white/90"
           >
             Start Practice
           </Button>
