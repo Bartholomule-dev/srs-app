@@ -42,7 +42,7 @@ describe('confetti utilities', () => {
       fireConfetti();
       expect(mockConfetti).toHaveBeenCalledWith(
         expect.objectContaining({
-          colors: expect.arrayContaining(['#3B82F6', '#10B981', '#8B5CF6']),
+          colors: expect.arrayContaining(['#F59E0B', '#F97316', '#10B981']),
         })
       );
     });

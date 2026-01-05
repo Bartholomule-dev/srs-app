@@ -14,36 +14,23 @@ import React from 'react';
 vi.mock('framer-motion', async (importOriginal) => {
   const actual = await importOriginal<typeof import('framer-motion')>();
 
+  // Props to strip from motion components (framer-motion specific)
+  const MOTION_PROPS = new Set([
+    'initial', 'animate', 'exit', 'transition', 'variants',
+    'whileHover', 'whileTap', 'whileInView', 'whileFocus', 'whileDrag',
+    'layout', 'layoutId', 'drag', 'dragConstraints', 'dragElastic',
+    'dragMomentum', 'onDragStart', 'onDrag', 'onDragEnd',
+    'onAnimationStart', 'onAnimationComplete', 'viewport',
+  ]);
+
   // Create a component that strips animation props and renders as regular element
   const createMotionComponent = (tag: keyof React.JSX.IntrinsicElements) => {
     const Component = React.forwardRef<HTMLElement, Record<string, unknown> & { children?: React.ReactNode }>(
-      (
-        {
-          children,
-          initial: _initial,
-          animate: _animate,
-          exit: _exit,
-          transition: _transition,
-          whileHover: _whileHover,
-          whileTap: _whileTap,
-          whileInView: _whileInView,
-          whileFocus: _whileFocus,
-          whileDrag: _whileDrag,
-          variants: _variants,
-          layout: _layout,
-          layoutId: _layoutId,
-          drag: _drag,
-          dragConstraints: _dragConstraints,
-          dragElastic: _dragElastic,
-          dragMomentum: _dragMomentum,
-          onDragStart: _onDragStart,
-          onDrag: _onDrag,
-          onDragEnd: _onDragEnd,
-          style,
-          ...props
-        },
-        ref
-      ) => {
+      ({ children, style, ...allProps }, ref) => {
+        // Filter out motion-specific props
+        const props = Object.fromEntries(
+          Object.entries(allProps).filter(([key]) => !MOTION_PROPS.has(key))
+        );
         // Filter out any remaining motion-specific style properties
         const cleanStyle = style && typeof style === 'object'
           ? Object.fromEntries(
