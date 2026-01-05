@@ -7,6 +7,19 @@
   --font-body: "DM Sans Variable", sans-serif;
   --font-mono: "JetBrains Mono Variable", monospace;
 
+  /* Override Tailwind blue with amber/gold for darwin-ui components */
+  --color-blue-50: #fffbeb;
+  --color-blue-100: #fef3c7;
+  --color-blue-200: #fde68a;
+  --color-blue-300: #fcd34d;
+  --color-blue-400: #fbbf24;
+  --color-blue-500: #f59e0b;
+  --color-blue-600: #d97706;
+  --color-blue-700: #b45309;
+  --color-blue-800: #92400e;
+  --color-blue-900: #78350f;
+  --color-blue-950: #451a03;
+
   /* Color utilities mapped to CSS variables */
   --color-bg-base: var(--bg-base);
   --color-bg-surface-1: var(--bg-surface-1);

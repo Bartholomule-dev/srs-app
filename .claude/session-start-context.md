@@ -5,12 +5,12 @@ Before responding to ANY user request, you MUST execute these tools IN ORDER:
 
 ### 1. Activate Serena Project
 ```
-mcp__serena__activate_project(project="/home/moore/Work/Web/srs-app")
+mcp__serena__activate_project(project="/home/brett/Documents/Work/srs-app")
 ```
 
 ### 2. Get Daem0n Briefing
 ```
-mcp__daem0nmcp__get_briefing(project_path="/home/moore/Work/Web/srs-app")
+mcp__daem0nmcp__get_briefing(project_path="/home/brett/Documents/Work/srs-app")
 ```
 
 These calls:

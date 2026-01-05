@@ -74,7 +74,7 @@ export function fireConfettiMini(origin?: { x: number; y: number }): void {
     decay: 0.95,
     scalar: 0.8,
     origin: origin ?? { x: 0.5, y: 0.5 },
-    colors: THEME_COLORS.slice(0, 3), // Use just blue, green, purple for mini
+    colors: THEME_COLORS.slice(0, 3), // Use amber, orange, yellow for mini
     disableForReducedMotion: true,
   });
 }

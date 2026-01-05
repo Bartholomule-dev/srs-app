@@ -38,7 +38,7 @@ export function Button({
         // Active: slight scale down for tactile feedback
         'active:scale-[0.98]',
         // Glow effect for primary buttons when enabled
-        glow && variant === 'primary' && 'shadow-[0_0_20px_rgba(59,130,246,0.4)]',
+        glow && variant === 'primary' && 'shadow-[0_0_20px_rgba(245,158,11,0.4)]',
         className
       )}
       {...props}

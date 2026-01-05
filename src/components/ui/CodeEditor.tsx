@@ -86,7 +86,7 @@ export const CodeEditor = forwardRef<HTMLTextAreaElement, CodeEditorProps>(
           'relative rounded-lg overflow-hidden',
           'bg-bg-surface-2 border border-transparent',
           'focus-within:border-accent-primary',
-          'focus-within:shadow-[0_0_0_3px_rgba(59,130,246,0.1)]',
+          'focus-within:shadow-[0_0_0_3px_rgba(245,158,11,0.1)]',
           'transition-all duration-150',
           className
         )}

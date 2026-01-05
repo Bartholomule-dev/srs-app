@@ -1,8 +1,11 @@
 {
   "mcpServers": {
     "sequential-thinking": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+      "command": "/home/brett/.config/nvm/versions/node/v24.12.0/bin/npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "env": {
+        "PATH": "/home/brett/.config/nvm/versions/node/v24.12.0/bin:/usr/local/bin:/usr/bin:/bin"
+      }
     }
   }
 }
