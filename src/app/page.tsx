@@ -17,8 +17,8 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-950">
-        <div className="animate-pulse text-gray-400">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-base)]">
+        <div className="animate-pulse text-[var(--text-tertiary)]">Loading...</div>
       </div>
     );
   }
@@ -29,7 +29,7 @@ export default function HomePage() {
   }
 
   return (
-    <main className="min-h-screen bg-white dark:bg-gray-950">
+    <main className="min-h-screen bg-[var(--bg-base)]">
       <LandingHeader />
       <Hero />
       <Features />
