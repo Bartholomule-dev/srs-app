@@ -109,6 +109,77 @@ describe('validateYamlExercise', () => {
       expect(errors.filter(e => e.field === 'hints')).toHaveLength(0);
     });
   });
+
+  describe('accepted_solutions field', () => {
+    it('accepts exercises with accepted_solutions array', () => {
+      const exercise: YamlExercise = {
+        slug: 'test-accepted',
+        title: 'Test',
+        difficulty: 1,
+        prompt: 'Test prompt',
+        expected_answer: 'answer',
+        hints: ['hint'],
+        accepted_solutions: ['alt1', 'alt2'],
+      };
+      const errors = validateYamlExercise(exercise, 'test.yaml');
+      expect(errors).toHaveLength(0);
+    });
+
+    it('accepts exercises without accepted_solutions (optional)', () => {
+      const exercise: YamlExercise = {
+        slug: 'test-no-accepted',
+        title: 'Test',
+        difficulty: 1,
+        prompt: 'Test prompt',
+        expected_answer: 'answer',
+        hints: ['hint'],
+      };
+      const errors = validateYamlExercise(exercise, 'test.yaml');
+      expect(errors).toHaveLength(0);
+    });
+
+    it('rejects accepted_solutions with non-string values', () => {
+      const exercise = {
+        slug: 'test-bad-accepted',
+        title: 'Test',
+        difficulty: 1,
+        prompt: 'Test prompt',
+        expected_answer: 'answer',
+        hints: ['hint'],
+        accepted_solutions: [123, 'valid'],
+      } as unknown as YamlExercise;
+      const errors = validateYamlExercise(exercise, 'test.yaml');
+      expect(errors.some(e => e.field === 'accepted_solutions')).toBe(true);
+    });
+
+    it('rejects accepted_solutions that is not an array', () => {
+      const exercise = {
+        slug: 'test-not-array',
+        title: 'Test',
+        difficulty: 1,
+        prompt: 'Test prompt',
+        expected_answer: 'answer',
+        hints: ['hint'],
+        accepted_solutions: 'not-an-array',
+      } as unknown as YamlExercise;
+      const errors = validateYamlExercise(exercise, 'test.yaml');
+      expect(errors.some(e => e.field === 'accepted_solutions')).toBe(true);
+    });
+
+    it('accepts empty accepted_solutions array', () => {
+      const exercise: YamlExercise = {
+        slug: 'test-empty-accepted',
+        title: 'Test',
+        difficulty: 1,
+        prompt: 'Test prompt',
+        expected_answer: 'answer',
+        hints: ['hint'],
+        accepted_solutions: [],
+      };
+      const errors = validateYamlExercise(exercise, 'test.yaml');
+      expect(errors).toHaveLength(0);
+    });
+  });
 });
 
 describe('validateYamlFile', () => {

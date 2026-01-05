@@ -61,6 +61,29 @@ export function validateYamlExercise(
     });
   }
 
+  // Validate accepted_solutions if present
+  if (exercise.accepted_solutions !== undefined) {
+    if (!Array.isArray(exercise.accepted_solutions)) {
+      errors.push({
+        file,
+        slug,
+        field: 'accepted_solutions',
+        message: 'accepted_solutions must be an array',
+      });
+    } else {
+      for (let i = 0; i < exercise.accepted_solutions.length; i++) {
+        if (typeof exercise.accepted_solutions[i] !== 'string') {
+          errors.push({
+            file,
+            slug,
+            field: 'accepted_solutions',
+            message: `accepted_solutions[${i}] must be a string`,
+          });
+        }
+      }
+    }
+  }
+
   return errors;
 }
 

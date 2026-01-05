@@ -12,6 +12,7 @@ export interface YamlExercise {
   expected_answer: string;
   hints: string[];
   tags?: string[];
+  accepted_solutions?: string[];  // Alternative valid answers
 }
 
 /**
