@@ -8,6 +8,8 @@ exercises:
     difficulty: 1
     prompt: Print the text "Hello, World!" to the console
     expected_answer: print("Hello, World!")
+    accepted_solutions:
+      - "print('Hello, World!')"
     hints:
       - Use the print() function
       - Put the text in quotes
@@ -28,6 +30,8 @@ exercises:
     difficulty: 1
     prompt: Create a variable called name with the value "Alice"
     expected_answer: name = "Alice"
+    accepted_solutions:
+      - "name = 'Alice'"
     hints:
       - Use quotes for strings
     tags: [variables, strings, beginner]
@@ -46,6 +50,8 @@ exercises:
     difficulty: 2
     prompt: Get input from user with the prompt "Enter name:"
     expected_answer: input("Enter name:")
+    accepted_solutions:
+      - "input('Enter name:')"
     hints:
       - Use the input() function
       - Pass the prompt as a string argument

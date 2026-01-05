@@ -37,6 +37,8 @@ exercises:
     difficulty: 2
     prompt: Create an f-string that includes the variable name
     expected_answer: f"Hello, {name}"
+    accepted_solutions:
+      - "f'Hello, {name}'"
     hints:
       - Start string with f
       - Use curly braces for variables
@@ -47,6 +49,8 @@ exercises:
     difficulty: 2
     prompt: Split string s by comma
     expected_answer: s.split(",")
+    accepted_solutions:
+      - "s.split(',')"
     hints:
       - Use the split() method
       - Pass the delimiter as argument
