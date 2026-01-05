@@ -207,14 +207,14 @@ describe('Greeting', () => {
 
   // Button tests
   describe('CTA buttons', () => {
-    it('renders Start Practice button', () => {
+    it('renders Start Practice button when cards are due', () => {
       render(<Greeting dueCount={5} />);
       expect(screen.getByRole('button', { name: /start practice/i })).toBeInTheDocument();
     });
 
-    it('renders Browse exercises button', () => {
-      render(<Greeting dueCount={5} />);
-      expect(screen.getByRole('button', { name: /browse exercises/i })).toBeInTheDocument();
+    it('renders Learn New Cards button when no cards are due', () => {
+      render(<Greeting dueCount={0} />);
+      expect(screen.getByRole('button', { name: /learn new cards/i })).toBeInTheDocument();
     });
 
     it('Start Practice navigates to /practice when clicked', () => {
@@ -224,28 +224,28 @@ describe('Greeting', () => {
       expect(mockPush).toHaveBeenCalledWith('/practice');
     });
 
-    it('Browse exercises navigates to /exercises when clicked', () => {
-      render(<Greeting dueCount={5} />);
-      const button = screen.getByRole('button', { name: /browse exercises/i });
-      fireEvent.click(button);
-      expect(mockPush).toHaveBeenCalledWith('/exercises');
-    });
-
-    it('Start Practice button is disabled when no due cards', () => {
+    it('Learn New Cards navigates to /practice when clicked', () => {
       render(<Greeting dueCount={0} />);
-      const button = screen.getByRole('button', { name: /start practice/i });
-      expect(button).toBeDisabled();
+      const button = screen.getByRole('button', { name: /learn new cards/i });
+      fireEvent.click(button);
+      expect(mockPush).toHaveBeenCalledWith('/practice');
     });
 
-    it('Start Practice button is disabled when loading', () => {
+    it('button is disabled when loading', () => {
       render(<Greeting dueCount={5} isLoading={true} />);
       const button = screen.getByRole('button', { name: /start practice/i });
       expect(button).toBeDisabled();
     });
 
-    it('Start Practice button is enabled when cards are due', () => {
+    it('button is enabled when not loading (with due cards)', () => {
       render(<Greeting dueCount={5} />);
       const button = screen.getByRole('button', { name: /start practice/i });
+      expect(button).not.toBeDisabled();
+    });
+
+    it('button is enabled when not loading (no due cards)', () => {
+      render(<Greeting dueCount={0} />);
+      const button = screen.getByRole('button', { name: /learn new cards/i });
       expect(button).not.toBeDisabled();
     });
   });

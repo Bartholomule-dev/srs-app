@@ -16,21 +16,17 @@ describe('StatsGrid', () => {
   it('renders all four stat cards in 2x2 bento layout', () => {
     render(<StatsGrid stats={mockStats} />);
 
-    // Streak
+    // Labels should be visible
     expect(screen.getByText('Streak')).toBeInTheDocument();
-    expect(screen.getByText('7')).toBeInTheDocument();
-
-    // Accuracy with progress ring
     expect(screen.getByText('Accuracy')).toBeInTheDocument();
+    expect(screen.getByText('Total')).toBeInTheDocument();
+    expect(screen.getByText('Today')).toBeInTheDocument();
+
+    // Values should be visible
+    expect(screen.getByText('7')).toBeInTheDocument();
     expect(screen.getByText('87')).toBeInTheDocument();
     expect(screen.getByText('%')).toBeInTheDocument();
-
-    // Total
-    expect(screen.getByText('Total')).toBeInTheDocument();
     expect(screen.getByText('150')).toBeInTheDocument();
-
-    // Today
-    expect(screen.getByText('Today')).toBeInTheDocument();
     expect(screen.getByText('15')).toBeInTheDocument();
   });
 
@@ -78,11 +74,6 @@ describe('StatsGrid', () => {
     const { container } = render(<StatsGrid stats={mockStats} />);
 
     // The accuracy card has a progress ring with 2 circles
-    // The target icon has 3 circles (concentric target rings)
-    // Total: 2 (progress ring) + 3 (target) = 5 circles
-    // But we're using showRing for accuracy instead of target icon, so no target
-    // And we have other icons that may have circles
-    // Let's just verify we have the progress ring SVG circles
     const circles = container.querySelectorAll('circle');
     // At least 2 circles for the progress ring, plus additional from check icon
     expect(circles.length).toBeGreaterThanOrEqual(2);

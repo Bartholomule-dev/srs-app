@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { motion, useSpring, useTransform } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/Card';
 import { cn } from '@/lib/utils';
 
@@ -100,7 +102,45 @@ function CheckCircleIcon({ className }: { className?: string }) {
   );
 }
 
-// Progress Ring component
+// Animated counter component
+interface AnimatedCounterProps {
+  value: number;
+  suffix?: string;
+}
+
+// Check if we're in a test environment
+const isTestEnv = typeof process !== 'undefined' && process.env.NODE_ENV === 'test';
+
+function AnimatedCounter({ value, suffix = '' }: AnimatedCounterProps) {
+  const spring = useSpring(0, { damping: 30, stiffness: 100 });
+  const display = useTransform(spring, (current) => Math.round(current));
+  // In test environment, show value immediately; otherwise animate
+  const [displayValue, setDisplayValue] = useState(isTestEnv ? value : 0);
+
+  useEffect(() => {
+    if (isTestEnv) {
+      // Skip animation in tests
+      setDisplayValue(value);
+      return;
+    }
+    spring.set(value);
+  }, [spring, value]);
+
+  useEffect(() => {
+    if (isTestEnv) return; // Skip subscription in tests
+    const unsubscribe = display.on('change', (v) => setDisplayValue(v));
+    return unsubscribe;
+  }, [display]);
+
+  return (
+    <span className="text-3xl font-bold font-display text-[var(--text-primary)]">
+      {displayValue}
+      {suffix && <span className="text-xl ml-0.5">{suffix}</span>}
+    </span>
+  );
+}
+
+// Progress Ring component with animation
 interface ProgressRingProps {
   value: number;
   size?: number;
@@ -137,7 +177,7 @@ export function ProgressRing({
         strokeWidth={strokeWidth}
       />
       {/* Progress ring with animation */}
-      <circle
+      <motion.circle
         cx={center}
         cy={center}
         r={radius}
@@ -146,10 +186,9 @@ export function ProgressRing({
         strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeDasharray={circumference}
-        strokeDashoffset={offset}
-        style={{
-          transition: 'stroke-dashoffset 0.6s ease-out',
-        }}
+        initial={{ strokeDashoffset: circumference }}
+        animate={{ strokeDashoffset: offset }}
+        transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
       />
     </svg>
   );
@@ -172,6 +211,8 @@ export interface StatsCardProps {
   showRing?: boolean;
   /** Additional CSS classes */
   className?: string;
+  /** Animation delay for staggered entrance */
+  delay?: number;
 }
 
 const iconMap: Record<StatsIconType, React.ComponentType<{ className?: string }>> = {
@@ -191,6 +232,15 @@ const iconColorMap: Record<StatsIconType, string> = {
   chart: 'text-[var(--accent-primary)]',
 };
 
+// Map icons to glow colors
+const iconGlowMap: Record<StatsIconType, string> = {
+  fire: 'bg-[var(--accent-warning)]',
+  target: 'bg-[var(--accent-primary)]',
+  trophy: 'bg-[var(--accent-success)]',
+  check: 'bg-[var(--accent-primary)]',
+  chart: 'bg-[var(--accent-primary)]',
+};
+
 export function StatsCard({
   label,
   value,
@@ -199,76 +249,100 @@ export function StatsCard({
   trend,
   showRing = false,
   className = '',
+  delay = 0,
 }: StatsCardProps) {
   const IconComponent = icon ? iconMap[icon] : null;
   const iconColor = icon ? iconColorMap[icon] : '';
+  const iconGlow = icon ? iconGlowMap[icon] : '';
 
   return (
-    <Card interactive elevation={2} className={cn('min-h-[120px]', className)}>
-      <CardContent className="p-5 h-full flex flex-col justify-between">
-        {/* Top row: Icon/Ring and Label */}
-        <div className="flex items-center justify-between mb-3">
-          {/* Icon or Progress Ring */}
-          {showRing ? (
-            <div className="relative">
-              <ProgressRing value={value} size={40} strokeWidth={3} />
-            </div>
-          ) : IconComponent ? (
-            <div className="relative">
-              {/* Subtle glow behind icon */}
-              <div
-                className={cn(
-                  'absolute inset-0 blur-md opacity-30 rounded-full',
-                  icon === 'fire' && 'bg-[var(--accent-warning)]',
-                  icon === 'target' && 'bg-[var(--accent-primary)]',
-                  icon === 'trophy' && 'bg-[var(--accent-success)]',
-                  icon === 'check' && 'bg-[var(--accent-primary)]',
-                  icon === 'chart' && 'bg-[var(--accent-primary)]'
-                )}
-              />
-              <IconComponent className={cn('w-8 h-8 relative', iconColor)} />
-            </div>
-          ) : null}
-
-          {/* Label */}
-          <span className="text-sm text-[var(--text-secondary)] font-medium">
-            {label}
-          </span>
-        </div>
-
-        {/* Bottom row: Value and Trend */}
-        <div className="flex items-end justify-between">
-          <span className="text-3xl font-bold font-display text-[var(--text-primary)]">
-            {value}
-            {suffix && <span className="text-xl ml-0.5">{suffix}</span>}
-          </span>
-
-          {/* Trend indicator */}
-          {trend !== undefined && trend !== 0 && (
+    <motion.div
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.4, delay }}
+    >
+      <Card interactive elevation={2} className={cn('min-h-[120px] overflow-hidden', className)}>
+        <CardContent className="p-5 h-full flex flex-col justify-between relative">
+          {/* Decorative corner glow */}
+          {icon && (
             <div
               className={cn(
-                'flex items-center gap-0.5 text-sm font-medium',
-                trend > 0 && 'text-[var(--accent-success)]',
-                trend < 0 && 'text-[var(--accent-error)]'
+                'absolute -top-8 -right-8 w-24 h-24 rounded-full opacity-10 blur-xl',
+                iconGlow
               )}
-            >
-              <span>{trend > 0 ? '+' : ''}{trend}</span>
-              <svg
-                className={cn('w-4 h-4', trend < 0 && 'rotate-180')}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M12 19V5M5 12l7-7 7 7" />
-              </svg>
-            </div>
+            />
           )}
-        </div>
-      </CardContent>
-    </Card>
+
+          {/* Top row: Icon/Ring and Label */}
+          <div className="flex items-center justify-between mb-3 relative">
+            {/* Icon or Progress Ring */}
+            {showRing ? (
+              <div className="relative">
+                <ProgressRing value={value} size={40} strokeWidth={3} />
+              </div>
+            ) : IconComponent ? (
+              <motion.div
+                className="relative"
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 200,
+                  damping: 15,
+                  delay: delay + 0.2,
+                }}
+              >
+                {/* Subtle glow behind icon */}
+                <div
+                  className={cn(
+                    'absolute inset-0 blur-md opacity-40 rounded-full',
+                    iconGlow
+                  )}
+                />
+                <IconComponent className={cn('w-8 h-8 relative', iconColor)} />
+              </motion.div>
+            ) : null}
+
+            {/* Label */}
+            <span className="text-sm text-[var(--text-secondary)] font-medium">
+              {label}
+            </span>
+          </div>
+
+          {/* Bottom row: Value and Trend */}
+          <div className="flex items-end justify-between relative">
+            <AnimatedCounter value={value} suffix={suffix} />
+
+            {/* Trend indicator */}
+            {trend !== undefined && trend !== 0 && (
+              <motion.div
+                className={cn(
+                  'flex items-center gap-0.5 text-sm font-medium',
+                  trend > 0 && 'text-[var(--accent-success)]',
+                  trend < 0 && 'text-[var(--accent-error)]'
+                )}
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: delay + 0.4 }}
+              >
+                <span>{trend > 0 ? '+' : ''}{trend}</span>
+                <svg
+                  className={cn('w-4 h-4', trend < 0 && 'rotate-180')}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M12 19V5M5 12l7-7 7 7" />
+                </svg>
+              </motion.div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Card, CardContent } from '@/components/ui';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui';
 import { useProfile } from '@/lib/hooks/useProfile';
 import { useStats } from '@/lib/hooks/useStats';
@@ -48,43 +48,76 @@ export function Greeting({ dueCount: propDueCount, isLoading: propLoading }: Gre
   const isLoading = propLoading ?? (profileLoading || statsLoading);
 
   return (
-    <Card
-      elevation={2}
-      className="mb-8 bg-gradient-to-br from-[var(--bg-surface-1)] to-[var(--bg-surface-2)]"
+    <div
+      className="relative overflow-hidden rounded-xl border border-[var(--border)]
+                 bg-[var(--bg-surface-1)]/50 backdrop-blur-sm"
     >
-      <CardContent className="p-6 md:p-8">
+      {/* Decorative gradient accent */}
+      <div
+        className="absolute top-0 right-0 w-[300px] h-[300px]
+                      bg-[radial-gradient(circle,rgba(59,130,246,0.15)_0%,transparent_70%)]"
+      />
+
+      <div className="relative p-6 md:p-8">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           {/* Text content */}
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold mb-2">
+            <motion.h1
+              className="text-2xl md:text-3xl lg:text-4xl font-display font-bold mb-2"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+            >
               {greeting},{' '}
-              <span className="text-[var(--accent-primary)]">{username}</span>
-            </h1>
-            <p className="text-[var(--text-secondary)] text-lg">
+              <span
+                className="bg-gradient-to-r from-[var(--accent-primary)] to-purple-500
+                              bg-clip-text text-transparent"
+              >
+                {username}
+              </span>
+            </motion.h1>
+            <motion.p
+              className="text-[var(--text-secondary)] text-lg"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+            >
               {isLoading ? 'Loading...' : getContextMessage(dueCount, streak)}
-            </p>
+            </motion.p>
+
+            {/* Streak indicator */}
+            {streak > 0 && !isLoading && (
+              <motion.div
+                className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full
+                           bg-orange-500/10 border border-orange-500/20"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+              >
+                <span className="text-orange-500 text-lg">🔥</span>
+                <span className="text-orange-400 font-medium">{streak} day streak</span>
+              </motion.div>
+            )}
           </div>
 
-          {/* CTA buttons */}
-          <div className="flex flex-wrap gap-3">
+          {/* CTA button */}
+          <motion.div
+            className="flex flex-wrap gap-3"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+          >
             <Button
               glow
               size="lg"
               onClick={() => router.push('/practice')}
-              disabled={isLoading || dueCount === 0}
+              disabled={isLoading}
             >
-              Start Practice
+              {dueCount > 0 ? 'Start Practice' : 'Learn New Cards'}
             </Button>
-            <Button
-              variant="ghost"
-              size="lg"
-              onClick={() => router.push('/exercises')}
-            >
-              Browse exercises
-            </Button>
-          </div>
+          </motion.div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

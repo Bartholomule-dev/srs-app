@@ -43,12 +43,14 @@ export function StatsGrid({ stats, loading = false }: StatsGridProps) {
         label="Streak"
         value={stats.currentStreak}
         icon="fire"
+        delay={0}
       />
       <StatsCard
         label="Accuracy"
         value={stats.accuracyPercent}
         suffix="%"
         showRing
+        delay={0.1}
       />
 
       {/* Row 2 */}
@@ -56,11 +58,13 @@ export function StatsGrid({ stats, loading = false }: StatsGridProps) {
         label="Total"
         value={stats.totalExercisesCompleted}
         icon="chart"
+        delay={0.2}
       />
       <StatsCard
         label="Today"
         value={stats.cardsReviewedToday}
         icon="check"
+        delay={0.3}
       />
     </div>
   );

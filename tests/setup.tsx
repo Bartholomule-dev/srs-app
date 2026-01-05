@@ -7,6 +7,10 @@
 import '@testing-library/jest-dom/vitest';
 import { vi } from 'vitest';
 
+// Note: framer-motion is NOT mocked globally to avoid breaking unrelated tests.
+// Components that use framer-motion work fine with jsdom.
+// AnimatedCounter in StatsCard handles test environment detection itself.
+
 // Mock IntersectionObserver for framer-motion's whileInView feature
 class MockIntersectionObserver implements IntersectionObserver {
   readonly root: Element | Document | null = null;
