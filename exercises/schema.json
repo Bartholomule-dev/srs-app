@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Exercise File",
+  "type": "object",
+  "required": ["language", "category", "exercises"],
+  "properties": {
+    "language": {
+      "type": "string",
+      "enum": ["python", "javascript", "sql"]
+    },
+    "category": {
+      "type": "string",
+      "description": "Legacy category field (kept for backward compatibility)"
+    },
+    "exercises": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/exercise" },
+      "minItems": 1
+    }
+  },
+  "definitions": {
+    "exercise": {
+      "type": "object",
+      "required": ["slug", "title", "prompt", "expected_answer", "hints", "concept", "subconcept", "level", "prereqs", "type", "pattern"],
+      "properties": {
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+          "description": "Unique identifier (kebab-case)"
+        },
+        "title": { "type": "string", "minLength": 1 },
+        "difficulty": { "type": "integer", "minimum": 1, "maximum": 3 },
+        "prompt": { "type": "string", "minLength": 1 },
+        "expected_answer": { "type": "string", "minLength": 1 },
+        "accepted_solutions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "hints": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "concept": {
+          "type": "string",
+          "enum": ["foundations", "strings", "numbers-booleans", "collections", "control-flow", "functions", "comprehensions", "error-handling", "oop", "modules-files"],
+          "description": "Primary milestone/concept"
+        },
+        "subconcept": {
+          "type": "string",
+          "description": "Specific skill within concept (e.g., 'for', 'enumerate', 'list-comp')"
+        },
+        "level": {
+          "type": "string",
+          "enum": ["intro", "practice", "edge", "integrated"],
+          "description": "Difficulty progression within subconcept"
+        },
+        "prereqs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Subconcepts that must be mastered first"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["write", "fill-in", "predict", "debug"],
+          "description": "Exercise format"
+        },
+        "pattern": {
+          "type": "string",
+          "enum": ["accumulator", "filtering", "indexing", "mapping", "lookup", "iteration", "mutation", "construction", "comparison", "conversion", "io", "definition", "invocation", "handling"],
+          "description": "Programming pattern being practiced"
+        },
+        "template": {
+          "type": "string",
+          "description": "For fill-in exercises: code with ___ blanks"
+        },
+        "blank_position": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "For fill-in exercises: which blank (0-indexed)"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "type": { "const": "fill-in" } },
+            "required": ["type"]
+          },
+          "then": { "required": ["template", "blank_position"] }
+        }
+      ]
+    }
+  }
+}

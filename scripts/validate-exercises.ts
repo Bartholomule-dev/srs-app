@@ -1,0 +1,54 @@
+// scripts/validate-exercises.ts
+import Ajv from 'ajv';
+import { readFileSync, readdirSync } from 'fs';
+import { parse } from 'yaml';
+import { join } from 'path';
+
+const ajv = new Ajv({ allErrors: true });
+
+async function validateExercises() {
+  const schemaPath = join(process.cwd(), 'exercises/schema.json');
+  const schema = JSON.parse(readFileSync(schemaPath, 'utf-8'));
+  const validate = ajv.compile(schema);
+
+  const exercisesDir = join(process.cwd(), 'exercises/python');
+  const files = readdirSync(exercisesDir).filter(f => f.endsWith('.yaml'));
+
+  let hasErrors = false;
+  const allSlugs = new Set<string>();
+
+  for (const file of files) {
+    const filePath = join(exercisesDir, file);
+    const content = readFileSync(filePath, 'utf-8');
+    const data = parse(content);
+
+    const valid = validate(data);
+    if (!valid) {
+      console.error(`\n❌ ${file}:`);
+      validate.errors?.forEach(err => {
+        console.error(`  ${err.instancePath}: ${err.message}`);
+      });
+      hasErrors = true;
+    } else {
+      console.log(`✓ ${file}`);
+    }
+
+    // Check for duplicate slugs
+    for (const exercise of data.exercises || []) {
+      if (allSlugs.has(exercise.slug)) {
+        console.error(`\n❌ Duplicate slug: ${exercise.slug} in ${file}`);
+        hasErrors = true;
+      }
+      allSlugs.add(exercise.slug);
+    }
+  }
+
+  if (hasErrors) {
+    console.error('\n❌ Validation failed');
+    process.exit(1);
+  } else {
+    console.log('\n✓ All exercises valid');
+  }
+}
+
+validateExercises();
