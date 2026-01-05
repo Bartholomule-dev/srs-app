@@ -27,10 +27,10 @@ export function Progress({
       aria-valuemin={0}
       aria-valuemax={100}
       aria-label={ariaLabel}
-      className={`relative h-2 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700 ${className}`}
+      className={`relative h-2 w-full overflow-hidden rounded-full bg-[var(--bg-surface-3)] ${className}`}
     >
       <div
-        className="h-full bg-blue-600 dark:bg-blue-500 transition-all duration-300 ease-out"
+        className="h-full bg-[var(--accent-primary)] transition-all duration-300 ease-out"
         style={{ width: `${percentage}%` }}
       />
     </div>
