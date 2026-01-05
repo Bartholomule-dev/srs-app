@@ -6,10 +6,123 @@
  */
 import '@testing-library/jest-dom/vitest';
 import { vi } from 'vitest';
+import React from 'react';
 
-// Note: framer-motion is NOT mocked globally to avoid breaking unrelated tests.
-// Components that use framer-motion work fine with jsdom.
-// AnimatedCounter in StatsCard handles test environment detection itself.
+// Mock framer-motion to render immediately without animations
+// This is necessary because jsdom doesn't support animations and motion.div
+// renders with opacity:0 by default during the animation phase
+vi.mock('framer-motion', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('framer-motion')>();
+
+  // Create a component that strips animation props and renders as regular element
+  const createMotionComponent = (tag: keyof React.JSX.IntrinsicElements) => {
+    const Component = React.forwardRef<HTMLElement, Record<string, unknown> & { children?: React.ReactNode }>(
+      (
+        {
+          children,
+          initial: _initial,
+          animate: _animate,
+          exit: _exit,
+          transition: _transition,
+          whileHover: _whileHover,
+          whileTap: _whileTap,
+          whileInView: _whileInView,
+          whileFocus: _whileFocus,
+          whileDrag: _whileDrag,
+          variants: _variants,
+          layout: _layout,
+          layoutId: _layoutId,
+          drag: _drag,
+          dragConstraints: _dragConstraints,
+          dragElastic: _dragElastic,
+          dragMomentum: _dragMomentum,
+          onDragStart: _onDragStart,
+          onDrag: _onDrag,
+          onDragEnd: _onDragEnd,
+          style,
+          ...props
+        },
+        ref
+      ) => {
+        // Filter out any remaining motion-specific style properties
+        const cleanStyle = style && typeof style === 'object'
+          ? Object.fromEntries(
+              Object.entries(style as Record<string, unknown>).filter(
+                ([key]) => !key.startsWith('--motion')
+              )
+            )
+          : style;
+        return React.createElement(tag, { ...props, style: cleanStyle, ref }, children as React.ReactNode);
+      }
+    );
+    Component.displayName = `motion.${tag}`;
+    return Component;
+  };
+
+  // Cache for motion components to ensure stable references
+  const componentCache = new Map<string, ReturnType<typeof createMotionComponent>>();
+
+  // Proxy to create motion.div, motion.span, etc on demand
+  const motion = new Proxy(
+    // Base object with common properties that framer-motion's motion has
+    {
+      // Provide custom method that some libraries use
+      custom: (Component: React.ComponentType) => Component,
+    } as Record<string, unknown>,
+    {
+      get: (target, prop) => {
+        // Handle Symbol properties (like Symbol.toStringTag)
+        if (typeof prop === 'symbol') {
+          return undefined;
+        }
+
+        // Check if it's a base property
+        if (prop in target) {
+          return target[prop];
+        }
+
+        // Check cache first
+        if (componentCache.has(prop)) {
+          return componentCache.get(prop);
+        }
+
+        // Create and cache the component
+        const component = createMotionComponent(prop as keyof React.JSX.IntrinsicElements);
+        componentCache.set(prop, component);
+        return component;
+      },
+    }
+  );
+
+  return {
+    ...actual,
+    motion,
+    AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    useSpring: (initialValue: number) => ({
+      get: () => initialValue,
+      set: () => {},
+      on: () => () => {},
+    }),
+    useTransform: (_value: unknown, transform: (v: number) => number) => ({
+      get: () => transform(0),
+      on: (_event: string, callback: (v: number) => void) => {
+        callback(transform(0));
+        return () => {};
+      },
+    }),
+    useAnimation: () => ({
+      start: () => Promise.resolve(),
+      stop: () => {},
+      set: () => {},
+    }),
+    useMotionValue: (initial: number) => ({
+      get: () => initial,
+      set: () => {},
+      on: () => () => {},
+    }),
+    useInView: () => true,
+  };
+});
 
 // Mock IntersectionObserver for framer-motion's whileInView feature
 class MockIntersectionObserver implements IntersectionObserver {

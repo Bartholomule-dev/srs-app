@@ -38,7 +38,7 @@ describe('SessionSummary', () => {
 
   it('displays correct count in breakdown', () => {
     render(<SessionSummary stats={createStats()} onDashboard={mockOnDashboard} />);
-    expect(screen.getByText(/\+8 correct/)).toBeInTheDocument();
+    expect(screen.getByText(/8 correct/)).toBeInTheDocument();
   });
 
   it('displays incorrect count as "to review"', () => {

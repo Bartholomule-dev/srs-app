@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { Exercise, Quality } from '@/lib/types';
 import { checkAnswer, inferQuality, type QualityInputs } from '@/lib/exercise';
 import { Card, CardContent } from '@/components/ui/Card';
@@ -107,62 +108,78 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
 
   const firstHint = exercise.hints[0] ?? '';
 
-  if (phase === 'answering') {
-    return (
-      <Card>
-        <CardContent className="p-6 space-y-6">
-          <ExercisePrompt
-            category={exercise.category}
-            language={exercise.language}
-            prompt={exercise.prompt}
-          />
-
-          <CodeInput
-            value={userAnswer}
-            onChange={handleInputChange}
-            onSubmit={handleSubmit}
-          />
-
-          <div className="flex items-start justify-between gap-4">
-            {firstHint && (
-              <HintButton
-                hint={firstHint}
-                revealed={hintUsed}
-                onReveal={handleHintReveal}
-              />
-            )}
-            <div className="flex gap-2 ml-auto">
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={handleGiveUp}
-              >
-                Give Up
-              </Button>
-              <Button
-                type="button"
-                variant="primary"
-                onClick={handleSubmit}
-              >
-                Submit
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
-    <Card>
+    <Card className="overflow-hidden">
+      {/* Category indicator bar */}
+      <div className="h-1 bg-gradient-to-r from-[var(--accent-primary)] to-purple-500" />
+
       <CardContent className="p-6">
-        <ExerciseFeedback
-          isCorrect={answerResult?.isCorrect ?? false}
-          userAnswer={userAnswer}
-          expectedAnswer={exercise.expectedAnswer}
-          nextReviewDays={nextReviewDays}
-          onContinue={handleContinue}
-        />
+        <AnimatePresence mode="wait">
+          {phase === 'answering' ? (
+            <motion.div
+              key="answering"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 10 }}
+              transition={{ duration: 0.2 }}
+              className="space-y-6"
+            >
+              <ExercisePrompt
+                category={exercise.category}
+                language={exercise.language}
+                prompt={exercise.prompt}
+              />
+
+              <CodeInput
+                value={userAnswer}
+                onChange={handleInputChange}
+                onSubmit={handleSubmit}
+              />
+
+              <div className="flex items-start justify-between gap-4">
+                {firstHint && (
+                  <HintButton
+                    hint={firstHint}
+                    revealed={hintUsed}
+                    onReveal={handleHintReveal}
+                  />
+                )}
+                <div className="flex gap-2 ml-auto">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={handleGiveUp}
+                  >
+                    Give Up
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="primary"
+                    onClick={handleSubmit}
+                  >
+                    Submit
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="feedback"
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              <ExerciseFeedback
+                isCorrect={answerResult?.isCorrect ?? false}
+                userAnswer={userAnswer}
+                expectedAnswer={exercise.expectedAnswer}
+                nextReviewDays={nextReviewDays}
+                onContinue={handleContinue}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </CardContent>
     </Card>
   );

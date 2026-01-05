@@ -3,9 +3,142 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { ProtectedRoute, ExerciseCard, SessionProgress, SessionSummary } from '@/components';
 import { useSession } from '@/lib/hooks';
 import { ErrorBoundary } from '@/components';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent } from '@/components/ui/Card';
+
+// Aurora gradient background for immersive practice mode
+function PracticeBackground() {
+  return (
+    <>
+      {/* Deep gradient base */}
+      <div className="fixed inset-0 bg-gradient-to-br from-[#0a0a12] via-[#0f1419] to-[#0a0a12] -z-10" />
+      {/* Subtle blue spotlight from top */}
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] -z-10
+                     bg-[radial-gradient(ellipse,rgba(59,130,246,0.08)_0%,transparent_70%)]" />
+      {/* Accent glow from bottom corners */}
+      <div className="fixed bottom-0 left-0 w-[400px] h-[400px] -z-10
+                     bg-[radial-gradient(circle,rgba(139,92,246,0.06)_0%,transparent_70%)]" />
+      <div className="fixed bottom-0 right-0 w-[400px] h-[400px] -z-10
+                     bg-[radial-gradient(circle,rgba(34,197,94,0.04)_0%,transparent_70%)]" />
+    </>
+  );
+}
+
+// Loading spinner with pulse animation
+function LoadingState() {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <PracticeBackground />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="flex flex-col items-center gap-4"
+      >
+        {/* Animated spinner */}
+        <div className="relative w-12 h-12">
+          <motion.div
+            className="absolute inset-0 rounded-full border-2 border-[var(--accent-primary)]/20"
+          />
+          <motion.div
+            className="absolute inset-0 rounded-full border-2 border-transparent border-t-[var(--accent-primary)]"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+          />
+        </div>
+        <p className="text-[var(--text-secondary)] text-sm">Loading session...</p>
+      </motion.div>
+    </div>
+  );
+}
+
+// Error state with retry option
+function ErrorState({ message, onRetry, onDashboard }: { message: string; onRetry: () => void; onDashboard: () => void }) {
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <PracticeBackground />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <Card className="max-w-md">
+          <CardContent className="p-6 text-center">
+            {/* Error icon */}
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', delay: 0.1 }}
+              className="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--accent-error)]/10
+                        flex items-center justify-center"
+            >
+              <svg className="w-8 h-8 text-[var(--accent-error)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v4M12 16h.01" />
+              </svg>
+            </motion.div>
+            <h2 className="text-xl font-bold text-[var(--text-primary)] mb-2">
+              Failed to Load Session
+            </h2>
+            <p className="text-[var(--text-secondary)] mb-6">
+              {message}
+            </p>
+            <div className="flex gap-3 justify-center">
+              <Button variant="primary" onClick={onRetry}>
+                Try Again
+              </Button>
+              <Button variant="secondary" onClick={onDashboard}>
+                Back to Dashboard
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </div>
+  );
+}
+
+// Empty state when no cards to practice
+function EmptyState({ onDashboard }: { onDashboard: () => void }) {
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <PracticeBackground />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <Card className="max-w-md">
+          <CardContent className="p-6 text-center">
+            {/* Success/check icon */}
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', delay: 0.1 }}
+              className="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--accent-success)]/10
+                        flex items-center justify-center"
+            >
+              <svg className="w-8 h-8 text-[var(--accent-success)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9 12l2 2 4-4" />
+              </svg>
+            </motion.div>
+            <h2 className="text-xl font-bold text-[var(--text-primary)] mb-2">
+              All Caught Up!
+            </h2>
+            <p className="text-[var(--text-secondary)] mb-6">
+              You&apos;ve reviewed all your due cards. Great work!
+            </p>
+            <Button variant="primary" onClick={onDashboard} glow>
+              Back to Dashboard
+            </Button>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </div>
+  );
+}
 
 function PracticeSessionContent() {
   const router = useRouter();
@@ -25,77 +158,37 @@ function PracticeSessionContent() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="animate-pulse text-gray-600 dark:text-gray-400">
-          Loading session...
-        </div>
-      </div>
-    );
+    return <LoadingState />;
   }
 
   if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="max-w-md p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg text-center">
-          <h2 className="text-xl font-bold text-red-600 dark:text-red-400 mb-4">
-            Failed to Load Session
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
-            {error.message}
-          </p>
-          <div className="flex gap-3 justify-center">
-            <button
-              onClick={retry}
-              className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
-            >
-              Retry
-            </button>
-            <button
-              onClick={handleDashboard}
-              className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg"
-            >
-              Back to Dashboard
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+    return <ErrorState message={error.message} onRetry={retry} onDashboard={handleDashboard} />;
   }
 
   if (stats.total === 0) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="max-w-md p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg text-center">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-            No Cards to Practice
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
-            There are no cards due for review right now.
-          </p>
-          <button
-            onClick={handleDashboard}
-            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
-          >
-            Back to Dashboard
-          </button>
-        </div>
-      </div>
-    );
+    return <EmptyState onDashboard={handleDashboard} />;
   }
 
   if (isComplete) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <PracticeBackground />
         <SessionSummary stats={stats} onDashboard={handleDashboard} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+    <div className="min-h-screen flex flex-col">
+      <PracticeBackground />
+
       {/* Immersive progress bar header */}
-      <div className="sticky top-0 z-10 bg-gray-50/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="sticky top-0 z-10 bg-[var(--bg-base)]/80 backdrop-blur-md
+                  border-b border-[var(--border)]"
+      >
         <div className="max-w-3xl mx-auto px-4 py-3">
           <div className="flex items-center gap-4">
             <SessionProgress
@@ -106,24 +199,32 @@ function PracticeSessionContent() {
             <Link
               href="/dashboard"
               onClick={endSession}
-              className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+              className="text-sm text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]
+                        transition-colors"
             >
               End Session
             </Link>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Centered exercise card with generous whitespace */}
       <div className="flex-1 flex items-center justify-center p-4 sm:p-8">
-        <div className="w-full max-w-2xl">
+        <motion.div
+          key={currentCard?.exercise.id}
+          initial={{ opacity: 0, y: 10, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -10, scale: 0.98 }}
+          transition={{ duration: 0.3 }}
+          className="w-full max-w-2xl"
+        >
           {currentCard && (
             <ExerciseCard
               exercise={currentCard.exercise}
               onComplete={(exerciseId, quality) => recordResult(quality)}
             />
           )}
-        </div>
+        </motion.div>
       </div>
     </div>
   );

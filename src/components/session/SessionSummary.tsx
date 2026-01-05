@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { motion } from 'framer-motion';
 import type { SessionStats } from '@/lib/session';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -34,6 +35,37 @@ function getEncouragingMessage(accuracy: number): string {
   return "Keep practicing! Every session builds mastery.";
 }
 
+// Animated stat card
+function StatCard({
+  value,
+  label,
+  color,
+  delay,
+}: {
+  value: string | number;
+  label: string;
+  color: 'blue' | 'green' | 'purple';
+  delay: number;
+}) {
+  const colorClasses = {
+    blue: 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]',
+    green: 'bg-[var(--accent-success)]/10 text-[var(--accent-success)]',
+    purple: 'bg-purple-500/10 text-purple-400',
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ delay, type: 'spring', stiffness: 200 }}
+      className={`text-center p-4 rounded-xl ${colorClasses[color]}`}
+    >
+      <div className="text-2xl font-bold font-display">{value}</div>
+      <div className="text-xs opacity-80 mt-1">{label}</div>
+    </motion.div>
+  );
+}
+
 export function SessionSummary({ stats, onDashboard }: SessionSummaryProps) {
   const accuracy =
     stats.completed > 0
@@ -48,78 +80,119 @@ export function SessionSummary({ stats, onDashboard }: SessionSummaryProps) {
   }, [isPerfectScore]);
 
   return (
-    <Card className="max-w-md mx-auto">
-      <CardContent className="p-6">
-        {/* Celebration Header */}
-        <div className="text-center mb-6">
-          <span className="text-4xl mb-2 block" role="img" aria-label="celebration">
-            {isPerfectScore ? '🎉' : '✨'}
-          </span>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Session Complete!
-          </h2>
-          {isPerfectScore && (
-            <p className="text-amber-600 dark:text-amber-400 font-medium mt-2">
-              Perfect Score!
-            </p>
-          )}
-        </div>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4 }}
+    >
+      <Card className="max-w-md mx-auto overflow-hidden">
+        {/* Decorative gradient header */}
+        <div className="h-2 bg-gradient-to-r from-[var(--accent-primary)] via-purple-500 to-[var(--accent-success)]" />
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              {stats.completed}
-            </div>
-            <div className="text-xs text-blue-700 dark:text-blue-300">
-              Reviewed
-            </div>
+        <CardContent className="p-6">
+          {/* Celebration Header */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-center mb-6"
+          >
+            <motion.span
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', delay: 0.2, stiffness: 300 }}
+              className="text-5xl mb-3 block"
+              role="img"
+              aria-label="celebration"
+            >
+              {isPerfectScore ? '🎉' : '✨'}
+            </motion.span>
+            <h2 className="text-2xl font-bold font-display text-[var(--text-primary)]">
+              Session Complete!
+            </h2>
+            {isPerfectScore && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="text-amber-400 font-medium mt-2"
+              >
+                ⭐ Perfect Score! ⭐
+              </motion.p>
+            )}
+          </motion.div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-3 gap-3 mb-6">
+            <StatCard
+              value={stats.completed}
+              label="Reviewed"
+              color="blue"
+              delay={0.3}
+            />
+            <StatCard
+              value={`${accuracy}%`}
+              label="Accuracy"
+              color="green"
+              delay={0.4}
+            />
+            <StatCard
+              value={formatDuration(stats.startTime, stats.endTime)}
+              label="Time"
+              color="purple"
+              delay={0.5}
+            />
           </div>
 
-          <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-            <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-              {accuracy}%
-            </div>
-            <div className="text-xs text-green-700 dark:text-green-300">
-              Accuracy
-            </div>
-          </div>
+          {/* Correct/Incorrect Breakdown */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="flex justify-center gap-6 mb-6 text-sm"
+          >
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[var(--accent-success)]" />
+              <span className="text-[var(--accent-success)]">
+                {stats.correct} correct
+              </span>
+            </span>
+            <span className="text-[var(--text-tertiary)]">•</span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[var(--accent-error)]" />
+              <span className="text-[var(--accent-error)]">
+                {stats.incorrect} to review
+              </span>
+            </span>
+          </motion.div>
 
-          <div className="text-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-            <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-              {formatDuration(stats.startTime, stats.endTime)}
-            </div>
-            <div className="text-xs text-purple-700 dark:text-purple-300">
-              Time
-            </div>
-          </div>
-        </div>
+          {/* Back to Dashboard Button */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+          >
+            <Button
+              onClick={onDashboard}
+              variant="primary"
+              className="w-full mb-4"
+              glow
+            >
+              Back to Dashboard
+            </Button>
+          </motion.div>
 
-        {/* Correct/Incorrect Breakdown */}
-        <div className="flex justify-center gap-6 mb-6 text-sm">
-          <span className="text-green-600 dark:text-green-400">
-            +{stats.correct} correct
-          </span>
-          <span className="text-gray-400">•</span>
-          <span className="text-red-600 dark:text-red-400">
-            {stats.incorrect} to review
-          </span>
-        </div>
-
-        {/* Back to Dashboard Button */}
-        <Button
-          onClick={onDashboard}
-          variant="primary"
-          className="w-full mb-4"
-        >
-          Back to Dashboard
-        </Button>
-
-        {/* Encouraging Message */}
-        <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-          {getEncouragingMessage(accuracy)}
-        </p>
-      </CardContent>
-    </Card>
+          {/* Encouraging Message */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="text-center text-sm text-[var(--text-tertiary)]"
+          >
+            {getEncouragingMessage(accuracy)}
+          </motion.p>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }
