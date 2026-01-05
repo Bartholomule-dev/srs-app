@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, type KeyboardEvent, type ChangeEvent } from 'react';
+import { useRef, useState, useEffect, type KeyboardEvent, type ChangeEvent } from 'react';
 import { cn } from '@/lib/utils';
 
 /** Represents a part of the parsed template */
@@ -60,6 +60,8 @@ export interface FillInExerciseProps {
   onSubmit: (value: string) => void;
   /** Disable the input */
   disabled?: boolean;
+  /** Optional CSS classes for the container */
+  className?: string;
 }
 
 /**
@@ -81,9 +83,10 @@ export function FillInExercise({
   blankPosition,
   onSubmit,
   disabled = false,
+  className,
 }: FillInExerciseProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const inputValue = useRef<string>('');
+  const [answer, setAnswer] = useState('');
 
   useEffect(() => {
     if (inputRef.current) {
@@ -92,13 +95,13 @@ export function FillInExercise({
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    inputValue.current = e.target.value;
+    setAnswer(e.target.value);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !disabled) {
       e.preventDefault();
-      onSubmit(inputValue.current);
+      onSubmit(answer);
     }
   };
 
@@ -111,7 +114,8 @@ export function FillInExercise({
         'bg-bg-surface-2 border border-transparent',
         'focus-within:border-accent-primary',
         'focus-within:shadow-[0_0_0_3px_rgba(245,158,11,0.1)]',
-        'transition-all duration-150'
+        'transition-all duration-150',
+        className
       )}
     >
       <pre
@@ -135,6 +139,7 @@ export function FillInExercise({
                 key={idx}
                 ref={inputRef}
                 type="text"
+                value={answer}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
                 disabled={disabled}
