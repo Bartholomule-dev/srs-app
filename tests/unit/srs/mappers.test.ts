@@ -92,6 +92,7 @@ describe('mapExercise', () => {
       title: 'For Loop Range',
       prompt: 'Write a for loop',
       expected_answer: 'for i in range(5):',
+      accepted_solutions: [],
       hints: ['Use range()'],
       explanation: null,
       tags: ['loops'],

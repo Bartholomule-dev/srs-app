@@ -15,6 +15,7 @@ describe('session types', () => {
           title: 'Print Statement',
           prompt: 'Write a print statement',
           expectedAnswer: 'print("hello")',
+          acceptedSolutions: [],
           hints: ['Use print()'],
           explanation: null,
           tags: ['print'],

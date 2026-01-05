@@ -46,5 +46,53 @@ export function checkAnswer(userAnswer: string, expectedAnswer: string): AnswerR
     normalizedUserAnswer: normalizedUser,
     normalizedExpectedAnswer: normalizedExpected,
     usedAstMatch: false, // Future: set true when AST matching is used
+    matchedAlternative: null,
+  };
+}
+
+/**
+ * Checks if user's answer matches expected or any accepted alternative.
+ * Returns which alternative matched (if any) for analytics.
+ */
+export function checkAnswerWithAlternatives(
+  userAnswer: string,
+  expectedAnswer: string,
+  acceptedSolutions: string[]
+): AnswerResult {
+  const normalizedUser = normalizePython(userAnswer);
+  const normalizedExpected = normalizePython(expectedAnswer);
+
+  // Check primary expected answer first
+  if (normalizedUser === normalizedExpected) {
+    return {
+      isCorrect: true,
+      normalizedUserAnswer: normalizedUser,
+      normalizedExpectedAnswer: normalizedExpected,
+      usedAstMatch: false,
+      matchedAlternative: null,
+    };
+  }
+
+  // Check each accepted alternative
+  for (const alt of acceptedSolutions) {
+    const normalizedAlt = normalizePython(alt);
+    if (normalizedUser === normalizedAlt) {
+      return {
+        isCorrect: true,
+        normalizedUserAnswer: normalizedUser,
+        normalizedExpectedAnswer: normalizedExpected,
+        usedAstMatch: false,
+        matchedAlternative: alt,
+      };
+    }
+  }
+
+  // No match found
+  return {
+    isCorrect: false,
+    normalizedUserAnswer: normalizedUser,
+    normalizedExpectedAnswer: normalizedExpected,
+    usedAstMatch: false,
+    matchedAlternative: null,
   };
 }

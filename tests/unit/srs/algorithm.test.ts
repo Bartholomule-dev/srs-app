@@ -484,6 +484,7 @@ function createMockExercise(id: string): Exercise {
     title: `Exercise ${id}`,
     prompt: 'Test prompt',
     expectedAnswer: 'test answer',
+    acceptedSolutions: [],
     hints: [],
     explanation: null,
     tags: [],

@@ -1,6 +1,6 @@
 // tests/unit/exercise/matching.test.ts
 import { describe, it, expect } from 'vitest';
-import { normalizePython, checkAnswer } from '@/lib/exercise';
+import { normalizePython, checkAnswer, checkAnswerWithAlternatives } from '@/lib/exercise';
 
 describe('normalizePython', () => {
   it('returns empty string for empty input', () => {
@@ -150,5 +150,81 @@ describe('checkAnswer', () => {
       const result = checkAnswer(user, expected);
       expect(result.isCorrect).toBe(true);
     });
+
+    it('includes matchedAlternative as null', () => {
+      const result = checkAnswer('print(x)', 'print(x)');
+      expect(result.matchedAlternative).toBeNull();
+    });
+  });
+});
+
+describe('checkAnswerWithAlternatives', () => {
+  it('matches against expected_answer', () => {
+    const result = checkAnswerWithAlternatives(
+      'print(x)',
+      'print(x)',
+      []
+    );
+    expect(result.isCorrect).toBe(true);
+    expect(result.matchedAlternative).toBeNull();
+  });
+
+  it('matches against accepted_solutions', () => {
+    const result = checkAnswerWithAlternatives(
+      "person['name']",
+      'person["name"]',
+      ["person['name']"]
+    );
+    expect(result.isCorrect).toBe(true);
+    expect(result.matchedAlternative).toBe("person['name']");
+  });
+
+  it('returns false when no match found', () => {
+    const result = checkAnswerWithAlternatives(
+      'wrong',
+      'print(x)',
+      ['also_wrong']
+    );
+    expect(result.isCorrect).toBe(false);
+    expect(result.matchedAlternative).toBeNull();
+  });
+
+  it('applies normalization to alternatives', () => {
+    const result = checkAnswerWithAlternatives(
+      '[1,2,3]',
+      '[1, 2, 3]',
+      ['[1,  2,  3]']
+    );
+    expect(result.isCorrect).toBe(true);
+  });
+
+  it('prefers expected_answer over alternatives', () => {
+    const result = checkAnswerWithAlternatives(
+      'print(x)',
+      'print(x)',
+      ['print(x)']  // Same as expected
+    );
+    expect(result.isCorrect).toBe(true);
+    expect(result.matchedAlternative).toBeNull();  // Should match expected, not alt
+  });
+
+  it('handles empty acceptedSolutions array', () => {
+    const result = checkAnswerWithAlternatives(
+      'print(x)',
+      'print(y)',
+      []
+    );
+    expect(result.isCorrect).toBe(false);
+    expect(result.matchedAlternative).toBeNull();
+  });
+
+  it('matches first alternative when multiple could match', () => {
+    const result = checkAnswerWithAlternatives(
+      'x = 1',
+      'y = 1',
+      ['x = 1', 'x=1']  // Both normalize to same, but first should be returned
+    );
+    expect(result.isCorrect).toBe(true);
+    expect(result.matchedAlternative).toBe('x = 1');
   });
 });

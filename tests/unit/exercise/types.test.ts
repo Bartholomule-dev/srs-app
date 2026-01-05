@@ -11,11 +11,13 @@ describe('exercise types', () => {
         normalizedUserAnswer: 'print(x)',
         normalizedExpectedAnswer: 'print(x)',
         usedAstMatch: false,
+        matchedAlternative: null,
       };
       expect(result.isCorrect).toBe(true);
       expect(result.normalizedUserAnswer).toBe('print(x)');
       expect(result.normalizedExpectedAnswer).toBe('print(x)');
       expect(result.usedAstMatch).toBe(false);
+      expect(result.matchedAlternative).toBeNull();
     });
   });
 
@@ -45,6 +47,7 @@ describe('exercise types', () => {
         title: 'For Loop Range',
         prompt: 'Write a for loop',
         expectedAnswer: 'for i in range(5):',
+        acceptedSolutions: [],
         hints: ['Use range()'],
         explanation: null,
         tags: ['loops'],
@@ -54,6 +57,7 @@ describe('exercise types', () => {
         updatedAt: '2026-01-01T00:00:00Z',
       };
       expect(exercise.slug).toBe('for-loop-range');
+      expect(exercise.acceptedSolutions).toEqual([]);
     });
   });
 });

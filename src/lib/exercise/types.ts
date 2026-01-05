@@ -12,6 +12,8 @@ export interface AnswerResult {
   normalizedExpectedAnswer: string;
   /** True if AST matching was used (format differs but semantically equivalent) */
   usedAstMatch: boolean;
+  /** The accepted_solution that matched, or null if expected_answer matched */
+  matchedAlternative: string | null;
 }
 
 /**

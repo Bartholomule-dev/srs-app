@@ -15,6 +15,7 @@ function createMockCard(id: string, isNew: boolean): SessionCard {
     title: `Exercise ${id}`,
     prompt: 'Test prompt',
     expectedAnswer: 'test',
+    acceptedSolutions: [],
     hints: [],
     explanation: null,
     tags: [],
