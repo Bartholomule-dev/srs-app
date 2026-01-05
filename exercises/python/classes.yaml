@@ -11,6 +11,12 @@ exercises:
     hints:
       - Use the class keyword
     tags: [classes, oop, intermediate]
+    concept: oop
+    subconcept: classes
+    level: intro
+    prereqs: [functions]
+    type: write
+    pattern: definition
 
   - slug: init-method
     title: Init Method
@@ -21,6 +27,12 @@ exercises:
       - Use double underscores
       - self is always first parameter
     tags: [classes, init, intermediate]
+    concept: oop
+    subconcept: methods
+    level: intro
+    prereqs: [functions]
+    type: write
+    pattern: definition
 
   - slug: instance-attribute
     title: Instance Attribute
@@ -30,6 +42,12 @@ exercises:
     hints:
       - Use self.attribute = value
     tags: [classes, attributes, intermediate]
+    concept: oop
+    subconcept: classes
+    level: intro
+    prereqs: [functions]
+    type: write
+    pattern: construction
 
   - slug: instance-method
     title: Instance Method
@@ -39,6 +57,12 @@ exercises:
     hints:
       - Methods always take self as first parameter
     tags: [classes, methods, intermediate]
+    concept: oop
+    subconcept: methods
+    level: intro
+    prereqs: [functions]
+    type: write
+    pattern: definition
 
   - slug: class-inheritance
     title: Class Inheritance
@@ -48,3 +72,9 @@ exercises:
     hints:
       - Put parent class in parentheses
     tags: [classes, inheritance, advanced]
+    concept: oop
+    subconcept: classes
+    level: edge
+    prereqs: [functions]
+    type: write
+    pattern: definition
