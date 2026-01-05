@@ -6,6 +6,12 @@ exercises:
   - slug: for-loop-range
     title: For Loop Range
     difficulty: 1
+    concept: control-flow
+    subconcept: for
+    level: intro
+    prereqs: [foundations]
+    type: write
+    pattern: iteration
     prompt: Write a for loop that prints numbers 0 through 4
     expected_answer: |
       for i in range(5):
@@ -18,6 +24,12 @@ exercises:
   - slug: for-loop-list
     title: For Loop List
     difficulty: 1
+    concept: control-flow
+    subconcept: for
+    level: intro
+    prereqs: [foundations]
+    type: write
+    pattern: iteration
     prompt: Iterate over a list called items and print each item
     expected_answer: |
       for item in items:
@@ -29,6 +41,12 @@ exercises:
   - slug: while-loop
     title: While Loop
     difficulty: 2
+    concept: control-flow
+    subconcept: while
+    level: practice
+    prereqs: [foundations, for]
+    type: write
+    pattern: iteration
     prompt: Write a while loop that runs while count < 5
     expected_answer: "while count < 5:"
     hints:
@@ -39,6 +57,12 @@ exercises:
   - slug: enumerate-loop
     title: Enumerate Loop
     difficulty: 2
+    concept: control-flow
+    subconcept: enumerate
+    level: practice
+    prereqs: [foundations, for]
+    type: write
+    pattern: iteration
     prompt: Loop over items with both index and value using enumerate
     expected_answer: "for i, item in enumerate(items):"
     hints:
@@ -49,6 +73,12 @@ exercises:
   - slug: break-statement
     title: Break Statement
     difficulty: 2
+    concept: control-flow
+    subconcept: break
+    level: edge
+    prereqs: [foundations, for, while]
+    type: write
+    pattern: iteration
     prompt: Exit a loop early using a statement
     expected_answer: break
     hints:
