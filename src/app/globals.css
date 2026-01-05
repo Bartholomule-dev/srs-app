@@ -51,17 +51,17 @@
 
 /* Dark mode (default) - activated by .dark class on html */
 :root {
-  /* Background layers */
-  --bg-base: #0a0a0f;
-  --bg-surface-1: #12121a;
-  --bg-surface-2: #1a1a24;
-  --bg-surface-3: #24242e;
-  --border: #2a2a36;
+  /* Background layers - warm undertones to complement amber accent */
+  --bg-base: #0c0a08;
+  --bg-surface-1: #141210;
+  --bg-surface-2: #1c1a16;
+  --bg-surface-3: #26231e;
+  --border: #332e26;
 
-  /* Text hierarchy */
-  --text-primary: #f0f0f5;
-  --text-secondary: #8b8b99;
-  --text-tertiary: #5c5c6b;
+  /* Text hierarchy - warm undertones */
+  --text-primary: #f5f3f0;
+  --text-secondary: #9a9488;
+  --text-tertiary: #6b655c;
 
   /* Accent colors */
   --accent-primary: #f59e0b;
@@ -82,17 +82,17 @@
 
 /* Light mode override - when .dark class is removed */
 :root:not(.dark) {
-  /* Background layers */
-  --bg-base: #f8f9fc;
+  /* Background layers - warm undertones */
+  --bg-base: #fcfaf8;
   --bg-surface-1: #ffffff;
-  --bg-surface-2: #f0f1f5;
-  --bg-surface-3: #e8e9ed;
-  --border: #e2e4eb;
+  --bg-surface-2: #f5f3f0;
+  --bg-surface-3: #ede9e4;
+  --border: #e6e2db;
 
-  /* Text hierarchy */
-  --text-primary: #1a1a2e;
-  --text-secondary: #4a4a5c;
-  --text-tertiary: #7a7a8c;
+  /* Text hierarchy - warm undertones */
+  --text-primary: #1a1814;
+  --text-secondary: #5c564a;
+  --text-tertiary: #8c867a;
 
   /* Accent colors (adjusted for WCAG AA contrast) */
   --accent-primary: #d97706;

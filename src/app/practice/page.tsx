@@ -15,7 +15,7 @@ function PracticeBackground() {
   return (
     <>
       {/* Deep gradient base */}
-      <div className="fixed inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#14120a] to-[#0a0a0a] -z-10" />
+      <div className="fixed inset-0 bg-gradient-to-br from-[var(--bg-base)] via-[#14120a] to-[var(--bg-base)] -z-10" />
       {/* Subtle gold spotlight from top */}
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] -z-10
                      bg-[radial-gradient(ellipse,rgba(245,158,11,0.08)_0%,transparent_70%)]" />

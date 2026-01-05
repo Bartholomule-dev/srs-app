@@ -12,8 +12,8 @@ test.describe('Theme System', () => {
     const bgColor = await page.locator('body').evaluate((el) =>
       getComputedStyle(el).backgroundColor
     );
-    // #0a0a0f in RGB is rgb(10, 10, 15)
-    expect(bgColor).toBe('rgb(10, 10, 15)');
+    // #0c0a08 in RGB is rgb(12, 10, 8) - warm undertone
+    expect(bgColor).toBe('rgb(12, 10, 8)');
   });
 
   test('fonts are loaded', async ({ page }) => {
@@ -44,11 +44,11 @@ test.describe('Theme System', () => {
       };
     });
 
-    // Verify dark mode values are set
-    expect(cssVars.bgBase).toBe('#0a0a0f');
-    expect(cssVars.textPrimary).toBe('#f0f0f5');
-    expect(cssVars.accentPrimary).toBe('#3b82f6');
-    expect(cssVars.border).toBe('#2a2a36');
+    // Verify dark mode values are set (warm undertones + amber accent)
+    expect(cssVars.bgBase).toBe('#0c0a08');
+    expect(cssVars.textPrimary).toBe('#f5f3f0');
+    expect(cssVars.accentPrimary).toBe('#f59e0b');
+    expect(cssVars.border).toBe('#332e26');
   });
 
   test('color scheme is dark', async ({ page }) => {
