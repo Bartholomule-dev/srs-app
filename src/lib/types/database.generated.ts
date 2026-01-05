@@ -34,21 +34,59 @@ export type Database = {
   }
   public: {
     Tables: {
+      exercise_attempts: {
+        Row: {
+          created_at: string
+          exercise_slug: string
+          id: string
+          last_seen_at: string | null
+          times_correct: number
+          times_seen: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          exercise_slug: string
+          id?: string
+          last_seen_at?: string | null
+          times_correct?: number
+          times_seen?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          exercise_slug?: string
+          id?: string
+          last_seen_at?: string | null
+          times_correct?: number
+          times_seen?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       exercises: {
         Row: {
           accepted_solutions: string[] | null
           avg_success_rate: number | null
+          blank_position: number | null
           category: string
+          concept: string | null
           created_at: string | null
           difficulty: number
+          exercise_type: string | null
           expected_answer: string
           explanation: string | null
           hints: Json | null
           id: string
           language: string
+          level: string | null
+          pattern: string | null
+          prereqs: string[] | null
           prompt: string
           slug: string
+          subconcept: string | null
           tags: string[] | null
+          template: string | null
           times_practiced: number | null
           title: string
           updated_at: string | null
@@ -56,17 +94,25 @@ export type Database = {
         Insert: {
           accepted_solutions?: string[] | null
           avg_success_rate?: number | null
+          blank_position?: number | null
           category: string
+          concept?: string | null
           created_at?: string | null
           difficulty: number
+          exercise_type?: string | null
           expected_answer: string
           explanation?: string | null
           hints?: Json | null
           id?: string
           language: string
+          level?: string | null
+          pattern?: string | null
+          prereqs?: string[] | null
           prompt: string
           slug: string
+          subconcept?: string | null
           tags?: string[] | null
+          template?: string | null
           times_practiced?: number | null
           title: string
           updated_at?: string | null
@@ -74,17 +120,25 @@ export type Database = {
         Update: {
           accepted_solutions?: string[] | null
           avg_success_rate?: number | null
+          blank_position?: number | null
           category?: string
+          concept?: string | null
           created_at?: string | null
           difficulty?: number
+          exercise_type?: string | null
           expected_answer?: string
           explanation?: string | null
           hints?: Json | null
           id?: string
           language?: string
+          level?: string | null
+          pattern?: string | null
+          prereqs?: string[] | null
           prompt?: string
           slug?: string
+          subconcept?: string | null
           tags?: string[] | null
+          template?: string | null
           times_practiced?: number | null
           title?: string
           updated_at?: string | null
@@ -133,6 +187,48 @@ export type Database = {
           total_exercises_completed?: number | null
           updated_at?: string | null
           username?: string | null
+        }
+        Relationships: []
+      }
+      subconcept_progress: {
+        Row: {
+          concept_slug: string
+          created_at: string
+          ease_factor: number
+          id: string
+          interval: number
+          last_reviewed: string | null
+          next_review: string
+          phase: string
+          subconcept_slug: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          concept_slug: string
+          created_at?: string
+          ease_factor?: number
+          id?: string
+          interval?: number
+          last_reviewed?: string | null
+          next_review?: string
+          phase?: string
+          subconcept_slug: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          concept_slug?: string
+          created_at?: string
+          ease_factor?: number
+          id?: string
+          interval?: number
+          last_reviewed?: string | null
+          next_review?: string
+          phase?: string
+          subconcept_slug?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
