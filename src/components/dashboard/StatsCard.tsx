@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { motion, useSpring, useTransform } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/Card';
 import { cn } from '@/lib/utils';
+import { DURATION, EASE } from '@/lib/motion';
 
 // SVG Icons
 function FlameIcon({ className }: { className?: string }) {
@@ -294,9 +295,8 @@ export function StatsCard({
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{
-                  type: 'spring',
-                  stiffness: 200,
-                  damping: 15,
+                  duration: DURATION.normal,
+                  ease: EASE.default,
                   delay: delay + 0.2,
                 }}
               >
