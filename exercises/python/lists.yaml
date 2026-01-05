@@ -6,6 +6,12 @@ exercises:
   - slug: list-creation
     title: List Creation
     difficulty: 1
+    concept: collections
+    subconcept: lists
+    level: intro
+    prereqs: []
+    type: write
+    pattern: construction
     prompt: Create a list called numbers containing 1, 2, 3
     expected_answer: numbers = [1, 2, 3]
     hints:
@@ -15,6 +21,12 @@ exercises:
   - slug: list-append
     title: List Append
     difficulty: 1
+    concept: collections
+    subconcept: lists
+    level: intro
+    prereqs: []
+    type: write
+    pattern: mutation
     prompt: Add the value 4 to the end of the list numbers
     expected_answer: numbers.append(4)
     hints:
@@ -24,6 +36,12 @@ exercises:
   - slug: list-indexing
     title: List Indexing
     difficulty: 1
+    concept: collections
+    subconcept: lists
+    level: intro
+    prereqs: []
+    type: write
+    pattern: indexing
     prompt: Get the second element of list items
     expected_answer: items[1]
     hints:
@@ -34,6 +52,12 @@ exercises:
   - slug: list-slicing
     title: List Slicing
     difficulty: 2
+    concept: collections
+    subconcept: lists
+    level: practice
+    prereqs: [lists]
+    type: write
+    pattern: indexing
     prompt: Get the first 3 elements of list items
     expected_answer: items[:3]
     hints:
@@ -44,6 +68,12 @@ exercises:
   - slug: list-extend
     title: List Extend
     difficulty: 2
+    concept: collections
+    subconcept: lists
+    level: practice
+    prereqs: [lists]
+    type: write
+    pattern: mutation
     prompt: Add all elements from list b to list a
     expected_answer: a.extend(b)
     hints:
