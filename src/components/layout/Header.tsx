@@ -12,12 +12,12 @@ export function Header() {
   const todayCount = stats?.cardsReviewedToday ?? 0;
 
   return (
-    <header className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+    <header className="border-b border-[var(--border)] bg-[var(--bg-surface-1)]">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link
           href="/dashboard"
-          className="text-xl font-bold text-gray-900 dark:text-white"
+          className="text-xl font-bold text-[var(--text-primary)]"
         >
           SyntaxSRS
         </Link>
@@ -28,16 +28,16 @@ export function Header() {
           <div className="flex items-center gap-1 text-sm">
             {streak > 0 ? (
               <>
-                <span className="text-orange-500">🔥</span>
-                <span className="font-medium text-gray-900 dark:text-white">
+                <span className="text-[var(--accent-warning)]">🔥</span>
+                <span className="font-medium text-[var(--text-primary)]">
                   {streak}
                 </span>
-                <span className="text-gray-500 dark:text-gray-400">
+                <span className="text-[var(--text-secondary)]">
                   day streak
                 </span>
               </>
             ) : (
-              <span className="text-gray-500 dark:text-gray-400">
+              <span className="text-[var(--text-secondary)]">
                 Start your streak!
               </span>
             )}
@@ -45,20 +45,20 @@ export function Header() {
 
           {/* Today count */}
           <div className="flex items-center gap-1 text-sm">
-            <span className="font-medium text-gray-900 dark:text-white">
+            <span className="font-medium text-[var(--text-primary)]">
               {todayCount}
             </span>
-            <span className="text-gray-500 dark:text-gray-400">today</span>
+            <span className="text-[var(--text-secondary)]">today</span>
           </div>
 
           {/* User menu */}
           <div className="flex items-center gap-3">
-            <span className="text-sm text-gray-600 dark:text-gray-400">
+            <span className="text-sm text-[var(--text-secondary)]">
               {user?.email}
             </span>
             <button
               onClick={() => signOut()}
-              className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
             >
               Sign out
             </button>
