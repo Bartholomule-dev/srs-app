@@ -146,6 +146,7 @@ async function importToDatabase(
         hints: exercise.hints,
         tags: exercise.tags || [],
         explanation: null, // Omitted for MVP
+        accepted_solutions: exercise.accepted_solutions || [],
       };
 
       // Upsert on (language, slug) - check if exists first
