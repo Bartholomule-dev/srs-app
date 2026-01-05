@@ -51,6 +51,7 @@ export interface Concept {
 
 /** Subconcept progress (SRS state) */
 export interface SubconceptProgress {
+  id: string;
   userId: string;
   subconceptSlug: string;
   conceptSlug: ConceptSlug;
