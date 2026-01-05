@@ -147,6 +147,15 @@ async function importToDatabase(
         tags: exercise.tags || [],
         explanation: null, // Omitted for MVP
         accepted_solutions: exercise.accepted_solutions || [],
+        // New taxonomy fields
+        concept: exercise.concept,
+        subconcept: exercise.subconcept,
+        level: exercise.level,
+        prereqs: exercise.prereqs ?? [],
+        exercise_type: exercise.type ?? 'write',
+        pattern: exercise.pattern,
+        template: exercise.template ?? null,
+        blank_position: exercise.blank_position ?? null,
       };
 
       // Upsert on (language, slug) - check if exists first
