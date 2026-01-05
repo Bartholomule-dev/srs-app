@@ -11,6 +11,12 @@ exercises:
     hints:
       - Use [expression for item in iterable]
     tags: [comprehensions, lists, intermediate]
+    concept: comprehensions
+    subconcept: list-comp
+    level: intro
+    prereqs: [for, range, lists]
+    type: write
+    pattern: mapping
 
   - slug: list-comp-conditional
     title: List Comprehension Conditional
@@ -20,6 +26,12 @@ exercises:
     hints:
       - Add if condition at the end
     tags: [comprehensions, conditionals, intermediate]
+    concept: comprehensions
+    subconcept: list-comp
+    level: practice
+    prereqs: [for, range, lists, if]
+    type: write
+    pattern: filtering
 
   - slug: dict-comp-basic
     title: Dict Comprehension
@@ -29,6 +41,12 @@ exercises:
     hints:
       - Use {key: value for item in iterable}
     tags: [comprehensions, dicts, advanced]
+    concept: comprehensions
+    subconcept: dict-comp
+    level: practice
+    prereqs: [for, range, dicts, list-comp]
+    type: write
+    pattern: mapping
 
   - slug: set-comp-basic
     title: Set Comprehension
@@ -38,6 +56,12 @@ exercises:
     hints:
       - Use curly braces like dict but without colon
     tags: [comprehensions, sets, advanced]
+    concept: comprehensions
+    subconcept: set-comp
+    level: practice
+    prereqs: [for, sets, strings, list-comp]
+    type: write
+    pattern: mapping
 
   - slug: nested-comp
     title: Nested Comprehension
@@ -48,3 +72,9 @@ exercises:
       - Use multiple for clauses
       - Outer loop comes first
     tags: [comprehensions, nested, advanced]
+    concept: comprehensions
+    subconcept: list-comp
+    level: edge
+    prereqs: [for, lists, list-comp, nested-loops]
+    type: write
+    pattern: mapping
