@@ -2,6 +2,8 @@ export { useAuth } from './useAuth';
 export { useProfile } from './useProfile';
 export { useRequireAuth } from './useRequireAuth';
 export { useSRS } from './useSRS';
+export { useConceptSRS } from './useConceptSRS';
+export type { UseConceptSRSReturn } from './useConceptSRS';
 export { useSession } from './useSession';
 export type { UseSessionReturn } from './useSession';
 export { useStats } from './useStats';
