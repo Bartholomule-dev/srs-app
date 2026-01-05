@@ -86,7 +86,7 @@ export function HowItWorks() {
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
         >
           <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
             How It Works
@@ -104,7 +104,7 @@ export function HowItWorks() {
               className="h-full bg-gradient-to-r from-[var(--accent-primary)] to-purple-500"
               initial={{ scaleX: 0 }}
               animate={isInView ? { scaleX: 1 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
               style={{ originX: 0 }}
             />
           </div>
