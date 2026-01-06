@@ -7,12 +7,12 @@ interface ExercisePromptProps {
 export function ExercisePrompt({ category, language, prompt }: ExercisePromptProps) {
   return (
     <div>
-      <header className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400 mb-4" role="banner">
-        <span className="font-medium text-amber-600 dark:text-amber-400">{language}</span>
+      <header className="flex items-center gap-2 text-sm text-[var(--text-secondary)] mb-4" role="banner">
+        <span className="font-medium text-[var(--accent-primary)]">{language}</span>
         <span aria-hidden="true">/</span>
         <span>{category}</span>
       </header>
-      <p className="text-lg text-neutral-900 dark:text-neutral-100">{prompt}</p>
+      <p className="text-lg text-[var(--text-primary)]">{prompt}</p>
     </div>
   );
 }
