@@ -36,28 +36,26 @@ export function Hero() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
         <div className="grid lg:grid-cols-5 gap-12 items-center">
           {/* Left column - 3/5 */}
-          <motion.div
-            className="lg:col-span-3 space-y-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: DURATION.page }}
-          >
-            {/* Badge */}
+          <div className="lg:col-span-3 space-y-6">
+            {/* Badge - animates first */}
             <motion.span
               className="inline-block px-4 py-1.5 rounded-full text-sm
                          bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]
                          border border-[var(--accent-primary)]/20"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: DURATION.normal, delay: 0.1 }}
             >
               For developers who use AI assistants
             </motion.span>
 
-            {/* Headline with gradient */}
-            <h1
+            {/* Headline - animates second */}
+            <motion.h1
               className="text-5xl md:text-6xl lg:text-7xl font-display font-bold
                           tracking-[-0.02em] leading-[1.1]"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: DURATION.normal, delay: 0.2 }}
             >
               Keep Your{' '}
               <span
@@ -66,17 +64,27 @@ export function Hero() {
               >
                 Code Sharp
               </span>
-            </h1>
+            </motion.h1>
 
-            {/* Subheadline */}
-            <p className="text-xl md:text-2xl text-[var(--text-secondary)] max-w-xl">
+            {/* Subheadline - animates third */}
+            <motion.p
+              className="text-xl md:text-2xl text-[var(--text-secondary)] max-w-xl"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: DURATION.normal, delay: 0.3 }}
+            >
               Practice syntax through spaced repetition.
               <br />
               <span className="text-[var(--text-tertiary)]">5 minutes a day to stay fluent.</span>
-            </p>
+            </motion.p>
 
-            {/* CTA buttons or Auth Form */}
-            <div className="flex flex-wrap gap-4 pt-4">
+            {/* CTA buttons or Auth Form - animates fourth */}
+            <motion.div
+              className="flex flex-wrap gap-4 pt-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: DURATION.normal, delay: 0.4 }}
+            >
               <AnimatePresence mode="wait">
                 {showAuthForm ? (
                   <motion.div
@@ -113,15 +121,15 @@ export function Hero() {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
 
           {/* Right column - Code mockup 2/5 */}
           <motion.div
             className="lg:col-span-2 relative hidden lg:block"
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: DURATION.page, delay: 0.3 }}
+            transition={{ duration: DURATION.page, delay: 0.5 }}
           >
             <CodeMockup />
           </motion.div>
