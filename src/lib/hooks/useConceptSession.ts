@@ -374,7 +374,7 @@ export function useConceptSession(): UseConceptSessionReturn {
         // Session continues even if save fails
       }
     },
-    [cards, currentIndex, stats.completed, cardProgressMap, recordSubconceptResult, showToast]
+    [cards, currentIndex, stats.completed, stats.total, cardProgressMap, recordSubconceptResult, showToast]
   );
 
   const endSession = useCallback(async () => {
