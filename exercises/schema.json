@@ -108,6 +108,10 @@
           "type": "integer",
           "minimum": 0,
           "description": "For fill-in exercises: which blank (0-indexed)"
+        },
+        "code": {
+          "type": "string",
+          "description": "Code snippet for predict-output exercises (read-only display)"
         }
       },
       "allOf": [

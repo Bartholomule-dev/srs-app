@@ -38,6 +38,9 @@ export interface YamlExercise {
   // Fill-in specific
   template?: string;
   blank_position?: number;
+
+  // Predict-output specific
+  code?: string; // Read-only code snippet for predict-output exercises
 }
 
 /**
