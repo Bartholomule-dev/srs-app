@@ -166,6 +166,7 @@ exercises:
     prereqs: [control-flow.for]
     type: write
     pattern: iteration
+    targets: [for, conditionals]
     prompt: Write the else clause for a for loop that executes when loop completes without break
     expected_answer: "else:"
     hints:

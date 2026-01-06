@@ -233,6 +233,7 @@ exercises:
     prereqs: [functions.lambda, collections.lists]
     type: write
     pattern: construction
+    targets: [lambda, lists]
     prompt: Sort list of tuples by second element using lambda
     expected_answer: "sorted(items, key=lambda x: x[1])"
     hints:
@@ -353,6 +354,7 @@ exercises:
     prereqs: [functions.typehints, functions.lambda]
     type: write
     pattern: definition
+    targets: [typehints, lambda]
     prompt: Define apply(func) where func is a callable taking int and returning int
     expected_answer: "def apply(func: Callable[[int], int]):"
     hints:

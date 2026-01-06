@@ -359,6 +359,7 @@ exercises:
     prereqs: [io, operators]
     type: write
     pattern: input
+    targets: [io, conversion]
     prompt: Get a number from user and convert to integer, storing in variable age
     expected_answer: age = int(input())
     accepted_solutions:
