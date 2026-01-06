@@ -319,4 +319,55 @@ describe('ExerciseCard', () => {
       expect(screen.getByRole('button', { name: /hint/i })).toBeInTheDocument();
     });
   });
+
+  describe('predict-output exercises', () => {
+    const predictExercise = createMockExercise({
+      id: 'predict-1',
+      slug: 'test-predict',
+      title: 'Test Predict',
+      exerciseType: 'predict',
+      code: 'x = 5\nprint(x * 2)',
+      expectedAnswer: '10',
+      acceptedSolutions: [],
+      prompt: 'What will print when this code runs?',
+      hints: [],
+    });
+
+    it('renders PredictOutputExercise for predict type', () => {
+      render(<ExerciseCard exercise={predictExercise} onComplete={vi.fn()} />);
+
+      expect(screen.getByText('What will print?')).toBeInTheDocument();
+      expect(screen.getByText(/x = 5/)).toBeInTheDocument();
+    });
+
+    it('grades predict answer correctly', async () => {
+      const onComplete = vi.fn();
+      render(<ExerciseCard exercise={predictExercise} onComplete={onComplete} />);
+
+      const input = screen.getByPlaceholderText('Enter the exact console output');
+
+      await act(async () => {
+        fireEvent.change(input, { target: { value: '10' } });
+        fireEvent.keyDown(input, { key: 'Enter' });
+      });
+
+      // Should show correct feedback
+      expect(screen.getByText(/correct/i)).toBeInTheDocument();
+    });
+
+    it('grades predict answer incorrectly', async () => {
+      const onComplete = vi.fn();
+      render(<ExerciseCard exercise={predictExercise} onComplete={onComplete} />);
+
+      const input = screen.getByPlaceholderText('Enter the exact console output');
+
+      await act(async () => {
+        fireEvent.change(input, { target: { value: '20' } });
+        fireEvent.keyDown(input, { key: 'Enter' });
+      });
+
+      // Should show incorrect feedback
+      expect(screen.getByText(/incorrect/i)).toBeInTheDocument();
+    });
+  });
 });
