@@ -56,7 +56,7 @@ export const CodeEditor = forwardRef<HTMLTextAreaElement, CodeEditorProps>(
     const internalRef = useRef<HTMLTextAreaElement>(null);
 
     // Expose the internal ref via forwarded ref
-    useImperativeHandle(ref, () => internalRef.current!, []);
+    useImperativeHandle(ref, () => internalRef.current as HTMLTextAreaElement, []);
 
     useEffect(() => {
       if (autoFocus && internalRef.current) {
