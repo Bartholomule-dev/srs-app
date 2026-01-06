@@ -72,5 +72,484 @@
       "prereqs": ["error-handling", "oop"],
       "subconcepts": ["imports", "reading", "writing", "context", "pathlib", "main-guard"]
     }
-  ]
+  ],
+  "subconcepts": {
+    "variables": {
+      "name": "Variables",
+      "concept": "foundations",
+      "prereqs": [],
+      "teaching": {
+        "explanation": "Variables store data using the assignment operator (=). Use descriptive names like `user_count` or `total_price`.",
+        "exampleSlug": "assign-variable"
+      }
+    },
+    "operators": {
+      "name": "Operators",
+      "concept": "foundations",
+      "prereqs": ["variables"],
+      "teaching": {
+        "explanation": "Python supports arithmetic (+, -, *, /), comparison (==, <, >), and logical (and, or, not) operators.",
+        "exampleSlug": "add-numbers"
+      }
+    },
+    "expressions": {
+      "name": "Expressions",
+      "concept": "foundations",
+      "prereqs": ["operators"],
+      "teaching": {
+        "explanation": "Expressions combine values and operators to produce results. Use `and`, `or`, `not` for boolean logic.",
+        "exampleSlug": "boolean-and"
+      }
+    },
+    "io": {
+      "name": "Input/Output",
+      "concept": "foundations",
+      "prereqs": ["variables"],
+      "teaching": {
+        "explanation": "Use `print()` to display output and `input()` to get user input. Input always returns a string.",
+        "exampleSlug": "print-string"
+      }
+    },
+    "basics": {
+      "name": "String Basics",
+      "concept": "strings",
+      "prereqs": ["variables"],
+      "teaching": {
+        "explanation": "Strings are sequences of characters. Create with quotes, concatenate with +, repeat with *, get length with len().",
+        "exampleSlug": "string-concatenate"
+      }
+    },
+    "indexing": {
+      "name": "String Indexing",
+      "concept": "strings",
+      "prereqs": ["basics"],
+      "teaching": {
+        "explanation": "Access characters by position with `s[i]`. Index 0 is first, -1 is last. Raises IndexError if out of range.",
+        "exampleSlug": "string-indexing"
+      }
+    },
+    "slicing": {
+      "name": "String Slicing",
+      "concept": "strings",
+      "prereqs": ["indexing"],
+      "teaching": {
+        "explanation": "Extract substrings with `s[start:end:step]`. Omit start/end for beginning/end. Use [::-1] to reverse.",
+        "exampleSlug": "string-slice-start"
+      }
+    },
+    "methods": {
+      "name": "String Methods",
+      "concept": "strings",
+      "prereqs": ["basics"],
+      "teaching": {
+        "explanation": "Strings have methods like upper(), lower(), strip(), split(), replace(), find(). They return new strings.",
+        "exampleSlug": "string-upper"
+      }
+    },
+    "fstrings": {
+      "name": "F-Strings",
+      "concept": "strings",
+      "prereqs": ["basics"],
+      "teaching": {
+        "explanation": "F-strings embed expressions in strings: `f\"Hello, {name}!\"`. Use format specs like `{x:.2f}` for precision.",
+        "exampleSlug": "f-string-basic"
+      }
+    },
+    "integers": {
+      "name": "Integers",
+      "concept": "numbers-booleans",
+      "prereqs": ["variables"],
+      "teaching": {
+        "explanation": "Integers are whole numbers with unlimited precision. Use //, %, ** for floor division, modulo, exponentiation.",
+        "exampleSlug": "floor-division"
+      }
+    },
+    "floats": {
+      "name": "Floats",
+      "concept": "numbers-booleans",
+      "prereqs": ["integers"],
+      "teaching": {
+        "explanation": "Floats represent decimal numbers. Use round() for precision. Be aware of floating-point inaccuracy.",
+        "exampleSlug": "exponentiation"
+      }
+    },
+    "booleans": {
+      "name": "Booleans",
+      "concept": "numbers-booleans",
+      "prereqs": ["variables"],
+      "teaching": {
+        "explanation": "Booleans are True or False. Combine with `and`, `or`, `not`. Use in conditionals and while loops.",
+        "exampleSlug": "logical-and"
+      }
+    },
+    "conversion": {
+      "name": "Type Conversion",
+      "concept": "numbers-booleans",
+      "prereqs": ["integers", "floats"],
+      "teaching": {
+        "explanation": "Convert types with int(), float(), str(), bool(). Use type() to check a value's type.",
+        "exampleSlug": "type-check"
+      }
+    },
+    "truthiness": {
+      "name": "Truthiness",
+      "concept": "numbers-booleans",
+      "prereqs": ["booleans"],
+      "teaching": {
+        "explanation": "Falsy values: False, None, 0, \"\", [], {}, set(). Everything else is truthy. Use `if items:` not `if len(items) > 0:`.",
+        "exampleSlug": "truthiness-empty-list"
+      }
+    },
+    "comparisons": {
+      "name": "Comparisons",
+      "concept": "numbers-booleans",
+      "prereqs": ["booleans"],
+      "teaching": {
+        "explanation": "Use `is` for identity (None), `==` for equality. Chain comparisons: `0 < x < 10`. Use `in` for membership.",
+        "exampleSlug": "comparison-is-none"
+      }
+    },
+    "lists": {
+      "name": "Lists",
+      "concept": "collections",
+      "prereqs": ["variables"],
+      "teaching": {
+        "explanation": "Lists are mutable sequences: `[1, 2, 3]`. Use append(), extend(), pop(). Access by index, slice like strings.",
+        "exampleSlug": "list-create-empty"
+      }
+    },
+    "tuples": {
+      "name": "Tuples",
+      "concept": "collections",
+      "prereqs": ["lists"],
+      "teaching": {
+        "explanation": "Tuples are immutable sequences: `(1, 2, 3)`. Use for fixed data, function returns, dict keys. Single item: `(x,)`.",
+        "exampleSlug": "tuple-create"
+      }
+    },
+    "dicts": {
+      "name": "Dictionaries",
+      "concept": "collections",
+      "prereqs": ["lists"],
+      "teaching": {
+        "explanation": "Dicts map keys to values: `{\"name\": \"Alice\"}`. Use get() for safe access, keys(), values(), items() for iteration.",
+        "exampleSlug": "dict-create-empty"
+      }
+    },
+    "sets": {
+      "name": "Sets",
+      "concept": "collections",
+      "prereqs": ["lists"],
+      "teaching": {
+        "explanation": "Sets store unique values: `{1, 2, 3}`. Use add(), remove(), |, &, - for union, intersection, difference.",
+        "exampleSlug": "set-create"
+      }
+    },
+    "unpacking": {
+      "name": "Unpacking",
+      "concept": "collections",
+      "prereqs": ["lists", "tuples"],
+      "teaching": {
+        "explanation": "Unpack sequences: `a, b, c = [1, 2, 3]`. Use * for rest: `first, *rest = items`. ** unpacks dict kwargs.",
+        "exampleSlug": "star-unpack"
+      }
+    },
+    "mutability": {
+      "name": "Mutability",
+      "concept": "collections",
+      "prereqs": ["lists", "dicts"],
+      "teaching": {
+        "explanation": "Lists, dicts, sets are mutable (can change). Tuples, strings are immutable. Use copy() to avoid aliasing bugs.",
+        "exampleSlug": "list-aliasing"
+      }
+    },
+    "conditionals": {
+      "name": "Conditionals",
+      "concept": "control-flow",
+      "prereqs": ["expressions"],
+      "teaching": {
+        "explanation": "Use `if`, `elif`, `else` for branching. Combine conditions with `and`, `or`. Use `in` for membership tests.",
+        "exampleSlug": "if-statement"
+      }
+    },
+    "for": {
+      "name": "For Loops",
+      "concept": "control-flow",
+      "prereqs": ["lists"],
+      "teaching": {
+        "explanation": "For loops iterate over sequences. Use `for item in sequence:` to process each element. Use range() for numbers.",
+        "exampleSlug": "for-loop-range"
+      }
+    },
+    "while": {
+      "name": "While Loops",
+      "concept": "control-flow",
+      "prereqs": ["conditionals"],
+      "teaching": {
+        "explanation": "While loops run until condition is False. Use break to exit early, continue to skip iteration. Watch for infinite loops!",
+        "exampleSlug": "while-loop"
+      }
+    },
+    "iteration": {
+      "name": "Iteration Patterns",
+      "concept": "control-flow",
+      "prereqs": ["for"],
+      "teaching": {
+        "explanation": "Use enumerate() for index+value, zip() for parallel iteration, range() for number sequences.",
+        "exampleSlug": "enumerate-loop"
+      }
+    },
+    "zip": {
+      "name": "Zip",
+      "concept": "control-flow",
+      "prereqs": ["for"],
+      "teaching": {
+        "explanation": "zip() pairs elements from multiple iterables: `for a, b in zip(list1, list2):`. Stops at shortest iterable.",
+        "exampleSlug": "zip-two-lists"
+      }
+    },
+    "reversed": {
+      "name": "Reversed",
+      "concept": "control-flow",
+      "prereqs": ["for"],
+      "teaching": {
+        "explanation": "reversed() iterates backwards without modifying the original. Use `for item in reversed(items):` for reverse order.",
+        "exampleSlug": "reversed-list"
+      }
+    },
+    "sorted": {
+      "name": "Sorted",
+      "concept": "control-flow",
+      "prereqs": ["for"],
+      "teaching": {
+        "explanation": "sorted() returns a new sorted list. Use key= for custom sorting, reverse=True for descending order.",
+        "exampleSlug": "sorted-list"
+      }
+    },
+    "any-all": {
+      "name": "Any/All",
+      "concept": "control-flow",
+      "prereqs": ["conditionals", "for"],
+      "teaching": {
+        "explanation": "any() returns True if any element is truthy. all() returns True if all are truthy. Use with generator expressions.",
+        "exampleSlug": "any-basic"
+      }
+    },
+    "arguments": {
+      "name": "Function Arguments",
+      "concept": "functions",
+      "prereqs": ["basics"],
+      "teaching": {
+        "explanation": "Functions take positional and keyword arguments. Use name=value for keyword args. Order: positional, *args, keyword, **kwargs.",
+        "exampleSlug": "default-parameter"
+      }
+    },
+    "defaults": {
+      "name": "Default Parameters",
+      "concept": "functions",
+      "prereqs": ["basics"],
+      "teaching": {
+        "explanation": "Set defaults with `def f(x=10):`. Never use mutable defaults like []. Use None and create inside the function.",
+        "exampleSlug": "default-param-simple"
+      }
+    },
+    "args-kwargs": {
+      "name": "Args & Kwargs",
+      "concept": "functions",
+      "prereqs": ["arguments"],
+      "teaching": {
+        "explanation": "*args captures variable positional args as tuple. **kwargs captures keyword args as dict. Use to forward arguments.",
+        "exampleSlug": "args-intro"
+      }
+    },
+    "scope": {
+      "name": "Scope",
+      "concept": "functions",
+      "prereqs": ["basics"],
+      "teaching": {
+        "explanation": "Variables have local, enclosing, global, built-in scope (LEGB). Use `global` or `nonlocal` to modify outer variables.",
+        "exampleSlug": "global-keyword"
+      }
+    },
+    "lambda": {
+      "name": "Lambda Functions",
+      "concept": "functions",
+      "prereqs": ["basics"],
+      "teaching": {
+        "explanation": "Lambda creates anonymous functions: `lambda x: x * 2`. Use for simple operations, especially with map, filter, sorted key.",
+        "exampleSlug": "lambda-simple"
+      }
+    },
+    "typehints": {
+      "name": "Type Hints",
+      "concept": "functions",
+      "prereqs": ["basics"],
+      "teaching": {
+        "explanation": "Add type hints: `def greet(name: str) -> str:`. Use list[int], Optional[str], Callable. Checked by mypy, not at runtime.",
+        "exampleSlug": "typehint-param"
+      }
+    },
+    "list-comp": {
+      "name": "List Comprehensions",
+      "concept": "comprehensions",
+      "prereqs": ["for", "lists"],
+      "teaching": {
+        "explanation": "Create lists with `[expr for x in iterable if condition]`. More readable than map/filter for simple transformations.",
+        "exampleSlug": "list-comp-basic"
+      }
+    },
+    "dict-comp": {
+      "name": "Dict Comprehensions",
+      "concept": "comprehensions",
+      "prereqs": ["list-comp", "dicts"],
+      "teaching": {
+        "explanation": "Create dicts with `{key: value for x in iterable}`. Use zip() to combine two lists into a dict.",
+        "exampleSlug": "dict-comp-basic"
+      }
+    },
+    "set-comp": {
+      "name": "Set Comprehensions",
+      "concept": "comprehensions",
+      "prereqs": ["list-comp", "sets"],
+      "teaching": {
+        "explanation": "Create sets with `{expr for x in iterable}`. Automatically deduplicates values. Use for unique transformations.",
+        "exampleSlug": "set-comp-basic"
+      }
+    },
+    "generator-exp": {
+      "name": "Generator Expressions",
+      "concept": "comprehensions",
+      "prereqs": ["list-comp"],
+      "teaching": {
+        "explanation": "Use `(expr for x in iterable)` for memory-efficient iteration. Values computed on demand, not stored in memory.",
+        "exampleSlug": "generator-exp-basic"
+      }
+    },
+    "try-except": {
+      "name": "Try-Except",
+      "concept": "error-handling",
+      "prereqs": ["conditionals"],
+      "teaching": {
+        "explanation": "Wrap risky code in try/except. Catch specific exceptions like ValueError. Use `as e` to access exception details.",
+        "exampleSlug": "try-except-basic"
+      }
+    },
+    "finally": {
+      "name": "Finally",
+      "concept": "error-handling",
+      "prereqs": ["try-except"],
+      "teaching": {
+        "explanation": "finally: always runs, even if exception occurs or return is called. Use for cleanup like closing files.",
+        "exampleSlug": "try-finally"
+      }
+    },
+    "raising": {
+      "name": "Raising Exceptions",
+      "concept": "error-handling",
+      "prereqs": ["try-except"],
+      "teaching": {
+        "explanation": "Use `raise ValueError(\"message\")` to signal errors. Re-raise with bare `raise`. Create custom exceptions by subclassing.",
+        "exampleSlug": "raise-exception"
+      }
+    },
+    "classes": {
+      "name": "Classes",
+      "concept": "oop",
+      "prereqs": ["basics"],
+      "teaching": {
+        "explanation": "Classes define object blueprints. Use __init__ for setup, self for instance access. Create instances with ClassName().",
+        "exampleSlug": "define-class"
+      }
+    },
+    "methods": {
+      "name": "Methods",
+      "concept": "oop",
+      "prereqs": ["classes"],
+      "teaching": {
+        "explanation": "Methods are functions on classes. Instance methods take self first. Use __init__ for constructor, __str__ for string representation.",
+        "exampleSlug": "init-method"
+      }
+    },
+    "inheritance": {
+      "name": "Inheritance",
+      "concept": "oop",
+      "prereqs": ["classes", "methods"],
+      "teaching": {
+        "explanation": "Subclass with `class Child(Parent):`. Use super().__init__() to call parent constructor. Override methods to specialize.",
+        "exampleSlug": "class-inheritance"
+      }
+    },
+    "classmethod": {
+      "name": "Class Methods",
+      "concept": "oop",
+      "prereqs": ["methods"],
+      "teaching": {
+        "explanation": "Use @classmethod for methods that operate on the class, not instances. First parameter is cls. Often used for alternative constructors.",
+        "exampleSlug": "define-class"
+      }
+    },
+    "properties": {
+      "name": "Properties",
+      "concept": "oop",
+      "prereqs": ["methods"],
+      "teaching": {
+        "explanation": "Use @property to create computed attributes. Add @name.setter for write access. Provides encapsulation with attribute syntax.",
+        "exampleSlug": "instance-attribute"
+      }
+    },
+    "imports": {
+      "name": "Imports",
+      "concept": "modules-files",
+      "prereqs": [],
+      "teaching": {
+        "explanation": "Use `import module` or `from module import name`. Alias with `as`. Organize imports: stdlib, third-party, local.",
+        "exampleSlug": "import-module"
+      }
+    },
+    "reading": {
+      "name": "File Reading",
+      "concept": "modules-files",
+      "prereqs": ["imports"],
+      "teaching": {
+        "explanation": "Open files with open(path, 'r'). Use read() for all content, readlines() for lines list, readline() for one line.",
+        "exampleSlug": "file-open-read"
+      }
+    },
+    "writing": {
+      "name": "File Writing",
+      "concept": "modules-files",
+      "prereqs": ["reading"],
+      "teaching": {
+        "explanation": "Use open(path, 'w') to write (overwrites), 'a' to append. Use write() for strings, writelines() for lists.",
+        "exampleSlug": "file-open-write"
+      }
+    },
+    "context": {
+      "name": "Context Managers",
+      "concept": "modules-files",
+      "prereqs": ["reading"],
+      "teaching": {
+        "explanation": "Use `with open(path) as f:` for automatic cleanup. File closes even if exception occurs. Works with any context manager.",
+        "exampleSlug": "context-manager-open"
+      }
+    },
+    "pathlib": {
+      "name": "Pathlib",
+      "concept": "modules-files",
+      "prereqs": ["imports"],
+      "teaching": {
+        "explanation": "Use Path from pathlib for cross-platform paths. Join with /: `Path('dir') / 'file.txt'`. Methods: exists(), is_dir(), parent.",
+        "exampleSlug": "pathlib-create-path"
+      }
+    },
+    "main-guard": {
+      "name": "Main Guard",
+      "concept": "modules-files",
+      "prereqs": ["imports"],
+      "teaching": {
+        "explanation": "Use `if __name__ == \"__main__\":` to run code only when script is executed directly, not when imported as module.",
+        "exampleSlug": "main-guard-basic"
+      }
+    }
+  }
 }
