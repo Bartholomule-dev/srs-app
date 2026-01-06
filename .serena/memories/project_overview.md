@@ -30,7 +30,7 @@ SRS-App is a gamified web platform for practicing code syntax through spaced rep
 7. **Milestone 7: Basic Stats** - StatsCard, StatsGrid, useStats hook, streak/accuracy utilities
 8. **Milestone 8: MVP Deployment** - Vercel config, GitHub Actions CI/E2E, Playwright tests, username auto-gen
 9. **Milestone 9: UI/UX Redesign** - Landing page, Header components, Dashboard improvements, Practice flow polish
-10. **Milestone 10: darwin-ui Migration** - @pikoloo/darwin-ui components, wrapper pattern
+10. **Milestone 10: Custom UI Components** - Premium Tailwind components with warm amber theme, framer-motion animations
 11. **Milestone 11: Theme System** - CSS variables, fonts, cn() utility, Card elevation
 12. **Milestone 12: Answer Matching** - accepted_solutions, alternative syntax support
 13. **Milestone 13: Phase 2 Curriculum** - Concept-based SRS, 171 exercises, useConceptSession
