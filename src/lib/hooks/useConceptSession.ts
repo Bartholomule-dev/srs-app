@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from './useAuth';
 import { useConceptSRS } from './useConceptSRS';
 import { useToast } from '@/lib/context/ToastContext';
-import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase/client';
 import { mapExercise } from '@/lib/supabase/mappers';
 import { handleSupabaseError, AppError } from '@/lib/errors';
 import { updateProfileStats } from '@/lib/stats';
@@ -84,7 +84,6 @@ export function useConceptSession(): UseConceptSessionReturn {
   } = useConceptSRS();
   const { showToast } = useToast();
 
-  const supabase = useMemo(() => createClient(), []);
   const [exercises, setExercises] = useState<Exercise[]>([]);
   // Unified session cards (teaching, practice, review)
   const [cards, setCards] = useState<SessionCardType[]>([]);
@@ -146,7 +145,7 @@ export function useConceptSession(): UseConceptSessionReturn {
     return () => {
       cancelled = true;
     };
-  }, [user, authLoading, fetchKey, supabase]);
+  }, [user, authLoading, fetchKey]);
 
   // Build session cards when due subconcepts and exercises are ready
   // Only runs once per session - skip if already initialized
@@ -310,7 +309,7 @@ export function useConceptSession(): UseConceptSessionReturn {
     return () => {
       cancelled = true;
     };
-  }, [dueSubconcepts, exercises, srsLoading, getNextExercise, user, sessionInitialized, supabase, showToast]);
+  }, [dueSubconcepts, exercises, srsLoading, getNextExercise, user, sessionInitialized, showToast]);
 
   // Set error from SRS hook
   useEffect(() => {
