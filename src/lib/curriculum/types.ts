@@ -96,3 +96,29 @@ export interface CurriculumGraph {
   language: string;
   concepts: Concept[];
 }
+
+/** Teaching content for introducing a subconcept */
+export interface SubconceptTeaching {
+  /** 2-3 sentence explanation of the concept (max 200 chars) */
+  explanation: string;
+  /** Slug of an intro-level exercise to show as example */
+  exampleSlug: string;
+}
+
+/** Subconcept definition in curriculum graph */
+export interface SubconceptDefinition {
+  /** Display name of the subconcept */
+  name: string;
+  /** Parent concept slug */
+  concept: string;
+  /** Required subconcepts to unlock */
+  prereqs: string[];
+  /** Teaching content for first encounter */
+  teaching: SubconceptTeaching;
+}
+
+/** Extended curriculum graph with subconcept definitions */
+export interface ExtendedCurriculumGraph extends CurriculumGraph {
+  /** Subconcept definitions with teaching content */
+  subconcepts: Record<string, SubconceptDefinition>;
+}
