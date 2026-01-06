@@ -85,7 +85,7 @@ accepted_solutions: ["range"]
 #### Predict-Output (NEW)
 User predicts what code will output.
 - **Component:** `PredictOutputExercise` (to be built)
-- **Answer matching:** Exact string match (trimmed)
+- **Answer matching:** Normalized string match (see below)
 
 **YAML Structure:**
 ```yaml
@@ -111,6 +111,41 @@ accepted_solutions: []
 |  [User types: 10]           |  <- Single-line input
 +-----------------------------+
 ```
+
+**UI Hint:** Display "Enter the exact console output" below input to set expectations.
+
+---
+
+### Answer Normalization (Predict-Output)
+
+Predict-output uses normalized matching to reduce false negatives:
+
+| Rule | Example |
+|------|---------|
+| Trim leading/trailing whitespace | `" 10 "` → `"10"` |
+| Remove trailing newlines | `"10\n"` → `"10"` |
+| Case-sensitive (Python is case-sensitive) | `"True"` ≠ `"true"` |
+| Exact match for numbers | `"10"` ≠ `"10.0"` |
+
+**Content Guidelines:**
+- Exercises MUST have clean, deterministic outputs
+- Avoid: `random`, `time`, unordered dict iteration (pre-3.7 style)
+- Prefer integer outputs over floats when possible
+- For multi-line output, use `\n` in expected_answer
+
+**Fill-in Answer Matching:** Exact string match (trimmed). Appropriate because fill-in answers are typically single keywords/identifiers.
+
+---
+
+### Exercise Content Field Mapping
+
+| Field | Write | Fill-in | Predict |
+|-------|-------|---------|---------|
+| `prompt` | Required (instructions) | Required (instructions) | Optional (defaults to "What will print?") |
+| `template` | Not used | Required (code with `___`) | Not used |
+| `code` | Not used | Not used | Required (read-only code) |
+| `expected_answer` | Required | Required | Required |
+| `blank_position` | Not used | Required | Not used |
 
 ---
 
@@ -139,6 +174,8 @@ function selectExerciseWithTypeBalance(
 5. Apply existing anti-repeat pattern logic
 
 **Soft Enforcement:** Ratios are targets, not hard rules. Graceful fallback when content unavailable.
+
+**SRS Priority:** SRS review scheduling takes precedence over experience level ratios. If a subconcept is due for review, the user reviews it regardless of whether the available exercises match their preferred type mix. Ratios apply to exercise selection *within* a subconcept, not to *which* subconcepts are shown.
 
 ---
 
@@ -228,12 +265,18 @@ interface Profile {
 - Validate predict exercises have `code` field
 - Validate fill-in exercises have `template` + `blank_position`
 
+1.6. **JSON Schema Update**
+- Update `exercises/schema.json` to require `code` when `type: predict`
+- Update schema to require `template` + `blank_position` when `type: fill-in`
+- Make `prompt` optional for predict type (defaults in UI)
+
 ### Phase 2: Session Logic (Code)
 
 2.1. **Experience Level Selection**
-- Onboarding flow after auth
+- Onboarding flow after auth (new users)
 - Settings page toggle
 - Hook to access `experienceLevel` from profile
+- **Existing user migration:** Show experience level prompt on next login if `experience_level` is NULL or default
 
 2.2. **Type-Balanced Selection**
 - New `selectExerciseWithTypeBalance` function
@@ -253,6 +296,7 @@ interface Profile {
 - Unit tests for new selection algorithm
 - E2E tests for experience level flow
 - Visual polish for predict-output component
+- Analytics: Track success rates per exercise type for validation
 
 ---
 
@@ -265,9 +309,34 @@ interface Profile {
 
 ---
 
+## External Review Feedback
+
+Design reviewed by Codex (GPT-5.2) and Gemini. Key feedback addressed:
+
+### Addressed in This Design
+
+| Feedback | Resolution |
+|----------|------------|
+| Predict answer matching too brittle | Added normalization spec (trim, trailing newlines) |
+| SRS vs experience ratios unclear | Added SRS Priority statement |
+| Schema validation not mentioned | Added Phase 1.6 for JSON schema updates |
+| Existing user migration needed | Added to Phase 2.1 |
+| Field mapping unclear | Added field mapping table |
+| Analytics by type needed | Added to Phase 4 |
+
+### Deferred (Future Consideration)
+
+| Feedback | Why Defer |
+|----------|-----------|
+| Adaptive ratios based on performance | Ship fixed ratios first, iterate based on data |
+| Type-weighted SRS quality inference | Over-engineering for MVP |
+| Placement quiz instead of self-report | Adds friction; self-report sufficient for MVP |
+
+---
+
 ## Related Documents
 
 - `Debate-Results/2026-01-06-Phase3-Readiness-Multi-AI-Debate.md`
-- `Debate-Results/2026-01-06-exercise-type-dilution.md` (to be created)
+- `Debate-Results/2026-01-06-Exercise-Type-Dilution-Debate.md`
 - `Architecture.md` - SRS system design
 - `Database-Schema.md` - Full schema reference
