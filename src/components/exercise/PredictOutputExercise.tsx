@@ -1,20 +1,23 @@
 'use client';
 
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useCallback, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 interface PredictOutputExerciseProps {
   code: string;
+  value: string;
+  onChange: (value: string) => void;
   onSubmit: (answer: string) => void;
   disabled?: boolean;
 }
 
 export function PredictOutputExercise({
   code,
+  value,
+  onChange,
   onSubmit,
   disabled = false,
 }: PredictOutputExerciseProps) {
-  const [answer, setAnswer] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -24,10 +27,10 @@ export function PredictOutputExercise({
   }, [disabled]);
 
   const handleSubmit = useCallback(() => {
-    if (answer.trim() && !disabled) {
-      onSubmit(answer);
+    if (value.trim() && !disabled) {
+      onSubmit(value);
     }
-  }, [answer, disabled, onSubmit]);
+  }, [value, disabled, onSubmit]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -59,8 +62,8 @@ export function PredictOutputExercise({
         <input
           ref={inputRef}
           type="text"
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
           disabled={disabled}
           placeholder="Enter the exact console output"

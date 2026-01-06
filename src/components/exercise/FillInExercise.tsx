@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect, type KeyboardEvent, type ChangeEvent } from 'react';
+import { useRef, useEffect, type KeyboardEvent, type ChangeEvent } from 'react';
 import { cn } from '@/lib/utils';
 
 /** Represents a part of the parsed template */
@@ -56,6 +56,10 @@ export interface FillInExerciseProps {
   template: string;
   /** Which blank is active for input (0-indexed) */
   blankPosition: number;
+  /** Current answer value (controlled) */
+  value: string;
+  /** Callback when answer changes */
+  onChange: (value: string) => void;
   /** Callback when user submits their answer (on Enter) */
   onSubmit: (value: string) => void;
   /** Disable the input */
@@ -81,19 +85,13 @@ export interface FillInExerciseProps {
 export function FillInExercise({
   template,
   blankPosition,
+  value,
+  onChange,
   onSubmit,
   disabled = false,
   className,
 }: FillInExerciseProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [answer, setAnswer] = useState('');
-  const [prevTemplate, setPrevTemplate] = useState(template);
-
-  // Reset answer when template changes (adjusting state based on props pattern)
-  if (template !== prevTemplate) {
-    setPrevTemplate(template);
-    setAnswer('');
-  }
 
   useEffect(() => {
     if (inputRef.current) {
@@ -102,13 +100,13 @@ export function FillInExercise({
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setAnswer(e.target.value);
+    onChange(e.target.value);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !disabled) {
       e.preventDefault();
-      onSubmit(answer);
+      onSubmit(value);
     }
   };
 
@@ -146,7 +144,7 @@ export function FillInExercise({
                 key={idx}
                 ref={inputRef}
                 type="text"
-                value={answer}
+                value={value}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
                 disabled={disabled}

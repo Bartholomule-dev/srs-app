@@ -124,6 +124,17 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
     setPhase('feedback');
   }, [exercise.expectedAnswer, exercise.acceptedSolutions, startTime]);
 
+  // Unified submit handler that routes to correct checker based on exercise type
+  const handleButtonSubmit = useCallback(() => {
+    if (exercise.exerciseType === 'predict') {
+      handlePredictSubmit(userAnswer);
+    } else if (exercise.exerciseType === 'fill-in') {
+      handleFillInSubmit(userAnswer);
+    } else {
+      handleSubmit();
+    }
+  }, [exercise.exerciseType, userAnswer, handlePredictSubmit, handleFillInSubmit, handleSubmit]);
+
   const handleContinue = useCallback(() => {
     const responseTimeMs = startTime !== null ? Date.now() - startTime - pausedMs : 0;
 
@@ -168,6 +179,8 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
               {exercise.exerciseType === 'predict' && exercise.code ? (
                 <PredictOutputExercise
                   code={exercise.code}
+                  value={userAnswer}
+                  onChange={handleInputChange}
                   onSubmit={handlePredictSubmit}
                   disabled={phase !== 'answering'}
                 />
@@ -175,6 +188,8 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
                 <FillInExercise
                   template={exercise.template}
                   blankPosition={exercise.blankPosition ?? 0}
+                  value={userAnswer}
+                  onChange={handleInputChange}
                   onSubmit={handleFillInSubmit}
                   disabled={phase !== 'answering'}
                 />
@@ -205,7 +220,7 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
                   <Button
                     type="button"
                     variant="primary"
-                    onClick={handleSubmit}
+                    onClick={handleButtonSubmit}
                   >
                     Submit
                   </Button>

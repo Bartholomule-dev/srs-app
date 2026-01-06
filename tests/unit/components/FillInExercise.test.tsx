@@ -6,6 +6,8 @@ describe('FillInExercise', () => {
   const defaultProps = {
     template: 'for ___ in range(5):\n    print(i)',
     blankPosition: 0,
+    value: '',
+    onChange: vi.fn(),
     onSubmit: vi.fn(),
     disabled: false,
   };
@@ -22,13 +24,20 @@ describe('FillInExercise', () => {
     expect(input).toBeInTheDocument();
   });
 
-  it('calls onSubmit with input value on Enter', () => {
+  it('calls onSubmit with value on Enter', () => {
     const onSubmit = vi.fn();
-    render(<FillInExercise {...defaultProps} onSubmit={onSubmit} />);
+    render(<FillInExercise {...defaultProps} value="i" onSubmit={onSubmit} />);
     const input = screen.getByRole('textbox');
-    fireEvent.change(input, { target: { value: 'i' } });
     fireEvent.keyDown(input, { key: 'Enter' });
     expect(onSubmit).toHaveBeenCalledWith('i');
+  });
+
+  it('calls onChange when input changes', () => {
+    const onChange = vi.fn();
+    render(<FillInExercise {...defaultProps} onChange={onChange} />);
+    const input = screen.getByRole('textbox');
+    fireEvent.change(input, { target: { value: 'i' } });
+    expect(onChange).toHaveBeenCalledWith('i');
   });
 
   it('disables input when disabled prop is true', () => {
@@ -43,33 +52,9 @@ describe('FillInExercise', () => {
     expect(document.activeElement).toBe(input);
   });
 
-  describe('FillInExercise state reset', () => {
-    it('should reset answer when template prop changes', () => {
-      const onSubmit = vi.fn();
-
-      const { rerender, getByRole } = render(
-        <FillInExercise
-          template="x = ___"
-          blankPosition={0}
-          onSubmit={onSubmit}
-        />
-      );
-
-      const input = getByRole('textbox');
-      fireEvent.change(input, { target: { value: 'old answer' } });
-      expect(input).toHaveValue('old answer');
-
-      // Rerender with new template
-      rerender(
-        <FillInExercise
-          template="y = ___"
-          blankPosition={0}
-          onSubmit={onSubmit}
-        />
-      );
-
-      // Answer should be reset
-      expect(getByRole('textbox')).toHaveValue('');
-    });
+  it('displays value prop in input', () => {
+    render(<FillInExercise {...defaultProps} value="test" />);
+    const input = screen.getByRole('textbox');
+    expect(input).toHaveValue('test');
   });
 });
