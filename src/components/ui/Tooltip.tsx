@@ -6,19 +6,29 @@ import {
   useState,
   useCallback,
   useRef,
+  cloneElement,
+  isValidElement,
   type ReactNode,
   type HTMLAttributes,
+  type ReactElement,
 } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
+const DEFAULT_DELAY = 200;
+
 interface TooltipContextValue {
   open: boolean;
   setOpen: (open: boolean) => void;
-  triggerRef: React.RefObject<HTMLElement | null>;
+  delayDuration: number;
 }
 
 const TooltipContext = createContext<TooltipContextValue | null>(null);
+
+// Provider context for global delay configuration
+const TooltipConfigContext = createContext<{ delayDuration: number }>({
+  delayDuration: DEFAULT_DELAY,
+});
 
 function useTooltipContext() {
   const context = useContext(TooltipContext);
@@ -30,11 +40,16 @@ function useTooltipContext() {
 
 export interface TooltipProviderProps {
   children: ReactNode;
+  /** Default delay before showing tooltips (ms). Defaults to 200. */
   delayDuration?: number;
 }
 
-export function TooltipProvider({ children }: TooltipProviderProps) {
-  return <>{children}</>;
+export function TooltipProvider({ children, delayDuration = DEFAULT_DELAY }: TooltipProviderProps) {
+  return (
+    <TooltipConfigContext.Provider value={{ delayDuration }}>
+      {children}
+    </TooltipConfigContext.Provider>
+  );
 }
 
 export interface TooltipProps {
@@ -46,7 +61,7 @@ export interface TooltipProps {
 
 export function Tooltip({ children, open: controlledOpen, defaultOpen = false, onOpenChange }: TooltipProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-  const triggerRef = useRef<HTMLElement | null>(null);
+  const { delayDuration } = useContext(TooltipConfigContext);
 
   const open = controlledOpen ?? uncontrolledOpen;
   const setOpen = useCallback(
@@ -58,7 +73,7 @@ export function Tooltip({ children, open: controlledOpen, defaultOpen = false, o
   );
 
   return (
-    <TooltipContext.Provider value={{ open, setOpen, triggerRef }}>
+    <TooltipContext.Provider value={{ open, setOpen, delayDuration }}>
       <div className="relative inline-block">{children}</div>
     </TooltipContext.Provider>
   );
@@ -66,32 +81,65 @@ export function Tooltip({ children, open: controlledOpen, defaultOpen = false, o
 
 export interface TooltipTriggerProps extends HTMLAttributes<HTMLSpanElement> {
   children: ReactNode;
+  /** Render as child element instead of wrapping in span */
   asChild?: boolean;
 }
 
-export function TooltipTrigger({ children, className, asChild: _asChild, ...props }: TooltipTriggerProps) {
-  const { setOpen, triggerRef } = useTooltipContext();
+export function TooltipTrigger({
+  children,
+  className,
+  asChild = false,
+  onMouseEnter,
+  onMouseLeave,
+  onFocus,
+  onBlur,
+  ...props
+}: TooltipTriggerProps) {
+  const { setOpen, delayDuration } = useTooltipContext();
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  const handleMouseEnter = () => {
-    timeoutRef.current = setTimeout(() => setOpen(true), 200);
+  const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
+    timeoutRef.current = setTimeout(() => setOpen(true), delayDuration);
+    // Call consumer's handler if provided (merge, don't override)
+    onMouseEnter?.(e as React.MouseEvent<HTMLSpanElement>);
   };
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setOpen(false);
+    onMouseLeave?.(e as React.MouseEvent<HTMLSpanElement>);
   };
 
+  const handleFocus = (e: React.FocusEvent<HTMLElement>) => {
+    setOpen(true);
+    onFocus?.(e as React.FocusEvent<HTMLSpanElement>);
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLElement>) => {
+    setOpen(false);
+    onBlur?.(e as React.FocusEvent<HTMLSpanElement>);
+  };
+
+  const triggerProps = {
+    onMouseEnter: handleMouseEnter,
+    onMouseLeave: handleMouseLeave,
+    onFocus: handleFocus,
+    onBlur: handleBlur,
+    ...props,
+  };
+
+  // asChild: clone the child element and inject props
+  if (asChild && isValidElement(children)) {
+    // eslint-disable-next-line react-hooks/refs -- false positive: no ref passed to cloneElement
+    return cloneElement(children as ReactElement<Record<string, unknown>>, {
+      ...triggerProps,
+      className: cn((children.props as { className?: string }).className, className),
+    });
+  }
+
+  // Default: wrap in span
   return (
-    <span
-      ref={triggerRef as React.RefObject<HTMLSpanElement>}
-      className={cn('cursor-default', className)}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onFocus={() => setOpen(true)}
-      onBlur={() => setOpen(false)}
-      {...props}
-    >
+    <span className={cn('cursor-default', className)} {...triggerProps}>
       {children}
     </span>
   );

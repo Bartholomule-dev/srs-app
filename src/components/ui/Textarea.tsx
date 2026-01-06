@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, type TextareaHTMLAttributes } from 'react';
+import { forwardRef, useId, type TextareaHTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -10,13 +10,19 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  function Textarea({ monospace = false, error, errorMessage, className, ...props }, ref) {
+  function Textarea({ monospace = false, error, errorMessage, className, id, ...props }, ref) {
+    const generatedId = useId();
+    const textareaId = id ?? generatedId;
+    const errorId = `${textareaId}-error`;
     const hasError = error || !!errorMessage;
 
     return (
       <div className="w-full">
         <textarea
           ref={ref}
+          id={textareaId}
+          aria-invalid={hasError || undefined}
+          aria-describedby={errorMessage ? errorId : undefined}
           className={cn(
             'w-full rounded-lg px-4 py-3',
             'bg-[var(--bg-surface-2)] text-[var(--text-primary)]',
@@ -34,7 +40,9 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           {...props}
         />
         {errorMessage && (
-          <p className="mt-1.5 text-sm text-[var(--accent-error)]">{errorMessage}</p>
+          <p id={errorId} className="mt-1.5 text-sm text-[var(--accent-error)]" role="alert">
+            {errorMessage}
+          </p>
         )}
       </div>
     );
