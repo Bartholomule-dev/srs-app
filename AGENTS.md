@@ -16,7 +16,7 @@ A spaced repetition platform for practicing code syntax. Users get short practic
 src/
 ├── app/                    # Next.js pages (/, /dashboard, /practice)
 ├── components/
-│   ├── ui/                 # darwin-ui wrappers (Button, Card, Input, etc.)
+│   ├── ui/                 # Custom UI components (Button, Card, Input, etc.)
 │   ├── exercise/           # ExerciseCard, CodeInput, FillInExercise, TeachingCard
 │   ├── session/            # SessionProgress, SessionSummary
 │   └── dashboard/          # Greeting, PracticeCTA, StatsGrid
@@ -56,7 +56,7 @@ pnpm db:import-exercises    # Import YAML → database
 Magic Link (passwordless) via Supabase. Auth state in `AuthContext`. Protected routes use `useRequireAuth()`.
 
 ### Styling
-Tailwind CSS 4 with CSS variables in `globals.css`. Use `cn()` from `@/lib/utils` for class merging. Import UI components from `@/components/ui` (darwin-ui wrappers).
+Tailwind CSS 4 with CSS variables in `globals.css`. Use `cn()` from `@/lib/utils` for class merging. Import UI components from `@/components/ui`.
 
 ### Database Tables
 | Table | Purpose |
