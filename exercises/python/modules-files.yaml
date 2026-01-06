@@ -255,3 +255,165 @@ exercises:
     hints:
       - Comma-separate context managers
     tags: [files, context, multiple]
+
+  # --- Pathlib Subconcept ---
+  - slug: pathlib-create-path
+    objective: Create a Path object using the pathlib module
+    title: Create Path Object
+    difficulty: 1
+    concept: modules-files
+    subconcept: pathlib
+    level: intro
+    prereqs: [modules-files.imports]
+    type: write
+    pattern: construction
+    prompt: Create a Path object for the current directory
+    expected_answer: "Path('.')"
+    accepted_solutions:
+      - "Path('.')"
+      - 'Path(".")'
+      - "Path.cwd()"
+    hints:
+      - Import Path from pathlib
+      - Use '.' for current directory
+    tags: [pathlib, files]
+
+  - slug: pathlib-join-paths
+    objective: Join multiple path components using the / operator
+    title: Join Paths with Operator
+    difficulty: 2
+    concept: modules-files
+    subconcept: pathlib
+    level: practice
+    prereqs: [modules-files.pathlib]
+    type: write
+    pattern: construction
+    prompt: Join Path object base with "subdir" and "file.txt" using the / operator
+    expected_answer: base / "subdir" / "file.txt"
+    accepted_solutions:
+      - base / "subdir" / "file.txt"
+      - base / 'subdir' / 'file.txt'
+    hints:
+      - Use / operator between Path and strings
+      - Chain multiple / operators
+    tags: [pathlib, join, operator]
+
+  - slug: pathlib-get-parent
+    objective: Get the parent directory of a Path object
+    title: Get Path Parent
+    difficulty: 2
+    concept: modules-files
+    subconcept: pathlib
+    level: practice
+    prereqs: [modules-files.pathlib]
+    type: write
+    pattern: attribute
+    prompt: Get the parent directory of Path object p
+    expected_answer: p.parent
+    hints:
+      - Use the parent attribute
+    tags: [pathlib, parent, navigation]
+
+  - slug: pathlib-check-exists
+    objective: Check if a path exists and determine its type using pathlib methods
+    title: Check Path Exists and Type
+    difficulty: 3
+    concept: modules-files
+    subconcept: pathlib
+    level: edge
+    prereqs: [modules-files.pathlib]
+    type: write
+    pattern: conditional
+    prompt: Check if Path p exists and is a directory
+    expected_answer: p.exists() and p.is_dir()
+    accepted_solutions:
+      - p.exists() and p.is_dir()
+      - p.is_dir()
+    hints:
+      - Use exists() to check existence
+      - Use is_dir() to check if directory
+      - Combine with 'and' operator
+    tags: [pathlib, exists, is_dir, validation]
+
+  # --- Main Guard Subconcept ---
+  - slug: main-guard-basic
+    objective: Write the if __name__ == "__main__" guard statement
+    title: Basic Main Guard
+    difficulty: 1
+    concept: modules-files
+    subconcept: main-guard
+    level: intro
+    prereqs: [modules-files.imports]
+    type: write
+    pattern: conditional
+    prompt: Write the standard Python main guard check
+    expected_answer: 'if __name__ == "__main__":'
+    accepted_solutions:
+      - 'if __name__ == "__main__":'
+      - "if __name__ == '__main__':"
+    hints:
+      - Check if __name__ equals "__main__"
+      - This runs code only when script is executed directly
+    tags: [main, guard, module]
+
+  - slug: main-guard-call-main
+    objective: Write a main guard that calls a main() function
+    title: Main Guard with Function Call
+    difficulty: 2
+    concept: modules-files
+    subconcept: main-guard
+    level: practice
+    prereqs: [modules-files.main-guard]
+    type: write
+    pattern: conditional
+    prompt: Write main guard that calls main() function
+    expected_answer: |
+      if __name__ == "__main__":
+          main()
+    accepted_solutions:
+      - |
+        if __name__ == "__main__":
+            main()
+      - |
+        if __name__ == '__main__':
+            main()
+    hints:
+      - First write the guard condition
+      - Then call main() inside the block
+    tags: [main, guard, function]
+
+  - slug: main-guard-with-definition
+    objective: Define a main function and call it from within a main guard
+    title: Main Function with Guard
+    difficulty: 3
+    concept: modules-files
+    subconcept: main-guard
+    level: edge
+    prereqs: [modules-files.main-guard, functions.definition]
+    type: write
+    pattern: function
+    prompt: Define a main() function that prints "Running" and call it from a main guard
+    expected_answer: |
+      def main():
+          print("Running")
+
+      if __name__ == "__main__":
+          main()
+    accepted_solutions:
+      - |
+        def main():
+            print("Running")
+
+        if __name__ == "__main__":
+            main()
+      - |
+        def main():
+            print('Running')
+
+        if __name__ == '__main__':
+            main()
+    hints:
+      - Define the main function first
+      - Add the main guard after the function
+      - Call main() inside the guard block
+    tags: [main, guard, function, definition]

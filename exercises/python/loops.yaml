@@ -324,3 +324,253 @@ exercises:
       - Use case keyword
       - Inside match block
     tags: [conditionals, match, case]
+
+  # --- zip Subconcept ---
+  - slug: zip-two-lists
+    objective: "Use zip() to iterate over two lists simultaneously"
+    title: Zip Two Lists
+    difficulty: 1
+    concept: control-flow
+    subconcept: zip
+    level: intro
+    prereqs: [control-flow.for]
+    type: write
+    pattern: iteration
+    prompt: Use zip to iterate over names and ages lists together
+    expected_answer: "for name, age in zip(names, ages):"
+    hints:
+      - zip() combines iterables
+      - Use tuple unpacking
+    tags: [zip, iteration]
+
+  - slug: zip-three-lists
+    objective: "Apply zip() to iterate over three lists in parallel"
+    title: Zip Three Lists
+    difficulty: 2
+    concept: control-flow
+    subconcept: zip
+    level: practice
+    prereqs: [control-flow.zip]
+    type: write
+    pattern: iteration
+    prompt: Use zip to iterate over first, middle, and last name lists simultaneously
+    expected_answer: "for f, m, l in zip(first, middle, last):"
+    hints:
+      - zip() can take multiple iterables
+      - Unpack all three variables
+    tags: [zip, iteration, multiple]
+
+  - slug: zip-unequal-lengths
+    objective: "Handle zip() behavior with iterables of unequal length using zip_longest"
+    title: Zip Unequal Lists
+    difficulty: 3
+    concept: control-flow
+    subconcept: zip
+    level: edge
+    prereqs: [control-flow.zip]
+    type: write
+    pattern: iteration
+    prompt: Import and use zip_longest to handle lists of different lengths with a fillvalue of 0
+    expected_answer: "for a, b in zip_longest(list1, list2, fillvalue=0):"
+    hints:
+      - Import from itertools
+      - Use fillvalue parameter for missing values
+    tags: [zip, itertools, edge-case]
+
+  # --- reversed Subconcept ---
+  - slug: reversed-list
+    objective: "Use reversed() to iterate over a list in reverse order"
+    title: Reversed List Iteration
+    difficulty: 1
+    concept: control-flow
+    subconcept: reversed
+    level: intro
+    prereqs: [control-flow.for]
+    type: write
+    pattern: iteration
+    prompt: Iterate over items list in reverse order
+    expected_answer: "for item in reversed(items):"
+    hints:
+      - reversed() returns an iterator
+      - Works on sequences
+    tags: [reversed, iteration]
+
+  - slug: reversed-range
+    objective: "Combine reversed() with range() to count down"
+    title: Reversed Range
+    difficulty: 2
+    concept: control-flow
+    subconcept: reversed
+    level: practice
+    prereqs: [control-flow.reversed, control-flow.for]
+    type: write
+    pattern: iteration
+    prompt: Count down from 5 to 1 using reversed and range
+    expected_answer: "for i in reversed(range(1, 6)):"
+    hints:
+      - Wrap range() with reversed()
+      - range(1, 6) gives 1-5
+    tags: [reversed, range, countdown]
+
+  - slug: reversed-enumerate
+    objective: "Combine reversed() with enumerate() while maintaining original indices"
+    title: Reversed with Enumerate
+    difficulty: 3
+    concept: control-flow
+    subconcept: reversed
+    level: edge
+    prereqs: [control-flow.reversed, control-flow.enumerate]
+    type: write
+    pattern: iteration
+    prompt: Iterate over items in reverse while keeping track of original indices
+    expected_answer: "for i, item in reversed(list(enumerate(items))):"
+    hints:
+      - enumerate() then reversed()
+      - Convert to list first for reversed()
+    tags: [reversed, enumerate, indices]
+
+  # --- sorted Subconcept ---
+  - slug: sorted-list
+    objective: "Use sorted() to iterate over a list in sorted order"
+    title: Sorted List Iteration
+    difficulty: 1
+    concept: control-flow
+    subconcept: sorted
+    level: intro
+    prereqs: [control-flow.for]
+    type: write
+    pattern: iteration
+    prompt: Iterate over items list in sorted order
+    expected_answer: "for item in sorted(items):"
+    hints:
+      - sorted() returns a new sorted list
+      - Original list unchanged
+    tags: [sorted, iteration]
+
+  - slug: sorted-reverse
+    objective: "Use sorted() with reverse=True for descending order"
+    title: Sorted Descending
+    difficulty: 2
+    concept: control-flow
+    subconcept: sorted
+    level: practice
+    prereqs: [control-flow.sorted]
+    type: write
+    pattern: iteration
+    prompt: Iterate over numbers in descending (reverse) order
+    expected_answer: "for num in sorted(numbers, reverse=True):"
+    hints:
+      - Use reverse parameter
+      - reverse=True for descending
+    tags: [sorted, reverse, descending]
+
+  - slug: sorted-key-len
+    objective: "Use sorted() with key parameter to sort by string length"
+    title: Sorted by Length
+    difficulty: 2
+    concept: control-flow
+    subconcept: sorted
+    level: practice
+    prereqs: [control-flow.sorted]
+    type: write
+    pattern: iteration
+    prompt: Sort words list by string length using the key parameter
+    expected_answer: "for word in sorted(words, key=len):"
+    hints:
+      - key= specifies sort criteria
+      - len function as key
+    tags: [sorted, key, length]
+
+  - slug: sorted-key-lambda
+    objective: "Use sorted() with a lambda key function for custom sorting"
+    title: Sorted with Lambda Key
+    difficulty: 3
+    concept: control-flow
+    subconcept: sorted
+    level: edge
+    prereqs: [control-flow.sorted, functions.lambda]
+    type: write
+    pattern: iteration
+    prompt: Sort a list of tuples by the second element using a lambda
+    expected_answer: "for item in sorted(data, key=lambda x: x[1]):"
+    hints:
+      - lambda creates inline function
+      - x[1] accesses second element
+    tags: [sorted, key, lambda, tuples]
+
+  # --- any-all Subconcept ---
+  - slug: any-basic
+    objective: "Use any() to check if any element in an iterable is truthy"
+    title: Any Check
+    difficulty: 1
+    concept: control-flow
+    subconcept: any-all
+    level: intro
+    prereqs: [control-flow.conditionals]
+    type: write
+    pattern: invocation
+    prompt: Check if any number in nums is greater than 10
+    expected_answer: "any(n > 10 for n in nums)"
+    hints:
+      - any() returns True if any element is truthy
+      - Use generator expression inside
+    tags: [any, boolean, iteration]
+
+  - slug: all-basic
+    objective: "Use all() to check if all elements in an iterable are truthy"
+    title: All Check
+    difficulty: 1
+    concept: control-flow
+    subconcept: any-all
+    level: intro
+    prereqs: [control-flow.conditionals]
+    type: write
+    pattern: invocation
+    prompt: Check if all numbers in nums are positive (greater than 0)
+    expected_answer: "all(n > 0 for n in nums)"
+    hints:
+      - all() returns True if all elements are truthy
+      - Use generator expression inside
+    tags: [all, boolean, iteration]
+
+  - slug: any-with-condition
+    objective: "Apply any() with a complex condition to search an iterable"
+    title: Any with String Check
+    difficulty: 2
+    concept: control-flow
+    subconcept: any-all
+    level: practice
+    prereqs: [control-flow.any-all]
+    type: write
+    pattern: invocation
+    prompt: Check if any word in words starts with the letter 'a'
+    expected_answer: "any(word.startswith('a') for word in words)"
+    accepted_solutions:
+      - "any(word.startswith('a') for word in words)"
+      - 'any(word.startswith("a") for word in words)'
+      - "any(w.startswith('a') for w in words)"
+      - 'any(w.startswith("a") for w in words)'
+    hints:
+      - Use startswith() method
+      - Generator expression with condition
+    tags: [any, strings, startswith]
+
+  - slug: any-all-combined
+    objective: "Combine any() and all() in a conditional expression"
+    title: Any and All Combined
+    difficulty: 3
+    concept: control-flow
+    subconcept: any-all
+    level: edge
+    prereqs: [control-flow.any-all, control-flow.conditionals]
+    type: write
+    pattern: conditional
+    prompt: Write an if statement that checks if all items are valid AND any item is priority
+    expected_answer: "if all(item.valid for item in items) and any(item.priority for item in items):"
+    accepted_solutions:
+      - "if all(item.valid for item in items) and any(item.priority for item in items):"
+      - "if all(i.valid for i in items) and any(i.priority for i in items):"
+    hints:
+      - Combine with 'and' operator
+      - all() for universal check, any() for existence
+    tags: [any, all, combined, conditional]

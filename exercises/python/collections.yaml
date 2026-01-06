@@ -615,3 +615,151 @@ exercises:
     hints:
       - Use ** to unpack dict
     tags: [unpacking, function, kwargs]
+
+  # --- Mutability Subconcept ---
+  - slug: mutable-default-trap
+    objective: Recognize and avoid mutable default argument issues
+    title: Mutable Default Trap
+    difficulty: 2
+    concept: collections
+    subconcept: mutability
+    level: intro
+    prereqs: [collections.lists, functions.basics]
+    type: write
+    pattern: definition
+    prompt: Define append_to(item, target=None) avoiding mutable default
+    expected_answer: |
+      def append_to(item, target=None):
+          if target is None:
+              target = []
+          target.append(item)
+          return target
+    hints:
+      - Never use [] or {} as default
+      - Use None and create inside function
+    tags: [mutability, lists, functions]
+
+  - slug: list-aliasing
+    objective: Demonstrate understanding of list aliasing behavior
+    title: List Aliasing
+    difficulty: 2
+    concept: collections
+    subconcept: mutability
+    level: intro
+    prereqs: [collections.lists]
+    type: write
+    pattern: assignment
+    prompt: Create list b that references the same list as a (not a copy)
+    expected_answer: b = a
+    hints:
+      - Simple assignment creates an alias
+      - Both names point to same object
+    tags: [mutability, lists, aliasing]
+
+  - slug: shallow-copy-method
+    objective: Create a shallow copy of a list using the copy method
+    title: Shallow Copy with .copy()
+    difficulty: 2
+    concept: collections
+    subconcept: mutability
+    level: practice
+    prereqs: [collections.lists, collections.mutability]
+    type: write
+    pattern: construction
+    prompt: Create a shallow copy of list items using the copy method
+    expected_answer: items.copy()
+    hints:
+      - Use the .copy() method
+      - Returns a new list with same elements
+    tags: [mutability, lists, copy]
+
+  - slug: shallow-copy-constructor
+    objective: Create a shallow copy of a list using the list constructor
+    title: Shallow Copy with list()
+    difficulty: 2
+    concept: collections
+    subconcept: mutability
+    level: practice
+    prereqs: [collections.lists, collections.mutability]
+    type: write
+    pattern: construction
+    prompt: Create a shallow copy of list items using the list constructor
+    expected_answer: list(items)
+    hints:
+      - Pass list to list() constructor
+      - Creates new list from existing
+    tags: [mutability, lists, copy]
+
+  - slug: deep-copy
+    objective: Create a deep copy of a nested structure using copy.deepcopy
+    title: Deep Copy
+    difficulty: 3
+    concept: collections
+    subconcept: mutability
+    level: practice
+    prereqs: [collections.lists, collections.mutability, modules-files.import]
+    type: write
+    pattern: construction
+    prompt: Create a deep copy of nested list items using copy module
+    expected_answer: copy.deepcopy(items)
+    hints:
+      - Import copy module first
+      - Use copy.deepcopy() for nested structures
+    tags: [mutability, lists, deep-copy]
+
+  - slug: mutate-vs-reassign
+    objective: Distinguish between in-place mutation and variable reassignment
+    title: Mutate in Place vs Reassign
+    difficulty: 3
+    concept: collections
+    subconcept: mutability
+    level: edge
+    prereqs: [collections.lists, collections.mutability]
+    type: write
+    pattern: mutation
+    prompt: Extend list items in place with [4, 5] (don't reassign)
+    expected_answer: items.extend([4, 5])
+    accepted_solutions:
+      - items.extend([4, 5])
+      - items += [4, 5]
+    hints:
+      - Use extend() or += for in-place
+      - Reassigning items = items + [4, 5] creates new list
+    tags: [mutability, lists, in-place]
+
+  - slug: tuple-immutability
+    objective: Understand that tuples cannot be modified after creation
+    title: Tuple Immutability
+    difficulty: 2
+    concept: collections
+    subconcept: mutability
+    level: edge
+    prereqs: [collections.tuples, collections.mutability]
+    type: write
+    pattern: construction
+    prompt: Create new tuple by concatenating t with (4, 5) since tuples are immutable
+    expected_answer: t + (4, 5)
+    hints:
+      - Cannot modify tuple in place
+      - Must create new tuple via concatenation
+    tags: [mutability, tuples, immutable]
+
+  - slug: dict-mutable-values
+    objective: Recognize that dictionary values can be mutable objects
+    title: Dict with Mutable Values
+    difficulty: 3
+    concept: collections
+    subconcept: mutability
+    level: edge
+    prereqs: [collections.dicts, collections.lists, collections.mutability]
+    type: write
+    pattern: mutation
+    prompt: Append value 3 to the list stored at key "nums" in dict d
+    expected_answer: d["nums"].append(3)
+    accepted_solutions:
+      - 'd["nums"].append(3)'
+      - "d['nums'].append(3)"
+    hints:
+      - Access the list first with d["nums"]
+      - Then call append on that list
+    tags: [mutability, dicts, lists]

@@ -361,3 +361,145 @@ exercises:
       - Callable[[args], return]
       - Import from typing
     tags: [functions, typehints, callable]
+
+  # --- Defaults Subconcept ---
+  - slug: default-param-simple
+    objective: "Define a function with a single default parameter value"
+    title: Default Parameter Simple
+    difficulty: 1
+    concept: functions
+    subconcept: defaults
+    level: intro
+    prereqs: [functions.basics]
+    type: write
+    pattern: definition
+    prompt: Define greet(name, greeting="Hello") with a default greeting
+    expected_answer: 'def greet(name, greeting="Hello"):'
+    accepted_solutions:
+      - 'def greet(name, greeting="Hello"):'
+      - "def greet(name, greeting='Hello'):"
+    hints:
+      - Default values use =
+      - Put defaults after required params
+    tags: [functions, defaults]
+
+  - slug: default-param-multiple
+    objective: "Define a function with multiple default parameter values"
+    title: Multiple Default Parameters
+    difficulty: 2
+    concept: functions
+    subconcept: defaults
+    level: practice
+    prereqs: [functions.defaults]
+    type: write
+    pattern: definition
+    prompt: Define connect(host, port=8080, timeout=30) with two defaults
+    expected_answer: "def connect(host, port=8080, timeout=30):"
+    hints:
+      - Multiple defaults follow same pattern
+      - Required params come first
+    tags: [functions, defaults]
+
+  - slug: default-param-none
+    objective: "Use None as a default parameter to avoid mutable default issues"
+    title: Default Parameter None
+    difficulty: 2
+    concept: functions
+    subconcept: defaults
+    level: practice
+    prereqs: [functions.defaults]
+    type: write
+    pattern: definition
+    prompt: Define append_to(item, target=None) with None as default
+    expected_answer: "def append_to(item, target=None):"
+    hints:
+      - None is safe default for mutables
+      - Check for None inside function
+    tags: [functions, defaults, mutable]
+
+  - slug: default-param-mutable-trap
+    objective: "Recognize the mutable default argument anti-pattern"
+    title: Mutable Default Trap
+    difficulty: 3
+    concept: functions
+    subconcept: defaults
+    level: edge
+    prereqs: [functions.defaults]
+    type: write
+    pattern: definition
+    prompt: Define add_item(item, items=None) avoiding the mutable default trap (use None, not [])
+    expected_answer: "def add_item(item, items=None):"
+    hints:
+      - Never use [] as default
+      - Use None then create list inside
+      - Mutable defaults persist between calls
+    tags: [functions, defaults, mutable, antipattern]
+
+  # --- Args-Kwargs Subconcept ---
+  - slug: args-intro
+    objective: "Define a function that accepts variable positional arguments with *args"
+    title: Variable Args Intro
+    difficulty: 2
+    concept: functions
+    subconcept: args-kwargs
+    level: intro
+    prereqs: [functions.basics]
+    type: write
+    pattern: definition
+    prompt: Define a function sum_all that accepts any number of positional arguments
+    expected_answer: "def sum_all(*args):"
+    hints:
+      - Use * before parameter name
+      - args is a tuple inside function
+    tags: [functions, args-kwargs, args]
+
+  - slug: kwargs-intro
+    objective: "Define a function that accepts variable keyword arguments with **kwargs"
+    title: Variable Kwargs Intro
+    difficulty: 2
+    concept: functions
+    subconcept: args-kwargs
+    level: intro
+    prereqs: [functions.basics]
+    type: write
+    pattern: definition
+    prompt: Define a function build_config that accepts any keyword arguments
+    expected_answer: "def build_config(**kwargs):"
+    hints:
+      - Use ** before parameter name
+      - kwargs is a dict inside function
+    tags: [functions, args-kwargs, kwargs]
+
+  - slug: args-kwargs-combined
+    objective: "Combine *args and **kwargs in a single function definition"
+    title: Combined Args and Kwargs
+    difficulty: 3
+    concept: functions
+    subconcept: args-kwargs
+    level: practice
+    prereqs: [functions.args-kwargs]
+    type: write
+    pattern: definition
+    prompt: Define a function wrapper that accepts any positional and keyword arguments
+    expected_answer: "def wrapper(*args, **kwargs):"
+    hints:
+      - "*args comes before **kwargs"
+      - Order is required, *args, **kwargs
+    tags: [functions, args-kwargs, combined]
+
+  - slug: args-kwargs-forward
+    objective: "Forward all arguments to another function using *args and **kwargs"
+    title: Forward All Arguments
+    difficulty: 3
+    concept: functions
+    subconcept: args-kwargs
+    level: edge
+    prereqs: [functions.args-kwargs]
+    type: write
+    pattern: invocation
+    prompt: Call inner_func forwarding all args and kwargs from wrapper
+    expected_answer: "inner_func(*args, **kwargs)"
+    hints:
+      - Unpack with * and ** when calling
+      - Same syntax for collecting and spreading
+    tags: [functions, args-kwargs, forwarding]
