@@ -3,19 +3,23 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from './useAuth';
 import { useConceptSRS } from './useConceptSRS';
+import { useProfile } from './useProfile';
 import { useToast } from '@/lib/context/ToastContext';
 import { supabase } from '@/lib/supabase/client';
 import { mapExercise } from '@/lib/supabase/mappers';
 import { handleSupabaseError, AppError } from '@/lib/errors';
 import { updateProfileStats } from '@/lib/stats';
+import { selectExerciseByType } from '@/lib/srs/concept-algorithm';
 import type { Exercise, Quality } from '@/lib/types';
+import { EXPERIENCE_LEVEL_RATIOS } from '@/lib/types/app.types';
+import type { ExperienceLevel } from '@/lib/types/app.types';
 import type {
   SessionStats,
   SessionCardType,
   ReviewSessionCard,
 } from '@/lib/session/types';
 import { QUALITY_PASSING_THRESHOLD } from '@/lib/srs/types';
-import type { SubconceptProgress, ExercisePattern } from '@/lib/curriculum/types';
+import type { SubconceptProgress, ExercisePattern, ExerciseType } from '@/lib/curriculum/types';
 import {
   buildTeachingPair,
   interleaveWithTeaching,
@@ -24,7 +28,7 @@ import {
 import { getSubconceptDefinition, getAllSubconcepts } from '@/lib/curriculum';
 
 /** Limit on teaching pairs (new subconcepts with teaching content) per session */
-const TEACHING_PAIRS_LIMIT = 2;
+const TEACHING_PAIRS_LIMIT = 5;
 
 /** Card type strings for progress bar display */
 export type CardTypeLabel = 'teaching' | 'practice' | 'review';
@@ -75,6 +79,7 @@ function createInitialStats(): SessionStats {
  */
 export function useConceptSession(): UseConceptSessionReturn {
   const { user, loading: authLoading } = useAuth();
+  const { profile } = useProfile();
   const {
     dueSubconcepts,
     loading: srsLoading,
@@ -101,6 +106,8 @@ export function useConceptSession(): UseConceptSessionReturn {
   const [forceComplete, setForceComplete] = useState(false);
   // Track whether session has been initialized (prevents rebuilding on dueSubconcepts changes)
   const [sessionInitialized, setSessionInitialized] = useState(false);
+  // Track exercise types shown in session for type-balanced selection
+  const [sessionTypeHistory, setSessionTypeHistory] = useState<ExerciseType[]>([]);
 
   const currentCard = cards[currentIndex] ?? null;
   const isComplete =
@@ -167,9 +174,30 @@ export function useConceptSession(): UseConceptSessionReturn {
       const reviewProgressMap: SubconceptProgress[] = [];
       // Track last pattern for anti-repeat selection
       let lastPattern: ExercisePattern | null = null;
+      // Track exercise types during session building for type-balanced selection
+      const typeHistory: ExerciseType[] = [];
+      // Get experience level from profile (default to 'refresher')
+      const experienceLevel: ExperienceLevel = profile?.experienceLevel ?? 'refresher';
+      const targetRatios = EXPERIENCE_LEVEL_RATIOS[experienceLevel];
 
       for (const subconceptProgress of dueSubconcepts) {
-        const exercise = getNextExercise(subconceptProgress, exercises, lastPattern);
+        // Get candidate exercises for this subconcept
+        const subconceptExercises = exercises.filter(
+          (e) => e.subconcept === subconceptProgress.subconceptSlug
+        );
+
+        // Try type-balanced selection first
+        let exercise: Exercise | null = null;
+        if (subconceptExercises.length > 0) {
+          exercise = selectExerciseByType(subconceptExercises, typeHistory, targetRatios);
+        }
+
+        // Fall back to standard algorithm if type-balanced selection fails
+        // or if we want to apply level progression logic
+        if (!exercise) {
+          exercise = getNextExercise(subconceptProgress, exercises, lastPattern);
+        }
+
         if (exercise) {
           reviewCards.push({
             type: 'review',
@@ -178,8 +206,13 @@ export function useConceptSession(): UseConceptSessionReturn {
           reviewProgressMap.push(subconceptProgress);
           // Update pattern for next selection
           lastPattern = exercise.pattern;
+          // Track exercise type for type balancing
+          typeHistory.push(exercise.exerciseType);
         }
       }
+
+      // Store type history for session state
+      setSessionTypeHistory(typeHistory);
 
       // === Step 2: Identify NEW subconcepts (no progress row) ===
       // Query ALL subconcept progress (not just due) to find truly new subconcepts
@@ -310,7 +343,7 @@ export function useConceptSession(): UseConceptSessionReturn {
     return () => {
       cancelled = true;
     };
-  }, [dueSubconcepts, exercises, srsLoading, getNextExercise, user, sessionInitialized, showToast]);
+  }, [dueSubconcepts, exercises, srsLoading, getNextExercise, user, sessionInitialized, showToast, profile]);
 
   // Set error from SRS hook
   useEffect(() => {
@@ -400,6 +433,7 @@ export function useConceptSession(): UseConceptSessionReturn {
 
   const retry = useCallback(() => {
     setSessionInitialized(false); // Allow session to rebuild
+    setSessionTypeHistory([]); // Reset type history for new session
     setFetchKey((k) => k + 1);
     refetchSRS();
   }, [refetchSRS]);
