@@ -2,7 +2,8 @@
 
 import { ReactNode } from 'react';
 import { AuthProvider } from '@/lib/context/AuthContext';
-import { ToastProvider } from '@pikoloo/darwin-ui';
+import { ToastProvider } from '@/lib/context/ToastContext';
+import { ToastContainer } from '@/components/Toast';
 
 interface ProvidersProps {
   children: ReactNode;
@@ -13,6 +14,7 @@ export function Providers({ children }: ProvidersProps) {
     <AuthProvider>
       <ToastProvider>
         {children}
+        <ToastContainer />
       </ToastProvider>
     </AuthProvider>
   );
