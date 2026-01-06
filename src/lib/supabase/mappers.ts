@@ -2,13 +2,16 @@
  * Mappers between database (snake_case) and app (camelCase) types
  */
 
-import type { DbProfile, DbExercise, DbUserProgress, Profile, Exercise, UserProgress } from '../types/app.types';
+import type { DbProfile, DbExercise, DbUserProgress, Profile, Exercise, UserProgress, ExperienceLevel } from '../types/app.types';
 import type { CardState } from '../srs/types';
 
 /**
  * Map database profile to app profile
  */
 export function mapProfile(db: DbProfile): Profile {
+  // Type assertion for experience_level until database types are regenerated
+  const dbExt = db as DbProfile & { experience_level?: string | null };
+
   return {
     id: db.id,
     username: db.username,
@@ -20,6 +23,7 @@ export function mapProfile(db: DbProfile): Profile {
     currentStreak: db.current_streak ?? 0,
     longestStreak: db.longest_streak ?? 0,
     totalExercisesCompleted: db.total_exercises_completed ?? 0,
+    experienceLevel: (dbExt.experience_level as ExperienceLevel) ?? 'refresher',
     createdAt: db.created_at ?? new Date().toISOString(),
     updatedAt: db.updated_at ?? new Date().toISOString(),
   };
@@ -32,7 +36,7 @@ export function mapProfile(db: DbProfile): Profile {
  */
 export function mapExercise(db: DbExercise): Exercise {
   // Type assertion for fields not yet in generated database types
-  const dbExt = db as DbExercise & { objective?: string | null; targets?: string[] | null };
+  const dbExt = db as DbExercise & { objective?: string | null; targets?: string[] | null; code?: string | null };
 
   return {
     id: db.id,
@@ -63,6 +67,8 @@ export function mapExercise(db: DbExercise): Exercise {
     // Phase 2.5 fields (using extended type until migration)
     objective: dbExt.objective ?? '',
     targets: dbExt.targets ?? null,
+    // Phase 2.7: predict-output exercise code
+    code: dbExt.code ?? undefined,
   };
 }
 
@@ -100,6 +106,7 @@ export function toDbProfileUpdate(app: Partial<Omit<Profile, 'id' | 'createdAt'>
   if (app.currentStreak !== undefined) db.current_streak = app.currentStreak;
   if (app.longestStreak !== undefined) db.longest_streak = app.longestStreak;
   if (app.totalExercisesCompleted !== undefined) db.total_exercises_completed = app.totalExercisesCompleted;
+  if (app.experienceLevel !== undefined) db.experience_level = app.experienceLevel;
   return db;
 }
 

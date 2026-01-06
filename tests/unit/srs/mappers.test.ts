@@ -112,6 +112,8 @@ describe('mapExercise', () => {
     // Phase 2.5 fields
     objective: null,
     targets: null,
+    // Phase 2.7: predict-output
+    code: null,
   };
 
   it('maps slug field', () => {

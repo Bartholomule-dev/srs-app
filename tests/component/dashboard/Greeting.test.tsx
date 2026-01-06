@@ -26,6 +26,7 @@ let mockProfile: Profile | null = {
   currentStreak: 5,
   longestStreak: 10,
   totalExercisesCompleted: 50,
+  experienceLevel: 'refresher',
   createdAt: '2024-01-01T00:00:00Z',
   updatedAt: '2024-01-01T00:00:00Z',
 };
@@ -77,6 +78,7 @@ describe('Greeting', () => {
       currentStreak: 5,
       longestStreak: 10,
       totalExercisesCompleted: 50,
+      experienceLevel: 'refresher',
       createdAt: '2024-01-01T00:00:00Z',
       updatedAt: '2024-01-01T00:00:00Z',
     };

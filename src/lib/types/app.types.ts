@@ -30,6 +30,7 @@ export interface Profile {
   currentStreak: number;
   longestStreak: number;
   totalExercisesCompleted: number;
+  experienceLevel: ExperienceLevel;
   createdAt: string;
   updatedAt: string;
 }
@@ -72,6 +73,9 @@ export interface Exercise {
   // Fill-in specific (optional)
   template: string | null;
   blankPosition: number | null;
+
+  // Predict-output specific (optional)
+  code?: string;
 }
 
 /**
@@ -108,3 +112,21 @@ export type Language = (typeof LANGUAGES)[number];
  */
 export const DIFFICULTIES = [1, 2, 3, 4, 5] as const;
 export type Difficulty = (typeof DIFFICULTIES)[number];
+
+/**
+ * Experience level for exercise type ratios
+ * - refresher: Experienced developers brushing up (mostly write exercises)
+ * - learning: Intermediate developers building skills (balanced mix)
+ * - beginner: New developers learning fundamentals (more scaffolded exercises)
+ */
+export type ExperienceLevel = 'refresher' | 'learning' | 'beginner';
+
+/**
+ * Exercise type ratios by experience level
+ * Determines the mix of write/fill-in/predict exercises in sessions
+ */
+export const EXPERIENCE_LEVEL_RATIOS = {
+  refresher: { write: 0.8, 'fill-in': 0.1, predict: 0.1 },
+  learning: { write: 0.5, 'fill-in': 0.25, predict: 0.25 },
+  beginner: { write: 0.3, 'fill-in': 0.35, predict: 0.35 },
+} as const;
