@@ -83,6 +83,8 @@ export function useConceptSession(): UseConceptSessionReturn {
   const [error, setError] = useState<AppError | null>(null);
   const [fetchKey, setFetchKey] = useState(0);
   const [forceComplete, setForceComplete] = useState(false);
+  // Track whether session has been initialized (prevents rebuilding on dueSubconcepts changes)
+  const [sessionInitialized, setSessionInitialized] = useState(false);
   // Track last pattern for anti-repeat selection (infrastructure ready, not yet wired)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_lastPattern, setLastPattern] = useState<ExercisePattern | null>(null);
@@ -129,8 +131,10 @@ export function useConceptSession(): UseConceptSessionReturn {
   }, [user, authLoading, fetchKey, supabase]);
 
   // Build session cards when due subconcepts and exercises are ready
+  // Only runs once per session - skip if already initialized
   useEffect(() => {
     if (srsLoading || exercises.length === 0) return;
+    if (sessionInitialized) return; // Don't rebuild mid-session
 
     // Build session cards by selecting an exercise for each due subconcept
     const sessionCards: ConceptSessionCard[] = [];
@@ -201,8 +205,9 @@ export function useConceptSession(): UseConceptSessionReturn {
       startTime: new Date(),
       endTime: undefined,
     });
+    setSessionInitialized(true);
     setLoading(false);
-  }, [dueSubconcepts, exercises, srsLoading, getNextExercise, user?.id]);
+  }, [dueSubconcepts, exercises, srsLoading, getNextExercise, user?.id, sessionInitialized]);
 
   // Set error from SRS hook
   useEffect(() => {
@@ -275,6 +280,7 @@ export function useConceptSession(): UseConceptSessionReturn {
   }, [stats.completed, user, showToast]);
 
   const retry = useCallback(() => {
+    setSessionInitialized(false); // Allow session to rebuild
     setFetchKey((k) => k + 1);
     refetchSRS();
   }, [refetchSRS]);

@@ -24,7 +24,16 @@ if (isProd && (!supabaseUrl || !supabaseKey)) {
 }
 
 const supabase = createClient(supabaseUrl, supabaseKey, {
-  auth: { persistSession: false }
+  auth: { persistSession: false },
+  global: {
+    headers: {
+      // Force schema cache reload
+      'x-client-info': 'import-script',
+    },
+  },
+  db: {
+    schema: 'public',
+  },
 });
 
 interface ImportStats {
