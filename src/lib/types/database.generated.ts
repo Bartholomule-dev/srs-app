@@ -1,3 +1,4 @@
+Connecting to db 5432
 export type Json =
   | string
   | number
@@ -70,6 +71,7 @@ export type Database = {
           avg_success_rate: number | null
           blank_position: number | null
           category: string
+          code: string | null
           concept: string | null
           created_at: string | null
           difficulty: number
@@ -80,12 +82,14 @@ export type Database = {
           id: string
           language: string
           level: string | null
+          objective: string | null
           pattern: string | null
           prereqs: string[] | null
           prompt: string
           slug: string
           subconcept: string | null
           tags: string[] | null
+          targets: string[] | null
           template: string | null
           times_practiced: number | null
           title: string
@@ -96,6 +100,7 @@ export type Database = {
           avg_success_rate?: number | null
           blank_position?: number | null
           category: string
+          code?: string | null
           concept?: string | null
           created_at?: string | null
           difficulty: number
@@ -106,12 +111,14 @@ export type Database = {
           id?: string
           language: string
           level?: string | null
+          objective?: string | null
           pattern?: string | null
           prereqs?: string[] | null
           prompt: string
           slug: string
           subconcept?: string | null
           tags?: string[] | null
+          targets?: string[] | null
           template?: string | null
           times_practiced?: number | null
           title: string
@@ -122,6 +129,7 @@ export type Database = {
           avg_success_rate?: number | null
           blank_position?: number | null
           category?: string
+          code?: string | null
           concept?: string | null
           created_at?: string | null
           difficulty?: number
@@ -132,12 +140,14 @@ export type Database = {
           id?: string
           language?: string
           level?: string | null
+          objective?: string | null
           pattern?: string | null
           prereqs?: string[] | null
           prompt?: string
           slug?: string
           subconcept?: string | null
           tags?: string[] | null
+          targets?: string[] | null
           template?: string | null
           times_practiced?: number | null
           title?: string
@@ -152,6 +162,7 @@ export type Database = {
           current_streak: number | null
           daily_goal: number | null
           display_name: string | null
+          experience_level: string | null
           id: string
           longest_streak: number | null
           notification_time: string | null
@@ -166,6 +177,7 @@ export type Database = {
           current_streak?: number | null
           daily_goal?: number | null
           display_name?: string | null
+          experience_level?: string | null
           id: string
           longest_streak?: number | null
           notification_time?: string | null
@@ -180,6 +192,7 @@ export type Database = {
           current_streak?: number | null
           daily_goal?: number | null
           display_name?: string | null
+          experience_level?: string | null
           id?: string
           longest_streak?: number | null
           notification_time?: string | null
@@ -297,7 +310,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      update_profile_stats_atomic: {
+        Args: {
+          p_current_streak: number
+          p_exercises_completed: number
+          p_longest_streak: number
+          p_user_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
