@@ -20,18 +20,22 @@ export function Hero() {
 
       {/* Spotlight effect from top-right */}
       <div
-        className="absolute top-0 right-0 w-[600px] h-[600px]
-                      bg-[radial-gradient(circle,rgba(245,158,11,0.15)_0%,transparent_70%)]"
+        className="absolute top-0 right-0 w-[800px] h-[800px]
+                      bg-[radial-gradient(circle,rgba(245,158,11,0.24)_0%,transparent_60%)]
+                      animate-pulse"
+        style={{ animationDuration: '4s' }}
       />
 
       {/* Secondary glow from bottom-left */}
       <div
-        className="absolute bottom-0 left-0 w-[400px] h-[400px]
-                      bg-[radial-gradient(circle,rgba(249,115,22,0.1)_0%,transparent_70%)]"
+        className="absolute bottom-0 left-0 w-[600px] h-[600px]
+                      bg-[radial-gradient(circle,rgba(249,115,22,0.18)_0%,transparent_60%)]
+                      animate-pulse"
+        style={{ animationDuration: '5s' }}
       />
 
       {/* Grain texture overlay */}
-      <div className="absolute inset-0 opacity-20 bg-[url('/noise.svg')] pointer-events-none" />
+      <div className="absolute inset-0 opacity-30 bg-[url('/noise.svg')] pointer-events-none mix-blend-overlay" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
         <div className="grid lg:grid-cols-5 gap-12 items-center">

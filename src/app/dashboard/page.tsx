@@ -24,24 +24,30 @@ function DashboardBackground() {
 
       {/* Spotlight effect from top-right */}
       <div
-        className="fixed top-0 right-0 w-[600px] h-[600px] -z-10
-                      bg-[radial-gradient(circle,rgba(245,158,11,0.12)_0%,transparent_70%)]"
+        className="fixed top-0 right-0 w-[800px] h-[800px] -z-10
+                      bg-[radial-gradient(circle,rgba(245,158,11,0.20)_0%,transparent_60%)]
+                      animate-pulse"
+        style={{ animationDuration: '4s' }}
       />
 
       {/* Secondary glow from bottom-left */}
       <div
-        className="fixed bottom-0 left-0 w-[500px] h-[500px] -z-10
-                      bg-[radial-gradient(circle,rgba(249,115,22,0.08)_0%,transparent_70%)]"
+        className="fixed bottom-0 left-0 w-[700px] h-[700px] -z-10
+                      bg-[radial-gradient(circle,rgba(249,115,22,0.16)_0%,transparent_60%)]
+                      animate-pulse"
+        style={{ animationDuration: '5s' }}
       />
 
       {/* Accent glow following user focus area */}
       <div
-        className="fixed top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[400px] -z-10
-                      bg-[radial-gradient(ellipse,rgba(34,197,94,0.05)_0%,transparent_70%)]"
+        className="fixed top-1/3 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] -z-10
+                      bg-[radial-gradient(ellipse,rgba(34,197,94,0.12)_0%,transparent_60%)]
+                      animate-pulse"
+        style={{ animationDuration: '6s' }}
       />
 
       {/* Grain texture overlay */}
-      <div className="fixed inset-0 opacity-20 bg-[url('/noise.svg')] pointer-events-none -z-10" />
+      <div className="fixed inset-0 opacity-30 bg-[url('/noise.svg')] pointer-events-none -z-10 mix-blend-overlay" />
     </>
   );
 }
