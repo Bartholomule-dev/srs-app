@@ -88,6 +88,7 @@ export const CodeEditor = forwardRef<HTMLTextAreaElement, CodeEditorProps>(
           'focus-within:border-accent-primary',
           'focus-within:shadow-[0_0_0_3px_rgba(245,158,11,0.1)]',
           'transition-all duration-150',
+          "before:absolute before:inset-0 before:bg-[url('/grid.svg')] before:opacity-50 before:pointer-events-none",
           className
         )}
       >
