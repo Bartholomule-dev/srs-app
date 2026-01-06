@@ -14,18 +14,21 @@ export interface UpdateProfileStatsInput {
 
 /**
  * Updates profile statistics after a practice session.
- * - Increments total_exercises_completed
+ * - Atomically increments total_exercises_completed (prevents race conditions)
  * - Updates current_streak and longest_streak based on practice timing
+ *
+ * Uses PostgreSQL RPC function for atomic increment to handle concurrent
+ * sessions (e.g., user with multiple tabs open).
  */
 export async function updateProfileStats(
   input: UpdateProfileStatsInput
 ): Promise<void> {
   const { userId, exercisesCompleted, lastPracticed, now = new Date() } = input;
 
-  // First, fetch current profile to get streak data
+  // First, fetch current profile to get streak data for calculation
   const { data: profile, error: fetchError } = await supabase
     .from('profiles')
-    .select('current_streak, longest_streak, total_exercises_completed')
+    .select('current_streak, longest_streak')
     .eq('id', userId)
     .single();
 
@@ -35,7 +38,7 @@ export async function updateProfileStats(
 
   const currentProfile = profile as Pick<
     DbProfile,
-    'current_streak' | 'longest_streak' | 'total_exercises_completed'
+    'current_streak' | 'longest_streak'
   >;
 
   // Calculate updated streak
@@ -46,21 +49,15 @@ export async function updateProfileStats(
     now,
   });
 
-  // Update profile
-  const { error: updateError } = await supabase
-    .from('profiles')
-    .update({
-      current_streak: streakUpdate.currentStreak,
-      longest_streak: streakUpdate.longestStreak,
-      total_exercises_completed:
-        (currentProfile.total_exercises_completed ?? 0) + exercisesCompleted,
-      updated_at: now.toISOString(),
-    })
-    .eq('id', userId)
-    .select()
-    .single();
+  // Use atomic RPC to prevent race conditions
+  const { error: rpcError } = await supabase.rpc('update_profile_stats_atomic', {
+    p_user_id: userId,
+    p_exercises_completed: exercisesCompleted,
+    p_current_streak: streakUpdate.currentStreak,
+    p_longest_streak: streakUpdate.longestStreak,
+  });
 
-  if (updateError) {
-    throw handleSupabaseError(updateError);
+  if (rpcError) {
+    throw handleSupabaseError(rpcError);
   }
 }
