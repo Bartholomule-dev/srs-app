@@ -417,3 +417,118 @@ exercises:
       - Add the main guard after the function
       - Call main() inside the guard block
     tags: [main, guard, function, definition]
+
+  # --- Fill-in Exercises ---
+  - slug: import-keyword-fill
+    objective: Complete the import statement
+    title: Import Keyword Fill-in
+    difficulty: 1
+    concept: modules-files
+    subconcept: imports
+    level: intro
+    prereqs: []
+    type: fill-in
+    blank_position: 0
+    pattern: import
+    prompt: Complete to import the os module
+    template: "___ os"
+    expected_answer: "import"
+    hints:
+      - Keyword to bring in a module
+    tags: [imports, fill-in]
+
+  - slug: from-import-fill
+    objective: Complete the from-import syntax
+    title: From Import Fill-in
+    difficulty: 1
+    concept: modules-files
+    subconcept: imports
+    level: intro
+    prereqs: [modules-files.imports]
+    type: fill-in
+    blank_position: 0
+    pattern: import
+    prompt: Complete to import sqrt from math
+    template: "___ math import sqrt"
+    expected_answer: "from"
+    hints:
+      - Keyword for selective imports
+    tags: [imports, from, fill-in]
+
+  - slug: with-keyword-fill
+    objective: Complete the context manager syntax
+    title: With Keyword Fill-in
+    difficulty: 2
+    concept: modules-files
+    subconcept: context
+    level: practice
+    prereqs: [modules-files.reading]
+    type: fill-in
+    blank_position: 0
+    pattern: context
+    prompt: Complete to open file safely
+    template: '___ open("file.txt") as f:'
+    expected_answer: "with"
+    hints:
+      - Keyword for context managers
+    tags: [files, with, fill-in]
+
+  # --- Predict Exercises ---
+  - slug: name-main-predict
+    objective: Predict __name__ behavior
+    title: Name Main Predict
+    difficulty: 2
+    concept: modules-files
+    subconcept: main-guard
+    level: intro
+    prereqs: [modules-files.main-guard]
+    type: predict
+    pattern: conditional
+    prompt: What does __name__ equal when script runs directly?
+    code: |
+      # Running: python script.py
+      print(__name__)
+    expected_answer: "__main__"
+    hints:
+      - __name__ is "__main__" when run directly
+    tags: [modules, main, predict]
+
+  - slug: file-read-predict
+    objective: Predict file read output
+    title: File Read Predict
+    difficulty: 2
+    concept: modules-files
+    subconcept: reading
+    level: practice
+    prereqs: [modules-files.reading]
+    type: predict
+    pattern: file
+    prompt: If file.txt contains "hello", what prints?
+    code: |
+      with open("file.txt") as f:
+          content = f.read()
+      print(len(content))
+    expected_answer: "5"
+    hints:
+      - '"hello" has 5 characters'
+    tags: [files, read, predict]
+
+  - slug: path-join-predict
+    objective: Predict Path join result
+    title: Path Join Predict
+    difficulty: 2
+    concept: modules-files
+    subconcept: pathlib
+    level: practice
+    prereqs: [modules-files.pathlib]
+    type: predict
+    pattern: construction
+    prompt: What does this produce?
+    code: |
+      from pathlib import Path
+      p = Path("home") / "user" / "file.txt"
+      print(p)
+    expected_answer: "home/user/file.txt"
+    hints:
+      - / operator joins path components
+    tags: [pathlib, join, predict]

@@ -574,3 +574,257 @@ exercises:
       - Combine with 'and' operator
       - all() for universal check, any() for existence
     tags: [any, all, combined, conditional]
+
+  # --- Fill-in Exercises ---
+  - slug: for-loop-fill
+    objective: Complete the for loop syntax
+    title: For Loop Fill-in
+    difficulty: 1
+    concept: control-flow
+    subconcept: for
+    level: intro
+    prereqs: []
+    type: fill-in
+    blank_position: 0
+    pattern: iteration
+    prompt: Complete the for loop to iterate over items
+    template: "___ item in items:"
+    expected_answer: "for"
+    hints:
+      - Keyword that starts iteration
+    tags: [control-flow, for, fill-in]
+
+  - slug: range-fill
+    objective: Complete the range function call
+    title: Range Fill-in
+    difficulty: 1
+    concept: control-flow
+    subconcept: for
+    level: intro
+    prereqs: [control-flow.for]
+    type: fill-in
+    blank_position: 0
+    pattern: iteration
+    prompt: Complete to loop 5 times (0 to 4)
+    template: "for i in ___(5):"
+    expected_answer: "range"
+    hints:
+      - Built-in function for number sequences
+    tags: [control-flow, range, fill-in]
+
+  - slug: enumerate-fill
+    objective: Complete the enumerate function call
+    title: Enumerate Fill-in
+    difficulty: 2
+    concept: control-flow
+    subconcept: iteration
+    level: practice
+    prereqs: [control-flow.for]
+    type: fill-in
+    blank_position: 0
+    pattern: iteration
+    prompt: Complete to get both index and value
+    template: "for i, item in ___(items):"
+    expected_answer: "enumerate"
+    hints:
+      - Function that provides index with each element
+    tags: [control-flow, enumerate, fill-in]
+
+  - slug: break-fill
+    objective: Complete the loop exit keyword
+    title: Break Fill-in
+    difficulty: 1
+    concept: control-flow
+    subconcept: for
+    level: intro
+    prereqs: [control-flow.for]
+    type: fill-in
+    blank_position: 0
+    pattern: control
+    prompt: Complete to exit the loop immediately
+    template: |
+      for item in items:
+          if item == target:
+              ___
+    expected_answer: "break"
+    hints:
+      - Keyword to exit loop early
+    tags: [control-flow, break, fill-in]
+
+  - slug: continue-fill
+    objective: Complete the skip iteration keyword
+    title: Continue Fill-in
+    difficulty: 1
+    concept: control-flow
+    subconcept: for
+    level: intro
+    prereqs: [control-flow.for]
+    type: fill-in
+    blank_position: 0
+    pattern: control
+    prompt: Complete to skip to next iteration
+    template: |
+      for item in items:
+          if item < 0:
+              ___
+    expected_answer: "continue"
+    hints:
+      - Keyword to skip rest of current iteration
+    tags: [control-flow, continue, fill-in]
+
+  - slug: while-condition-fill
+    objective: Complete the while loop condition
+    title: While Condition Fill-in
+    difficulty: 2
+    concept: control-flow
+    subconcept: while
+    level: practice
+    prereqs: [control-flow.while]
+    type: fill-in
+    blank_position: 0
+    pattern: iteration
+    prompt: Complete to loop while count is less than 10
+    template: "while count ___ 10:"
+    expected_answer: "<"
+    hints:
+      - Comparison operator
+    tags: [control-flow, while, fill-in]
+
+  # --- Predict Exercises ---
+  - slug: for-range-predict
+    objective: Predict the output of a for loop with range
+    title: Range Output Predict
+    difficulty: 1
+    concept: control-flow
+    subconcept: for
+    level: intro
+    prereqs: [control-flow.for]
+    type: predict
+    pattern: iteration
+    prompt: What does this code print?
+    code: |
+      for i in range(3):
+          print(i)
+    expected_answer: |
+      0
+      1
+      2
+    hints:
+      - range(3) produces 0, 1, 2
+    tags: [control-flow, range, predict]
+
+  - slug: enumerate-predict
+    objective: Predict the output of enumerate
+    title: Enumerate Output Predict
+    difficulty: 2
+    concept: control-flow
+    subconcept: iteration
+    level: practice
+    prereqs: [control-flow.for]
+    type: predict
+    pattern: iteration
+    prompt: What does this code print?
+    code: |
+      for i, ch in enumerate("abc"):
+          print(i, ch)
+    expected_answer: |
+      0 a
+      1 b
+      2 c
+    hints:
+      - enumerate provides index and value
+    tags: [control-flow, enumerate, predict]
+
+  - slug: break-predict
+    objective: Predict loop behavior with break
+    title: Break Predict
+    difficulty: 2
+    concept: control-flow
+    subconcept: for
+    level: practice
+    prereqs: [control-flow.for]
+    type: predict
+    pattern: control
+    prompt: What does this code print?
+    code: |
+      for i in range(5):
+          if i == 3:
+              break
+          print(i)
+    expected_answer: |
+      0
+      1
+      2
+    hints:
+      - break exits immediately when condition met
+    tags: [control-flow, break, predict]
+
+  - slug: continue-predict
+    objective: Predict loop behavior with continue
+    title: Continue Predict
+    difficulty: 2
+    concept: control-flow
+    subconcept: for
+    level: practice
+    prereqs: [control-flow.for]
+    type: predict
+    pattern: control
+    prompt: What does this code print?
+    code: |
+      for i in range(5):
+          if i == 2:
+              continue
+          print(i)
+    expected_answer: |
+      0
+      1
+      3
+      4
+    hints:
+      - continue skips current iteration only
+    tags: [control-flow, continue, predict]
+
+  - slug: zip-predict
+    objective: Predict the output of zip iteration
+    title: Zip Output Predict
+    difficulty: 2
+    concept: control-flow
+    subconcept: zip
+    level: practice
+    prereqs: [control-flow.for]
+    type: predict
+    pattern: iteration
+    prompt: What does this code print?
+    code: |
+      for a, b in zip([1, 2], ["x", "y"]):
+          print(a, b)
+    expected_answer: |
+      1 x
+      2 y
+    hints:
+      - zip pairs elements from both lists
+    tags: [control-flow, zip, predict]
+
+  - slug: nested-loop-predict
+    objective: Predict nested loop output
+    title: Nested Loop Predict
+    difficulty: 3
+    concept: control-flow
+    subconcept: for
+    level: edge
+    prereqs: [control-flow.for]
+    type: predict
+    pattern: iteration
+    prompt: What does this code print?
+    code: |
+      for i in range(2):
+          for j in range(2):
+              print(i, j)
+    expected_answer: |
+      0 0
+      0 1
+      1 0
+      1 1
+    hints:
+      - Inner loop completes for each outer iteration
+    tags: [control-flow, nested, predict]

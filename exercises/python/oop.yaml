@@ -83,3 +83,462 @@ exercises:
     prereqs: [functions]
     type: write
     pattern: definition
+
+  # --- Inheritance Subconcept ---
+  - slug: inheritance-basic
+    objective: Create a subclass that inherits from a parent class
+    title: Basic Inheritance
+    difficulty: 2
+    concept: oop
+    subconcept: inheritance
+    level: intro
+    prereqs: [oop.classes]
+    type: write
+    pattern: definition
+    prompt: Define class Student that inherits from Person
+    expected_answer: "class Student(Person):"
+    hints:
+      - Put parent class in parentheses
+    tags: [oop, inheritance, beginner]
+
+  - slug: inheritance-super-init
+    objective: Call the parent class constructor using super()
+    title: Super Init
+    difficulty: 2
+    concept: oop
+    subconcept: inheritance
+    level: intro
+    prereqs: [oop.inheritance]
+    type: write
+    pattern: invocation
+    prompt: Call the parent class __init__ with name parameter using super()
+    expected_answer: "super().__init__(name)"
+    hints:
+      - Use super() to access parent
+      - Call __init__ like a method
+    tags: [oop, inheritance, super]
+
+  - slug: inheritance-override-method
+    objective: Override a parent class method in a subclass
+    title: Method Override
+    difficulty: 2
+    concept: oop
+    subconcept: inheritance
+    level: practice
+    prereqs: [oop.inheritance]
+    type: write
+    pattern: definition
+    prompt: Define a greet method in a subclass that overrides the parent's greet
+    expected_answer: "def greet(self):"
+    hints:
+      - Same method name overrides parent
+      - No special syntax needed
+    tags: [oop, inheritance, override]
+
+  - slug: inheritance-super-method
+    objective: Extend a parent method by calling super() within the override
+    title: Extend Parent Method
+    difficulty: 3
+    concept: oop
+    subconcept: inheritance
+    level: practice
+    prereqs: [oop.inheritance]
+    type: write
+    pattern: invocation
+    prompt: Call the parent's greet method from within an overriding greet method
+    expected_answer: "super().greet()"
+    hints:
+      - Use super() to access parent method
+    tags: [oop, inheritance, super]
+
+  - slug: inheritance-isinstance
+    objective: Check if an object is an instance of a class or its subclasses
+    title: Check Inheritance
+    difficulty: 2
+    concept: oop
+    subconcept: inheritance
+    level: practice
+    prereqs: [oop.inheritance]
+    type: write
+    pattern: invocation
+    prompt: Check if student is an instance of Person (including subclasses)
+    expected_answer: "isinstance(student, Person)"
+    hints:
+      - isinstance checks inheritance chain
+    tags: [oop, inheritance, isinstance]
+
+  - slug: inheritance-issubclass
+    objective: Check if a class is a subclass of another class
+    title: Check Subclass
+    difficulty: 2
+    concept: oop
+    subconcept: inheritance
+    level: edge
+    prereqs: [oop.inheritance]
+    type: write
+    pattern: invocation
+    prompt: Check if Student is a subclass of Person
+    expected_answer: "issubclass(Student, Person)"
+    hints:
+      - issubclass checks class hierarchy
+    tags: [oop, inheritance, issubclass]
+
+  # --- Classmethod Subconcept ---
+  - slug: classmethod-basic
+    objective: Define a class method using the @classmethod decorator
+    title: Basic Classmethod
+    difficulty: 2
+    concept: oop
+    subconcept: classmethod
+    level: intro
+    prereqs: [oop.methods]
+    type: write
+    pattern: definition
+    prompt: Define a class method called create using @classmethod decorator
+    expected_answer: |
+      @classmethod
+      def create(cls):
+    hints:
+      - Use @classmethod decorator
+      - First parameter is cls, not self
+    tags: [oop, classmethod, decorator]
+
+  - slug: classmethod-cls-parameter
+    objective: Use cls parameter to access class attributes
+    title: Cls Parameter
+    difficulty: 2
+    concept: oop
+    subconcept: classmethod
+    level: intro
+    prereqs: [oop.classmethod]
+    type: write
+    pattern: invocation
+    prompt: Return cls.count from within a classmethod
+    expected_answer: "return cls.count"
+    hints:
+      - cls refers to the class itself
+    tags: [oop, classmethod, cls]
+
+  - slug: classmethod-factory
+    objective: Create an alternative constructor using a classmethod
+    title: Factory Method
+    difficulty: 3
+    concept: oop
+    subconcept: classmethod
+    level: practice
+    prereqs: [oop.classmethod]
+    type: write
+    pattern: definition
+    prompt: Define a classmethod from_string that creates an instance from a string
+    expected_answer: |
+      @classmethod
+      def from_string(cls, s):
+          return cls(s)
+    hints:
+      - Call cls() to create new instance
+      - Parse the string and pass to constructor
+    tags: [oop, classmethod, factory]
+
+  - slug: classmethod-call
+    objective: Call a classmethod on the class itself
+    title: Call Classmethod
+    difficulty: 2
+    concept: oop
+    subconcept: classmethod
+    level: practice
+    prereqs: [oop.classmethod]
+    type: write
+    pattern: invocation
+    prompt: Call the from_string classmethod on Person class with "Alice"
+    expected_answer: Person.from_string("Alice")
+    accepted_solutions:
+      - 'Person.from_string("Alice")'
+      - "Person.from_string('Alice')"
+    hints:
+      - Call on the class, not an instance
+    tags: [oop, classmethod, call]
+
+  - slug: staticmethod-basic
+    objective: Define a static method using the @staticmethod decorator
+    title: Basic Staticmethod
+    difficulty: 2
+    concept: oop
+    subconcept: classmethod
+    level: practice
+    prereqs: [oop.methods]
+    type: write
+    pattern: definition
+    prompt: Define a static method called validate using @staticmethod decorator
+    expected_answer: |
+      @staticmethod
+      def validate(value):
+    hints:
+      - Use @staticmethod decorator
+      - No self or cls parameter
+    tags: [oop, staticmethod, decorator]
+
+  - slug: staticmethod-vs-classmethod
+    objective: Choose between staticmethod and classmethod based on need for class access
+    title: Static vs Class Method
+    difficulty: 3
+    concept: oop
+    subconcept: classmethod
+    level: edge
+    prereqs: [oop.classmethod]
+    type: write
+    pattern: definition
+    prompt: Define a utility method is_valid that doesn't need self or cls
+    expected_answer: |
+      @staticmethod
+      def is_valid(value):
+    hints:
+      - staticmethod when you don't need class access
+      - classmethod when you need cls
+    tags: [oop, staticmethod, classmethod]
+
+  # --- Properties Subconcept ---
+  - slug: property-getter
+    objective: Define a property getter using the @property decorator
+    title: Property Getter
+    difficulty: 2
+    concept: oop
+    subconcept: properties
+    level: intro
+    prereqs: [oop.methods]
+    type: write
+    pattern: definition
+    prompt: Define a property called full_name using @property decorator
+    expected_answer: |
+      @property
+      def full_name(self):
+    hints:
+      - Use @property decorator
+      - Method becomes readable as attribute
+    tags: [oop, property, getter]
+
+  - slug: property-return
+    objective: Return a computed value from a property getter
+    title: Property Return Value
+    difficulty: 2
+    concept: oop
+    subconcept: properties
+    level: intro
+    prereqs: [oop.properties]
+    type: write
+    pattern: construction
+    prompt: Return first_name and last_name joined with a space from a property
+    expected_answer: return f"{self.first_name} {self.last_name}"
+    accepted_solutions:
+      - 'return f"{self.first_name} {self.last_name}"'
+      - "return self.first_name + ' ' + self.last_name"
+    hints:
+      - Combine the two attributes
+    tags: [oop, property, computed]
+
+  - slug: property-setter
+    objective: Define a property setter using the @name.setter decorator
+    title: Property Setter
+    difficulty: 2
+    concept: oop
+    subconcept: properties
+    level: practice
+    prereqs: [oop.properties]
+    type: write
+    pattern: definition
+    prompt: Define a setter for the full_name property
+    expected_answer: |
+      @full_name.setter
+      def full_name(self, value):
+    hints:
+      - Use @property_name.setter
+      - Same method name as getter
+    tags: [oop, property, setter]
+
+  - slug: property-setter-validation
+    objective: Add validation logic inside a property setter
+    title: Property Validation
+    difficulty: 3
+    concept: oop
+    subconcept: properties
+    level: practice
+    prereqs: [oop.properties]
+    type: write
+    pattern: handling
+    prompt: In a setter, raise ValueError if value is negative
+    expected_answer: |
+      if value < 0:
+          raise ValueError("Value cannot be negative")
+    hints:
+      - Check condition before setting
+      - Raise appropriate exception
+    tags: [oop, property, validation]
+
+  - slug: property-deleter
+    objective: Define a property deleter using the @name.deleter decorator
+    title: Property Deleter
+    difficulty: 3
+    concept: oop
+    subconcept: properties
+    level: edge
+    prereqs: [oop.properties]
+    type: write
+    pattern: definition
+    prompt: Define a deleter for the name property
+    expected_answer: |
+      @name.deleter
+      def name(self):
+    hints:
+      - Use @property_name.deleter
+      - Called when del obj.name is used
+    tags: [oop, property, deleter]
+
+  - slug: property-readonly
+    objective: Create a read-only property by defining only a getter
+    title: Read-Only Property
+    difficulty: 2
+    concept: oop
+    subconcept: properties
+    level: edge
+    prereqs: [oop.properties]
+    type: write
+    pattern: definition
+    prompt: Define a read-only property called age that returns self._age
+    expected_answer: |
+      @property
+      def age(self):
+          return self._age
+    hints:
+      - Only define getter, no setter
+      - Use underscore prefix for private attribute
+    tags: [oop, property, readonly]
+
+  # --- Fill-in Exercises ---
+  - slug: class-keyword-fill
+    objective: Complete the class definition keyword
+    title: Class Keyword Fill-in
+    difficulty: 1
+    concept: oop
+    subconcept: classes
+    level: intro
+    prereqs: []
+    type: fill-in
+    blank_position: 0
+    pattern: definition
+    prompt: Complete the class definition
+    template: "___ Person:"
+    expected_answer: "class"
+    hints:
+      - Keyword that starts class definition
+    tags: [oop, class, fill-in]
+
+  - slug: init-self-fill
+    objective: Complete the __init__ first parameter
+    title: Init Self Fill-in
+    difficulty: 1
+    concept: oop
+    subconcept: methods
+    level: intro
+    prereqs: [oop.classes]
+    type: fill-in
+    blank_position: 0
+    pattern: definition
+    prompt: Complete the constructor's first parameter
+    template: "def __init__(___, name):"
+    expected_answer: "self"
+    hints:
+      - Always the first parameter in instance methods
+    tags: [oop, init, fill-in]
+
+  - slug: super-fill
+    objective: Complete the super() call
+    title: Super Fill-in
+    difficulty: 2
+    concept: oop
+    subconcept: inheritance
+    level: practice
+    prereqs: [oop.inheritance]
+    type: fill-in
+    blank_position: 0
+    pattern: invocation
+    prompt: Complete to call parent's __init__
+    template: "___().__init__(name)"
+    expected_answer: "super"
+    hints:
+      - Built-in to access parent class
+    tags: [oop, super, fill-in]
+
+  # --- Predict Exercises ---
+  - slug: instance-attribute-predict
+    objective: Predict instance attribute access
+    title: Instance Attribute Predict
+    difficulty: 2
+    concept: oop
+    subconcept: classes
+    level: intro
+    prereqs: [oop.classes]
+    type: predict
+    pattern: invocation
+    prompt: What does this code print?
+    code: |
+      class Person:
+          def __init__(self, name):
+              self.name = name
+      p = Person("Alice")
+      print(p.name)
+    expected_answer: "Alice"
+    hints:
+      - self.name stores the passed value
+    tags: [oop, attribute, predict]
+
+  - slug: method-call-predict
+    objective: Predict method return value
+    title: Method Call Predict
+    difficulty: 2
+    concept: oop
+    subconcept: methods
+    level: practice
+    prereqs: [oop.methods]
+    type: predict
+    pattern: invocation
+    prompt: What does this code print?
+    code: |
+      class Counter:
+          def __init__(self):
+              self.count = 0
+          def increment(self):
+              self.count += 1
+              return self.count
+      c = Counter()
+      print(c.increment())
+      print(c.increment())
+    expected_answer: |
+      1
+      2
+    hints:
+      - Each call increments and returns count
+    tags: [oop, method, predict]
+
+  - slug: inheritance-predict
+    objective: Predict inherited method behavior
+    title: Inheritance Predict
+    difficulty: 2
+    concept: oop
+    subconcept: inheritance
+    level: practice
+    prereqs: [oop.inheritance]
+    type: predict
+    pattern: invocation
+    prompt: What does this code print?
+    code: |
+      class Animal:
+          def speak(self):
+              return "sound"
+      class Dog(Animal):
+          def speak(self):
+              return "bark"
+      d = Dog()
+      print(d.speak())
+    expected_answer: "bark"
+    hints:
+      - Child method overrides parent
+    tags: [oop, inheritance, predict]

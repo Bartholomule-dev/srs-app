@@ -87,3 +87,329 @@ exercises:
     prereqs: [functions]
     type: write
     pattern: handling
+
+  # --- Finally Subconcept ---
+  - slug: finally-basic
+    objective: Write a finally block that always executes
+    title: Basic Finally
+    difficulty: 2
+    concept: error-handling
+    subconcept: finally
+    level: intro
+    prereqs: [error-handling.try-except]
+    type: write
+    pattern: handling
+    prompt: Write a finally block that always runs
+    expected_answer: "finally:"
+    hints:
+      - finally runs whether exception occurs or not
+    tags: [exceptions, finally, cleanup]
+
+  - slug: finally-cleanup
+    objective: Use finally to ensure cleanup code always runs
+    title: Finally Cleanup
+    difficulty: 2
+    concept: error-handling
+    subconcept: finally
+    level: intro
+    prereqs: [error-handling.finally]
+    type: write
+    pattern: handling
+    prompt: Close a file object f in a finally block
+    expected_answer: |
+      finally:
+          f.close()
+    hints:
+      - finally ensures cleanup happens
+      - Even if exception occurs
+    tags: [exceptions, finally, cleanup]
+
+  - slug: finally-with-except
+    objective: Combine try, except, and finally blocks
+    title: Try-Except-Finally
+    difficulty: 2
+    concept: error-handling
+    subconcept: finally
+    level: practice
+    prereqs: [error-handling.finally]
+    type: write
+    pattern: handling
+    prompt: Write a complete try-except-finally structure with pass in each block
+    expected_answer: |
+      try:
+          pass
+      except:
+          pass
+      finally:
+          pass
+    hints:
+      - finally comes after except
+      - All three blocks together
+    tags: [exceptions, finally, complete]
+
+  - slug: finally-return
+    objective: Understand that finally runs even after return statements
+    title: Finally After Return
+    difficulty: 3
+    concept: error-handling
+    subconcept: finally
+    level: practice
+    prereqs: [error-handling.finally]
+    type: predict
+    pattern: handling
+    prompt: What gets printed?
+    code: |
+      def test():
+          try:
+              return "try"
+          finally:
+              print("finally")
+      result = test()
+      print(result)
+    expected_answer: |
+      finally
+      try
+    hints:
+      - finally runs before function returns
+    tags: [exceptions, finally, return]
+
+  - slug: finally-exception-propagation
+    objective: Understand that finally runs even when exceptions propagate
+    title: Finally With Propagation
+    difficulty: 3
+    concept: error-handling
+    subconcept: finally
+    level: edge
+    prereqs: [error-handling.finally]
+    type: predict
+    pattern: handling
+    prompt: What gets printed before the error?
+    code: |
+      try:
+          print("try")
+          raise ValueError("error")
+      finally:
+          print("finally")
+    expected_answer: |
+      try
+      finally
+    hints:
+      - finally runs before exception propagates
+    tags: [exceptions, finally, propagation]
+
+  - slug: else-clause
+    objective: Use else clause that runs when no exception occurs
+    title: Try-Else Clause
+    difficulty: 3
+    concept: error-handling
+    subconcept: finally
+    level: edge
+    prereqs: [error-handling.try-except]
+    type: write
+    pattern: handling
+    prompt: Write an else block that runs when no exception is raised
+    expected_answer: |
+      else:
+          pass
+    hints:
+      - else comes between except and finally
+      - Runs only if no exception
+    tags: [exceptions, else, control]
+
+  # --- Additional Raising Exercises ---
+  - slug: raise-custom-message
+    objective: Raise an exception with a descriptive error message
+    title: Raise with Message
+    difficulty: 2
+    concept: error-handling
+    subconcept: raising
+    level: intro
+    prereqs: [error-handling.try-except]
+    type: write
+    pattern: handling
+    prompt: Raise a ValueError with message "Age must be positive"
+    expected_answer: raise ValueError("Age must be positive")
+    accepted_solutions:
+      - 'raise ValueError("Age must be positive")'
+      - "raise ValueError('Age must be positive')"
+    hints:
+      - Pass message to exception constructor
+    tags: [exceptions, raise, message]
+
+  - slug: raise-from
+    objective: Chain exceptions using raise...from to preserve context
+    title: Exception Chaining
+    difficulty: 3
+    concept: error-handling
+    subconcept: raising
+    level: practice
+    prereqs: [error-handling.raising]
+    type: write
+    pattern: handling
+    prompt: Raise RuntimeError from an existing exception e
+    expected_answer: raise RuntimeError("Failed") from e
+    accepted_solutions:
+      - 'raise RuntimeError("Failed") from e'
+      - "raise RuntimeError('Failed') from e"
+    hints:
+      - Use 'from' to chain exceptions
+      - Preserves original traceback
+    tags: [exceptions, raise, chaining]
+
+  - slug: reraise
+    objective: Re-raise the current exception using bare raise
+    title: Re-raise Exception
+    difficulty: 2
+    concept: error-handling
+    subconcept: raising
+    level: practice
+    prereqs: [error-handling.raising]
+    type: write
+    pattern: handling
+    prompt: Re-raise the current exception after logging it
+    expected_answer: raise
+    hints:
+      - Bare 'raise' re-raises current exception
+      - Preserves original traceback
+    tags: [exceptions, raise, reraise]
+
+  - slug: custom-exception
+    objective: Define a custom exception class
+    title: Custom Exception
+    difficulty: 3
+    concept: error-handling
+    subconcept: raising
+    level: edge
+    prereqs: [error-handling.raising, oop.inheritance]
+    type: write
+    pattern: definition
+    prompt: Define a custom exception class ValidationError that inherits from Exception
+    expected_answer: "class ValidationError(Exception):"
+    hints:
+      - Inherit from Exception
+      - Can add custom attributes if needed
+    tags: [exceptions, custom, class]
+
+  # --- Fill-in Exercises ---
+  - slug: try-keyword-fill
+    objective: Complete the try block keyword
+    title: Try Keyword Fill-in
+    difficulty: 1
+    concept: error-handling
+    subconcept: try-except
+    level: intro
+    prereqs: []
+    type: fill-in
+    blank_position: 0
+    pattern: handling
+    prompt: Complete to start a try block
+    template: |
+      ___:
+          risky_operation()
+    expected_answer: "try"
+    hints:
+      - Keyword that starts exception handling
+    tags: [exceptions, try, fill-in]
+
+  - slug: except-keyword-fill
+    objective: Complete the except clause
+    title: Except Keyword Fill-in
+    difficulty: 1
+    concept: error-handling
+    subconcept: try-except
+    level: intro
+    prereqs: [error-handling.try-except]
+    type: fill-in
+    blank_position: 0
+    pattern: handling
+    prompt: Complete to catch ValueError
+    template: "___ ValueError:"
+    expected_answer: "except"
+    hints:
+      - Keyword that catches exceptions
+    tags: [exceptions, except, fill-in]
+
+  - slug: raise-keyword-fill
+    objective: Complete the raise statement
+    title: Raise Keyword Fill-in
+    difficulty: 2
+    concept: error-handling
+    subconcept: raising
+    level: practice
+    prereqs: [error-handling.try-except]
+    type: fill-in
+    blank_position: 0
+    pattern: handling
+    prompt: Complete to raise an error
+    template: '___ ValueError("Invalid")'
+    expected_answer: "raise"
+    hints:
+      - Keyword to throw an exception
+    tags: [exceptions, raise, fill-in]
+
+  # --- Predict Exercises ---
+  - slug: try-except-predict
+    objective: Predict which block executes
+    title: Try-Except Flow Predict
+    difficulty: 2
+    concept: error-handling
+    subconcept: try-except
+    level: intro
+    prereqs: [error-handling.try-except]
+    type: predict
+    pattern: handling
+    prompt: What does this code print?
+    code: |
+      try:
+          x = int("abc")
+          print("success")
+      except ValueError:
+          print("error")
+    expected_answer: "error"
+    hints:
+      - int("abc") raises ValueError
+    tags: [exceptions, try-except, predict]
+
+  - slug: except-type-predict
+    objective: Predict exception type matching
+    title: Exception Type Predict
+    difficulty: 2
+    concept: error-handling
+    subconcept: try-except
+    level: practice
+    prereqs: [error-handling.try-except]
+    type: predict
+    pattern: handling
+    prompt: What does this code print?
+    code: |
+      try:
+          x = 1 / 0
+      except ValueError:
+          print("value error")
+      except ZeroDivisionError:
+          print("zero division")
+    expected_answer: "zero division"
+    hints:
+      - 1/0 raises ZeroDivisionError, not ValueError
+    tags: [exceptions, except, predict]
+
+  - slug: exception-as-predict
+    objective: Predict exception message access
+    title: Exception As Predict
+    difficulty: 2
+    concept: error-handling
+    subconcept: try-except
+    level: practice
+    prereqs: [error-handling.try-except]
+    type: predict
+    pattern: handling
+    prompt: What does this code print?
+    code: |
+      try:
+          raise ValueError("oops")
+      except ValueError as e:
+          print(e)
+    expected_answer: "oops"
+    hints:
+      - "'as e' captures the exception object"
+    tags: [exceptions, as, predict]

@@ -763,3 +763,118 @@ exercises:
       - Access the list first with d["nums"]
       - Then call append on that list
     tags: [mutability, dicts, lists]
+
+  # --- Fill-in Exercises ---
+  - slug: list-bracket-fill
+    objective: Complete list literal syntax
+    title: List Bracket Fill-in
+    difficulty: 1
+    concept: collections
+    subconcept: lists
+    level: intro
+    prereqs: []
+    type: fill-in
+    blank_position: 0
+    pattern: construction
+    prompt: Complete to create a list
+    template: "items = ___1, 2, 3]"
+    expected_answer: "["
+    hints:
+      - Opening bracket for lists
+    tags: [lists, syntax, fill-in]
+
+  - slug: dict-brace-fill
+    objective: Complete dict literal syntax
+    title: Dict Brace Fill-in
+    difficulty: 1
+    concept: collections
+    subconcept: dicts
+    level: intro
+    prereqs: []
+    type: fill-in
+    blank_position: 0
+    pattern: construction
+    prompt: Complete to create a dict
+    template: 'data = ___"name": "Alice"}'
+    expected_answer: "{"
+    hints:
+      - Opening brace for dicts
+    tags: [dicts, syntax, fill-in]
+
+  - slug: in-operator-fill
+    objective: Complete membership test
+    title: In Operator Fill-in
+    difficulty: 1
+    concept: collections
+    subconcept: lists
+    level: intro
+    prereqs: [collections.lists]
+    type: fill-in
+    blank_position: 0
+    pattern: query
+    prompt: Complete to check if 5 is in items
+    template: "5 ___ items"
+    expected_answer: "in"
+    hints:
+      - Membership test operator
+    tags: [collections, in, fill-in]
+
+  # --- Predict Exercises ---
+  - slug: list-append-predict
+    objective: Predict list after append
+    title: List Append Predict
+    difficulty: 1
+    concept: collections
+    subconcept: lists
+    level: intro
+    prereqs: [collections.lists]
+    type: predict
+    pattern: mutation
+    prompt: What does this code print?
+    code: |
+      items = [1, 2]
+      items.append(3)
+      print(items)
+    expected_answer: "[1, 2, 3]"
+    hints:
+      - append adds to the end
+    tags: [lists, append, predict]
+
+  - slug: dict-get-predict
+    objective: Predict dict.get with default
+    title: Dict Get Predict
+    difficulty: 2
+    concept: collections
+    subconcept: dicts
+    level: practice
+    prereqs: [collections.dicts]
+    type: predict
+    pattern: lookup
+    prompt: What does this code print?
+    code: |
+      d = {"a": 1}
+      print(d.get("b", 0))
+    expected_answer: "0"
+    hints:
+      - get returns default if key missing
+    tags: [dicts, get, predict]
+
+  - slug: set-union-predict
+    objective: Predict set union result
+    title: Set Union Predict
+    difficulty: 2
+    concept: collections
+    subconcept: sets
+    level: practice
+    prereqs: [collections.sets]
+    type: predict
+    pattern: construction
+    prompt: What does this code print?
+    code: |
+      a = {1, 2}
+      b = {2, 3}
+      print(a | b)
+    expected_answer: "{1, 2, 3}"
+    hints:
+      - Union combines unique elements
+    tags: [sets, union, predict]

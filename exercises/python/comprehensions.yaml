@@ -152,3 +152,155 @@ exercises:
     hints:
       - Use zip to pair them
     tags: [comprehensions, dict, zip]
+
+  # --- Fill-in Exercises ---
+  - slug: list-comp-for-fill
+    objective: Complete list comprehension for clause
+    title: List Comp For Fill-in
+    difficulty: 2
+    concept: comprehensions
+    subconcept: list-comp
+    level: intro
+    prereqs: [control-flow.for]
+    type: fill-in
+    blank_position: 0
+    pattern: mapping
+    prompt: Complete the list comprehension
+    template: "[x * 2 ___ x in range(5)]"
+    expected_answer: "for"
+    hints:
+      - Keyword for iteration in comprehension
+    tags: [comprehensions, list-comp, fill-in]
+
+  - slug: list-comp-if-fill
+    objective: Complete list comprehension condition
+    title: List Comp If Fill-in
+    difficulty: 2
+    concept: comprehensions
+    subconcept: list-comp
+    level: practice
+    prereqs: [comprehensions.list-comp]
+    type: fill-in
+    blank_position: 0
+    pattern: filtering
+    prompt: Complete the filter condition
+    template: "[x for x in range(10) ___ x % 2 == 0]"
+    expected_answer: "if"
+    hints:
+      - Keyword for filtering in comprehension
+    tags: [comprehensions, list-comp, fill-in]
+
+  - slug: dict-comp-colon-fill
+    objective: Complete dict comprehension syntax
+    title: Dict Comp Syntax Fill-in
+    difficulty: 2
+    concept: comprehensions
+    subconcept: dict-comp
+    level: practice
+    prereqs: [comprehensions.list-comp]
+    type: fill-in
+    blank_position: 0
+    pattern: mapping
+    prompt: Complete the key-value separator
+    template: "{x ___ x**2 for x in range(3)}"
+    expected_answer: ":"
+    hints:
+      - Separator between key and value
+    tags: [comprehensions, dict-comp, fill-in]
+
+  - slug: set-comp-brace-fill
+    objective: Identify set comprehension syntax
+    title: Set Comp Syntax Fill-in
+    difficulty: 2
+    concept: comprehensions
+    subconcept: set-comp
+    level: practice
+    prereqs: [comprehensions.list-comp]
+    type: fill-in
+    blank_position: 0
+    pattern: mapping
+    prompt: Complete to create a set (unique values)
+    template: "___x for x in [1, 1, 2, 2, 3]}"
+    expected_answer: "{"
+    hints:
+      - Same as dict but without colon
+      - Creates unique values
+    tags: [comprehensions, set-comp, fill-in]
+
+  # --- Predict Exercises ---
+  - slug: list-comp-predict
+    objective: Predict list comprehension output
+    title: List Comp Predict
+    difficulty: 2
+    concept: comprehensions
+    subconcept: list-comp
+    level: intro
+    prereqs: [comprehensions.list-comp]
+    type: predict
+    pattern: mapping
+    prompt: What does this code produce?
+    code: |
+      result = [x * 2 for x in range(4)]
+      print(result)
+    expected_answer: "[0, 2, 4, 6]"
+    hints:
+      - Doubles each number 0-3
+    tags: [comprehensions, list-comp, predict]
+
+  - slug: list-comp-filter-predict
+    objective: Predict filtered list comprehension
+    title: Filtered List Comp Predict
+    difficulty: 2
+    concept: comprehensions
+    subconcept: list-comp
+    level: practice
+    prereqs: [comprehensions.list-comp]
+    type: predict
+    pattern: filtering
+    prompt: What does this code produce?
+    code: |
+      result = [x for x in range(6) if x % 2 == 0]
+      print(result)
+    expected_answer: "[0, 2, 4]"
+    hints:
+      - Only includes even numbers
+    tags: [comprehensions, list-comp, predict]
+
+  - slug: dict-comp-predict
+    objective: Predict dict comprehension output
+    title: Dict Comp Predict
+    difficulty: 2
+    concept: comprehensions
+    subconcept: dict-comp
+    level: practice
+    prereqs: [comprehensions.dict-comp]
+    type: predict
+    pattern: mapping
+    prompt: What does this code produce?
+    code: |
+      result = {x: x**2 for x in range(3)}
+      print(result)
+    expected_answer: "{0: 0, 1: 1, 2: 4}"
+    hints:
+      - Maps each number to its square
+    tags: [comprehensions, dict-comp, predict]
+
+  - slug: nested-comp-predict
+    objective: Predict nested comprehension output
+    title: Nested Comp Predict
+    difficulty: 3
+    concept: comprehensions
+    subconcept: list-comp
+    level: edge
+    prereqs: [comprehensions.list-comp]
+    type: predict
+    pattern: mapping
+    prompt: What does this code produce?
+    code: |
+      matrix = [[1, 2], [3, 4]]
+      result = [x for row in matrix for x in row]
+      print(result)
+    expected_answer: "[1, 2, 3, 4]"
+    hints:
+      - Flattens the nested list
+    tags: [comprehensions, nested, predict]

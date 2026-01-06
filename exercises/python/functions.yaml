@@ -503,3 +503,244 @@ exercises:
       - Unpack with * and ** when calling
       - Same syntax for collecting and spreading
     tags: [functions, args-kwargs, forwarding]
+
+  # --- Fill-in Exercises ---
+  - slug: def-keyword-fill
+    objective: Complete the function definition keyword
+    title: Def Keyword Fill-in
+    difficulty: 1
+    concept: functions
+    subconcept: basics
+    level: intro
+    prereqs: []
+    type: fill-in
+    blank_position: 0
+    pattern: definition
+    prompt: Complete the function definition
+    template: "___ greet(name):"
+    expected_answer: "def"
+    hints:
+      - Keyword that starts function definition
+    tags: [functions, def, fill-in]
+
+  - slug: return-keyword-fill
+    objective: Complete the return statement
+    title: Return Fill-in
+    difficulty: 1
+    concept: functions
+    subconcept: basics
+    level: intro
+    prereqs: [functions.basics]
+    type: fill-in
+    blank_position: 0
+    pattern: definition
+    prompt: Complete to return the result
+    template: |
+      def add(a, b):
+          ___ a + b
+    expected_answer: "return"
+    hints:
+      - Keyword to send value back to caller
+    tags: [functions, return, fill-in]
+
+  - slug: lambda-keyword-fill
+    objective: Complete the lambda expression
+    title: Lambda Fill-in
+    difficulty: 2
+    concept: functions
+    subconcept: lambda
+    level: intro
+    prereqs: [functions.basics]
+    type: fill-in
+    blank_position: 0
+    pattern: definition
+    prompt: Complete the anonymous function
+    template: "double = ___ x: x * 2"
+    expected_answer: "lambda"
+    hints:
+      - Keyword for anonymous functions
+    tags: [functions, lambda, fill-in]
+
+  - slug: default-value-fill
+    objective: Complete the default parameter syntax
+    title: Default Value Fill-in
+    difficulty: 2
+    concept: functions
+    subconcept: defaults
+    level: practice
+    prereqs: [functions.basics]
+    type: fill-in
+    blank_position: 0
+    pattern: definition
+    prompt: Complete to make greeting default to "Hello"
+    template: 'def greet(name, greeting___"Hello"):'
+    expected_answer: "="
+    hints:
+      - Assignment operator for defaults
+    tags: [functions, defaults, fill-in]
+
+  - slug: args-syntax-fill
+    objective: Complete the variable arguments syntax
+    title: Args Syntax Fill-in
+    difficulty: 2
+    concept: functions
+    subconcept: args-kwargs
+    level: practice
+    prereqs: [functions.basics]
+    type: fill-in
+    blank_position: 0
+    pattern: definition
+    prompt: Complete to accept any number of arguments
+    template: "def sum_all(___args):"
+    expected_answer: "*"
+    hints:
+      - Single asterisk for positional args
+    tags: [functions, args, fill-in]
+
+  - slug: kwargs-syntax-fill
+    objective: Complete the keyword arguments syntax
+    title: Kwargs Syntax Fill-in
+    difficulty: 2
+    concept: functions
+    subconcept: args-kwargs
+    level: practice
+    prereqs: [functions.args-kwargs]
+    type: fill-in
+    blank_position: 0
+    pattern: definition
+    prompt: Complete to accept any keyword arguments
+    template: "def config(___kwargs):"
+    expected_answer: "**"
+    hints:
+      - Double asterisk for keyword args
+    tags: [functions, kwargs, fill-in]
+
+  # --- Predict Exercises ---
+  - slug: function-return-predict
+    objective: Predict function return value
+    title: Return Value Predict
+    difficulty: 1
+    concept: functions
+    subconcept: basics
+    level: intro
+    prereqs: [functions.basics]
+    type: predict
+    pattern: invocation
+    prompt: What does this code print?
+    code: |
+      def add(a, b):
+          return a + b
+      print(add(3, 4))
+    expected_answer: "7"
+    hints:
+      - Function returns sum of arguments
+    tags: [functions, return, predict]
+
+  - slug: default-param-predict
+    objective: Predict behavior with default parameters
+    title: Default Param Predict
+    difficulty: 2
+    concept: functions
+    subconcept: defaults
+    level: practice
+    prereqs: [functions.defaults]
+    type: predict
+    pattern: invocation
+    prompt: What does this code print?
+    code: |
+      def greet(name, greeting="Hello"):
+          return f"{greeting}, {name}!"
+      print(greet("Alice"))
+    expected_answer: "Hello, Alice!"
+    hints:
+      - Default value is used when not provided
+    tags: [functions, defaults, predict]
+
+  - slug: lambda-predict
+    objective: Predict lambda expression result
+    title: Lambda Predict
+    difficulty: 2
+    concept: functions
+    subconcept: lambda
+    level: practice
+    prereqs: [functions.lambda]
+    type: predict
+    pattern: invocation
+    prompt: What does this code print?
+    code: |
+      double = lambda x: x * 2
+      print(double(5))
+    expected_answer: "10"
+    hints:
+      - Lambda multiplies input by 2
+    tags: [functions, lambda, predict]
+
+  - slug: scope-predict
+    objective: Predict variable scope behavior
+    title: Scope Predict
+    difficulty: 3
+    concept: functions
+    subconcept: scope
+    level: practice
+    prereqs: [functions.scope]
+    type: predict
+    pattern: scope
+    prompt: What does this code print?
+    code: |
+      x = 10
+      def foo():
+          x = 20
+          print(x)
+      foo()
+      print(x)
+    expected_answer: |
+      20
+      10
+    hints:
+      - Local x shadows global x inside function
+    tags: [functions, scope, predict]
+
+  - slug: args-predict
+    objective: Predict *args behavior
+    title: Args Predict
+    difficulty: 2
+    concept: functions
+    subconcept: args-kwargs
+    level: practice
+    prereqs: [functions.args-kwargs]
+    type: predict
+    pattern: invocation
+    prompt: What does this code print?
+    code: |
+      def show(*args):
+          print(len(args))
+      show(1, 2, 3, 4)
+    expected_answer: "4"
+    hints:
+      - args is a tuple of all positional arguments
+    tags: [functions, args, predict]
+
+  - slug: mutable-default-predict
+    objective: Predict mutable default argument bug
+    title: Mutable Default Predict
+    difficulty: 3
+    concept: functions
+    subconcept: defaults
+    level: edge
+    prereqs: [functions.defaults]
+    type: predict
+    pattern: gotcha
+    prompt: What does this code print?
+    code: |
+      def add_item(item, items=[]):
+          items.append(item)
+          return items
+      print(add_item(1))
+      print(add_item(2))
+    expected_answer: |
+      [1]
+      [1, 2]
+    hints:
+      - Mutable defaults are shared between calls
+      - This is a common Python gotcha
+    tags: [functions, mutable, gotcha, predict]
