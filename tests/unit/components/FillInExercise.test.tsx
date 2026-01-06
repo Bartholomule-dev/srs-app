@@ -42,4 +42,34 @@ describe('FillInExercise', () => {
     const input = screen.getByRole('textbox');
     expect(document.activeElement).toBe(input);
   });
+
+  describe('FillInExercise state reset', () => {
+    it('should reset answer when template prop changes', () => {
+      const onSubmit = vi.fn();
+
+      const { rerender, getByRole } = render(
+        <FillInExercise
+          template="x = ___"
+          blankPosition={0}
+          onSubmit={onSubmit}
+        />
+      );
+
+      const input = getByRole('textbox');
+      fireEvent.change(input, { target: { value: 'old answer' } });
+      expect(input).toHaveValue('old answer');
+
+      // Rerender with new template
+      rerender(
+        <FillInExercise
+          template="y = ___"
+          blankPosition={0}
+          onSubmit={onSubmit}
+        />
+      );
+
+      // Answer should be reset
+      expect(getByRole('textbox')).toHaveValue('');
+    });
+  });
 });

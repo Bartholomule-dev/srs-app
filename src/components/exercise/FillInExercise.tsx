@@ -87,6 +87,13 @@ export function FillInExercise({
 }: FillInExerciseProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [answer, setAnswer] = useState('');
+  const [prevTemplate, setPrevTemplate] = useState(template);
+
+  // Reset answer when template changes (adjusting state based on props pattern)
+  if (template !== prevTemplate) {
+    setPrevTemplate(template);
+    setAnswer('');
+  }
 
   useEffect(() => {
     if (inputRef.current) {
