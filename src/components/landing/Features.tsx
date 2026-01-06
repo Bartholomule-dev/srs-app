@@ -97,39 +97,34 @@ export function Features() {
           </p>
         </motion.div>
 
-        {/* Bento Grid - use responsive spans instead of named areas */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {features.map((feature, index) => (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className={
-                // On desktop: first and last cards span 2 rows
-                index === 0 || index === 2 ? 'md:row-span-2' : ''
-              }
-            >
-              <Card elevation={2} interactive className="h-full">
-                <CardContent className="p-8 h-full flex flex-col">
-                  <feature.icon className="w-10 h-10 text-[var(--accent-primary)] mb-6" />
-                  <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-                  <p className="text-[var(--text-secondary)] leading-relaxed">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-
-          {/* CTA Card - always comes last on mobile, slots into center on desktop */}
+        {/* Asymmetric Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
+          {/* Hero Card - Spaced Repetition (spans 4 columns) */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="md:col-start-2 md:row-start-2"
+            transition={{ delay: 0 }}
+            className="md:col-span-4"
+          >
+            <Card elevation={2} interactive className="h-full">
+              <CardContent className="p-8 h-full flex flex-col">
+                <BrainIcon className="w-12 h-12 text-[var(--accent-primary)] mb-6" />
+                <h3 className="text-2xl font-semibold mb-3">{features[0].title}</h3>
+                <p className="text-[var(--text-secondary)] leading-relaxed text-lg">
+                  {features[0].description}
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* CTA Card (spans 2 columns) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="md:col-span-2"
           >
             <Card
               elevation={2}
@@ -140,6 +135,44 @@ export function Features() {
                 <Button glow onClick={scrollToAuthForm}>
                   Try Free
                 </Button>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Code Syntax Focus (spans 3 columns) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="md:col-span-3"
+          >
+            <Card elevation={2} interactive className="h-full">
+              <CardContent className="p-8 h-full flex flex-col">
+                <CodeIcon className="w-10 h-10 text-[var(--accent-primary)] mb-6" />
+                <h3 className="text-xl font-semibold mb-3">{features[1].title}</h3>
+                <p className="text-[var(--text-secondary)] leading-relaxed">
+                  {features[1].description}
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Track Progress (spans 3 columns) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="md:col-span-3"
+          >
+            <Card elevation={2} interactive className="h-full">
+              <CardContent className="p-8 h-full flex flex-col">
+                <ChartIcon className="w-10 h-10 text-[var(--accent-primary)] mb-6" />
+                <h3 className="text-xl font-semibold mb-3">{features[2].title}</h3>
+                <p className="text-[var(--text-secondary)] leading-relaxed">
+                  {features[2].description}
+                </p>
               </CardContent>
             </Card>
           </motion.div>
