@@ -84,6 +84,35 @@ export function validateYamlExercise(
     }
   }
 
+  // Type-specific field validation
+  if (exercise.type === 'predict' && !exercise.code) {
+    errors.push({
+      file,
+      slug,
+      field: 'code',
+      message: "predict type requires 'code' field",
+    });
+  }
+
+  if (exercise.type === 'fill-in') {
+    if (!exercise.template) {
+      errors.push({
+        file,
+        slug,
+        field: 'template',
+        message: "fill-in type requires 'template' field",
+      });
+    }
+    if (exercise.blank_position === undefined) {
+      errors.push({
+        file,
+        slug,
+        field: 'blank_position',
+        message: "fill-in type requires 'blank_position' field",
+      });
+    }
+  }
+
   return errors;
 }
 

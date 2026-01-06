@@ -50,13 +50,30 @@ function validateExercises() {
       console.log(`✓ ${file}`);
     }
 
-    // Check for duplicate slugs
+    // Check for duplicate slugs and type-specific fields
     for (const exercise of data.exercises || []) {
       if (allSlugs.has(exercise.slug)) {
         console.error(`\n❌ Duplicate slug: ${exercise.slug} in ${file}`);
         hasErrors = true;
       }
       allSlugs.add(exercise.slug);
+
+      // Validate type-specific required fields
+      if (exercise.type === 'predict' && !exercise.code) {
+        console.error(`\n❌ ${exercise.slug}: predict type requires 'code' field`);
+        hasErrors = true;
+      }
+
+      if (exercise.type === 'fill-in') {
+        if (!exercise.template) {
+          console.error(`\n❌ ${exercise.slug}: fill-in type requires 'template' field`);
+          hasErrors = true;
+        }
+        if (exercise.blank_position === undefined) {
+          console.error(`\n❌ ${exercise.slug}: fill-in type requires 'blank_position' field`);
+          hasErrors = true;
+        }
+      }
     }
   }
 

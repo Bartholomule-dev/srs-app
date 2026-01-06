@@ -169,6 +169,7 @@ async function importToDatabase(
         blank_position: exercise.blank_position ?? null,
         objective: exercise.objective,
         targets: exercise.targets ?? null,
+        code: exercise.code ?? null,
       };
 
       // Upsert on (language, slug) - check if exists first
