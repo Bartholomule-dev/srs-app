@@ -74,8 +74,9 @@ describe('Card', () => {
       const card = screen.getByText('Content').closest('div');
       expect(card).toHaveClass('cursor-pointer');
       expect(card).toHaveClass('hover:-translate-y-0.5');
-      expect(card).toHaveClass('hover:shadow-[0_4px_16px_rgba(0,0,0,0.3)]');
-      expect(card).toHaveClass('hover:border-[var(--accent-primary)]/30');
+      expect(card).toHaveClass('hover:shadow-[0_4px_20px_rgba(245,158,11,0.15)]');
+      expect(card).toHaveClass('hover:border-[var(--accent-primary)]/40');
+      expect(card).toHaveClass('active:scale-[0.99]');
     });
 
     it('combines elevation and interactive styles', () => {

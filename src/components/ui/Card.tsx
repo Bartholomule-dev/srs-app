@@ -41,8 +41,9 @@ export function Card({
         interactive && [
           'cursor-pointer',
           'hover:-translate-y-0.5',
-          'hover:shadow-[0_4px_16px_rgba(0,0,0,0.3)]',
-          'hover:border-[var(--accent-primary)]/30',
+          'hover:shadow-[0_4px_20px_rgba(245,158,11,0.15)]',
+          'hover:border-[var(--accent-primary)]/40',
+          'active:scale-[0.99]',
         ],
         className
       )}
