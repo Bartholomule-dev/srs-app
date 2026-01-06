@@ -30,3 +30,5 @@ export type { TooltipProps, TooltipTriggerProps, TooltipContentProps, TooltipPro
 
 export { CodeEditor } from './CodeEditor';
 export type { CodeEditorProps } from './CodeEditor';
+
+export { FlameIcon } from './FlameIcon';

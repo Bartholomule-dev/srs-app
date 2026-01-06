@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useStats } from '@/lib/hooks/useStats';
+import { FlameIcon } from '@/components/ui';
 
 export function Header() {
   const { user, signOut } = useAuth();
@@ -14,21 +15,24 @@ export function Header() {
   return (
     <header className="border-b border-[var(--border)] bg-[var(--bg-surface-1)]">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo */}
+        {/* Logo with gradient */}
         <Link
           href="/dashboard"
-          className="text-xl font-bold text-[var(--text-primary)]"
+          className="text-xl font-bold font-display"
         >
-          SyntaxSRS
+          <span className="bg-gradient-to-r from-[var(--accent-primary)] to-orange-500 bg-clip-text text-transparent">
+            Syntax
+          </span>
+          <span className="text-[var(--text-primary)]">SRS</span>
         </Link>
 
         {/* Stats */}
         <div className="flex items-center gap-6">
           {/* Streak */}
-          <div className="flex items-center gap-1 text-sm">
+          <div className="flex items-center gap-1.5 text-sm">
             {streak > 0 ? (
               <>
-                <span className="text-[var(--accent-warning)]">🔥</span>
+                <FlameIcon size={18} animate={streak >= 3} />
                 <span className="font-medium text-[var(--text-primary)]">
                   {streak}
                 </span>
