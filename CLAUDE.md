@@ -183,23 +183,71 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 
 ## Skills (Invoke with `Skill` tool)
 
-**MANDATORY skills - always use these:**
-- `superpowers:brainstorming` - Before ANY creative work (features, components, modifications)
-- `superpowers:verification-before-completion` - Before claiming work is complete/fixed/passing
+**MANDATORY - Always use:**
+| Skill | When |
+|-------|------|
+| `superpowers:brainstorming` | Before ANY creative work (features, components, modifications) |
+| `superpowers:verification-before-completion` | Before claiming work is complete/fixed/passing |
+| `daem0nmcp-protocol` | When Daem0nMCP tools available (enforces sacred covenant) |
 
-**Other useful skills:** `systematic-debugging`, `test-driven-development`, `frontend-design:frontend-design`, `executing-plans`
+**Development Workflow:**
+| Skill | When |
+|-------|------|
+| `superpowers:writing-plans` | Have spec/requirements, before touching code |
+| `superpowers:executing-plans` | Have written plan, need separate session with checkpoints |
+| `superpowers:dispatching-parallel-agents` | 2+ independent tasks without shared state |
+| `superpowers:subagent-driven-development` | Execute plan with independent tasks in current session |
+| `superpowers:using-git-worktrees` | Need isolation from current workspace |
+| `superpowers:finishing-a-development-branch` | Implementation complete, tests pass, ready to integrate |
+
+**Code Quality:**
+| Skill | When |
+|-------|------|
+| `superpowers:test-driven-development` | Implementing any feature or bugfix |
+| `superpowers:systematic-debugging` | Any bug, test failure, or unexpected behavior |
+| `superpowers:requesting-code-review` | Completing tasks, major features, before merging |
+| `superpowers:receiving-code-review` | Received feedback, before implementing suggestions |
+
+**Design & Writing:**
+| Skill | When |
+|-------|------|
+| `frontend-design:frontend-design` | Building web components, pages, applications |
+| `design-principles` | Building dashboards, admin UIs (Linear/Notion/Stripe style) |
+| `elements-of-style:writing-clearly-and-concisely` | Any prose humans read (docs, commits, errors, UI text) |
+| `superpowers:writing-skills` | Creating/editing skills |
 
 ---
 
 ## MCP Servers
 
-| Server | Purpose | Key Tool |
-|--------|---------|----------|
-| **Daem0n MCP** | Project memory - decisions, patterns, warnings | `get_briefing`, `remember`, `recall` |
-| **Obsidian** | Documentation vault at `/home/brett/GoogleDrive/Obsidian Vault/SRS-app/` | `read_note`, `patch_note` |
-| **Serena** | Semantic code analysis - prefer over raw file ops | `get_symbols_overview`, `find_symbol` |
+| Server | Purpose | Key Tools |
+|--------|---------|-----------|
+| **Daem0n MCP** | Project memory - decisions, patterns, warnings | `get_briefing`, `remember`, `recall`, `context_check` |
+| **Serena** | Semantic code analysis | `get_symbols_overview`, `find_symbol`, `replace_symbol_body` |
+| **Obsidian** | Documentation vault (`/home/brett/GoogleDrive/Obsidian Vault/SRS-app/`) | `read_note`, `patch_note`, `search_notes` |
 | **Context7** | Library docs lookup | `resolve-library-id` → `query-docs` |
-| **Debate Hall** | Multi-perspective deliberation (Wind/Wall/Door) | For architectural decisions |
+| **Supabase** | Database management, migrations, edge functions | `execute_sql`, `apply_migration`, `list_tables` |
+| **Debate Hall** | Multi-perspective deliberation (Wind/Wall/Door) | `init_debate`, `add_turn`, `close_debate` |
+| **Sequential Thinking** | Step-by-step reasoning for complex problems | `sequentialthinking` |
+
+### Serena Usage (IMPORTANT)
+
+**Always use `mcp__plugin_serena_serena__*` tools** (the plugin version). Two instances exist due to plugin architecture, but use the `plugin_serena_serena` prefix consistently.
+
+**Prefer Serena over Claude's native file tools for code operations:**
+| Task | Use Serena | Not Claude Native |
+|------|------------|-------------------|
+| Explore code structure | `get_symbols_overview`, `find_symbol` | Glob, Grep |
+| Read symbol definitions | `find_symbol` with `include_body=True` | Read |
+| Edit functions/classes | `replace_symbol_body`, `insert_after_symbol` | Edit |
+| Find references | `find_referencing_symbols` | Grep |
+| Search patterns | `search_for_pattern` | Grep |
+
+**When to use Claude's native tools instead:**
+- Non-code files (JSON, YAML, Markdown, config)
+- Quick file existence checks
+- Reading entire files when symbol structure unknown
+- Files Serena doesn't index (node_modules, build artifacts)
 
 ### Multi-AI Consultation
 

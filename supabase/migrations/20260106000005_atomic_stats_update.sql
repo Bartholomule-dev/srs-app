@@ -26,7 +26,4 @@ BEGIN
     RAISE EXCEPTION 'Profile not found for user %', p_user_id;
   END IF;
 END;
-$$;
-
--- Grant execute permission to authenticated users
-GRANT EXECUTE ON FUNCTION update_profile_stats_atomic(UUID, INT, INT, INT) TO authenticated;
+$$
