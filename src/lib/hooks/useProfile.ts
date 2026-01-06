@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase/client';
 import { useAuth } from './useAuth';
 import { mapProfile, toDbProfileUpdate } from '@/lib/supabase/mappers';
 import { handleSupabaseError } from '@/lib/errors';
-import type { Profile, DbProfile } from '@/lib/types';
+import type { Profile, DbProfile, ExperienceLevel } from '@/lib/types';
 import type { AppError } from '@/lib/errors';
 
 interface UseProfileReturn {
@@ -13,6 +13,7 @@ interface UseProfileReturn {
   loading: boolean;
   error: AppError | null;
   updateProfile: (updates: Partial<Omit<Profile, 'id' | 'createdAt'>>) => Promise<Profile>;
+  updateExperienceLevel: (level: ExperienceLevel) => Promise<void>;
   refetch: () => void;
 }
 
@@ -100,11 +101,32 @@ export function useProfile(): UseProfileReturn {
     [user]
   );
 
+  const updateExperienceLevel = useCallback(
+    async (level: ExperienceLevel) => {
+      if (!profile) return;
+
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ experience_level: level })
+        .eq('id', profile.id);
+
+      if (updateError) {
+        console.error('Failed to update experience level:', updateError);
+        return;
+      }
+
+      // Optimistically update local state
+      setProfile((prev) => (prev ? { ...prev, experienceLevel: level } : null));
+    },
+    [profile]
+  );
+
   return {
     profile,
     loading,
     error,
     updateProfile,
+    updateExperienceLevel,
     refetch,
   };
 }
