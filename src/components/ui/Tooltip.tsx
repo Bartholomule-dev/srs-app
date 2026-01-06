@@ -69,7 +69,7 @@ export interface TooltipTriggerProps extends HTMLAttributes<HTMLSpanElement> {
   asChild?: boolean;
 }
 
-export function TooltipTrigger({ children, className, asChild, ...props }: TooltipTriggerProps) {
+export function TooltipTrigger({ children, className, asChild: _asChild, ...props }: TooltipTriggerProps) {
   const { setOpen, triggerRef } = useTooltipContext();
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 

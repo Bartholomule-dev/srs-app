@@ -2,7 +2,7 @@
 // Concept-Based SRS Algorithm for subconcept-level scheduling
 // SRS tracks subconcept mastery, exercises are "question pools"
 
-import type { SubconceptProgress, ExerciseAttempt, ConceptSlug, ExerciseLevel } from '@/lib/curriculum/types';
+import type { SubconceptProgress, ExerciseAttempt, ConceptSlug, ExerciseLevel, ExercisePattern } from '@/lib/curriculum/types';
 import type { Exercise, Quality } from '@/lib/types';
 
 // Constants
@@ -35,11 +35,14 @@ export function getDueSubconcepts(
  * Review phase: least-seen with random tie-breaking
  *   - Select exercise with lowest timesSeen
  *   - Ensures variety in review sessions
+ *
+ * Anti-repeat: when lastPattern is provided, prefer different patterns
  */
 export function selectExercise(
   subconceptProgress: SubconceptProgress,
   exercises: Exercise[],
-  attempts: ExerciseAttempt[]
+  attempts: ExerciseAttempt[],
+  lastPattern?: ExercisePattern | null
 ): Exercise | null {
   // Filter exercises for this subconcept
   const subconceptExercises = exercises.filter(
@@ -53,22 +56,28 @@ export function selectExercise(
   // Build attempt lookup map
   const attemptMap = new Map(attempts.map((a) => [a.exerciseSlug, a]));
 
+  // Get candidates from phase-appropriate selection
+  let selected: Exercise | null;
   if (subconceptProgress.phase === 'learning') {
-    return selectLearningExercise(subconceptExercises, attemptMap);
+    selected = selectLearningExercise(subconceptExercises, attemptMap, lastPattern);
   } else {
-    return selectReviewExercise(subconceptExercises, attemptMap);
+    selected = selectReviewExercise(subconceptExercises, attemptMap, lastPattern);
   }
+
+  return selected;
 }
 
 /**
  * Learning phase: level progression algorithm
  * - Work through levels in order: intro -> practice -> edge -> integrated
- * - Prioritize unseen exercises at current level
+ * - Prioritize unseen exercises at current level (randomized)
  * - Move to next level when all exercises at current level have been seen
+ * - Prefer different pattern from lastPattern when possible
  */
 function selectLearningExercise(
   exercises: Exercise[],
-  attemptMap: Map<string, ExerciseAttempt>
+  attemptMap: Map<string, ExerciseAttempt>,
+  lastPattern?: ExercisePattern | null
 ): Exercise | null {
   for (const level of LEVEL_ORDER) {
     const levelExercises = exercises.filter((e) => e.level === level);
@@ -80,8 +89,16 @@ function selectLearningExercise(
     );
 
     if (unseenExercises.length > 0) {
-      // Return first unseen exercise at this level
-      return unseenExercises[0];
+      // Apply anti-repeat: prefer different pattern if available
+      if (lastPattern) {
+        const differentPattern = unseenExercises.filter((e) => e.pattern !== lastPattern);
+        if (differentPattern.length > 0) {
+          // Randomize within different-pattern unseen exercises
+          return differentPattern[Math.floor(Math.random() * differentPattern.length)];
+        }
+      }
+      // Randomize within unseen exercises (no anti-repeat needed or no alternatives)
+      return unseenExercises[Math.floor(Math.random() * unseenExercises.length)];
     }
 
     // Check if all exercises at this level have been seen
@@ -91,34 +108,38 @@ function selectLearningExercise(
 
     if (!allSeen) {
       // Not all seen yet, return least-seen at this level
-      return getLeastSeenExercise(levelExercises, attemptMap);
+      return getLeastSeenExercise(levelExercises, attemptMap, lastPattern);
     }
     // All seen at this level, continue to next level
   }
 
   // All levels exhausted, return least-seen overall
-  return getLeastSeenExercise(exercises, attemptMap);
+  return getLeastSeenExercise(exercises, attemptMap, lastPattern);
 }
 
 /**
  * Review phase: least-seen selection algorithm
  * - Select exercise with lowest timesSeen
  * - Ensures variety across review sessions
+ * - Prefer different pattern from lastPattern when possible
  */
 function selectReviewExercise(
   exercises: Exercise[],
-  attemptMap: Map<string, ExerciseAttempt>
+  attemptMap: Map<string, ExerciseAttempt>,
+  lastPattern?: ExercisePattern | null
 ): Exercise | null {
-  return getLeastSeenExercise(exercises, attemptMap);
+  return getLeastSeenExercise(exercises, attemptMap, lastPattern);
 }
 
 /**
  * Get the least-seen exercise from a list
  * Random tie-breaking when multiple exercises have same timesSeen
+ * Prefer different pattern from lastPattern when possible
  */
 function getLeastSeenExercise(
   exercises: Exercise[],
-  attemptMap: Map<string, ExerciseAttempt>
+  attemptMap: Map<string, ExerciseAttempt>,
+  lastPattern?: ExercisePattern | null
 ): Exercise | null {
   if (exercises.length === 0) return null;
 
@@ -135,6 +156,17 @@ function getLeastSeenExercise(
   const leastSeenExercises = exercisesWithCounts.filter(
     (e) => e.timesSeen === minTimesSeen
   );
+
+  // Apply anti-repeat: prefer different pattern if available
+  if (lastPattern && leastSeenExercises.length > 1) {
+    const differentPattern = leastSeenExercises.filter(
+      (e) => e.exercise.pattern !== lastPattern
+    );
+    if (differentPattern.length > 0) {
+      const randomIndex = Math.floor(Math.random() * differentPattern.length);
+      return differentPattern[randomIndex].exercise;
+    }
+  }
 
   // Random selection from tied exercises
   const randomIndex = Math.floor(Math.random() * leastSeenExercises.length);

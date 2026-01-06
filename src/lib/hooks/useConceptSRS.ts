@@ -11,7 +11,7 @@ import {
 } from '@/lib/srs/concept-algorithm';
 import { getTargetsToCredit, getTargetsToPenalize } from '@/lib/srs/multi-target';
 import { handleSupabaseError } from '@/lib/errors';
-import type { SubconceptProgress, ExerciseAttempt, ConceptSlug } from '@/lib/curriculum/types';
+import type { SubconceptProgress, ExerciseAttempt, ConceptSlug, ExercisePattern } from '@/lib/curriculum/types';
 import type { Exercise, Quality } from '@/lib/types';
 import type { AppError } from '@/lib/errors';
 
@@ -63,7 +63,8 @@ export interface UseConceptSRSReturn {
   ) => Promise<void>;
   getNextExercise: (
     subconceptProgress: SubconceptProgress,
-    exercises: Exercise[]
+    exercises: Exercise[],
+    lastPattern?: ExercisePattern | null
   ) => Exercise | null;
   refetch: () => void;
   remainingCount: number;
@@ -119,7 +120,7 @@ export function useConceptSRS(): UseConceptSRSReturn {
   const [error, setError] = useState<AppError | null>(null);
   const [fetchTrigger, setFetchTrigger] = useState(0);
 
-  // Fetch due subconcepts on mount and when trigger changes
+  // Fetch due subconcepts and exercise attempts on mount and when trigger changes
   useEffect(() => {
     if (authLoading) {
       return;
@@ -130,6 +131,7 @@ export function useConceptSRS(): UseConceptSRSReturn {
     (async () => {
       if (!user) {
         setDueSubconcepts([]);
+        setAttemptCache(new Map());
         setLoading(false);
         return;
       }
@@ -139,29 +141,48 @@ export function useConceptSRS(): UseConceptSRSReturn {
 
       const now = new Date().toISOString();
 
-      // Fetch due subconcepts
-      const { data, error: fetchError } = await supabase
-        .from('subconcept_progress')
-        .select('*')
-        .eq('user_id', user.id)
-        .lte('next_review', now);
+      // Fetch due subconcepts and exercise attempts in parallel
+      const [subconceptResult, attemptsResult] = await Promise.all([
+        supabase
+          .from('subconcept_progress')
+          .select('*')
+          .eq('user_id', user.id)
+          .lte('next_review', now),
+        supabase
+          .from('exercise_attempts')
+          .select('*')
+          .eq('user_id', user.id),
+      ]);
 
       if (cancelled) return;
 
-      if (fetchError) {
-        setError(handleSupabaseError(fetchError));
+      if (subconceptResult.error) {
+        setError(handleSupabaseError(subconceptResult.error));
         setLoading(false);
         return;
       }
 
       // Map database rows to app types
-      const progress: SubconceptProgress[] = (data || [])
+      const progress: SubconceptProgress[] = (subconceptResult.data || [])
         .map((row) => mapDbToSubconceptProgress(row as DbSubconceptProgress));
 
       // Use getDueSubconcepts to sort by most overdue first
       const sortedDue = getDueSubconcepts(progress, new Date());
 
       setDueSubconcepts(sortedDue);
+
+      // Load exercise attempts into cache (non-critical - log but don't fail)
+      if (attemptsResult.error) {
+        console.warn('Failed to load exercise attempts:', attemptsResult.error);
+      } else {
+        const attemptsMap = new Map<string, ExerciseAttempt>();
+        for (const row of attemptsResult.data || []) {
+          const attempt = mapDbToExerciseAttempt(row as DbExerciseAttempt);
+          attemptsMap.set(attempt.exerciseSlug, attempt);
+        }
+        setAttemptCache(attemptsMap);
+      }
+
       setLoading(false);
     })();
 
@@ -307,9 +328,14 @@ export function useConceptSRS(): UseConceptSRSReturn {
    *
    * Learning phase: level progression (intro -> practice -> edge -> integrated)
    * Review phase: least-seen with random tie-breaking
+   * Anti-repeat: avoids same pattern as lastPattern when possible
    */
   const getNextExercise = useCallback(
-    (subconceptProgress: SubconceptProgress, exercises: Exercise[]): Exercise | null => {
+    (
+      subconceptProgress: SubconceptProgress,
+      exercises: Exercise[],
+      lastPattern?: ExercisePattern | null
+    ): Exercise | null => {
       // Fetch attempts for exercises in this subconcept
       const subconceptExerciseSlugs = exercises
         .filter((e) => e.subconcept === subconceptProgress.subconceptSlug)
@@ -320,7 +346,7 @@ export function useConceptSRS(): UseConceptSRSReturn {
         .map((slug) => attemptCache.get(slug))
         .filter((a): a is ExerciseAttempt => a !== undefined);
 
-      return selectExercise(subconceptProgress, exercises, attempts);
+      return selectExercise(subconceptProgress, exercises, attempts, lastPattern);
     },
     [attemptCache]
   );

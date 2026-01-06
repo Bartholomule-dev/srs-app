@@ -6,7 +6,7 @@ import {
   calculateSubconceptReview,
   createInitialSubconceptState,
 } from '@/lib/srs/concept-algorithm';
-import type { SubconceptProgress, ExerciseAttempt } from '@/lib/curriculum/types';
+import type { SubconceptProgress, ExerciseAttempt, ExercisePattern } from '@/lib/curriculum/types';
 import type { Exercise } from '@/lib/types';
 
 describe('Concept-Based SRS', () => {
@@ -135,7 +135,8 @@ describe('Concept-Based SRS', () => {
     const createMockExercise = (
       slug: string,
       subconcept: string,
-      level: 'intro' | 'practice' | 'edge' | 'integrated'
+      level: 'intro' | 'practice' | 'edge' | 'integrated',
+      pattern: ExercisePattern = 'iteration'
     ): Exercise => ({
       id: slug,
       slug,
@@ -158,7 +159,7 @@ describe('Concept-Based SRS', () => {
       level,
       prereqs: [],
       exerciseType: 'write',
-      pattern: 'iteration',
+      pattern,
       template: null,
       blankPosition: null,
       objective: '',
@@ -367,6 +368,95 @@ describe('Concept-Based SRS', () => {
 
       // Should return one of the unseen exercises (timesSeen = 0)
       expect(exercise?.slug).not.toBe('for-intro-1');
+    });
+
+    describe('anti-repeat pattern selection', () => {
+      const exercisesWithPatterns: Exercise[] = [
+        createMockExercise('ex1', 'for', 'intro', 'iteration'),
+        createMockExercise('ex2', 'for', 'intro', 'accumulator'),
+        createMockExercise('ex3', 'for', 'intro', 'filtering'),
+      ];
+
+      const learningProgress: SubconceptProgress = {
+        id: '1',
+        userId: 'user-1',
+        subconceptSlug: 'for',
+        conceptSlug: 'control-flow',
+        phase: 'learning',
+        easeFactor: 2.5,
+        interval: 0,
+        nextReview: new Date(),
+        lastReviewed: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      it('prefers different pattern when lastPattern is provided', () => {
+        const attempts: ExerciseAttempt[] = [];
+
+        // Run multiple times to account for randomization
+        const selectedPatterns = new Set<ExercisePattern>();
+        for (let i = 0; i < 20; i++) {
+          const exercise = selectExercise(learningProgress, exercisesWithPatterns, attempts, 'iteration');
+          if (exercise) {
+            selectedPatterns.add(exercise.pattern);
+          }
+        }
+
+        // Should never select 'iteration' when alternatives exist
+        expect(selectedPatterns.has('iteration')).toBe(false);
+        // Should select from other patterns
+        expect(selectedPatterns.size).toBeGreaterThan(0);
+      });
+
+      it('falls back to same pattern when no alternatives exist', () => {
+        const samePatternExercises: Exercise[] = [
+          createMockExercise('ex1', 'for', 'intro', 'iteration'),
+          createMockExercise('ex2', 'for', 'intro', 'iteration'),
+        ];
+        const attempts: ExerciseAttempt[] = [];
+
+        const exercise = selectExercise(learningProgress, samePatternExercises, attempts, 'iteration');
+
+        expect(exercise).not.toBeNull();
+        expect(exercise?.pattern).toBe('iteration');
+      });
+
+      it('works without lastPattern (returns any pattern)', () => {
+        const attempts: ExerciseAttempt[] = [];
+
+        const exercise = selectExercise(learningProgress, exercisesWithPatterns, attempts);
+
+        expect(exercise).not.toBeNull();
+        // Should return some exercise (pattern doesn't matter)
+        expect(['iteration', 'accumulator', 'filtering']).toContain(exercise?.pattern);
+      });
+
+      it('applies anti-repeat in review phase too', () => {
+        const reviewProgress: SubconceptProgress = {
+          ...learningProgress,
+          phase: 'review',
+          interval: 6,
+        };
+        // All exercises have been seen equally
+        const attempts: ExerciseAttempt[] = [
+          { id: '1', userId: 'user-1', exerciseSlug: 'ex1', timesSeen: 1, timesCorrect: 1, lastSeenAt: new Date() },
+          { id: '2', userId: 'user-1', exerciseSlug: 'ex2', timesSeen: 1, timesCorrect: 1, lastSeenAt: new Date() },
+          { id: '3', userId: 'user-1', exerciseSlug: 'ex3', timesSeen: 1, timesCorrect: 1, lastSeenAt: new Date() },
+        ];
+
+        // Run multiple times to account for randomization
+        const selectedPatterns = new Set<ExercisePattern>();
+        for (let i = 0; i < 20; i++) {
+          const exercise = selectExercise(reviewProgress, exercisesWithPatterns, attempts, 'iteration');
+          if (exercise) {
+            selectedPatterns.add(exercise.pattern);
+          }
+        }
+
+        // Should prefer non-iteration patterns
+        expect(selectedPatterns.has('iteration')).toBe(false);
+      });
     });
   });
 
