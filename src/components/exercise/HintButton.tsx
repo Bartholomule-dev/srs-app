@@ -29,7 +29,7 @@ export function HintButton({ hint, revealed, onReveal, disabled = false }: HintB
         <span>Hint</span>
       </Button>
       {!revealed && (
-        <p className="text-xs text-neutral-500 dark:text-neutral-400">
+        <p className="text-xs text-[var(--text-tertiary)]">
           Using a hint affects your score
         </p>
       )}
