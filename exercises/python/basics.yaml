@@ -4,6 +4,7 @@ category: basics
 
 exercises:
   - slug: print-hello-world
+    objective: Write a print statement to output text to the console
     title: Print Hello World
     difficulty: 1
     prompt: Print the text "Hello, World!" to the console
@@ -22,6 +23,7 @@ exercises:
     pattern: io
 
   - slug: variable-assignment
+    objective: Assign a numeric value to a variable using the assignment operator
     title: Variable Assignment
     difficulty: 1
     prompt: Assign the value 42 to a variable named answer
@@ -38,6 +40,7 @@ exercises:
     pattern: assignment
 
   - slug: string-variable
+    objective: Create a variable and assign a string value to it
     title: String Variable
     difficulty: 1
     prompt: Create a variable called name with the value "Alice"
@@ -55,6 +58,7 @@ exercises:
     pattern: assignment
 
   - slug: type-check
+    objective: Use the type() function to inspect the data type of a variable
     title: Type Check
     difficulty: 1
     prompt: Get the type of the variable x
@@ -70,6 +74,7 @@ exercises:
     pattern: invocation
 
   - slug: user-input
+    objective: Capture user input with a custom prompt message using input()
     title: User Input
     difficulty: 2
     prompt: Get input from user with the prompt "Enter name:"

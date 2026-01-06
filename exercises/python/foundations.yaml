@@ -1,0 +1,371 @@
+# exercises/python/foundations.yaml
+language: python
+category: foundations
+
+exercises:
+  # --- Variables Subconcept ---
+  - slug: assign-variable
+    objective: Assign a string value to a variable using proper syntax
+    title: Assign Variable
+    difficulty: 1
+    concept: foundations
+    subconcept: variables
+    level: intro
+    prereqs: []
+    type: write
+    pattern: assignment
+    prompt: Create a variable called name and assign the string "Alice"
+    expected_answer: name = "Alice"
+    accepted_solutions:
+      - 'name = "Alice"'
+      - "name = 'Alice'"
+    hints:
+      - Use the = operator to assign
+      - Put strings in quotes
+    tags: [variables, assignment, strings]
+
+  - slug: assign-number
+    objective: Assign an integer value to a variable
+    title: Assign Number
+    difficulty: 1
+    concept: foundations
+    subconcept: variables
+    level: intro
+    prereqs: []
+    type: write
+    pattern: assignment
+    prompt: Create a variable called age and assign it the value 25
+    expected_answer: age = 25
+    hints:
+      - Numbers don't need quotes
+      - Use = for assignment
+    tags: [variables, assignment, numbers]
+
+  - slug: multiple-assignment
+    objective: Use tuple unpacking to assign multiple variables in one line
+    title: Multiple Assignment
+    difficulty: 2
+    concept: foundations
+    subconcept: variables
+    level: practice
+    prereqs: [variables]
+    type: write
+    pattern: assignment
+    prompt: Assign 1, 2, 3 to variables a, b, c in one line
+    expected_answer: a, b, c = 1, 2, 3
+    hints:
+      - Separate variables with commas
+      - Match the number of values
+    tags: [variables, assignment, unpacking]
+
+  - slug: swap-variables
+    objective: Swap two variable values using Pythonic tuple unpacking
+    title: Swap Variables
+    difficulty: 2
+    concept: foundations
+    subconcept: variables
+    level: edge
+    prereqs: [variables]
+    type: write
+    pattern: swap
+    prompt: Swap the values of x and y in one line
+    expected_answer: x, y = y, x
+    hints:
+      - Python allows simultaneous assignment
+      - No temp variable needed
+    tags: [variables, swap, intermediate]
+
+  # --- Operators Subconcept ---
+  - slug: add-numbers
+    objective: Use the addition operator for arithmetic calculations
+    title: Add Numbers
+    difficulty: 1
+    concept: foundations
+    subconcept: operators
+    level: intro
+    prereqs: []
+    type: write
+    pattern: arithmetic
+    prompt: Add the numbers 5 and 3
+    expected_answer: 5 + 3
+    hints:
+      - Use the + operator
+    tags: [operators, arithmetic, addition]
+
+  - slug: floor-division-intro
+    objective: Apply floor division operator for integer division results
+    title: Floor Division
+    difficulty: 1
+    concept: foundations
+    subconcept: operators
+    level: intro
+    prereqs: []
+    type: write
+    pattern: arithmetic
+    prompt: Perform floor division of 17 by 5 (integer division)
+    expected_answer: 17 // 5
+    hints:
+      - Use // for integer division
+      - Result is 3 (rounds down)
+    tags: [operators, division, floor]
+
+  - slug: modulo-operator-intro
+    objective: Use the modulo operator to find the remainder of division
+    title: Modulo Operator
+    difficulty: 1
+    concept: foundations
+    subconcept: operators
+    level: intro
+    prereqs: []
+    type: write
+    pattern: arithmetic
+    prompt: Get the remainder when 17 is divided by 5
+    expected_answer: 17 % 5
+    hints:
+      - Use the % operator
+      - Result is 2
+    tags: [operators, modulo, remainder]
+
+  - slug: exponentiation-intro
+    objective: Calculate powers using the exponentiation operator
+    title: Exponentiation
+    difficulty: 1
+    concept: foundations
+    subconcept: operators
+    level: practice
+    prereqs: [operators]
+    type: write
+    pattern: arithmetic
+    prompt: Calculate 2 to the power of 10
+    expected_answer: 2 ** 10
+    hints:
+      - Use ** for exponentiation
+    tags: [operators, power, exponent]
+
+  - slug: augmented-assignment
+    objective: Apply augmented assignment operators for concise updates
+    title: Augmented Assignment
+    difficulty: 2
+    concept: foundations
+    subconcept: operators
+    level: practice
+    prereqs: [operators]
+    type: write
+    pattern: assignment
+    prompt: Add 5 to x using augmented assignment
+    expected_answer: x += 5
+    hints:
+      - Use += for add-and-assign
+      - Equivalent to x = x + 5
+    tags: [operators, assignment, augmented]
+
+  - slug: comparison-chaining
+    objective: Chain comparison operators to check value ranges
+    title: Comparison Chaining
+    difficulty: 2
+    concept: foundations
+    subconcept: operators
+    level: edge
+    prereqs: [operators]
+    type: write
+    pattern: comparison
+    prompt: Check if x is between 0 and 10 (exclusive) using chained comparison
+    expected_answer: 0 < x < 10
+    hints:
+      - Python allows chaining comparisons
+      - No need for 'and'
+    tags: [operators, comparison, chaining]
+
+  # --- Expressions Subconcept ---
+  - slug: boolean-and
+    objective: Combine conditions using the logical AND operator
+    title: Boolean AND
+    difficulty: 1
+    concept: foundations
+    subconcept: expressions
+    level: intro
+    prereqs: []
+    type: write
+    pattern: logic
+    prompt: Combine two conditions with AND - a > 0 and b > 0
+    expected_answer: a > 0 and b > 0
+    hints:
+      - Use the 'and' keyword
+      - Both conditions must be true
+    tags: [expressions, boolean, and]
+
+  - slug: boolean-or
+    objective: Combine conditions using the logical OR operator
+    title: Boolean OR
+    difficulty: 1
+    concept: foundations
+    subconcept: expressions
+    level: intro
+    prereqs: []
+    type: write
+    pattern: logic
+    prompt: Combine two conditions with OR - x == 0 or y == 0
+    expected_answer: x == 0 or y == 0
+    hints:
+      - Use the 'or' keyword
+      - Either condition can be true
+    tags: [expressions, boolean, or]
+
+  - slug: boolean-not
+    objective: Negate conditions using the NOT or inequality operator
+    title: Boolean NOT
+    difficulty: 1
+    concept: foundations
+    subconcept: expressions
+    level: intro
+    prereqs: []
+    type: write
+    pattern: logic
+    prompt: Negate the condition (check if x is NOT equal to 5)
+    expected_answer: x != 5
+    accepted_solutions:
+      - x != 5
+      - not x == 5
+    hints:
+      - Use != for not equal
+      - Or use 'not' with ==
+    tags: [expressions, boolean, not]
+
+  - slug: ternary-expression
+    objective: Write conditional expressions using Python ternary syntax
+    title: Ternary Expression
+    difficulty: 2
+    concept: foundations
+    subconcept: expressions
+    level: practice
+    prereqs: [expressions]
+    type: write
+    pattern: conditional
+    prompt: Write a ternary expression that returns "even" if x is even, "odd" otherwise
+    expected_answer: '"even" if x % 2 == 0 else "odd"'
+    accepted_solutions:
+      - '"even" if x % 2 == 0 else "odd"'
+      - "'even' if x % 2 == 0 else 'odd'"
+    hints:
+      - Format is value_if_true if condition else value_if_false
+      - Use x % 2 == 0 to check even
+    tags: [expressions, ternary, conditional]
+
+  # --- IO Subconcept ---
+  - slug: print-string
+    objective: Use print() to output a string to the console
+    title: Print String
+    difficulty: 1
+    concept: foundations
+    subconcept: io
+    level: intro
+    prereqs: []
+    type: write
+    pattern: output
+    prompt: Print the string "Hello, World!"
+    expected_answer: print("Hello, World!")
+    accepted_solutions:
+      - 'print("Hello, World!")'
+      - "print('Hello, World!')"
+    hints:
+      - Use the print() function
+      - Put the string in quotes
+    tags: [io, print, output]
+
+  - slug: print-variable
+    objective: Use print() to display a variable value
+    title: Print Variable
+    difficulty: 1
+    concept: foundations
+    subconcept: io
+    level: intro
+    prereqs: []
+    type: write
+    pattern: output
+    prompt: Print the value of the variable message
+    expected_answer: print(message)
+    hints:
+      - Use print() with the variable name
+      - No quotes around variable name
+    tags: [io, print, variables]
+
+  - slug: input-string
+    objective: Read user input and store it in a variable
+    title: Input String
+    difficulty: 1
+    concept: foundations
+    subconcept: io
+    level: intro
+    prereqs: []
+    type: write
+    pattern: input
+    prompt: 'Get input from user with the prompt "Enter name: " and store in variable name'
+    expected_answer: 'name = input("Enter name: ")'
+    accepted_solutions:
+      - 'name = input("Enter name: ")'
+      - "name = input('Enter name: ')"
+    hints:
+      - Use the input() function
+      - Assign result to variable
+    tags: [io, input, variables]
+
+  - slug: print-fstring
+    objective: Use f-strings for string interpolation with variables
+    title: Print with F-String
+    difficulty: 2
+    concept: foundations
+    subconcept: io
+    level: practice
+    prereqs: [io]
+    type: write
+    pattern: output
+    prompt: Print "Hello, {name}!" using an f-string where name is a variable
+    expected_answer: print(f"Hello, {name}!")
+    accepted_solutions:
+      - 'print(f"Hello, {name}!")'
+      - "print(f'Hello, {name}!')"
+    hints:
+      - Prefix string with f
+      - Use {variable} for interpolation
+    tags: [io, fstring, formatting]
+
+  - slug: print-sep
+    objective: Customize print output using the sep parameter
+    title: Print with Separator
+    difficulty: 2
+    concept: foundations
+    subconcept: io
+    level: edge
+    prereqs: [io]
+    type: write
+    pattern: output
+    prompt: Print a, b, c separated by dashes using sep parameter
+    expected_answer: print(a, b, c, sep="-")
+    accepted_solutions:
+      - 'print(a, b, c, sep="-")'
+      - "print(a, b, c, sep='-')"
+    hints:
+      - Use sep= parameter in print()
+      - Default separator is space
+    tags: [io, print, separator]
+
+  - slug: input-to-int
+    objective: Convert user input from string to integer type
+    title: Input to Integer
+    difficulty: 2
+    concept: foundations
+    subconcept: io
+    level: integrated
+    prereqs: [io, operators]
+    type: write
+    pattern: input
+    prompt: Get a number from user and convert to integer, storing in variable age
+    expected_answer: age = int(input())
+    accepted_solutions:
+      - age = int(input())
+      - 'age = int(input("Enter age: "))'
+      - "age = int(input('Enter age: '))"
+    hints:
+      - Wrap input() in int()
+      - input() always returns string
+    tags: [io, input, conversion, integer]

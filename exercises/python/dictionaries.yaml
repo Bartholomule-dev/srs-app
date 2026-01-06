@@ -4,6 +4,7 @@ category: dictionaries
 
 exercises:
   - slug: dict-creation
+    objective: Create a dictionary with key-value pairs using curly brace syntax
     title: Dictionary Creation
     difficulty: 1
     prompt: Create a dict called person with name="Alice" and age=30
@@ -20,6 +21,7 @@ exercises:
     pattern: construction
 
   - slug: dict-access
+    objective: Access a dictionary value using square bracket key notation
     title: Dictionary Access
     difficulty: 1
     prompt: Get the value of "name" from the person dictionary
@@ -35,6 +37,7 @@ exercises:
     pattern: lookup
 
   - slug: dict-get
+    objective: Use the get() method to safely retrieve a value with a default fallback
     title: Dictionary Get
     difficulty: 2
     prompt: Get the value of "age" from person, defaulting to 0 if missing
@@ -51,6 +54,7 @@ exercises:
     pattern: lookup
 
   - slug: dict-keys
+    objective: Retrieve all keys from a dictionary using the keys() method
     title: Dictionary Keys
     difficulty: 1
     prompt: Get all keys from the person dictionary
@@ -66,6 +70,7 @@ exercises:
     pattern: iteration
 
   - slug: dict-update
+    objective: Merge another dictionary into an existing one using update()
     title: Dictionary Update
     difficulty: 2
     prompt: 'Update person dict with {"city": "NYC"}'

@@ -4,6 +4,7 @@ category: loops
 
 exercises:
   - slug: for-loop-range
+    objective: "Write a for loop using range() to iterate over a sequence of numbers"
     title: For Loop Range
     difficulty: 1
     concept: control-flow
@@ -22,6 +23,7 @@ exercises:
     tags: [loops, range, for]
 
   - slug: for-loop-list
+    objective: "Use a for loop to iterate over items in a list"
     title: For Loop List
     difficulty: 1
     concept: control-flow
@@ -39,6 +41,7 @@ exercises:
     tags: [loops, lists, for]
 
   - slug: while-loop
+    objective: "Write a while loop with a conditional expression"
     title: While Loop
     difficulty: 2
     concept: control-flow
@@ -55,6 +58,7 @@ exercises:
     tags: [loops, while, conditions]
 
   - slug: enumerate-loop
+    objective: "Apply enumerate() to access both index and value in a loop"
     title: Enumerate Loop
     difficulty: 2
     concept: control-flow
@@ -71,6 +75,7 @@ exercises:
     tags: [loops, enumerate, intermediate]
 
   - slug: break-statement
+    objective: "Use break to exit a loop early based on a condition"
     title: Break Statement
     difficulty: 2
     concept: control-flow
@@ -84,3 +89,237 @@ exercises:
     hints:
       - Use the break keyword
     tags: [loops, control, intermediate]
+
+  # --- Additional Control Flow ---
+  - slug: continue-statement
+    objective: "Use continue to skip the current iteration and proceed to the next"
+    title: Continue Statement
+    difficulty: 2
+    concept: control-flow
+    subconcept: for
+    level: edge
+    prereqs: [control-flow.for]
+    type: write
+    pattern: iteration
+    prompt: Skip to next iteration using a statement
+    expected_answer: continue
+    hints:
+      - Use the continue keyword
+    tags: [loops, control, intermediate]
+
+  - slug: for-range-step
+    objective: "Use range() with start, stop, and step parameters for custom iteration"
+    title: For Loop Range with Step
+    difficulty: 2
+    concept: control-flow
+    subconcept: for
+    level: practice
+    prereqs: [control-flow.for]
+    type: write
+    pattern: iteration
+    prompt: Loop from 0 to 10 in steps of 2
+    expected_answer: "for i in range(0, 10, 2):"
+    hints:
+      - range(start, stop, step)
+    tags: [loops, range, step]
+
+  - slug: for-zip
+    objective: "Use zip() to iterate over multiple sequences in parallel"
+    title: For Loop with Zip
+    difficulty: 2
+    concept: control-flow
+    subconcept: iteration
+    level: practice
+    prereqs: [control-flow.for]
+    type: write
+    pattern: iteration
+    prompt: Loop over two lists a and b simultaneously
+    expected_answer: "for x, y in zip(a, b):"
+    hints:
+      - Use zip() to pair elements
+    tags: [loops, zip, iteration]
+
+  - slug: while-true-break
+    objective: "Create an infinite loop pattern with controlled exit using break"
+    title: While True with Break
+    difficulty: 2
+    concept: control-flow
+    subconcept: while
+    level: edge
+    prereqs: [control-flow.while]
+    type: write
+    pattern: iteration
+    prompt: Create an infinite loop that can be exited
+    expected_answer: "while True:"
+    hints:
+      - Use while True
+      - Exit with break inside
+    tags: [loops, while, infinite]
+
+  - slug: for-else
+    objective: "Apply the else clause on a for loop for post-iteration logic"
+    title: For-Else Clause
+    difficulty: 3
+    concept: control-flow
+    subconcept: for
+    level: integrated
+    prereqs: [control-flow.for]
+    type: write
+    pattern: iteration
+    prompt: Write the else clause for a for loop that executes when loop completes without break
+    expected_answer: "else:"
+    hints:
+      - else after for
+      - Runs if no break occurred
+    tags: [loops, else, advanced]
+
+  # --- Conditionals Subconcept ---
+  - slug: if-statement
+    objective: "Write a basic if statement with a comparison condition"
+    title: If Statement
+    difficulty: 1
+    concept: control-flow
+    subconcept: conditionals
+    level: intro
+    prereqs: [foundations]
+    type: write
+    pattern: conditional
+    prompt: Write an if statement that checks if x > 0
+    expected_answer: "if x > 0:"
+    hints:
+      - Use if keyword
+      - End with colon
+    tags: [conditionals, if, beginner]
+
+  - slug: if-else
+    objective: "Use else to provide an alternative branch when the if condition is false"
+    title: If-Else Statement
+    difficulty: 1
+    concept: control-flow
+    subconcept: conditionals
+    level: intro
+    prereqs: [control-flow.conditionals]
+    type: write
+    pattern: conditional
+    prompt: Write the else clause for an if statement
+    expected_answer: "else:"
+    hints:
+      - else keyword followed by colon
+    tags: [conditionals, else, beginner]
+
+  - slug: if-elif
+    objective: "Use elif to add additional conditional branches"
+    title: If-Elif Statement
+    difficulty: 2
+    concept: control-flow
+    subconcept: conditionals
+    level: practice
+    prereqs: [control-flow.conditionals]
+    type: write
+    pattern: conditional
+    prompt: Write an elif clause that checks if x < 0
+    expected_answer: "elif x < 0:"
+    hints:
+      - elif is else-if combined
+    tags: [conditionals, elif, intermediate]
+
+  - slug: if-and
+    objective: "Combine multiple conditions using the and logical operator"
+    title: If with AND
+    difficulty: 2
+    concept: control-flow
+    subconcept: conditionals
+    level: practice
+    prereqs: [control-flow.conditionals]
+    type: write
+    pattern: conditional
+    prompt: Write if statement checking if x > 0 AND y > 0
+    expected_answer: "if x > 0 and y > 0:"
+    hints:
+      - Use 'and' keyword
+    tags: [conditionals, and, logic]
+
+  - slug: if-or
+    objective: "Combine conditions using the or logical operator for alternative checks"
+    title: If with OR
+    difficulty: 2
+    concept: control-flow
+    subconcept: conditionals
+    level: practice
+    prereqs: [control-flow.conditionals]
+    type: write
+    pattern: conditional
+    prompt: Write if statement checking if x == 0 OR y == 0
+    expected_answer: "if x == 0 or y == 0:"
+    hints:
+      - Use 'or' keyword
+    tags: [conditionals, or, logic]
+
+  - slug: if-not
+    objective: "Use the not operator to negate a boolean condition"
+    title: If with NOT
+    difficulty: 2
+    concept: control-flow
+    subconcept: conditionals
+    level: practice
+    prereqs: [control-flow.conditionals]
+    type: write
+    pattern: conditional
+    prompt: Write if statement checking if NOT done
+    expected_answer: "if not done:"
+    hints:
+      - Use 'not' keyword
+    tags: [conditionals, not, logic]
+
+  - slug: if-in
+    objective: "Use the in operator to check membership in a collection"
+    title: If with IN
+    difficulty: 2
+    concept: control-flow
+    subconcept: conditionals
+    level: practice
+    prereqs: [control-flow.conditionals]
+    type: write
+    pattern: conditional
+    prompt: Write if statement checking if x is in list items
+    expected_answer: "if x in items:"
+    hints:
+      - Use 'in' keyword
+    tags: [conditionals, in, membership]
+
+  - slug: match-basic
+    objective: "Write a match statement for structural pattern matching"
+    title: Match Statement
+    difficulty: 2
+    concept: control-flow
+    subconcept: conditionals
+    level: edge
+    prereqs: [control-flow.conditionals]
+    type: write
+    pattern: conditional
+    prompt: Write a match statement for variable command
+    expected_answer: "match command:"
+    hints:
+      - Python 3.10+ feature
+      - Similar to switch in other languages
+    tags: [conditionals, match, pattern-matching]
+
+  - slug: match-case
+    objective: "Use case clauses to define patterns in a match statement"
+    title: Match Case
+    difficulty: 2
+    concept: control-flow
+    subconcept: conditionals
+    level: edge
+    prereqs: [control-flow.conditionals]
+    type: write
+    pattern: conditional
+    prompt: Write a case clause for value "start"
+    expected_answer: 'case "start":'
+    accepted_solutions:
+      - 'case "start":'
+      - "case 'start':"
+    hints:
+      - Use case keyword
+      - Inside match block
+    tags: [conditionals, match, case]

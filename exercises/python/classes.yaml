@@ -4,6 +4,7 @@ category: classes
 
 exercises:
   - slug: define-class
+    objective: Define a basic class using the class keyword syntax
     title: Define Class
     difficulty: 2
     prompt: Define a class called Person
@@ -19,6 +20,7 @@ exercises:
     pattern: definition
 
   - slug: init-method
+    objective: Define an __init__ constructor method with self and parameters
     title: Init Method
     difficulty: 2
     prompt: Define __init__ that takes self and name parameter
@@ -35,6 +37,7 @@ exercises:
     pattern: definition
 
   - slug: instance-attribute
+    objective: Assign a value to an instance attribute using self.attribute syntax
     title: Instance Attribute
     difficulty: 2
     prompt: Set self.name to the name parameter inside __init__
@@ -50,6 +53,7 @@ exercises:
     pattern: construction
 
   - slug: instance-method
+    objective: Define an instance method that takes self as the first parameter
     title: Instance Method
     difficulty: 2
     prompt: Define a method called greet that takes self
@@ -65,6 +69,7 @@ exercises:
     pattern: definition
 
   - slug: class-inheritance
+    objective: Create a subclass that inherits from a parent class
     title: Class Inheritance
     difficulty: 3
     prompt: Define class Student that inherits from Person

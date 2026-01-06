@@ -1,0 +1,617 @@
+# exercises/python/collections.yaml
+language: python
+category: collections
+
+exercises:
+  # --- Lists Subconcept (additional) ---
+  - slug: list-create-empty
+    objective: Create an empty list using bracket notation
+    title: Create Empty List
+    difficulty: 1
+    concept: collections
+    subconcept: lists
+    level: intro
+    prereqs: [foundations]
+    type: write
+    pattern: construction
+    prompt: Create an empty list called items
+    expected_answer: items = []
+    hints:
+      - Use empty square brackets
+    tags: [lists, creation, beginner]
+
+  - slug: list-create-values
+    objective: Create a list with initial values using literal syntax
+    title: Create List with Values
+    difficulty: 1
+    concept: collections
+    subconcept: lists
+    level: intro
+    prereqs: [foundations]
+    type: write
+    pattern: construction
+    prompt: Create a list with values 1, 2, 3
+    expected_answer: "[1, 2, 3]"
+    hints:
+      - Use square brackets
+      - Separate with commas
+    tags: [lists, creation, beginner]
+
+  - slug: list-in-check
+    objective: Use the in operator to check list membership
+    title: List Membership
+    difficulty: 1
+    concept: collections
+    subconcept: lists
+    level: intro
+    prereqs: [collections.lists]
+    type: write
+    pattern: query
+    prompt: Check if value 5 is in list items
+    expected_answer: 5 in items
+    hints:
+      - Use the 'in' keyword
+    tags: [lists, membership, check]
+
+  - slug: list-extend-method
+    objective: Use extend() to add multiple elements from another iterable
+    title: List Extend
+    difficulty: 2
+    concept: collections
+    subconcept: lists
+    level: practice
+    prereqs: [collections.lists]
+    type: write
+    pattern: mutation
+    prompt: Extend list a with elements from list b
+    expected_answer: a.extend(b)
+    hints:
+      - Use the extend() method
+      - Adds all elements from b to a
+    tags: [lists, extend, mutation]
+
+  - slug: list-insert
+    objective: Use insert() to add an element at a specific position
+    title: List Insert
+    difficulty: 2
+    concept: collections
+    subconcept: lists
+    level: practice
+    prereqs: [collections.lists]
+    type: write
+    pattern: mutation
+    prompt: Insert value "x" at index 2 in list items
+    expected_answer: items.insert(2, "x")
+    accepted_solutions:
+      - 'items.insert(2, "x")'
+      - "items.insert(2, 'x')"
+    hints:
+      - insert(index, value)
+    tags: [lists, insert, mutation]
+
+  - slug: list-pop-index
+    objective: Use pop() to remove and return an element by index
+    title: List Pop at Index
+    difficulty: 2
+    concept: collections
+    subconcept: lists
+    level: practice
+    prereqs: [collections.lists]
+    type: write
+    pattern: mutation
+    prompt: Remove and return the element at index 2 from list items
+    expected_answer: items.pop(2)
+    hints:
+      - Use pop() with index
+    tags: [lists, pop, mutation]
+
+  - slug: list-index
+    objective: Use index() to find the position of an element
+    title: List Find Index
+    difficulty: 2
+    concept: collections
+    subconcept: lists
+    level: practice
+    prereqs: [collections.lists]
+    type: write
+    pattern: query
+    prompt: Find the index of value "apple" in list items
+    expected_answer: items.index("apple")
+    accepted_solutions:
+      - 'items.index("apple")'
+      - "items.index('apple')"
+    hints:
+      - Use the index() method
+    tags: [lists, index, query]
+
+  - slug: list-count
+    objective: Use count() to find how many times an element appears
+    title: List Count
+    difficulty: 2
+    concept: collections
+    subconcept: lists
+    level: practice
+    prereqs: [collections.lists]
+    type: write
+    pattern: query
+    prompt: Count occurrences of value 5 in list items
+    expected_answer: items.count(5)
+    hints:
+      - Use the count() method
+    tags: [lists, count, query]
+
+  - slug: list-sort
+    objective: Use sort() to order list elements in place
+    title: List Sort
+    difficulty: 2
+    concept: collections
+    subconcept: lists
+    level: practice
+    prereqs: [collections.lists]
+    type: write
+    pattern: mutation
+    prompt: Sort list items in place
+    expected_answer: items.sort()
+    hints:
+      - Use the sort() method
+      - Modifies the list in place
+    tags: [lists, sort, mutation]
+
+  - slug: list-sorted
+    objective: Use sorted() to create a new sorted list without modifying the original
+    title: Sorted Copy
+    difficulty: 2
+    concept: collections
+    subconcept: lists
+    level: edge
+    prereqs: [collections.lists]
+    type: write
+    pattern: construction
+    prompt: Return a sorted copy of list items without modifying it
+    expected_answer: sorted(items)
+    hints:
+      - Use sorted() function
+      - Returns new list
+    tags: [lists, sorted, copy]
+
+  - slug: list-reverse
+    objective: Use reverse() to reverse list order in place
+    title: List Reverse
+    difficulty: 2
+    concept: collections
+    subconcept: lists
+    level: practice
+    prereqs: [collections.lists]
+    type: write
+    pattern: mutation
+    prompt: Reverse list items in place
+    expected_answer: items.reverse()
+    hints:
+      - Use the reverse() method
+    tags: [lists, reverse, mutation]
+
+  # --- Tuples Subconcept ---
+  - slug: tuple-create
+    objective: Create a tuple using parentheses and comma-separated values
+    title: Create Tuple
+    difficulty: 1
+    concept: collections
+    subconcept: tuples
+    level: intro
+    prereqs: [foundations]
+    type: write
+    pattern: construction
+    prompt: Create a tuple with values 1, 2, 3
+    expected_answer: (1, 2, 3)
+    hints:
+      - Use parentheses
+      - Separate with commas
+    tags: [tuples, creation, beginner]
+
+  - slug: tuple-single
+    objective: Create a single-element tuple with trailing comma syntax
+    title: Single Element Tuple
+    difficulty: 2
+    concept: collections
+    subconcept: tuples
+    level: practice
+    prereqs: [collections.tuples]
+    type: write
+    pattern: construction
+    prompt: Create a tuple with single element 5 (note the syntax)
+    expected_answer: (5,)
+    hints:
+      - Need trailing comma for single element
+      - (5) is just the number 5
+    tags: [tuples, creation, edge]
+
+  - slug: tuple-unpack
+    objective: Use tuple unpacking to assign multiple variables at once
+    title: Tuple Unpacking
+    difficulty: 2
+    concept: collections
+    subconcept: tuples
+    level: practice
+    prereqs: [collections.tuples]
+    type: write
+    pattern: assignment
+    prompt: Unpack tuple point = (3, 4) into variables x and y
+    expected_answer: x, y = point
+    hints:
+      - Match number of variables to tuple length
+    tags: [tuples, unpacking, assignment]
+
+  - slug: tuple-index
+    objective: Access tuple elements using index notation
+    title: Tuple Indexing
+    difficulty: 1
+    concept: collections
+    subconcept: tuples
+    level: intro
+    prereqs: [collections.tuples]
+    type: write
+    pattern: indexing
+    prompt: Get the second element of tuple t
+    expected_answer: t[1]
+    hints:
+      - Indices start at 0
+    tags: [tuples, indexing, access]
+
+  # --- Dicts Subconcept ---
+  - slug: dict-create-empty
+    objective: Create an empty dictionary using brace notation
+    title: Create Empty Dict
+    difficulty: 1
+    concept: collections
+    subconcept: dicts
+    level: intro
+    prereqs: [foundations]
+    type: write
+    pattern: construction
+    prompt: Create an empty dictionary called data
+    expected_answer: data = {}
+    hints:
+      - Use empty curly braces
+    tags: [dicts, creation, beginner]
+
+  - slug: dict-create-values
+    objective: Create a dictionary with initial key-value pairs
+    title: Create Dict with Values
+    difficulty: 1
+    concept: collections
+    subconcept: dicts
+    level: intro
+    prereqs: [foundations]
+    type: write
+    pattern: construction
+    prompt: Create a dict with key "name" and value "Alice"
+    expected_answer: '{"name": "Alice"}'
+    accepted_solutions:
+      - '{"name": "Alice"}'
+      - "{'name': 'Alice'}"
+    hints:
+      - Use curly braces
+      - Format is key: value
+    tags: [dicts, creation, beginner]
+
+  - slug: dict-bracket-access
+    objective: Access dictionary values using bracket notation with keys
+    title: Dict Access
+    difficulty: 1
+    concept: collections
+    subconcept: dicts
+    level: intro
+    prereqs: [collections.dicts]
+    type: write
+    pattern: indexing
+    prompt: Get the value for key "name" from dict d
+    expected_answer: d["name"]
+    accepted_solutions:
+      - 'd["name"]'
+      - "d['name']"
+    hints:
+      - Use square bracket notation
+    tags: [dicts, access, beginner]
+
+  - slug: dict-get-default
+    objective: Use get() to safely access values with a fallback default
+    title: Dict Get with Default
+    difficulty: 2
+    concept: collections
+    subconcept: dicts
+    level: practice
+    prereqs: [collections.dicts]
+    type: write
+    pattern: query
+    prompt: Get value for key "age" from dict d, returning 0 if not found
+    expected_answer: d.get("age", 0)
+    accepted_solutions:
+      - 'd.get("age", 0)'
+      - "d.get('age', 0)"
+    hints:
+      - Use get() method
+      - Second arg is default
+    tags: [dicts, get, safe-access]
+
+  - slug: dict-set-item
+    objective: Assign a value to a dictionary key using bracket notation
+    title: Dict Set Value
+    difficulty: 1
+    concept: collections
+    subconcept: dicts
+    level: intro
+    prereqs: [collections.dicts]
+    type: write
+    pattern: mutation
+    prompt: Set the key "age" to value 25 in dict d
+    expected_answer: d["age"] = 25
+    accepted_solutions:
+      - 'd["age"] = 25'
+      - "d['age'] = 25"
+    hints:
+      - Assignment with square brackets
+    tags: [dicts, update, mutation]
+
+  - slug: dict-keys-method
+    objective: Use keys() to retrieve all keys from a dictionary
+    title: Dict Keys
+    difficulty: 1
+    concept: collections
+    subconcept: dicts
+    level: intro
+    prereqs: [collections.dicts]
+    type: write
+    pattern: query
+    prompt: Get all keys from dict d
+    expected_answer: d.keys()
+    hints:
+      - Use the keys() method
+    tags: [dicts, keys, query]
+
+  - slug: dict-values
+    objective: Use values() to retrieve all values from a dictionary
+    title: Dict Values
+    difficulty: 1
+    concept: collections
+    subconcept: dicts
+    level: intro
+    prereqs: [collections.dicts]
+    type: write
+    pattern: query
+    prompt: Get all values from dict d
+    expected_answer: d.values()
+    hints:
+      - Use the values() method
+    tags: [dicts, values, query]
+
+  - slug: dict-items
+    objective: Use items() to get key-value pairs as tuples for iteration
+    title: Dict Items
+    difficulty: 2
+    concept: collections
+    subconcept: dicts
+    level: practice
+    prereqs: [collections.dicts]
+    type: write
+    pattern: query
+    prompt: Get all key-value pairs from dict d as tuples
+    expected_answer: d.items()
+    hints:
+      - Use the items() method
+      - Returns (key, value) pairs
+    tags: [dicts, items, query]
+
+  - slug: dict-pop
+    objective: Use pop() to remove a key and return its value
+    title: Dict Pop
+    difficulty: 2
+    concept: collections
+    subconcept: dicts
+    level: practice
+    prereqs: [collections.dicts]
+    type: write
+    pattern: mutation
+    prompt: Remove and return the value for key "name" from dict d
+    expected_answer: d.pop("name")
+    accepted_solutions:
+      - 'd.pop("name")'
+      - "d.pop('name')"
+    hints:
+      - Use the pop() method
+    tags: [dicts, pop, mutation]
+
+  - slug: dict-in-check
+    objective: Use the in operator to check if a key exists in a dictionary
+    title: Dict Key Check
+    difficulty: 1
+    concept: collections
+    subconcept: dicts
+    level: intro
+    prereqs: [collections.dicts]
+    type: write
+    pattern: query
+    prompt: Check if key "name" exists in dict d
+    expected_answer: '"name" in d'
+    accepted_solutions:
+      - '"name" in d'
+      - "'name' in d"
+    hints:
+      - Use 'in' keyword
+      - Checks keys not values
+    tags: [dicts, membership, check]
+
+  # --- Sets Subconcept ---
+  - slug: set-create
+    objective: Create a set with initial values using brace notation
+    title: Create Set
+    difficulty: 1
+    concept: collections
+    subconcept: sets
+    level: intro
+    prereqs: [foundations]
+    type: write
+    pattern: construction
+    prompt: Create a set with values 1, 2, 3
+    expected_answer: "{1, 2, 3}"
+    hints:
+      - Use curly braces
+      - Similar to dict but no colons
+    tags: [sets, creation, beginner]
+
+  - slug: set-add
+    objective: Use add() to insert a single element into a set
+    title: Set Add
+    difficulty: 1
+    concept: collections
+    subconcept: sets
+    level: intro
+    prereqs: [collections.sets]
+    type: write
+    pattern: mutation
+    prompt: Add value 5 to set s
+    expected_answer: s.add(5)
+    hints:
+      - Use the add() method
+    tags: [sets, add, mutation]
+
+  - slug: set-remove
+    objective: Use remove() to delete an element with error on missing
+    title: Set Remove
+    difficulty: 2
+    concept: collections
+    subconcept: sets
+    level: practice
+    prereqs: [collections.sets]
+    type: write
+    pattern: mutation
+    prompt: Remove value 5 from set s (raises error if not found)
+    expected_answer: s.remove(5)
+    hints:
+      - Use the remove() method
+    tags: [sets, remove, mutation]
+
+  - slug: set-discard
+    objective: Use discard() to safely remove an element without raising errors
+    title: Set Discard
+    difficulty: 2
+    concept: collections
+    subconcept: sets
+    level: practice
+    prereqs: [collections.sets]
+    type: write
+    pattern: mutation
+    prompt: Remove value 5 from set s if present (no error if not found)
+    expected_answer: s.discard(5)
+    hints:
+      - Use the discard() method
+      - Safer than remove()
+    tags: [sets, discard, mutation]
+
+  - slug: set-union
+    objective: Apply set union to combine elements from two sets
+    title: Set Union
+    difficulty: 2
+    concept: collections
+    subconcept: sets
+    level: practice
+    prereqs: [collections.sets]
+    type: write
+    pattern: construction
+    prompt: Get the union of sets a and b
+    expected_answer: a | b
+    accepted_solutions:
+      - a | b
+      - a.union(b)
+    hints:
+      - Use | operator
+      - Or union() method
+    tags: [sets, union, operation]
+
+  - slug: set-intersection
+    objective: Apply set intersection to find common elements
+    title: Set Intersection
+    difficulty: 2
+    concept: collections
+    subconcept: sets
+    level: practice
+    prereqs: [collections.sets]
+    type: write
+    pattern: construction
+    prompt: Get the intersection of sets a and b
+    expected_answer: a & b
+    accepted_solutions:
+      - a & b
+      - a.intersection(b)
+    hints:
+      - Use & operator
+      - Elements in both sets
+    tags: [sets, intersection, operation]
+
+  - slug: set-difference
+    objective: Apply set difference to find elements unique to one set
+    title: Set Difference
+    difficulty: 2
+    concept: collections
+    subconcept: sets
+    level: practice
+    prereqs: [collections.sets]
+    type: write
+    pattern: construction
+    prompt: Get elements in set a but not in set b
+    expected_answer: a - b
+    accepted_solutions:
+      - a - b
+      - a.difference(b)
+    hints:
+      - Use - operator
+    tags: [sets, difference, operation]
+
+  # --- Unpacking Subconcept ---
+  - slug: star-unpack
+    objective: Use star unpacking to capture remaining elements into a list
+    title: Star Unpacking
+    difficulty: 2
+    concept: collections
+    subconcept: unpacking
+    level: edge
+    prereqs: [collections.lists, collections.tuples]
+    type: write
+    pattern: assignment
+    prompt: Unpack first element to a, rest to remaining from list [1, 2, 3, 4]
+    expected_answer: a, *remaining = [1, 2, 3, 4]
+    hints:
+      - Use * for rest elements
+      - remaining will be [2, 3, 4]
+    tags: [unpacking, star, advanced]
+
+  - slug: unpack-function-args
+    objective: Use star operator to unpack a list as positional arguments
+    title: Unpack into Function
+    difficulty: 2
+    concept: collections
+    subconcept: unpacking
+    level: edge
+    prereqs: [collections.lists]
+    type: write
+    pattern: construction
+    prompt: Call function func with list args unpacked as positional arguments
+    expected_answer: func(*args)
+    hints:
+      - Use * to unpack list
+    tags: [unpacking, function, splat]
+
+  - slug: unpack-dict-kwargs
+    objective: Use double-star operator to unpack a dict as keyword arguments
+    title: Unpack Dict to Kwargs
+    difficulty: 2
+    concept: collections
+    subconcept: unpacking
+    level: edge
+    prereqs: [collections.dicts]
+    type: write
+    pattern: construction
+    prompt: Call function func with dict kwargs unpacked as keyword arguments
+    expected_answer: func(**kwargs)
+    hints:
+      - Use ** to unpack dict
+    tags: [unpacking, function, kwargs]

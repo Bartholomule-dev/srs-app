@@ -1,0 +1,257 @@
+# exercises/python/modules-files.yaml
+language: python
+category: modules-files
+
+exercises:
+  # --- Imports Subconcept ---
+  - slug: import-module
+    objective: Import a module using the import statement
+    title: Import Module
+    difficulty: 1
+    concept: modules-files
+    subconcept: imports
+    level: intro
+    prereqs: [foundations]
+    type: write
+    pattern: import
+    prompt: Import the math module
+    expected_answer: import math
+    hints:
+      - Use import keyword
+    tags: [imports, module, beginner]
+
+  - slug: import-from
+    objective: Import specific items from a module using from-import syntax
+    title: Import from Module
+    difficulty: 1
+    concept: modules-files
+    subconcept: imports
+    level: intro
+    prereqs: [modules-files.imports]
+    type: write
+    pattern: import
+    prompt: Import only sqrt from the math module
+    expected_answer: from math import sqrt
+    hints:
+      - Use from...import syntax
+    tags: [imports, from, specific]
+
+  - slug: import-alias
+    objective: Import a module with an alias using the as keyword
+    title: Import with Alias
+    difficulty: 2
+    concept: modules-files
+    subconcept: imports
+    level: practice
+    prereqs: [modules-files.imports]
+    type: write
+    pattern: import
+    prompt: Import numpy as np
+    expected_answer: import numpy as np
+    hints:
+      - Use 'as' for alias
+    tags: [imports, alias, convention]
+
+  - slug: import-multiple
+    objective: Import multiple items from a module in a single statement
+    title: Import Multiple Items
+    difficulty: 2
+    concept: modules-files
+    subconcept: imports
+    level: practice
+    prereqs: [modules-files.imports]
+    type: write
+    pattern: import
+    prompt: Import sin and cos from math
+    expected_answer: from math import sin, cos
+    hints:
+      - Comma-separate imports
+    tags: [imports, multiple, from]
+
+  # --- Reading Subconcept ---
+  - slug: file-open-read
+    objective: Open a file for reading using the open() function
+    title: Open File for Reading
+    difficulty: 1
+    concept: modules-files
+    subconcept: reading
+    level: intro
+    prereqs: [foundations]
+    type: write
+    pattern: file
+    prompt: Open file "data.txt" for reading
+    expected_answer: open("data.txt", "r")
+    accepted_solutions:
+      - 'open("data.txt", "r")'
+      - "open('data.txt', 'r')"
+      - 'open("data.txt")'
+      - "open('data.txt')"
+    hints:
+      - Use open() function
+      - '"r" is default mode'
+    tags: [files, open, read]
+
+  - slug: file-read-all
+    objective: Read the entire contents of a file using read()
+    title: Read Entire File
+    difficulty: 1
+    concept: modules-files
+    subconcept: reading
+    level: intro
+    prereqs: [modules-files.reading]
+    type: write
+    pattern: file
+    prompt: Read entire contents of file object f
+    expected_answer: f.read()
+    hints:
+      - Use read() method
+    tags: [files, read, content]
+
+  - slug: file-read-lines
+    objective: Read all lines from a file as a list using readlines()
+    title: Read Lines
+    difficulty: 2
+    concept: modules-files
+    subconcept: reading
+    level: practice
+    prereqs: [modules-files.reading]
+    type: write
+    pattern: file
+    prompt: Read all lines from file f as a list
+    expected_answer: f.readlines()
+    hints:
+      - Use readlines() method
+    tags: [files, read, lines]
+
+  - slug: file-read-line
+    objective: Read a single line from a file using readline()
+    title: Read Single Line
+    difficulty: 2
+    concept: modules-files
+    subconcept: reading
+    level: practice
+    prereqs: [modules-files.reading]
+    type: write
+    pattern: file
+    prompt: Read one line from file f
+    expected_answer: f.readline()
+    hints:
+      - Use readline() method
+    tags: [files, read, line]
+
+  # --- Writing Subconcept ---
+  - slug: file-open-write
+    objective: Open a file for writing using write mode
+    title: Open File for Writing
+    difficulty: 1
+    concept: modules-files
+    subconcept: writing
+    level: intro
+    prereqs: [modules-files.reading]
+    type: write
+    pattern: file
+    prompt: Open file "output.txt" for writing
+    expected_answer: open("output.txt", "w")
+    accepted_solutions:
+      - 'open("output.txt", "w")'
+      - "open('output.txt', 'w')"
+    hints:
+      - Use "w" mode for write
+    tags: [files, open, write]
+
+  - slug: file-write-text
+    objective: Write text content to a file using write()
+    title: Write to File
+    difficulty: 1
+    concept: modules-files
+    subconcept: writing
+    level: intro
+    prereqs: [modules-files.writing]
+    type: write
+    pattern: file
+    prompt: Write "Hello" to file object f
+    expected_answer: f.write("Hello")
+    accepted_solutions:
+      - 'f.write("Hello")'
+      - "f.write('Hello')"
+    hints:
+      - Use write() method
+    tags: [files, write, content]
+
+  - slug: file-open-append
+    objective: Open a file for appending using append mode
+    title: Open File for Append
+    difficulty: 2
+    concept: modules-files
+    subconcept: writing
+    level: practice
+    prereqs: [modules-files.writing]
+    type: write
+    pattern: file
+    prompt: Open file "log.txt" for appending
+    expected_answer: open("log.txt", "a")
+    accepted_solutions:
+      - 'open("log.txt", "a")'
+      - "open('log.txt', 'a')"
+    hints:
+      - Use "a" mode for append
+    tags: [files, open, append]
+
+  - slug: file-writelines
+    objective: Write multiple lines to a file using writelines()
+    title: Write Lines
+    difficulty: 2
+    concept: modules-files
+    subconcept: writing
+    level: practice
+    prereqs: [modules-files.writing]
+    type: write
+    pattern: file
+    prompt: Write list of lines to file f
+    expected_answer: f.writelines(lines)
+    hints:
+      - Use writelines() method
+      - Doesn't add newlines automatically
+    tags: [files, write, lines]
+
+  # --- Context Subconcept ---
+  - slug: context-manager-open
+    objective: Use a with statement for safe file handling
+    title: With Statement for File
+    difficulty: 2
+    concept: modules-files
+    subconcept: context
+    level: intro
+    prereqs: [modules-files.reading]
+    type: write
+    pattern: context
+    prompt: Open file "data.txt" using a with statement, assigning to f
+    expected_answer: 'with open("data.txt") as f:'
+    accepted_solutions:
+      - 'with open("data.txt") as f:'
+      - "with open('data.txt') as f:"
+      - 'with open("data.txt", "r") as f:'
+      - "with open('data.txt', 'r') as f:"
+    hints:
+      - with statement auto-closes file
+      - Use 'as' for variable
+    tags: [files, context, with]
+
+  - slug: context-manager-multiple
+    objective: Use multiple context managers in a single with statement
+    title: Multiple Context Managers
+    difficulty: 2
+    concept: modules-files
+    subconcept: context
+    level: practice
+    prereqs: [modules-files.context]
+    type: write
+    pattern: context
+    prompt: Open input.txt and output.txt simultaneously in a with statement
+    expected_answer: 'with open("input.txt") as inp, open("output.txt", "w") as out:'
+    accepted_solutions:
+      - 'with open("input.txt") as inp, open("output.txt", "w") as out:'
+      - "with open('input.txt') as inp, open('output.txt', 'w') as out:"
+    hints:
+      - Comma-separate context managers
+    tags: [files, context, multiple]

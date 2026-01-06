@@ -4,6 +4,7 @@ category: functions
 
 exercises:
   - slug: define-function
+    objective: "Define a basic function using the def keyword"
     title: Define Function
     difficulty: 1
     prompt: Define a function called greet that takes a name parameter
@@ -19,6 +20,7 @@ exercises:
     pattern: definition
 
   - slug: function-return
+    objective: "Write a function that returns a computed value"
     title: Function with Return
     difficulty: 2
     prompt: Define a function add that takes a and b, returns their sum
@@ -36,6 +38,7 @@ exercises:
     pattern: definition
 
   - slug: default-parameter
+    objective: "Use default parameter values in function definitions"
     title: Default Parameter
     difficulty: 2
     prompt: Define greet(name, greeting="Hello") with a default greeting
@@ -51,6 +54,7 @@ exercises:
     pattern: definition
 
   - slug: args-function
+    objective: "Apply *args to accept variable positional arguments"
     title: Variable Arguments
     difficulty: 3
     prompt: Define a function sum_all that accepts any number of arguments
@@ -66,6 +70,7 @@ exercises:
     pattern: definition
 
   - slug: kwargs-function
+    objective: "Use **kwargs to accept variable keyword arguments"
     title: Keyword Arguments
     difficulty: 3
     prompt: Define a function config that accepts any keyword arguments
@@ -79,3 +84,278 @@ exercises:
     prereqs: [foundations, functions/basics, functions/arguments]
     type: write
     pattern: definition
+
+  # --- Additional Basics Subconcept ---
+  - slug: function-no-params
+    objective: "Define a function with no parameters"
+    title: Function No Parameters
+    difficulty: 1
+    concept: functions
+    subconcept: basics
+    level: intro
+    prereqs: [foundations]
+    type: write
+    pattern: definition
+    prompt: Define a function called say_hello with no parameters
+    expected_answer: "def say_hello():"
+    hints:
+      - Empty parentheses for no parameters
+    tags: [functions, definition, beginner]
+
+  - slug: function-call
+    objective: "Call a function with an argument"
+    title: Call Function
+    difficulty: 1
+    concept: functions
+    subconcept: basics
+    level: intro
+    prereqs: [functions.basics]
+    type: write
+    pattern: invocation
+    prompt: Call function greet with argument "Alice"
+    expected_answer: greet("Alice")
+    accepted_solutions:
+      - 'greet("Alice")'
+      - "greet('Alice')"
+    hints:
+      - Pass arguments in parentheses
+    tags: [functions, call, beginner]
+
+  - slug: function-multiple-return
+    objective: "Return multiple values from a function using tuple unpacking"
+    title: Return Multiple Values
+    difficulty: 2
+    concept: functions
+    subconcept: basics
+    level: practice
+    prereqs: [functions.basics]
+    type: write
+    pattern: definition
+    prompt: Return both x and y from a function (tuple return)
+    expected_answer: return x, y
+    hints:
+      - Comma-separated values become tuple
+    tags: [functions, return, tuple]
+
+  # --- Additional Arguments Subconcept ---
+  - slug: keyword-only-args
+    objective: "Define keyword-only parameters using the * separator"
+    title: Keyword-Only Arguments
+    difficulty: 3
+    concept: functions
+    subconcept: arguments
+    level: edge
+    prereqs: [functions.arguments]
+    type: write
+    pattern: definition
+    prompt: Define func(a, *, b) where b must be passed as keyword
+    expected_answer: "def func(a, *, b):"
+    hints:
+      - "'*' separates positional from keyword-only"
+    tags: [functions, arguments, keyword-only]
+
+  - slug: positional-only-args
+    objective: "Define positional-only parameters using the / separator"
+    title: Positional-Only Arguments
+    difficulty: 3
+    concept: functions
+    subconcept: arguments
+    level: edge
+    prereqs: [functions.arguments]
+    type: write
+    pattern: definition
+    prompt: Define func(a, /, b) where a must be passed positionally
+    expected_answer: "def func(a, /, b):"
+    hints:
+      - / separates positional-only from other params
+      - Python 3.8+ feature
+    tags: [functions, arguments, positional-only]
+
+  # --- Lambda Subconcept ---
+  - slug: lambda-simple
+    objective: "Write a lambda function for simple expressions"
+    title: Simple Lambda
+    difficulty: 2
+    concept: functions
+    subconcept: lambda
+    level: intro
+    prereqs: [functions.basics]
+    type: write
+    pattern: definition
+    prompt: Create a lambda that doubles its input x
+    expected_answer: "lambda x: x * 2"
+    hints:
+      - Format is lambda args: expression
+    tags: [functions, lambda, beginner]
+
+  - slug: lambda-two-args
+    objective: "Create a lambda with multiple parameters"
+    title: Lambda Two Arguments
+    difficulty: 2
+    concept: functions
+    subconcept: lambda
+    level: practice
+    prereqs: [functions.lambda]
+    type: write
+    pattern: definition
+    prompt: Create a lambda that adds two numbers x and y
+    expected_answer: "lambda x, y: x + y"
+    hints:
+      - Multiple args separated by comma
+    tags: [functions, lambda, arguments]
+
+  - slug: lambda-conditional
+    objective: "Use a ternary expression inside a lambda function"
+    title: Lambda with Conditional
+    difficulty: 2
+    concept: functions
+    subconcept: lambda
+    level: edge
+    prereqs: [functions.lambda]
+    type: write
+    pattern: definition
+    prompt: Create a lambda that returns "even" if x is even, "odd" otherwise
+    expected_answer: 'lambda x: "even" if x % 2 == 0 else "odd"'
+    accepted_solutions:
+      - 'lambda x: "even" if x % 2 == 0 else "odd"'
+      - "lambda x: 'even' if x % 2 == 0 else 'odd'"
+    hints:
+      - Use ternary expression
+    tags: [functions, lambda, conditional]
+
+  - slug: sorted-key-lambda
+    objective: "Apply a lambda as a key function for sorting"
+    title: Sorted with Lambda Key
+    difficulty: 2
+    concept: functions
+    subconcept: lambda
+    level: integrated
+    prereqs: [functions.lambda, collections.lists]
+    type: write
+    pattern: construction
+    prompt: Sort list of tuples by second element using lambda
+    expected_answer: "sorted(items, key=lambda x: x[1])"
+    hints:
+      - Use key parameter
+      - Lambda extracts sort key
+    tags: [functions, lambda, sorting]
+
+  # --- Scope Subconcept ---
+  - slug: global-keyword
+    objective: "Declare a global variable from within a function"
+    title: Global Keyword
+    difficulty: 2
+    concept: functions
+    subconcept: scope
+    level: practice
+    prereqs: [functions.basics]
+    type: write
+    pattern: declaration
+    prompt: Declare counter as a global variable inside a function
+    expected_answer: global counter
+    hints:
+      - Use global keyword
+    tags: [functions, scope, global]
+
+  - slug: nonlocal-keyword
+    objective: "Access an enclosing function's variable using nonlocal"
+    title: Nonlocal Keyword
+    difficulty: 3
+    concept: functions
+    subconcept: scope
+    level: edge
+    prereqs: [functions.scope]
+    type: write
+    pattern: declaration
+    prompt: Access outer function variable x from inner function using nonlocal
+    expected_answer: nonlocal x
+    hints:
+      - nonlocal for enclosing scope
+      - Not global, not local
+    tags: [functions, scope, nonlocal]
+
+  # --- Type Hints Subconcept ---
+  - slug: typehint-param
+    objective: "Add type hints to function parameters"
+    title: Type Hint Parameter
+    difficulty: 2
+    concept: functions
+    subconcept: typehints
+    level: intro
+    prereqs: [functions.basics]
+    type: write
+    pattern: definition
+    prompt: Define greet(name) with name typed as str
+    expected_answer: "def greet(name: str):"
+    hints:
+      - Use : type after parameter
+    tags: [functions, typehints, annotation]
+
+  - slug: typehint-return
+    objective: "Annotate a function's return type"
+    title: Type Hint Return
+    difficulty: 2
+    concept: functions
+    subconcept: typehints
+    level: intro
+    prereqs: [functions.typehints]
+    type: write
+    pattern: definition
+    prompt: Define add(a, b) returning int
+    expected_answer: "def add(a, b) -> int:"
+    hints:
+      - Use -> type before colon
+    tags: [functions, typehints, return]
+
+  - slug: typehint-list
+    objective: "Use generic type hints for collection parameters"
+    title: Type Hint List
+    difficulty: 2
+    concept: functions
+    subconcept: typehints
+    level: practice
+    prereqs: [functions.typehints]
+    type: write
+    pattern: definition
+    prompt: Define process(items) with items typed as list[int]
+    expected_answer: "def process(items: list[int]):"
+    hints:
+      - Generic types use []
+    tags: [functions, typehints, generic]
+
+  - slug: typehint-optional
+    objective: "Define an optional parameter type using union syntax"
+    title: Type Hint Optional
+    difficulty: 2
+    concept: functions
+    subconcept: typehints
+    level: edge
+    prereqs: [functions.typehints]
+    type: write
+    pattern: definition
+    prompt: Define find(name) with name typed as str or None
+    expected_answer: "def find(name: str | None):"
+    accepted_solutions:
+      - "def find(name: str | None):"
+      - "def find(name: Optional[str]):"
+    hints:
+      - Use | None for optional
+      - Or Optional[type]
+    tags: [functions, typehints, optional]
+
+  - slug: typehint-callable
+    objective: "Type hint a function parameter as a Callable"
+    title: Type Hint Callable
+    difficulty: 3
+    concept: functions
+    subconcept: typehints
+    level: integrated
+    prereqs: [functions.typehints, functions.lambda]
+    type: write
+    pattern: definition
+    prompt: Define apply(func) where func is a callable taking int and returning int
+    expected_answer: "def apply(func: Callable[[int], int]):"
+    hints:
+      - Callable[[args], return]
+      - Import from typing
+    tags: [functions, typehints, callable]

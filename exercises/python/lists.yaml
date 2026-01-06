@@ -4,6 +4,7 @@ category: lists
 
 exercises:
   - slug: list-creation
+    objective: Create a list with multiple elements using square bracket syntax
     title: List Creation
     difficulty: 1
     concept: collections
@@ -19,6 +20,7 @@ exercises:
     tags: [lists, creation, beginner]
 
   - slug: list-append
+    objective: Add a single element to the end of a list using append()
     title: List Append
     difficulty: 1
     concept: collections
@@ -34,6 +36,7 @@ exercises:
     tags: [lists, methods, beginner]
 
   - slug: list-indexing
+    objective: Access a specific list element by its zero-based index position
     title: List Indexing
     difficulty: 1
     concept: collections
@@ -50,6 +53,7 @@ exercises:
     tags: [lists, indexing, beginner]
 
   - slug: list-slicing
+    objective: Extract a subset of list elements using slice notation
     title: List Slicing
     difficulty: 2
     concept: collections
@@ -66,6 +70,7 @@ exercises:
     tags: [lists, slicing, intermediate]
 
   - slug: list-extend
+    objective: Add all elements from one list to another using extend()
     title: List Extend
     difficulty: 2
     concept: collections

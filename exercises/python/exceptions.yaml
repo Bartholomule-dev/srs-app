@@ -4,6 +4,7 @@ category: exceptions
 
 exercises:
   - slug: try-except-basic
+    objective: Write a basic try-except block to catch any exception
     title: Try Except Basic
     difficulty: 2
     prompt: Write a try block that catches any exception
@@ -23,6 +24,7 @@ exercises:
     pattern: handling
 
   - slug: except-specific
+    objective: Catch a specific exception type using the except clause
     title: Except Specific Error
     difficulty: 2
     prompt: Catch a ValueError exception
@@ -38,6 +40,7 @@ exercises:
     pattern: handling
 
   - slug: raise-exception
+    objective: Raise an exception with a custom error message using raise
     title: Raise Exception
     difficulty: 2
     prompt: Raise a ValueError with message "Invalid value"
@@ -54,6 +57,7 @@ exercises:
     pattern: handling
 
   - slug: try-finally
+    objective: Write a finally block that executes regardless of exceptions
     title: Try Finally
     difficulty: 3
     prompt: Write a finally block that always runs
@@ -69,6 +73,7 @@ exercises:
     pattern: handling
 
   - slug: except-as
+    objective: Catch an exception and bind it to a variable using the as keyword
     title: Except with Alias
     difficulty: 2
     prompt: Catch Exception and assign it to variable e

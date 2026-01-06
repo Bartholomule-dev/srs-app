@@ -4,6 +4,7 @@ category: comprehensions
 
 exercises:
   - slug: list-comp-basic
+    objective: "Write a basic list comprehension to transform a range into squares"
     title: List Comprehension Basic
     difficulty: 2
     prompt: Create a list of squares from 1 to 5 using comprehension
@@ -19,6 +20,7 @@ exercises:
     pattern: mapping
 
   - slug: list-comp-conditional
+    objective: "Create a list comprehension with a filter condition"
     title: List Comprehension Conditional
     difficulty: 2
     prompt: Create a list of even numbers from 1 to 10 using comprehension
@@ -34,6 +36,7 @@ exercises:
     pattern: filtering
 
   - slug: dict-comp-basic
+    objective: "Write a dictionary comprehension to map keys to computed values"
     title: Dict Comprehension
     difficulty: 3
     prompt: Create a dict mapping numbers 1-3 to their squares
@@ -49,6 +52,7 @@ exercises:
     pattern: mapping
 
   - slug: set-comp-basic
+    objective: "Use set comprehension to create a collection of unique values"
     title: Set Comprehension
     difficulty: 3
     prompt: Create a set of first letters from list of words
@@ -64,6 +68,7 @@ exercises:
     pattern: mapping
 
   - slug: nested-comp
+    objective: "Apply nested loops in a list comprehension to flatten a matrix"
     title: Nested Comprehension
     difficulty: 3
     prompt: Flatten a 2D list called matrix using comprehension
@@ -78,3 +83,72 @@ exercises:
     prereqs: [for, lists, list-comp, nested-loops]
     type: write
     pattern: mapping
+
+  # --- Generator Expression Subconcept ---
+  - slug: generator-exp-basic
+    objective: "Write a generator expression for memory-efficient iteration"
+    title: Generator Expression
+    difficulty: 2
+    concept: comprehensions
+    subconcept: generator-exp
+    level: intro
+    prereqs: [comprehensions.list-comp]
+    type: write
+    pattern: mapping
+    prompt: Create a generator of squares from 1 to 5
+    expected_answer: (x**2 for x in range(1, 6))
+    hints:
+      - Use parentheses instead of brackets
+      - Creates iterator, not list
+    tags: [comprehensions, generator, memory]
+
+  - slug: generator-exp-sum
+    objective: "Use a generator expression with an aggregate function"
+    title: Sum with Generator
+    difficulty: 2
+    concept: comprehensions
+    subconcept: generator-exp
+    level: practice
+    prereqs: [comprehensions.generator-exp]
+    type: write
+    pattern: aggregation
+    prompt: Sum all squares from 1 to 100 using generator expression
+    expected_answer: sum(x**2 for x in range(1, 101))
+    hints:
+      - No extra parentheses needed inside sum()
+    tags: [comprehensions, generator, sum]
+
+  # --- Additional List Comp ---
+  - slug: list-comp-ternary
+    objective: "Apply a ternary expression inside a list comprehension"
+    title: List Comp with Ternary
+    difficulty: 2
+    concept: comprehensions
+    subconcept: list-comp
+    level: edge
+    prereqs: [comprehensions.list-comp]
+    type: write
+    pattern: transformation
+    prompt: Create list replacing negative numbers with 0 from list nums
+    expected_answer: "[x if x >= 0 else 0 for x in nums]"
+    hints:
+      - Expression can be ternary
+      - Value comes before 'for'
+    tags: [comprehensions, ternary, transformation]
+
+  # --- Dict Comp Additional ---
+  - slug: dict-comp-zip
+    objective: "Create a dictionary comprehension using zip with two lists"
+    title: Dict from Two Lists
+    difficulty: 2
+    concept: comprehensions
+    subconcept: dict-comp
+    level: practice
+    prereqs: [comprehensions.dict-comp]
+    type: write
+    pattern: construction
+    prompt: Create dict from keys list and values list using comprehension
+    expected_answer: "{k: v for k, v in zip(keys, values)}"
+    hints:
+      - Use zip to pair them
+    tags: [comprehensions, dict, zip]
