@@ -114,7 +114,7 @@ test.describe('Full Practice Session Flow', () => {
       await page.waitForTimeout(300);
 
       // Verify progress advanced (not reset to beginning)
-      const newProgressText = await progressIndicator.textContent().catch(() => '');
+      const newProgressText = await progressIndicator.textContent().catch(() => '') ?? '';
       if (questionsCompleted > 1 && newProgressText === previousProgressText) {
         // Progress didn't change - might be at the end or there's an issue
         console.log('Progress unchanged - checking for completion');

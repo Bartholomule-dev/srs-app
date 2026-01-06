@@ -9,24 +9,44 @@ import { mapExercise } from '@/lib/supabase/mappers';
 import { handleSupabaseError, AppError } from '@/lib/errors';
 import { updateProfileStats } from '@/lib/stats';
 import type { Exercise, Quality } from '@/lib/types';
-import type { SessionCard, SessionStats } from '@/lib/session/types';
+import type {
+  SessionCard,
+  SessionStats,
+  SessionCardType,
+  ReviewSessionCard,
+} from '@/lib/session/types';
 import type { ExercisePattern, SubconceptProgress } from '@/lib/curriculum/types';
+import {
+  buildTeachingPair,
+  interleaveWithTeaching,
+  type TeachingPair,
+} from '@/lib/session';
+import { getSubconceptDefinition, getAllSubconcepts } from '@/lib/curriculum';
 
-/** Limit on new subconcepts introduced per session */
+/** Limit on new subconcepts introduced per session (old behavior, now unused) */
 const NEW_SUBCONCEPTS_LIMIT = 5;
 
+/** Limit on teaching pairs (new subconcepts with teaching content) per session */
+const TEACHING_PAIRS_LIMIT = 2;
+
+/** Legacy card type used for internal tracking of review cards with subconcept progress */
 interface ConceptSessionCard extends Omit<SessionCard, 'state'> {
   /** The subconcept this exercise belongs to */
   subconceptProgress: SubconceptProgress;
 }
 
+/** Card type strings for progress bar display */
+export type CardTypeLabel = 'teaching' | 'practice' | 'review';
+
 export interface UseConceptSessionReturn {
-  /** All cards in the session (for progress display) */
-  cards: ConceptSessionCard[];
+  /** All cards in the session (unified type) */
+  cards: SessionCardType[];
+  /** Card type for each position (for progress bar styling) */
+  cardTypes: CardTypeLabel[];
   /** Index of current card */
   currentIndex: number;
   /** Current card being displayed */
-  currentCard: ConceptSessionCard | null;
+  currentCard: SessionCardType | null;
   /** Session is complete */
   isComplete: boolean;
   /** Session statistics */
@@ -76,7 +96,13 @@ export function useConceptSession(): UseConceptSessionReturn {
 
   const supabase = useMemo(() => createClient(), []);
   const [exercises, setExercises] = useState<Exercise[]>([]);
-  const [cards, setCards] = useState<ConceptSessionCard[]>([]);
+  // Unified session cards (teaching, practice, review)
+  const [cards, setCards] = useState<SessionCardType[]>([]);
+  // Internal tracking: maps card index to subconcept progress (for SRS updates)
+  // Only set for practice and review cards; undefined for teaching cards
+  const [cardProgressMap, setCardProgressMap] = useState<
+    Map<number, SubconceptProgress>
+  >(new Map());
   const [currentIndex, setCurrentIndex] = useState(0);
   const [stats, setStats] = useState<SessionStats>(createInitialStats);
   const [loading, setLoading] = useState(true);
@@ -92,6 +118,11 @@ export function useConceptSession(): UseConceptSessionReturn {
   const currentCard = cards[currentIndex] ?? null;
   const isComplete =
     forceComplete || (currentIndex >= cards.length && cards.length > 0);
+  // Derive card types for progress bar
+  const cardTypes: CardTypeLabel[] = useMemo(
+    () => cards.map((c) => c.type),
+    [cards]
+  );
 
   // Fetch all exercises on mount
   useEffect(() => {
@@ -135,79 +166,130 @@ export function useConceptSession(): UseConceptSessionReturn {
   useEffect(() => {
     if (srsLoading || exercises.length === 0) return;
     if (sessionInitialized) return; // Don't rebuild mid-session
+    if (!user) return;
 
-    // Build session cards by selecting an exercise for each due subconcept
-    const sessionCards: ConceptSessionCard[] = [];
+    // Capture user.id for TypeScript narrowing inside async function
+    const userId = user.id;
 
-    for (const subconceptProgress of dueSubconcepts) {
-      const exercise = getNextExercise(subconceptProgress, exercises);
-      if (exercise) {
-        sessionCards.push({
-          exercise,
-          subconceptProgress,
-          isNew: subconceptProgress.phase === 'learning' && subconceptProgress.interval === 0,
-        });
+    let cancelled = false;
+
+    async function buildSession() {
+      // === Step 1: Build review cards from due subconcepts ===
+      const reviewCards: ReviewSessionCard[] = [];
+      // Track subconcept progress for each review card by its index in reviewCards
+      const reviewProgressMap: SubconceptProgress[] = [];
+
+      for (const subconceptProgress of dueSubconcepts) {
+        const exercise = getNextExercise(subconceptProgress, exercises);
+        if (exercise) {
+          reviewCards.push({
+            type: 'review',
+            exercise,
+          });
+          reviewProgressMap.push(subconceptProgress);
+        }
       }
+
+      // === Step 2: Identify NEW subconcepts (no progress row) ===
+      // Query ALL subconcept progress (not just due) to find truly new subconcepts
+      const { data: allProgressData } = await supabase
+        .from('subconcept_progress')
+        .select('subconcept_slug')
+        .eq('user_id', userId);
+
+      if (cancelled) return;
+
+      // Get all subconcepts user already has progress for (due or not)
+      const progressSlugs = new Set(
+        (allProgressData ?? []).map((p) => p.subconcept_slug)
+      );
+
+      // Get all subconcepts in curriculum
+      const allSubconcepts = getAllSubconcepts();
+      const newSubconcepts = allSubconcepts.filter((slug) => !progressSlugs.has(slug));
+
+      // === Step 3: Build teaching pairs for new subconcepts (limit 2) ===
+      const teachingPairs: TeachingPair[] = [];
+      // Track progress for practice cards (teaching cards don't need SRS)
+      const practiceProgressMap: Map<string, SubconceptProgress> = new Map();
+
+      for (const slug of newSubconcepts.slice(0, TEACHING_PAIRS_LIMIT)) {
+        const definition = getSubconceptDefinition(slug);
+        if (definition) {
+          const pair = buildTeachingPair(slug, definition, exercises);
+          if (pair) {
+            teachingPairs.push(pair);
+            // Create initial progress for the practice card
+            const practiceExercise = pair.practiceCard.exercise;
+            const newProgress: SubconceptProgress = {
+              id: `new-${slug}`,
+              userId: userId,
+              subconceptSlug: slug,
+              conceptSlug: practiceExercise.concept,
+              phase: 'learning',
+              easeFactor: 2.5,
+              interval: 0,
+              nextReview: new Date(),
+              lastReviewed: null,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            };
+            practiceProgressMap.set(slug, newProgress);
+          }
+        }
+      }
+
+      // === Step 4: Interleave teaching pairs with review cards ===
+      const sessionCards = interleaveWithTeaching(reviewCards, teachingPairs);
+
+      // === Step 5: Build progress map for all cards ===
+      // Maps card index -> SubconceptProgress (only for practice/review cards)
+      const progressMap = new Map<number, SubconceptProgress>();
+      let reviewIndex = 0;
+
+      for (let i = 0; i < sessionCards.length; i++) {
+        const card = sessionCards[i];
+        if (card.type === 'review') {
+          // Review cards get progress from reviewProgressMap in order
+          const progress = reviewProgressMap[reviewIndex];
+          if (progress) {
+            progressMap.set(i, progress);
+          }
+          reviewIndex++;
+        } else if (card.type === 'practice') {
+          // Practice cards get progress from practiceProgressMap by subconcept
+          const subconcept = card.exercise.subconcept;
+          if (subconcept) {
+            const progress = practiceProgressMap.get(subconcept);
+            if (progress) {
+              progressMap.set(i, progress);
+            }
+          }
+        }
+        // Teaching cards don't have progress - they don't update SRS
+      }
+
+      setCards(sessionCards);
+      setCardProgressMap(progressMap);
+      setCurrentIndex(0);
+      setStats({
+        total: sessionCards.length,
+        completed: 0,
+        correct: 0,
+        incorrect: 0,
+        startTime: new Date(),
+        endTime: undefined,
+      });
+      setSessionInitialized(true);
+      setLoading(false);
     }
 
-    // Also add new subconcepts the user hasn't started yet
-    // Find subconcepts in exercises that don't have progress
-    const dueSubconceptSlugs = new Set(dueSubconcepts.map((s) => s.subconceptSlug));
-    const exercisesBySubconcept = new Map<string, Exercise[]>();
+    buildSession();
 
-    for (const exercise of exercises) {
-      if (exercise.subconcept && !dueSubconceptSlugs.has(exercise.subconcept)) {
-        const existing = exercisesBySubconcept.get(exercise.subconcept) ?? [];
-        existing.push(exercise);
-        exercisesBySubconcept.set(exercise.subconcept, existing);
-      }
-    }
-
-    // Pick intro exercises for new subconcepts (limit to NEW_SUBCONCEPTS_LIMIT)
-    let newSubconceptsAdded = 0;
-    for (const [subconcept, subconceptExercises] of exercisesBySubconcept) {
-      if (newSubconceptsAdded >= NEW_SUBCONCEPTS_LIMIT) break;
-
-      // Find an intro-level exercise
-      const introExercise = subconceptExercises.find((e) => e.level === 'intro');
-      if (introExercise) {
-        // Create temporary progress for new subconcept
-        const newProgress: SubconceptProgress = {
-          id: `new-${subconcept}`,
-          userId: user?.id ?? '',
-          subconceptSlug: subconcept,
-          conceptSlug: introExercise.concept,
-          phase: 'learning',
-          easeFactor: 2.5,
-          interval: 0,
-          nextReview: new Date(),
-          lastReviewed: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        };
-
-        sessionCards.push({
-          exercise: introExercise,
-          subconceptProgress: newProgress,
-          isNew: true,
-        });
-        newSubconceptsAdded++;
-      }
-    }
-
-    setCards(sessionCards);
-    setCurrentIndex(0);
-    setStats({
-      total: sessionCards.length,
-      completed: 0,
-      correct: 0,
-      incorrect: 0,
-      startTime: new Date(),
-      endTime: undefined,
-    });
-    setSessionInitialized(true);
-    setLoading(false);
-  }, [dueSubconcepts, exercises, srsLoading, getNextExercise, user?.id, sessionInitialized]);
+    return () => {
+      cancelled = true;
+    };
+  }, [dueSubconcepts, exercises, srsLoading, getNextExercise, user, sessionInitialized, supabase]);
 
   // Set error from SRS hook
   useEffect(() => {
@@ -221,9 +303,22 @@ export function useConceptSession(): UseConceptSessionReturn {
       const card = cards[currentIndex];
       if (!card) return;
 
-      const isCorrect = quality >= 3;
       const newCompleted = stats.completed + 1;
       const willComplete = newCompleted >= cards.length;
+
+      // Teaching cards don't record SRS - just advance
+      if (card.type === 'teaching') {
+        setStats((prev) => ({
+          ...prev,
+          completed: newCompleted,
+          endTime: willComplete ? new Date() : undefined,
+        }));
+        setCurrentIndex((prev) => prev + 1);
+        return;
+      }
+
+      // For practice/review cards, run SRS logic
+      const isCorrect = quality >= 3;
 
       // Update local stats immediately (optimistic)
       setStats((prev) => ({
@@ -237,25 +332,33 @@ export function useConceptSession(): UseConceptSessionReturn {
       // Advance to next card immediately
       setCurrentIndex((prev) => prev + 1);
 
-      // Track pattern for anti-repeat
-      setLastPattern(card.exercise.pattern);
+      // Track pattern for anti-repeat (only for cards with exercises)
+      const exercise = card.exercise;
+      setLastPattern(exercise.pattern);
+
+      // Get subconcept progress for this card
+      const progress = cardProgressMap.get(currentIndex);
+      if (!progress) {
+        console.warn(`No progress found for card at index ${currentIndex}`);
+        return;
+      }
 
       // Persist to database via concept SRS
       try {
         await recordSubconceptResult(
-          card.subconceptProgress.subconceptSlug,
-          card.subconceptProgress.conceptSlug,
+          progress.subconceptSlug,
+          progress.conceptSlug,
           quality,
-          card.exercise.slug,
+          exercise.slug,
           isCorrect,
-          card.exercise.targets
+          exercise.targets
         );
       } catch {
         showToast('Failed to save progress', { type: 'error' });
         // Session continues even if save fails
       }
     },
-    [cards, currentIndex, stats.completed, recordSubconceptResult, showToast]
+    [cards, currentIndex, stats.completed, cardProgressMap, recordSubconceptResult, showToast]
   );
 
   const endSession = useCallback(async () => {
@@ -287,6 +390,7 @@ export function useConceptSession(): UseConceptSessionReturn {
 
   return {
     cards,
+    cardTypes,
     currentIndex,
     currentCard,
     isComplete,

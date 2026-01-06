@@ -9,6 +9,7 @@ import { useConceptSession } from '@/lib/hooks';
 import { ErrorBoundary } from '@/components';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent } from '@/components/ui/Card';
+import { hasExercise, getCardKey, isTeachingCard } from '@/lib/session';
 
 // Aurora gradient background for immersive practice mode
 function PracticeBackground() {
@@ -211,14 +212,40 @@ function PracticeSessionContent() {
       {/* Centered exercise card with generous whitespace */}
       <div className="flex-1 flex items-center justify-center p-4 sm:p-8">
         <motion.div
-          key={currentCard?.exercise.id}
+          key={currentCard ? getCardKey(currentCard) : 'empty'}
           initial={{ opacity: 0, y: 10, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -10, scale: 0.98 }}
           transition={{ duration: 0.3 }}
           className="w-full max-w-2xl"
         >
-          {currentCard && (
+          {currentCard && isTeachingCard(currentCard) && (
+            // TODO: Replace with TeachingCard component in Task 5.3
+            <Card className="p-6">
+              <CardContent>
+                <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">
+                  Learning: {currentCard.subconcept}
+                </h3>
+                <p className="text-[var(--text-secondary)] mb-4">
+                  {currentCard.teaching.explanation}
+                </p>
+                <div className="bg-[var(--bg-surface-2)] rounded-lg p-4 mb-4">
+                  <p className="text-sm text-[var(--text-tertiary)] mb-2">Example:</p>
+                  <pre className="font-mono text-sm text-[var(--text-primary)]">
+                    {currentCard.exampleExercise.prompt}
+                  </pre>
+                </div>
+                <Button
+                  variant="primary"
+                  onClick={() => recordResult(5)}
+                  className="w-full"
+                >
+                  Continue
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+          {currentCard && hasExercise(currentCard) && (
             <ExerciseCard
               exercise={currentCard.exercise}
               onComplete={(exerciseId, quality) => recordResult(quality)}
