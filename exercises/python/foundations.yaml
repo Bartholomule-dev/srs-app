@@ -542,3 +542,317 @@ exercises:
       - Use 'not in' for non-membership
       - For dicts, checks keys by default
     tags: [comparisons, membership, not-in]
+
+  # --- Fill-in Exercises for Foundations ---
+  - slug: variable-assign-fill
+    title: Variable Assignment
+    type: fill-in
+    difficulty: 1
+    concept: foundations
+    subconcept: variables
+    level: intro
+    prereqs: []
+    pattern: assignment
+    objective: Complete variable assignment syntax
+    prompt: Complete the code to assign the value 42 to a variable named answer
+    template: "answer ___ 42"
+    blank_position: 0
+    expected_answer: "="
+    accepted_solutions: ["="]
+    hints:
+      - What operator assigns a value to a variable?
+    tags: [variables, assignment]
+
+  - slug: variable-naming-fill
+    title: Variable Naming
+    type: fill-in
+    difficulty: 1
+    concept: foundations
+    subconcept: variables
+    level: practice
+    prereqs: []
+    pattern: assignment
+    objective: Use valid Python variable naming
+    prompt: Complete the variable name following Python conventions
+    template: "___count = 10"
+    blank_position: 0
+    expected_answer: "user_"
+    accepted_solutions: ["user_", "item_", "total_"]
+    hints:
+      - Python uses snake_case for variable names
+    tags: [variables, naming]
+
+  - slug: operator-addition-fill
+    title: Addition Operator
+    type: fill-in
+    difficulty: 1
+    concept: foundations
+    subconcept: operators
+    level: intro
+    prereqs: [variables]
+    pattern: arithmetic
+    objective: Use the addition operator
+    prompt: Complete the expression to add x and y
+    template: "result = x ___ y"
+    blank_position: 0
+    expected_answer: "+"
+    accepted_solutions: ["+"]
+    hints:
+      - Which operator adds two numbers?
+    tags: [operators, arithmetic]
+
+  - slug: operator-floor-division-fill
+    title: Floor Division
+    type: fill-in
+    difficulty: 2
+    concept: foundations
+    subconcept: operators
+    level: practice
+    prereqs: [variables]
+    pattern: arithmetic
+    objective: Use floor division operator
+    prompt: Complete the expression for integer division (discard remainder)
+    template: "result = 17 ___ 5  # result is 3"
+    blank_position: 0
+    expected_answer: "//"
+    accepted_solutions: ["//"]
+    hints:
+      - Floor division uses two forward slashes
+    tags: [operators, arithmetic]
+
+  - slug: expression-and-fill
+    title: Boolean AND
+    type: fill-in
+    difficulty: 1
+    concept: foundations
+    subconcept: expressions
+    level: intro
+    prereqs: [operators]
+    pattern: logic
+    objective: Use the logical AND operator
+    prompt: Complete the boolean expression
+    template: "is_valid = has_name ___ has_email"
+    blank_position: 0
+    expected_answer: "and"
+    accepted_solutions: ["and"]
+    hints:
+      - Python uses the word 'and' for logical AND
+    tags: [expressions, boolean]
+
+  - slug: expression-not-fill
+    title: Boolean NOT
+    type: fill-in
+    difficulty: 1
+    concept: foundations
+    subconcept: expressions
+    level: practice
+    prereqs: [operators]
+    pattern: logic
+    objective: Use the logical NOT operator
+    prompt: Complete the expression to invert the boolean
+    template: "is_invalid = ___ is_valid"
+    blank_position: 0
+    expected_answer: "not"
+    accepted_solutions: ["not"]
+    hints:
+      - Python uses 'not' to negate a boolean
+    tags: [expressions, boolean]
+
+  - slug: io-print-fill
+    title: Print Function
+    type: fill-in
+    difficulty: 1
+    concept: foundations
+    subconcept: io
+    level: intro
+    prereqs: [variables]
+    pattern: output
+    objective: Use the print function
+    prompt: Complete the code to display the message
+    template: "___(\"Hello, World!\")"
+    blank_position: 0
+    expected_answer: "print"
+    accepted_solutions: ["print"]
+    hints:
+      - Which function outputs text to the console?
+    tags: [io, print]
+
+  - slug: io-input-fill
+    title: Input Function
+    type: fill-in
+    difficulty: 1
+    concept: foundations
+    subconcept: io
+    level: intro
+    prereqs: [variables]
+    pattern: input
+    objective: Use the input function
+    prompt: Complete the code to get user input
+    template: "name = ___(\"Enter your name: \")"
+    blank_position: 0
+    expected_answer: "input"
+    accepted_solutions: ["input"]
+    hints:
+      - Which function reads text from the user?
+    tags: [io, input]
+
+  # --- Predict-output Exercises for Foundations ---
+  - slug: variable-predict-assign
+    title: Variable Value
+    type: predict
+    difficulty: 1
+    concept: foundations
+    subconcept: variables
+    level: intro
+    prereqs: []
+    pattern: assignment
+    objective: Predict variable value after assignment
+    prompt: What does this code print?
+    code: |
+      x = 10
+      print(x)
+    expected_answer: "10"
+    accepted_solutions: []
+    hints:
+      - Variables store the value assigned to them
+    tags: [variables, assignment]
+
+  - slug: variable-predict-reassign
+    title: Variable Reassignment
+    type: predict
+    difficulty: 1
+    concept: foundations
+    subconcept: variables
+    level: practice
+    prereqs: []
+    pattern: assignment
+    objective: Predict value after reassignment
+    prompt: What does this code print?
+    code: |
+      x = 5
+      x = 10
+      print(x)
+    expected_answer: "10"
+    accepted_solutions: []
+    hints:
+      - Variables can be reassigned to new values
+    tags: [variables, assignment]
+
+  - slug: operator-predict-modulo
+    title: Modulo Result
+    type: predict
+    difficulty: 2
+    concept: foundations
+    subconcept: operators
+    level: practice
+    prereqs: [variables]
+    pattern: arithmetic
+    objective: Predict modulo operation result
+    prompt: What does this code print?
+    code: |
+      result = 17 % 5
+      print(result)
+    expected_answer: "2"
+    accepted_solutions: []
+    hints:
+      - Modulo returns the remainder of division
+    tags: [operators, arithmetic]
+
+  - slug: operator-predict-floor
+    title: Floor Division Result
+    type: predict
+    difficulty: 2
+    concept: foundations
+    subconcept: operators
+    level: practice
+    prereqs: [variables]
+    pattern: arithmetic
+    objective: Predict floor division result
+    prompt: What does this code print?
+    code: |
+      result = 17 // 5
+      print(result)
+    expected_answer: "3"
+    accepted_solutions: []
+    hints:
+      - Floor division discards the remainder
+    tags: [operators, arithmetic]
+
+  - slug: expression-predict-and
+    title: Boolean AND Result
+    type: predict
+    difficulty: 1
+    concept: foundations
+    subconcept: expressions
+    level: intro
+    prereqs: [operators]
+    pattern: logic
+    objective: Predict boolean AND result
+    prompt: What does this code print?
+    code: |
+      result = True and False
+      print(result)
+    expected_answer: "False"
+    accepted_solutions: []
+    hints:
+      - AND requires both values to be True
+    tags: [expressions, boolean]
+
+  - slug: expression-predict-or
+    title: Boolean OR Result
+    type: predict
+    difficulty: 1
+    concept: foundations
+    subconcept: expressions
+    level: practice
+    prereqs: [operators]
+    pattern: logic
+    objective: Predict boolean OR result
+    prompt: What does this code print?
+    code: |
+      result = True or False
+      print(result)
+    expected_answer: "True"
+    accepted_solutions: []
+    hints:
+      - OR returns True if either value is True
+    tags: [expressions, boolean]
+
+  - slug: io-predict-print-concat
+    title: Print Concatenation
+    type: predict
+    difficulty: 1
+    concept: foundations
+    subconcept: io
+    level: practice
+    prereqs: [variables]
+    pattern: output
+    objective: Predict print output with multiple arguments
+    prompt: What does this code print?
+    code: |
+      name = "Alice"
+      print("Hello", name)
+    expected_answer: "Hello Alice"
+    accepted_solutions: []
+    hints:
+      - print() separates arguments with spaces
+    tags: [io, print]
+
+  - slug: io-predict-print-sep
+    title: Print Separator
+    type: predict
+    difficulty: 2
+    concept: foundations
+    subconcept: io
+    level: edge
+    prereqs: [variables]
+    pattern: output
+    objective: Predict print output with custom separator
+    prompt: What does this code print?
+    code: |
+      print("a", "b", "c", sep="-")
+    expected_answer: "a-b-c"
+    accepted_solutions: []
+    hints:
+      - The sep parameter changes what goes between arguments
+    tags: [io, print]
