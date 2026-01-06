@@ -62,7 +62,7 @@ exercises:
     title: Enumerate Loop
     difficulty: 2
     concept: control-flow
-    subconcept: enumerate
+    subconcept: iteration
     level: practice
     prereqs: [foundations, for]
     type: write
@@ -79,7 +79,7 @@ exercises:
     title: Break Statement
     difficulty: 2
     concept: control-flow
-    subconcept: break
+    subconcept: for
     level: edge
     prereqs: [foundations, for, while]
     type: write
