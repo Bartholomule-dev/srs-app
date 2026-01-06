@@ -1,6 +1,6 @@
 # exercises/python/classes.yaml
 language: python
-category: classes
+category: oop
 
 exercises:
   - slug: define-class

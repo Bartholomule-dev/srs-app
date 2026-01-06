@@ -1,6 +1,6 @@
 # exercises/python/loops.yaml
 language: python
-category: loops
+category: control-flow
 
 exercises:
   - slug: for-loop-range

@@ -1,6 +1,6 @@
 # exercises/python/exceptions.yaml
 language: python
-category: exceptions
+category: error-handling
 
 exercises:
   - slug: try-except-basic
