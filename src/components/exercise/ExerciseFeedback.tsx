@@ -33,15 +33,15 @@ export function ExerciseFeedback({
       {/* Answer Display */}
       <div className={isCorrect ? 'space-y-2' : 'grid grid-cols-2 gap-4'}>
         <div>
-          <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-1">Your answer:</p>
-          <pre className="p-3 rounded-md bg-neutral-100 dark:bg-neutral-800 font-mono text-sm overflow-x-auto">
-            {userAnswer || <span className="text-neutral-400 italic">(empty)</span>}
+          <p className="text-sm text-[var(--text-secondary)] mb-1">Your answer:</p>
+          <pre className="p-3 rounded-md bg-[var(--bg-surface-2)] font-mono text-sm overflow-x-auto text-[var(--text-primary)]">
+            {userAnswer || <span className="text-[var(--text-tertiary)] italic">(empty)</span>}
           </pre>
         </div>
         {!isCorrect && (
           <div>
-            <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-1">Correct answer:</p>
-            <pre className="p-3 rounded-md bg-neutral-100 dark:bg-neutral-800 font-mono text-sm overflow-x-auto">
+            <p className="text-sm text-[var(--text-secondary)] mb-1">Correct answer:</p>
+            <pre className="p-3 rounded-md bg-[var(--bg-surface-2)] font-mono text-sm overflow-x-auto text-[var(--text-primary)]">
               {expectedAnswer}
             </pre>
           </div>
@@ -49,7 +49,7 @@ export function ExerciseFeedback({
       </div>
 
       {/* Next Review Info */}
-      <p className="text-sm text-neutral-600 dark:text-neutral-300">
+      <p className="text-sm text-[var(--text-secondary)]">
         Next review: {nextReviewDays} {dayText}
       </p>
 
