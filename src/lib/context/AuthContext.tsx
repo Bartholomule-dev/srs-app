@@ -18,13 +18,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
   });
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data, error }) => {
-      setState({
-        user: data.user,
-        loading: false,
-        error: error,
+    supabase.auth.getUser()
+      .then(({ data, error }) => {
+        setState({
+          user: data.user,
+          loading: false,
+          error: error,
+        });
+      })
+      .catch((error) => {
+        setState({
+          user: null,
+          loading: false,
+          error: error instanceof Error ? error : new Error('Failed to fetch user'),
+        });
       });
-    });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
