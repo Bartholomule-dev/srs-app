@@ -1,29 +1,16 @@
 import { describe, it, expect } from 'vitest';
 import { interleaveCards } from '@/lib/session';
 import type { SessionCard } from '@/lib/session';
-import type { Exercise } from '@/lib/types';
 import type { CardState } from '@/lib/srs';
+import { createMockExercise } from '@tests/fixtures/exercise';
 
 // Helper to create mock SessionCard
 function createMockCard(id: string, isNew: boolean): SessionCard {
-  const exercise: Exercise = {
+  const exercise = createMockExercise({
     id,
     slug: `exercise-${id}`,
-    language: 'python',
-    category: 'basics',
-    difficulty: 1,
     title: `Exercise ${id}`,
-    prompt: 'Test prompt',
-    expectedAnswer: 'test',
-    acceptedSolutions: [],
-    hints: [],
-    explanation: null,
-    tags: [],
-    timesPracticed: 0,
-    avgSuccessRate: null,
-    createdAt: '2026-01-01T00:00:00Z',
-    updatedAt: '2026-01-01T00:00:00Z',
-  };
+  });
   const state: CardState = {
     easeFactor: 2.5,
     interval: 1,

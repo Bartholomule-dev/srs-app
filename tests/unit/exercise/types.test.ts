@@ -1,7 +1,7 @@
 // tests/unit/exercise/types.test.ts
 import { describe, it, expect } from 'vitest';
 import type { AnswerResult, QualityInputs } from '@/lib/exercise';
-import type { Exercise } from '@/lib/types/app.types';
+import { createMockExercise } from '@tests/fixtures/exercise';
 
 describe('exercise types', () => {
   describe('AnswerResult', () => {
@@ -38,24 +38,15 @@ describe('exercise types', () => {
 
   describe('Exercise type', () => {
     it('includes slug field', () => {
-      const exercise: Exercise = {
-        id: 'test-id',
+      const exercise = createMockExercise({
         slug: 'for-loop-range',
         language: 'python',
         category: 'loops',
-        difficulty: 1,
         title: 'For Loop Range',
         prompt: 'Write a for loop',
         expectedAnswer: 'for i in range(5):',
-        acceptedSolutions: [],
-        hints: ['Use range()'],
-        explanation: null,
         tags: ['loops'],
-        timesPracticed: 0,
-        avgSuccessRate: null,
-        createdAt: '2026-01-01T00:00:00Z',
-        updatedAt: '2026-01-01T00:00:00Z',
-      };
+      });
       expect(exercise.slug).toBe('for-loop-range');
       expect(exercise.acceptedSolutions).toEqual([]);
     });

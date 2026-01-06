@@ -31,3 +31,6 @@ export {
 } from './concept-algorithm';
 
 export type { SubconceptReviewResult } from './concept-algorithm';
+
+// Multi-target credit/penalty logic
+export { getTargetsToCredit, getTargetsToPenalize } from './multi-target';

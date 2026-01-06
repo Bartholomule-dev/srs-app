@@ -3,7 +3,7 @@ import type { CardState } from '@/lib/srs';
 
 /**
  * A card in the practice session queue, combining exercise content with SRS state.
- * This is the type useSession works with internally and exposes to components.
+ * This is the type useConceptSession works with internally and exposes to components.
  */
 export interface SessionCard {
   /** Full exercise data (prompt, answer, hints, etc.) */

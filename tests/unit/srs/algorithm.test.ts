@@ -9,6 +9,7 @@ import {
 import type { CardState } from '@/lib/srs/types';
 import { DEFAULT_SRS_CONFIG } from '@/lib/srs/types';
 import type { UserProgress, Exercise } from '@/lib/types';
+import { createMockExercise } from '@tests/fixtures/exercise';
 
 describe('SRS Algorithm', () => {
   beforeEach(() => {
@@ -426,9 +427,9 @@ describe('getNewCards', () => {
 
   it('returns exercises not in progress', () => {
     const exercises: Exercise[] = [
-      createMockExercise('ex-1'),
-      createMockExercise('ex-2'),
-      createMockExercise('ex-3'),
+      createTestExercise('ex-1'),
+      createTestExercise('ex-2'),
+      createTestExercise('ex-3'),
     ];
     const existingProgress: UserProgress[] = [
       createMockProgress('ex-1'),
@@ -442,11 +443,11 @@ describe('getNewCards', () => {
 
   it('respects limit parameter', () => {
     const exercises: Exercise[] = [
-      createMockExercise('ex-1'),
-      createMockExercise('ex-2'),
-      createMockExercise('ex-3'),
-      createMockExercise('ex-4'),
-      createMockExercise('ex-5'),
+      createTestExercise('ex-1'),
+      createTestExercise('ex-2'),
+      createTestExercise('ex-3'),
+      createTestExercise('ex-4'),
+      createTestExercise('ex-5'),
     ];
 
     const result = getNewCards(exercises, [], 2);
@@ -455,7 +456,7 @@ describe('getNewCards', () => {
   });
 
   it('marks cards as new', () => {
-    const exercises: Exercise[] = [createMockExercise('ex-1')];
+    const exercises: Exercise[] = [createTestExercise('ex-1')];
 
     const result = getNewCards(exercises, [], 5);
 
@@ -463,7 +464,7 @@ describe('getNewCards', () => {
   });
 
   it('creates initial state for new cards', () => {
-    const exercises: Exercise[] = [createMockExercise('ex-1')];
+    const exercises: Exercise[] = [createTestExercise('ex-1')];
 
     const result = getNewCards(exercises, [], 5);
 
@@ -474,25 +475,12 @@ describe('getNewCards', () => {
 });
 
 // Helper functions for tests
-function createMockExercise(id: string): Exercise {
-  return {
+function createTestExercise(id: string) {
+  return createMockExercise({
     id,
     slug: `exercise-${id}`,
-    language: 'python',
-    category: 'basics',
-    difficulty: 1,
     title: `Exercise ${id}`,
-    prompt: 'Test prompt',
-    expectedAnswer: 'test answer',
-    acceptedSolutions: [],
-    hints: [],
-    explanation: null,
-    tags: [],
-    timesPracticed: 0,
-    avgSuccessRate: null,
-    createdAt: '2026-01-01T00:00:00Z',
-    updatedAt: '2026-01-01T00:00:00Z',
-  };
+  });
 }
 
 function createMockProgress(exerciseId: string): UserProgress {

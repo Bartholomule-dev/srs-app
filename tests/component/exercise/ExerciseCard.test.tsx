@@ -2,10 +2,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { ExerciseCard } from '@/components/exercise';
-import type { Exercise } from '@/lib/types';
+import { createMockExercise } from '@tests/fixtures/exercise';
 
 describe('ExerciseCard', () => {
-  const mockExercise: Exercise = {
+  const mockExercise = createMockExercise({
     id: 'ex-1',
     slug: 'print-variable',
     language: 'Python',
@@ -16,13 +16,8 @@ describe('ExerciseCard', () => {
     expectedAnswer: 'print(name)',
     acceptedSolutions: [],
     hints: ['Use the print() function'],
-    explanation: null,
     tags: ['basics'],
-    timesPracticed: 0,
-    avgSuccessRate: null,
-    createdAt: '2026-01-01T00:00:00Z',
-    updatedAt: '2026-01-01T00:00:00Z',
-  };
+  });
 
   beforeEach(() => {
     vi.useFakeTimers();
@@ -236,7 +231,7 @@ describe('ExerciseCard', () => {
   });
 
   describe('exercise prop change (sequential questions)', () => {
-    const secondExercise: Exercise = {
+    const secondExercise = createMockExercise({
       id: 'ex-2',
       slug: 'list-append',
       language: 'Python',
@@ -245,15 +240,9 @@ describe('ExerciseCard', () => {
       title: 'List Append',
       prompt: 'Append "item" to the list `my_list`',
       expectedAnswer: 'my_list.append("item")',
-      acceptedSolutions: [],
       hints: ['Use the append() method'],
-      explanation: null,
       tags: ['lists'],
-      timesPracticed: 0,
-      avgSuccessRate: null,
-      createdAt: '2026-01-01T00:00:00Z',
-      updatedAt: '2026-01-01T00:00:00Z',
-    };
+    });
 
     it('resets to answering phase when exercise changes', async () => {
       const handleComplete = vi.fn();

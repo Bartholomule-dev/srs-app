@@ -26,13 +26,6 @@ const GOLD_PATTERNS = [
   /#f97316/i,                                   // orange-500 hex
 ];
 
-// Pages to test
-const PAGES = [
-  { path: '/', name: 'Landing Page', requiresAuth: false },
-  { path: '/dashboard', name: 'Dashboard', requiresAuth: true },
-  { path: '/practice', name: 'Practice', requiresAuth: true },
-];
-
 // Viewports to test
 const VIEWPORTS = [
   { name: 'desktop', width: 1280, height: 800 },

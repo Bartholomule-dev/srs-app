@@ -16,6 +16,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@tests': path.resolve(__dirname, './tests'),
       // Mock CSS imports from node_modules
       'react-day-picker/style.css': path.resolve(__dirname, './tests/mocks/empty.css'),
       '@uiw/react-md-editor/markdown-editor.css': path.resolve(__dirname, './tests/mocks/empty.css'),

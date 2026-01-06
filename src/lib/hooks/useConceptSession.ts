@@ -83,7 +83,9 @@ export function useConceptSession(): UseConceptSessionReturn {
   const [error, setError] = useState<AppError | null>(null);
   const [fetchKey, setFetchKey] = useState(0);
   const [forceComplete, setForceComplete] = useState(false);
-  const [lastPattern, setLastPattern] = useState<ExercisePattern | null>(null);
+  // Track last pattern for anti-repeat selection (infrastructure ready, not yet wired)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_lastPattern, setLastPattern] = useState<ExercisePattern | null>(null);
 
   const currentCard = cards[currentIndex] ?? null;
   const isComplete =

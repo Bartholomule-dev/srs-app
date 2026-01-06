@@ -1,29 +1,21 @@
 // tests/unit/session/types.test.ts
 import { describe, it, expect } from 'vitest';
 import type { SessionCard, SessionStats } from '@/lib/session';
+import { createMockExercise } from '@tests/fixtures/exercise';
 
 describe('session types', () => {
   describe('SessionCard', () => {
     it('has required properties', () => {
       const card: SessionCard = {
-        exercise: {
+        exercise: createMockExercise({
           id: 'ex-1',
           slug: 'print-statement',
-          language: 'python',
-          category: 'basics',
-          difficulty: 1,
           title: 'Print Statement',
           prompt: 'Write a print statement',
           expectedAnswer: 'print("hello")',
-          acceptedSolutions: [],
           hints: ['Use print()'],
-          explanation: null,
           tags: ['print'],
-          timesPracticed: 0,
-          avgSuccessRate: null,
-          createdAt: '2026-01-01T00:00:00Z',
-          updatedAt: '2026-01-01T00:00:00Z',
-        },
+        }),
         state: {
           easeFactor: 2.5,
           interval: 1,

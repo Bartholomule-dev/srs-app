@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ProtectedRoute, ExerciseCard, SessionProgress, SessionSummary } from '@/components';
-import { useSession } from '@/lib/hooks';
+import { useConceptSession } from '@/lib/hooks';
 import { ErrorBoundary } from '@/components';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent } from '@/components/ui/Card';
@@ -151,7 +151,7 @@ function PracticeSessionContent() {
     recordResult,
     endSession,
     retry,
-  } = useSession();
+  } = useConceptSession();
 
   const handleDashboard = () => {
     router.push('/dashboard');

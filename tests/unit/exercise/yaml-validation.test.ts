@@ -1,10 +1,11 @@
 // tests/unit/exercise/yaml-validation.test.ts
 import { describe, it, expect } from 'vitest';
 import { validateYamlExercise, validateYamlFile } from '@/lib/exercise';
+import { createMockYamlExercise } from '@tests/fixtures/exercise';
 import type { YamlExercise, YamlExerciseFile } from '@/lib/exercise';
 
 describe('validateYamlExercise', () => {
-  const validExercise: YamlExercise = {
+  const validExercise = createMockYamlExercise({
     slug: 'for-loop-range',
     title: 'For Loop Range',
     difficulty: 1,
@@ -12,7 +13,7 @@ describe('validateYamlExercise', () => {
     expected_answer: 'for i in range(5):',
     hints: ['Use range()'],
     tags: ['loops'],
-  };
+  });
 
   it('returns empty errors for valid exercise', () => {
     const errors = validateYamlExercise(validExercise, 'test.yaml');
@@ -112,28 +113,18 @@ describe('validateYamlExercise', () => {
 
   describe('accepted_solutions field', () => {
     it('accepts exercises with accepted_solutions array', () => {
-      const exercise: YamlExercise = {
+      const exercise = createMockYamlExercise({
         slug: 'test-accepted',
-        title: 'Test',
-        difficulty: 1,
-        prompt: 'Test prompt',
-        expected_answer: 'answer',
-        hints: ['hint'],
         accepted_solutions: ['alt1', 'alt2'],
-      };
+      });
       const errors = validateYamlExercise(exercise, 'test.yaml');
       expect(errors).toHaveLength(0);
     });
 
     it('accepts exercises without accepted_solutions (optional)', () => {
-      const exercise: YamlExercise = {
+      const exercise = createMockYamlExercise({
         slug: 'test-no-accepted',
-        title: 'Test',
-        difficulty: 1,
-        prompt: 'Test prompt',
-        expected_answer: 'answer',
-        hints: ['hint'],
-      };
+      });
       const errors = validateYamlExercise(exercise, 'test.yaml');
       expect(errors).toHaveLength(0);
     });
@@ -167,15 +158,10 @@ describe('validateYamlExercise', () => {
     });
 
     it('accepts empty accepted_solutions array', () => {
-      const exercise: YamlExercise = {
+      const exercise = createMockYamlExercise({
         slug: 'test-empty-accepted',
-        title: 'Test',
-        difficulty: 1,
-        prompt: 'Test prompt',
-        expected_answer: 'answer',
-        hints: ['hint'],
         accepted_solutions: [],
-      };
+      });
       const errors = validateYamlExercise(exercise, 'test.yaml');
       expect(errors).toHaveLength(0);
     });
@@ -187,14 +173,12 @@ describe('validateYamlFile', () => {
     language: 'python',
     category: 'loops',
     exercises: [
-      {
+      createMockYamlExercise({
         slug: 'for-loop-range',
         title: 'For Loop Range',
-        difficulty: 1,
         prompt: 'Write a for loop',
         expected_answer: 'for i in range(5):',
-        hints: ['Use range()'],
-      },
+      }),
     ],
   };
 

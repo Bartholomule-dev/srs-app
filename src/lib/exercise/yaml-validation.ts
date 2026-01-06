@@ -42,7 +42,7 @@ export function validateYamlExercise(
   }
 
   // Difficulty validation
-  if (![1, 2, 3].includes(exercise.difficulty)) {
+  if (exercise.difficulty !== undefined && ![1, 2, 3].includes(exercise.difficulty)) {
     errors.push({
       file,
       slug,
