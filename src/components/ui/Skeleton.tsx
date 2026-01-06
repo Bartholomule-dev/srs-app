@@ -1,10 +1,22 @@
 'use client';
 
-import { Skeleton as DarwinSkeleton } from '@pikoloo/darwin-ui';
-import type { ComponentProps } from 'react';
+import { forwardRef, type HTMLAttributes } from 'react';
+import { cn } from '@/lib/utils';
 
-export type SkeletonProps = ComponentProps<typeof DarwinSkeleton>;
+export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {}
 
-export function Skeleton({ className = '', ...props }: SkeletonProps) {
-  return <DarwinSkeleton className={className} {...props} />;
-}
+export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
+  function Skeleton({ className, ...props }, ref) {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'animate-pulse rounded-md',
+          'bg-[var(--bg-surface-3)]',
+          className
+        )}
+        {...props}
+      />
+    );
+  }
+);
