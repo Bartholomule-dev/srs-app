@@ -1,5 +1,7 @@
 'use client';
 
+import { motion } from 'framer-motion';
+
 interface SessionProgressProps {
   /** Current card number (1-based for display, but internally 0-indexed completed count) */
   current: number;
@@ -43,18 +45,35 @@ export function SessionProgress({
           <div className="h-2 w-full rounded-full bg-[var(--bg-surface-3)]" />
         ) : (
           segments.map(({ index, isCompleted, isCurrent }) => (
-            <div
+            <motion.div
               key={index}
               className={`
-                h-2 flex-1 rounded-full transition-all duration-200 ease-out
-                ${isCompleted
-                  ? 'bg-[var(--accent-primary)]'
-                  : isCurrent
-                    ? 'bg-[var(--accent-primary)] scale-y-125 shadow-[0_0_8px_var(--accent-primary)]'
-                    : 'bg-[var(--bg-surface-3)]'
+                h-2 flex-1 rounded-full overflow-hidden
+                ${isCompleted || isCurrent
+                  ? ''
+                  : 'bg-[var(--bg-surface-3)]'
                 }
               `}
-            />
+              initial={false}
+            >
+              <motion.div
+                className={`
+                  h-full rounded-full
+                  ${isCurrent
+                    ? 'bg-[var(--accent-primary)] shadow-[0_0_8px_var(--accent-primary)]'
+                    : 'bg-[var(--accent-primary)]'
+                  }
+                `}
+                initial={{ width: '0%' }}
+                animate={{
+                  width: isCompleted || isCurrent ? '100%' : '0%',
+                }}
+                transition={{
+                  duration: 0.3,
+                  ease: [0.25, 1, 0.5, 1],
+                }}
+              />
+            </motion.div>
           ))
         )}
       </div>
