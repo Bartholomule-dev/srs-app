@@ -119,3 +119,28 @@ export function checkFillInAnswer(
   // Check against alternatives
   return acceptedAlternatives.some(alt => normalized === alt.trim());
 }
+
+/**
+ * Check if user's predicted output matches expected output.
+ * Uses normalized matching: trim whitespace, remove trailing newlines, case-sensitive.
+ */
+export function checkPredictAnswer(
+  userAnswer: string,
+  expectedAnswer: string,
+  acceptedAlternatives: string[] = []
+): boolean {
+  const normalize = (s: string): string => {
+    return s.trim().replace(/\n+$/, '');
+  };
+
+  const normalizedUser = normalize(userAnswer);
+  const normalizedExpected = normalize(expectedAnswer);
+
+  if (normalizedUser === normalizedExpected) {
+    return true;
+  }
+
+  return acceptedAlternatives.some(
+    (alt) => normalize(alt) === normalizedUser
+  );
+}
