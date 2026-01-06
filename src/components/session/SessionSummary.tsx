@@ -61,7 +61,7 @@ function StatCard({
       className={`text-center p-4 rounded-xl ${colorClasses[color]}`}
     >
       <div className="text-2xl font-bold font-display">{value}</div>
-      <div className="text-xs opacity-80 mt-1">{label}</div>
+      <div className="text-xs opacity-80 mt-1 uppercase tracking-[0.05em]">{label}</div>
     </motion.div>
   );
 }

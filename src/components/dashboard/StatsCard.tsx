@@ -312,7 +312,7 @@ export function StatsCard({
             ) : null}
 
             {/* Label */}
-            <span className="text-sm text-[var(--text-secondary)] font-medium">
+            <span className="text-sm text-[var(--text-secondary)] font-medium uppercase tracking-[0.05em]">
               {label}
             </span>
           </div>
