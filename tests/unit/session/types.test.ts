@@ -1,6 +1,13 @@
 // tests/unit/session/types.test.ts
 import { describe, it, expect } from 'vitest';
-import type { SessionCard, SessionStats } from '@/lib/session';
+import type {
+  SessionCard,
+  SessionStats,
+  TeachingSessionCard,
+  PracticeSessionCard,
+  ReviewSessionCard,
+  SessionCardType,
+} from '@/lib/session';
 import { createMockExercise } from '@tests/fixtures/exercise';
 
 describe('session types', () => {
@@ -59,6 +66,84 @@ describe('session types', () => {
         endTime: new Date('2026-01-01T10:15:00Z'),
       };
       expect(stats.endTime).toBeInstanceOf(Date);
+    });
+  });
+
+  describe('TeachingSessionCard', () => {
+    it('has type teaching with teaching content and example exercise', () => {
+      const exercise = createMockExercise({ slug: 'for-loop-intro' });
+      const card: TeachingSessionCard = {
+        type: 'teaching',
+        subconcept: 'for',
+        teaching: {
+          explanation: 'For loops iterate over sequences.',
+          exampleSlug: 'for-loop-intro',
+        },
+        exampleExercise: exercise,
+      };
+
+      expect(card.type).toBe('teaching');
+      expect(card.subconcept).toBe('for');
+      expect(card.teaching.explanation).toBe('For loops iterate over sequences.');
+      expect(card.exampleExercise.slug).toBe('for-loop-intro');
+    });
+  });
+
+  describe('PracticeSessionCard', () => {
+    it('has type practice with exercise and isNew flag', () => {
+      const exercise = createMockExercise({ slug: 'for-loop-practice' });
+      const card: PracticeSessionCard = {
+        type: 'practice',
+        exercise,
+        isNew: true,
+      };
+
+      expect(card.type).toBe('practice');
+      expect(card.exercise.slug).toBe('for-loop-practice');
+      expect(card.isNew).toBe(true);
+    });
+  });
+
+  describe('ReviewSessionCard', () => {
+    it('has type review with exercise', () => {
+      const exercise = createMockExercise({ slug: 'for-loop-review' });
+      const card: ReviewSessionCard = {
+        type: 'review',
+        exercise,
+      };
+
+      expect(card.type).toBe('review');
+      expect(card.exercise.slug).toBe('for-loop-review');
+    });
+  });
+
+  describe('SessionCardType discriminated union', () => {
+    it('can narrow type based on type field', () => {
+      const exercise = createMockExercise();
+      const cards: SessionCardType[] = [
+        {
+          type: 'teaching',
+          subconcept: 'for',
+          teaching: { explanation: 'test', exampleSlug: 'test' },
+          exampleExercise: exercise,
+        },
+        { type: 'practice', exercise, isNew: true },
+        { type: 'review', exercise },
+      ];
+
+      const teachingCards = cards.filter(
+        (c): c is TeachingSessionCard => c.type === 'teaching'
+      );
+      const practiceCards = cards.filter(
+        (c): c is PracticeSessionCard => c.type === 'practice'
+      );
+      const reviewCards = cards.filter(
+        (c): c is ReviewSessionCard => c.type === 'review'
+      );
+
+      expect(teachingCards).toHaveLength(1);
+      expect(practiceCards).toHaveLength(1);
+      expect(reviewCards).toHaveLength(1);
     });
   });
 });
