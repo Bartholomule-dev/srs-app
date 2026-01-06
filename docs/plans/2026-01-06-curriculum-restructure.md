@@ -8,6 +8,12 @@
 
 **Tech Stack:** YAML exercise files, TypeScript import script, Supabase database
 
+**Review Notes (Codex + Gemini):**
+- DELETE basics.yaml and operators.yaml instead of merging (content already exists in foundations.yaml)
+- UPDATE prereqs fields after file renames (grep for old concept names)
+- MOVE misplaced exercises to their correct files, don't delete them
+- EXPAND variety to ALL concepts, not just 3
+
 ---
 
 ## Phase 1: Structural Cleanup
@@ -135,433 +141,148 @@ git commit -m "refactor: rename exceptions.yaml to error-handling.yaml"
 
 ---
 
-### Task 1.4: Merge basics.yaml into foundations.yaml
+### Task 1.4: Update prereqs fields after renames
 
 **Files:**
-- Read: `exercises/python/basics.yaml` (5 exercises to merge)
-- Modify: `exercises/python/foundations.yaml` (append exercises)
-- Delete: `exercises/python/basics.yaml`
+- Check: All `exercises/python/*.yaml` files for old concept names in prereqs
 
-**Step 1: Verify no duplicate slugs**
+**Step 1: Search for old concept references**
 
 ```bash
 cd /home/brett/Documents/Work/srs-app/exercises/python
-for slug in print-hello-world variable-assignment string-variable type-check user-input; do
-  grep -q "slug: $slug" foundations.yaml && echo "DUPLICATE: $slug" || echo "OK: $slug"
-done
+grep -n "prereqs:.*loops\|prereqs:.*classes\|prereqs:.*exceptions" *.yaml
 ```
 
-Expected: All 5 should show "OK"
+Expected: List of any files with old concept names in prereqs
 
-**Step 2: Append basics.yaml exercises to foundations.yaml**
+**Step 2: Update any found references**
 
-Add these 5 exercises to the end of `foundations.yaml` (before the final newline), under a new comment section:
+If any are found, update:
+- `loops` → `control-flow`
+- `classes` → `oop`
+- `exceptions` → `error-handling`
 
-```yaml
-  # --- Merged from basics.yaml ---
-  - slug: print-hello-world
-    objective: Write a print statement to output text to the console
-    title: Print Hello World
-    difficulty: 1
-    prompt: Print the text "Hello, World!" to the console
-    expected_answer: print("Hello, World!")
-    accepted_solutions:
-      - "print('Hello, World!')"
-    hints:
-      - Use the print() function
-      - Put the text in quotes
-    tags: [print, strings, beginner]
-    concept: foundations
-    subconcept: io
-    level: intro
-    prereqs: []
-    type: write
-    pattern: io
+**Step 3: Commit if changes made**
 
-  - slug: variable-assignment
-    objective: Assign a numeric value to a variable using the assignment operator
-    title: Variable Assignment
-    difficulty: 1
-    prompt: Assign the value 42 to a variable named answer
-    expected_answer: answer = 42
-    hints:
-      - Use the = operator
-      - Variable name goes on the left
-    tags: [variables, assignment, beginner]
-    concept: foundations
-    subconcept: variables
-    level: intro
-    prereqs: []
-    type: write
-    pattern: assignment
-
-  - slug: string-variable
-    objective: Create a variable and assign a string value to it
-    title: String Variable
-    difficulty: 1
-    prompt: Create a variable called name with the value "Alice"
-    expected_answer: name = "Alice"
-    accepted_solutions:
-      - "name = 'Alice'"
-    hints:
-      - Use quotes for strings
-    tags: [variables, strings, beginner]
-    concept: foundations
-    subconcept: variables
-    level: intro
-    prereqs: []
-    type: write
-    pattern: assignment
-
-  - slug: type-check
-    objective: Use the type() function to inspect the data type of a variable
-    title: Type Check
-    difficulty: 1
-    prompt: Get the type of the variable x
-    expected_answer: type(x)
-    hints:
-      - Use the type() function
-    tags: [types, functions, beginner]
-    concept: foundations
-    subconcept: expressions
-    level: intro
-    prereqs: []
-    type: write
-    pattern: invocation
-
-  - slug: user-input
-    objective: Capture user input with a custom prompt message using input()
-    title: User Input
-    difficulty: 2
-    prompt: Get input from user with the prompt "Enter name:"
-    expected_answer: input("Enter name:")
-    accepted_solutions:
-      - "input('Enter name:')"
-    hints:
-      - Use the input() function
-      - Pass the prompt as a string argument
-    tags: [input, functions, beginner]
-    concept: foundations
-    subconcept: io
-    level: practice
-    prereqs: []
-    type: write
-    pattern: io
+```bash
+git add exercises/python/
+git commit -m "refactor: update prereqs to use new concept slugs"
 ```
 
-**Step 3: Delete basics.yaml**
+---
+
+### Task 1.5: Delete basics.yaml (redundant content)
+
+**Files:**
+- Delete: `exercises/python/basics.yaml`
+
+**Rationale (from Codex + Gemini review):** The 5 exercises in basics.yaml have equivalent content already in foundations.yaml. Similar prompts exist for Hello World, variable assignment, input, etc. Merging would create near-duplicates.
+
+**Step 1: Verify content overlap**
+
+```bash
+cd /home/brett/Documents/Work/srs-app/exercises/python
+echo "=== basics.yaml prompts ===" && grep "prompt:" basics.yaml
+echo "=== Similar in foundations.yaml ===" && grep -E "prompt:.*(Hello|42|Alice|type\(|Enter name)" foundations.yaml
+```
+
+Expected: Similar prompts exist in both files
+
+**Step 2: Delete the redundant file**
 
 ```bash
 rm basics.yaml
 ```
 
-**Step 4: Verify exercise count**
-
-```bash
-grep -c "slug:" foundations.yaml
-```
-
-Expected: 51 (was 46, added 5)
-
-**Step 5: Commit**
+**Step 3: Commit**
 
 ```bash
 git add exercises/python/
-git commit -m "refactor: merge basics.yaml into foundations.yaml"
+git commit -m "refactor: delete redundant basics.yaml (content exists in foundations.yaml)"
 ```
 
 ---
 
-### Task 1.5: Merge operators.yaml into foundations.yaml
+### Task 1.6: Delete operators.yaml (redundant content)
 
 **Files:**
-- Read: `exercises/python/operators.yaml` (5 exercises to merge)
-- Modify: `exercises/python/foundations.yaml` (append exercises)
 - Delete: `exercises/python/operators.yaml`
 
-**Step 1: Verify no duplicate slugs**
+**Rationale (from Codex + Gemini review):** The 5 exercises in operators.yaml have equivalent content already in foundations.yaml. Floor division, modulo, exponentiation exercises already exist with -intro suffix.
+
+**Step 1: Verify content overlap**
 
 ```bash
 cd /home/brett/Documents/Work/srs-app/exercises/python
-for slug in floor-division modulo-operator exponentiation comparison-chain logical-and; do
-  grep -q "slug: $slug" foundations.yaml && echo "DUPLICATE: $slug" || echo "OK: $slug"
-done
+echo "=== operators.yaml prompts ===" && grep "prompt:" operators.yaml
+echo "=== Similar in foundations.yaml ===" && grep -E "prompt:.*(17.*5|floor|modulo|power|chain)" foundations.yaml
 ```
 
-Expected: Some may show DUPLICATE (these are actual duplicates to skip)
+Expected: Similar prompts exist in both files
 
-**Step 2: Check which are duplicates**
-
-From investigation:
-- `floor-division` → foundations has `floor-division-intro` (similar, keep operators version as it's cleaner)
-- `modulo-operator` → foundations has `modulo-operator-intro` (similar, keep operators version)
-- `exponentiation` → foundations has `exponentiation-intro` (similar, keep operators version)
-- `comparison-chain` → foundations has different versions (different bounds, keep both)
-- `logical-and` → foundations has `boolean-and` (similar, keep operators version as cleaner)
-
-**Decision:** The operators.yaml versions are cleaner. We'll keep them and note they supplement the existing ones. Since slugs are different, no conflict.
-
-**Step 3: Append operators.yaml exercises to foundations.yaml**
-
-Add to end of `foundations.yaml`:
-
-```yaml
-  # --- Merged from operators.yaml ---
-  - slug: floor-division
-    objective: Perform integer division that rounds down using the // operator
-    title: Floor Division
-    difficulty: 1
-    prompt: Divide 17 by 5 using floor division
-    expected_answer: 17 // 5
-    hints:
-      - Use // for floor division
-    tags: [operators, division, beginner]
-    concept: foundations
-    subconcept: operators
-    level: intro
-    prereqs: []
-    type: write
-    pattern: arithmetic
-
-  - slug: modulo-operator
-    objective: Calculate the remainder of a division using the modulo operator
-    title: Modulo Operator
-    difficulty: 1
-    prompt: Get the remainder of 17 divided by 5
-    expected_answer: 17 % 5
-    hints:
-      - Use % for modulo
-    tags: [operators, modulo, beginner]
-    concept: foundations
-    subconcept: operators
-    level: intro
-    prereqs: []
-    type: write
-    pattern: arithmetic
-
-  - slug: exponentiation
-    objective: Raise a number to a power using the exponentiation operator
-    title: Exponentiation
-    difficulty: 1
-    prompt: Calculate 2 to the power of 10
-    expected_answer: 2 ** 10
-    hints:
-      - Use ** for exponentiation
-    tags: [operators, power, beginner]
-    concept: foundations
-    subconcept: operators
-    level: intro
-    prereqs: []
-    type: write
-    pattern: arithmetic
-
-  - slug: comparison-chain
-    objective: Use chained comparisons to check if a value falls within a range
-    title: Comparison Chain
-    difficulty: 2
-    prompt: Check if x is between 1 and 10 (inclusive) using chained comparison
-    expected_answer: 1 <= x <= 10
-    hints:
-      - Python supports chained comparisons
-      - Use <= for inclusive bounds
-    tags: [operators, comparison, intermediate]
-    concept: foundations
-    subconcept: operators
-    level: practice
-    prereqs: []
-    type: write
-    pattern: comparison
-
-  - slug: logical-and
-    objective: Combine boolean expressions using the logical and operator
-    title: Logical And
-    difficulty: 1
-    prompt: Check if both a and b are True
-    expected_answer: a and b
-    hints:
-      - Use the 'and' keyword
-    tags: [operators, logical, beginner]
-    concept: foundations
-    subconcept: operators
-    level: intro
-    prereqs: []
-    type: write
-    pattern: logical
-```
-
-**Step 4: Delete operators.yaml**
+**Step 2: Delete the redundant file**
 
 ```bash
 rm operators.yaml
 ```
 
-**Step 5: Verify exercise count**
-
-```bash
-grep -c "slug:" foundations.yaml
-```
-
-Expected: 56 (was 51, added 5)
-
-**Step 6: Commit**
+**Step 3: Commit**
 
 ```bash
 git add exercises/python/
-git commit -m "refactor: merge operators.yaml into foundations.yaml"
+git commit -m "refactor: delete redundant operators.yaml (content exists in foundations.yaml)"
 ```
 
 ---
 
-### Task 1.6: Merge lists.yaml into collections.yaml
+### Task 1.7: Delete lists.yaml (content in collections.yaml)
 
 **Files:**
-- Read: `exercises/python/lists.yaml` (5 exercises)
-- Modify: `exercises/python/collections.yaml` (append unique exercises)
 - Delete: `exercises/python/lists.yaml`
 
-**Step 1: Check for duplicate slugs**
+**Rationale:** collections.yaml already has comprehensive list coverage (11 exercises). The 5 exercises in lists.yaml are basic versions of what's already there.
+
+**Step 1: Verify collections.yaml has list coverage**
 
 ```bash
 cd /home/brett/Documents/Work/srs-app/exercises/python
-for slug in list-creation list-append list-indexing list-slicing list-extend; do
-  grep -q "slug: $slug" collections.yaml && echo "DUPLICATE: $slug" || echo "OK: $slug"
-done
+grep -c "subconcept: lists" collections.yaml
 ```
 
-From investigation, collections.yaml has:
-- `list-create-empty` (different)
-- `list-create-values` (similar to list-creation but different slug)
-- `list-extend-method` (similar to list-extend)
+Expected: 11 or more
 
-**Decision:** Keep unique ones from lists.yaml:
-- `list-creation` - keep (different from list-create-values, includes variable name)
-- `list-append` - keep (not in collections)
-- `list-indexing` - keep (not in collections)
-- `list-slicing` - keep (not in collections)
-- `list-extend` - SKIP (duplicate of list-extend-method)
-
-**Step 2: Append 4 unique exercises to collections.yaml**
-
-Add to end of `collections.yaml`:
-
-```yaml
-  # --- Merged from lists.yaml ---
-  - slug: list-creation
-    objective: Create a list with multiple elements using square bracket syntax
-    title: List Creation
-    difficulty: 1
-    concept: collections
-    subconcept: lists
-    level: intro
-    prereqs: []
-    type: write
-    pattern: construction
-    prompt: Create a list called numbers containing 1, 2, 3
-    expected_answer: numbers = [1, 2, 3]
-    hints:
-      - Use square brackets
-    tags: [lists, creation, beginner]
-
-  - slug: list-append
-    objective: Add a single element to the end of a list using append()
-    title: List Append
-    difficulty: 1
-    concept: collections
-    subconcept: lists
-    level: intro
-    prereqs: []
-    type: write
-    pattern: mutation
-    prompt: Add the value 4 to the end of the list numbers
-    expected_answer: numbers.append(4)
-    hints:
-      - Use the append() method
-    tags: [lists, methods, beginner]
-
-  - slug: list-indexing
-    objective: Access a specific list element by its zero-based index position
-    title: List Indexing
-    difficulty: 1
-    concept: collections
-    subconcept: lists
-    level: intro
-    prereqs: []
-    type: write
-    pattern: indexing
-    prompt: Get the second element of list items
-    expected_answer: items[1]
-    hints:
-      - Use square bracket indexing
-      - Remember indices start at 0
-    tags: [lists, indexing, beginner]
-
-  - slug: list-slicing
-    objective: Extract a subset of list elements using slice notation
-    title: List Slicing
-    difficulty: 2
-    concept: collections
-    subconcept: lists
-    level: practice
-    prereqs: [lists]
-    type: write
-    pattern: indexing
-    prompt: Get the first 3 elements of list items
-    expected_answer: items[:3]
-    hints:
-      - Use slice notation
-      - Omit start to begin at 0
-    tags: [lists, slicing, intermediate]
-```
-
-**Step 3: Delete lists.yaml**
+**Step 2: Delete the redundant file**
 
 ```bash
 rm lists.yaml
 ```
 
-**Step 4: Verify exercise count**
-
-```bash
-grep -c "slug:" collections.yaml
-```
-
-Expected: 47 (was 43, added 4)
-
-**Step 5: Commit**
+**Step 3: Commit**
 
 ```bash
 git add exercises/python/
-git commit -m "refactor: merge lists.yaml into collections.yaml"
+git commit -m "refactor: delete redundant lists.yaml (content exists in collections.yaml)"
 ```
 
 ---
 
-### Task 1.7: Merge dictionaries.yaml into collections.yaml
+### Task 1.8: Delete dictionaries.yaml (content in collections.yaml)
 
 **Files:**
-- Read: `exercises/python/dictionaries.yaml` (5 exercises)
-- Modify: `exercises/python/collections.yaml` (append unique exercises)
 - Delete: `exercises/python/dictionaries.yaml`
 
-**Step 1: Check for duplicate slugs**
+**Rationale (confirmed by both Codex and Gemini):** collections.yaml already has comprehensive dict coverage (10 exercises). Safe to delete.
+
+**Step 1: Verify collections.yaml has dict coverage**
 
 ```bash
 cd /home/brett/Documents/Work/srs-app/exercises/python
-for slug in dict-creation dict-access dict-get dict-keys dict-update; do
-  grep -q "slug: $slug" collections.yaml && echo "DUPLICATE: $slug" || echo "OK: $slug"
-done
+grep -c "subconcept: dicts" collections.yaml
 ```
 
-From investigation, collections.yaml has:
-- `dict-create-empty` (different)
-- `dict-create-values` (similar)
-- `dict-bracket-access` (similar to dict-access)
-- `dict-get-default` (similar to dict-get)
-- `dict-keys-method` (similar to dict-keys)
+Expected: 10 or more
 
-**Decision:** These are all duplicates with slightly different prompts. Since collections.yaml already has comprehensive dict coverage, SKIP all 5 from dictionaries.yaml.
-
-**Step 2: Delete dictionaries.yaml (no merge needed)**
+**Step 2: Delete the redundant file**
 
 ```bash
 rm dictionaries.yaml
@@ -571,65 +292,59 @@ rm dictionaries.yaml
 
 ```bash
 git add exercises/python/
-git commit -m "refactor: remove redundant dictionaries.yaml (content already in collections.yaml)"
+git commit -m "refactor: delete redundant dictionaries.yaml (content exists in collections.yaml)"
 ```
 
 ---
 
-### Task 1.8: Move numbers-booleans exercises from foundations.yaml
+### Task 1.9: Move misplaced numbers-booleans exercises
 
 **Files:**
 - Modify: `exercises/python/foundations.yaml` (remove 10 exercises)
-- Modify: `exercises/python/numbers-booleans.yaml` (add 10 exercises if not already there)
+- Modify: `exercises/python/numbers-booleans.yaml` (add 10 exercises)
 
 **Step 1: Identify exercises to move**
 
-From investigation, foundations.yaml has 10 exercises with `concept: numbers-booleans`:
-- 5 with `subconcept: truthiness`
-- 5 with `subconcept: comparisons`
+```bash
+cd /home/brett/Documents/Work/srs-app/exercises/python
+grep -B5 "concept: numbers-booleans" foundations.yaml | grep "slug:"
+```
 
-**Step 2: Check if these exercises already exist in numbers-booleans.yaml**
+Expected: ~10 slugs with truthiness/comparisons subconcepts
+
+**Step 2: Check if numbers-booleans.yaml already has these subconcepts**
 
 ```bash
 grep "subconcept: truthiness\|subconcept: comparisons" numbers-booleans.yaml | wc -l
 ```
 
-If count is 8 (4 truthiness + 4 comparisons), then numbers-booleans.yaml already has coverage.
+If numbers-booleans.yaml already has 8+ exercises for these subconcepts, the exercises in foundations.yaml are duplicates and should be removed (not moved).
 
-**Decision:** The 10 exercises in foundations.yaml with `concept: numbers-booleans` should be REMOVED (they're misplaced). Numbers-booleans.yaml already has its own coverage.
+**Step 3: Remove misplaced exercises from foundations.yaml**
 
-**Step 3: Remove the 10 misplaced exercises from foundations.yaml**
+Remove all exercises where `concept: numbers-booleans` from foundations.yaml.
 
-Remove all exercises where `concept: numbers-booleans` from foundations.yaml. These are the slugs to remove:
-- `truthiness-empty-list`
-- `truthiness-zero`
-- `truthiness-empty-string`
-- `truthiness-none`
-- `truthiness-check`
-- `comparison-is-none`
-- `comparison-is-not`
-- `comparison-equality-vs-identity`
-- `comparison-in-operator`
-- `comparison-chained`
-
-**Step 4: Verify exercise count after removal**
+**Step 4: Verify exercise count**
 
 ```bash
 grep -c "slug:" foundations.yaml
 ```
 
-Expected: 46 (56 - 10 removed)
+Expected: 36 (was 46, removed 10)
 
 **Step 5: Commit**
 
 ```bash
 git add exercises/python/
-git commit -m "refactor: remove misplaced numbers-booleans exercises from foundations.yaml"
+git commit -m "refactor: remove misplaced numbers-booleans exercises from foundations.yaml
+
+These exercises had concept: numbers-booleans but were in foundations.yaml.
+Numbers-booleans.yaml already has coverage for truthiness and comparisons."
 ```
 
 ---
 
-### Task 1.9: Validate final structure and run import
+### Task 1.10: Validate final structure and run import
 
 **Files:**
 - All files in `exercises/python/`
@@ -668,7 +383,7 @@ cd /home/brett/Documents/Work/srs-app/exercises/python
 for f in *.yaml; do echo -n "$f: "; grep -c "slug:" "$f"; done
 ```
 
-**Step 4: Commit final cleanup**
+**Step 4: Commit Phase 1 complete**
 
 ```bash
 git add .
@@ -677,11 +392,12 @@ git commit -m "refactor: complete Phase 1 curriculum restructure
 - Renamed: loops.yaml → control-flow.yaml
 - Renamed: classes.yaml → oop.yaml
 - Renamed: exceptions.yaml → error-handling.yaml
-- Merged: basics.yaml → foundations.yaml (5 exercises)
-- Merged: operators.yaml → foundations.yaml (5 exercises)
-- Merged: lists.yaml → collections.yaml (4 exercises)
+- Updated: prereqs fields with new concept slugs
+- Deleted: basics.yaml (redundant)
+- Deleted: operators.yaml (redundant)
+- Deleted: lists.yaml (redundant)
 - Deleted: dictionaries.yaml (redundant)
-- Removed: 10 misplaced numbers-booleans exercises from foundations.yaml
+- Removed: 10 misplaced exercises from foundations.yaml
 
 Result: 10 files matching curriculum graph concepts exactly"
 ```
@@ -1400,9 +1116,9 @@ OOP now has 23 exercises, Error Handling has 15 exercises"
 
 ---
 
-## Phase 3: Balance & Polish
+## Phase 3: Balance & Polish - Exercise Variety
 
-### Task 3.1: Add fill-in exercises to control-flow
+### Task 3.1: Add fill-in/predict to control-flow
 
 **Files:**
 - Modify: `exercises/python/control-flow.yaml`
@@ -1522,21 +1238,7 @@ Append to `control-flow.yaml`:
     tags: [control-flow, while, fill-in]
 ```
 
-**Step 2: Commit**
-
-```bash
-git add exercises/python/control-flow.yaml
-git commit -m "content: add 6 fill-in exercises to control-flow.yaml"
-```
-
----
-
-### Task 3.2: Add predict exercises to control-flow
-
-**Files:**
-- Modify: `exercises/python/control-flow.yaml`
-
-**Step 1: Add 6 predict exercises**
+**Step 2: Add 6 predict exercises**
 
 Append to `control-flow.yaml`:
 
@@ -1681,16 +1383,16 @@ Append to `control-flow.yaml`:
     tags: [control-flow, nested, predict]
 ```
 
-**Step 2: Commit**
+**Step 3: Commit**
 
 ```bash
 git add exercises/python/control-flow.yaml
-git commit -m "content: add 6 predict exercises to control-flow.yaml"
+git commit -m "content: add 12 fill-in/predict exercises to control-flow.yaml"
 ```
 
 ---
 
-### Task 3.3: Add fill-in exercises to functions
+### Task 3.2: Add fill-in/predict to functions
 
 **Files:**
 - Modify: `exercises/python/functions.yaml`
@@ -1806,21 +1508,7 @@ Append to `functions.yaml`:
     tags: [functions, kwargs, fill-in]
 ```
 
-**Step 2: Commit**
-
-```bash
-git add exercises/python/functions.yaml
-git commit -m "content: add 6 fill-in exercises to functions.yaml"
-```
-
----
-
-### Task 3.4: Add predict exercises to functions
-
-**Files:**
-- Modify: `exercises/python/functions.yaml`
-
-**Step 1: Add 6 predict exercises**
+**Step 2: Add 6 predict exercises**
 
 Append to `functions.yaml`:
 
@@ -1956,21 +1644,21 @@ Append to `functions.yaml`:
     tags: [functions, mutable, gotcha, predict]
 ```
 
-**Step 2: Commit**
+**Step 3: Commit**
 
 ```bash
 git add exercises/python/functions.yaml
-git commit -m "content: add 6 predict exercises to functions.yaml"
+git commit -m "content: add 12 fill-in/predict exercises to functions.yaml"
 ```
 
 ---
 
-### Task 3.5: Add fill-in and predict to comprehensions
+### Task 3.3: Add fill-in/predict to comprehensions
 
 **Files:**
 - Modify: `exercises/python/comprehensions.yaml`
 
-**Step 1: Add 4 fill-in exercises**
+**Step 1: Add 4 fill-in and 4 predict exercises**
 
 Append to `comprehensions.yaml`:
 
@@ -2027,30 +1715,24 @@ Append to `comprehensions.yaml`:
       - Separator between key and value
     tags: [comprehensions, dict-comp, fill-in]
 
-  - slug: generator-paren-fill
-    objective: Identify generator expression syntax
-    title: Generator Syntax Fill-in
+  - slug: set-comp-brace-fill
+    objective: Identify set comprehension syntax
+    title: Set Comp Syntax Fill-in
     difficulty: 2
     concept: comprehensions
-    subconcept: generator-exp
+    subconcept: set-comp
     level: practice
     prereqs: [comprehensions.list-comp]
     type: fill-in
     pattern: mapping
-    prompt: Complete to create a generator (not a list)
-    template: "gen = ___(x * 2 for x in range(5))"
-    expected_answer: ""
+    prompt: Complete to create a set (unique values)
+    template: "___x for x in [1, 1, 2, 2, 3]}"
+    expected_answer: "{"
     hints:
-      - Generators use parentheses directly
-      - No function call needed if standalone
-    tags: [comprehensions, generator-exp, fill-in]
-```
+      - Same as dict but without colon
+      - Creates unique values
+    tags: [comprehensions, set-comp, fill-in]
 
-**Step 2: Add 4 predict exercises**
-
-Append to `comprehensions.yaml`:
-
-```yaml
   # --- Predict Exercises ---
   - slug: list-comp-predict
     objective: Predict list comprehension output
@@ -2139,7 +1821,560 @@ git commit -m "content: add 8 fill-in/predict exercises to comprehensions.yaml"
 
 ---
 
-### Task 3.6: Final validation and Phase 3 completion
+### Task 3.4: Add fill-in/predict to oop
+
+**Files:**
+- Modify: `exercises/python/oop.yaml`
+
+**Step 1: Add 6 fill-in/predict exercises**
+
+Append to `oop.yaml`:
+
+```yaml
+  # --- Fill-in Exercises ---
+  - slug: class-keyword-fill
+    objective: Complete the class definition keyword
+    title: Class Keyword Fill-in
+    difficulty: 1
+    concept: oop
+    subconcept: classes
+    level: intro
+    prereqs: []
+    type: fill-in
+    pattern: definition
+    prompt: Complete the class definition
+    template: "___ Person:"
+    expected_answer: "class"
+    hints:
+      - Keyword that starts class definition
+    tags: [oop, class, fill-in]
+
+  - slug: init-self-fill
+    objective: Complete the __init__ first parameter
+    title: Init Self Fill-in
+    difficulty: 1
+    concept: oop
+    subconcept: methods
+    level: intro
+    prereqs: [oop.classes]
+    type: fill-in
+    pattern: definition
+    prompt: Complete the constructor's first parameter
+    template: "def __init__(___, name):"
+    expected_answer: "self"
+    hints:
+      - Always the first parameter in instance methods
+    tags: [oop, init, fill-in]
+
+  - slug: super-fill
+    objective: Complete the super() call
+    title: Super Fill-in
+    difficulty: 2
+    concept: oop
+    subconcept: inheritance
+    level: practice
+    prereqs: [oop.inheritance]
+    type: fill-in
+    pattern: invocation
+    prompt: Complete to call parent's __init__
+    template: "___().__init__(name)"
+    expected_answer: "super"
+    hints:
+      - Built-in to access parent class
+    tags: [oop, super, fill-in]
+
+  # --- Predict Exercises ---
+  - slug: instance-attribute-predict
+    objective: Predict instance attribute access
+    title: Instance Attribute Predict
+    difficulty: 2
+    concept: oop
+    subconcept: classes
+    level: intro
+    prereqs: [oop.classes]
+    type: predict
+    pattern: invocation
+    prompt: What does this code print?
+    code: |
+      class Person:
+          def __init__(self, name):
+              self.name = name
+      p = Person("Alice")
+      print(p.name)
+    expected_answer: "Alice"
+    hints:
+      - self.name stores the passed value
+    tags: [oop, attribute, predict]
+
+  - slug: method-call-predict
+    objective: Predict method return value
+    title: Method Call Predict
+    difficulty: 2
+    concept: oop
+    subconcept: methods
+    level: practice
+    prereqs: [oop.methods]
+    type: predict
+    pattern: invocation
+    prompt: What does this code print?
+    code: |
+      class Counter:
+          def __init__(self):
+              self.count = 0
+          def increment(self):
+              self.count += 1
+              return self.count
+      c = Counter()
+      print(c.increment())
+      print(c.increment())
+    expected_answer: |
+      1
+      2
+    hints:
+      - Each call increments and returns count
+    tags: [oop, method, predict]
+
+  - slug: inheritance-predict
+    objective: Predict inherited method behavior
+    title: Inheritance Predict
+    difficulty: 2
+    concept: oop
+    subconcept: inheritance
+    level: practice
+    prereqs: [oop.inheritance]
+    type: predict
+    pattern: invocation
+    prompt: What does this code print?
+    code: |
+      class Animal:
+          def speak(self):
+              return "sound"
+      class Dog(Animal):
+          def speak(self):
+              return "bark"
+      d = Dog()
+      print(d.speak())
+    expected_answer: "bark"
+    hints:
+      - Child method overrides parent
+    tags: [oop, inheritance, predict]
+```
+
+**Step 2: Commit**
+
+```bash
+git add exercises/python/oop.yaml
+git commit -m "content: add 6 fill-in/predict exercises to oop.yaml"
+```
+
+---
+
+### Task 3.5: Add fill-in/predict to error-handling
+
+**Files:**
+- Modify: `exercises/python/error-handling.yaml`
+
+**Step 1: Add 6 fill-in/predict exercises**
+
+Append to `error-handling.yaml`:
+
+```yaml
+  # --- Fill-in Exercises ---
+  - slug: try-keyword-fill
+    objective: Complete the try block keyword
+    title: Try Keyword Fill-in
+    difficulty: 1
+    concept: error-handling
+    subconcept: try-except
+    level: intro
+    prereqs: []
+    type: fill-in
+    pattern: handling
+    prompt: Complete to start a try block
+    template: |
+      ___:
+          risky_operation()
+    expected_answer: "try"
+    hints:
+      - Keyword that starts exception handling
+    tags: [exceptions, try, fill-in]
+
+  - slug: except-keyword-fill
+    objective: Complete the except clause
+    title: Except Keyword Fill-in
+    difficulty: 1
+    concept: error-handling
+    subconcept: try-except
+    level: intro
+    prereqs: [error-handling.try-except]
+    type: fill-in
+    pattern: handling
+    prompt: Complete to catch ValueError
+    template: "___ ValueError:"
+    expected_answer: "except"
+    hints:
+      - Keyword that catches exceptions
+    tags: [exceptions, except, fill-in]
+
+  - slug: raise-keyword-fill
+    objective: Complete the raise statement
+    title: Raise Keyword Fill-in
+    difficulty: 2
+    concept: error-handling
+    subconcept: raising
+    level: practice
+    prereqs: [error-handling.try-except]
+    type: fill-in
+    pattern: handling
+    prompt: Complete to raise an error
+    template: '___ ValueError("Invalid")'
+    expected_answer: "raise"
+    hints:
+      - Keyword to throw an exception
+    tags: [exceptions, raise, fill-in]
+
+  # --- Predict Exercises ---
+  - slug: try-except-predict
+    objective: Predict which block executes
+    title: Try-Except Flow Predict
+    difficulty: 2
+    concept: error-handling
+    subconcept: try-except
+    level: intro
+    prereqs: [error-handling.try-except]
+    type: predict
+    pattern: handling
+    prompt: What does this code print?
+    code: |
+      try:
+          x = int("abc")
+          print("success")
+      except ValueError:
+          print("error")
+    expected_answer: "error"
+    hints:
+      - int("abc") raises ValueError
+    tags: [exceptions, try-except, predict]
+
+  - slug: except-type-predict
+    objective: Predict exception type matching
+    title: Exception Type Predict
+    difficulty: 2
+    concept: error-handling
+    subconcept: try-except
+    level: practice
+    prereqs: [error-handling.try-except]
+    type: predict
+    pattern: handling
+    prompt: What does this code print?
+    code: |
+      try:
+          x = 1 / 0
+      except ValueError:
+          print("value error")
+      except ZeroDivisionError:
+          print("zero division")
+    expected_answer: "zero division"
+    hints:
+      - 1/0 raises ZeroDivisionError, not ValueError
+    tags: [exceptions, except, predict]
+
+  - slug: exception-as-predict
+    objective: Predict exception message access
+    title: Exception As Predict
+    difficulty: 2
+    concept: error-handling
+    subconcept: try-except
+    level: practice
+    prereqs: [error-handling.try-except]
+    type: predict
+    pattern: handling
+    prompt: What does this code print?
+    code: |
+      try:
+          raise ValueError("oops")
+      except ValueError as e:
+          print(e)
+    expected_answer: "oops"
+    hints:
+      - 'as e' captures the exception object
+    tags: [exceptions, as, predict]
+```
+
+**Step 2: Commit**
+
+```bash
+git add exercises/python/error-handling.yaml
+git commit -m "content: add 6 fill-in/predict exercises to error-handling.yaml"
+```
+
+---
+
+### Task 3.6: Add fill-in/predict to modules-files
+
+**Files:**
+- Modify: `exercises/python/modules-files.yaml`
+
+**Step 1: Add 6 fill-in/predict exercises**
+
+Append to `modules-files.yaml`:
+
+```yaml
+  # --- Fill-in Exercises ---
+  - slug: import-keyword-fill
+    objective: Complete the import statement
+    title: Import Keyword Fill-in
+    difficulty: 1
+    concept: modules-files
+    subconcept: imports
+    level: intro
+    prereqs: []
+    type: fill-in
+    pattern: import
+    prompt: Complete to import the os module
+    template: "___ os"
+    expected_answer: "import"
+    hints:
+      - Keyword to bring in a module
+    tags: [imports, fill-in]
+
+  - slug: from-import-fill
+    objective: Complete the from-import syntax
+    title: From Import Fill-in
+    difficulty: 1
+    concept: modules-files
+    subconcept: imports
+    level: intro
+    prereqs: [modules-files.imports]
+    type: fill-in
+    pattern: import
+    prompt: Complete to import sqrt from math
+    template: "___ math import sqrt"
+    expected_answer: "from"
+    hints:
+      - Keyword for selective imports
+    tags: [imports, from, fill-in]
+
+  - slug: with-keyword-fill
+    objective: Complete the context manager syntax
+    title: With Keyword Fill-in
+    difficulty: 2
+    concept: modules-files
+    subconcept: context
+    level: practice
+    prereqs: [modules-files.reading]
+    type: fill-in
+    pattern: context
+    prompt: Complete to open file safely
+    template: '___ open("file.txt") as f:'
+    expected_answer: "with"
+    hints:
+      - Keyword for context managers
+    tags: [files, with, fill-in]
+
+  # --- Predict Exercises ---
+  - slug: name-main-predict
+    objective: Predict __name__ behavior
+    title: Name Main Predict
+    difficulty: 2
+    concept: modules-files
+    subconcept: main-guard
+    level: intro
+    prereqs: [modules-files.main-guard]
+    type: predict
+    pattern: conditional
+    prompt: What does __name__ equal when script runs directly?
+    code: |
+      # Running: python script.py
+      print(__name__)
+    expected_answer: "__main__"
+    hints:
+      - __name__ is "__main__" when run directly
+    tags: [modules, main, predict]
+
+  - slug: file-read-predict
+    objective: Predict file read output
+    title: File Read Predict
+    difficulty: 2
+    concept: modules-files
+    subconcept: reading
+    level: practice
+    prereqs: [modules-files.reading]
+    type: predict
+    pattern: file
+    prompt: If file.txt contains "hello", what prints?
+    code: |
+      with open("file.txt") as f:
+          content = f.read()
+      print(len(content))
+    expected_answer: "5"
+    hints:
+      - "hello" has 5 characters
+    tags: [files, read, predict]
+
+  - slug: path-join-predict
+    objective: Predict Path join result
+    title: Path Join Predict
+    difficulty: 2
+    concept: modules-files
+    subconcept: pathlib
+    level: practice
+    prereqs: [modules-files.pathlib]
+    type: predict
+    pattern: construction
+    prompt: What does this produce?
+    code: |
+      from pathlib import Path
+      p = Path("home") / "user" / "file.txt"
+      print(p)
+    expected_answer: "home/user/file.txt"
+    hints:
+      - / operator joins path components
+    tags: [pathlib, join, predict]
+```
+
+**Step 2: Commit**
+
+```bash
+git add exercises/python/modules-files.yaml
+git commit -m "content: add 6 fill-in/predict exercises to modules-files.yaml"
+```
+
+---
+
+### Task 3.7: Add fill-in/predict to collections
+
+**Files:**
+- Modify: `exercises/python/collections.yaml`
+
+**Step 1: Add 6 fill-in/predict exercises**
+
+Append to `collections.yaml`:
+
+```yaml
+  # --- Fill-in Exercises ---
+  - slug: list-bracket-fill
+    objective: Complete list literal syntax
+    title: List Bracket Fill-in
+    difficulty: 1
+    concept: collections
+    subconcept: lists
+    level: intro
+    prereqs: []
+    type: fill-in
+    pattern: construction
+    prompt: Complete to create a list
+    template: "items = ___1, 2, 3]"
+    expected_answer: "["
+    hints:
+      - Opening bracket for lists
+    tags: [lists, syntax, fill-in]
+
+  - slug: dict-brace-fill
+    objective: Complete dict literal syntax
+    title: Dict Brace Fill-in
+    difficulty: 1
+    concept: collections
+    subconcept: dicts
+    level: intro
+    prereqs: []
+    type: fill-in
+    pattern: construction
+    prompt: Complete to create a dict
+    template: 'data = ___"name": "Alice"}'
+    expected_answer: "{"
+    hints:
+      - Opening brace for dicts
+    tags: [dicts, syntax, fill-in]
+
+  - slug: in-operator-fill
+    objective: Complete membership test
+    title: In Operator Fill-in
+    difficulty: 1
+    concept: collections
+    subconcept: lists
+    level: intro
+    prereqs: [collections.lists]
+    type: fill-in
+    pattern: query
+    prompt: Complete to check if 5 is in items
+    template: "5 ___ items"
+    expected_answer: "in"
+    hints:
+      - Membership test operator
+    tags: [collections, in, fill-in]
+
+  # --- Predict Exercises ---
+  - slug: list-append-predict
+    objective: Predict list after append
+    title: List Append Predict
+    difficulty: 1
+    concept: collections
+    subconcept: lists
+    level: intro
+    prereqs: [collections.lists]
+    type: predict
+    pattern: mutation
+    prompt: What does this code print?
+    code: |
+      items = [1, 2]
+      items.append(3)
+      print(items)
+    expected_answer: "[1, 2, 3]"
+    hints:
+      - append adds to the end
+    tags: [lists, append, predict]
+
+  - slug: dict-get-predict
+    objective: Predict dict.get with default
+    title: Dict Get Predict
+    difficulty: 2
+    concept: collections
+    subconcept: dicts
+    level: practice
+    prereqs: [collections.dicts]
+    type: predict
+    pattern: lookup
+    prompt: What does this code print?
+    code: |
+      d = {"a": 1}
+      print(d.get("b", 0))
+    expected_answer: "0"
+    hints:
+      - get returns default if key missing
+    tags: [dicts, get, predict]
+
+  - slug: set-union-predict
+    objective: Predict set union result
+    title: Set Union Predict
+    difficulty: 2
+    concept: collections
+    subconcept: sets
+    level: practice
+    prereqs: [collections.sets]
+    type: predict
+    pattern: construction
+    prompt: What does this code print?
+    code: |
+      a = {1, 2}
+      b = {2, 3}
+      print(a | b)
+    expected_answer: "{1, 2, 3}"
+    hints:
+      - Union combines unique elements
+    tags: [sets, union, predict]
+```
+
+**Step 2: Commit**
+
+```bash
+git add exercises/python/collections.yaml
+git commit -m "content: add 6 fill-in/predict exercises to collections.yaml"
+```
+
+---
+
+### Task 3.8: Final validation and Phase 3 completion
 
 **Files:**
 - All exercise files
@@ -2175,6 +2410,8 @@ echo "=== EXERCISE TYPE DISTRIBUTION ==="
 grep -h "type:" *.yaml | sort | uniq -c | sort -rn
 ```
 
+Expected: More balanced distribution with fill-in and predict in all concepts
+
 **Step 4: Run tests**
 
 ```bash
@@ -2190,36 +2427,47 @@ Expected: All tests pass
 git add .
 git commit -m "content: complete Phase 3 exercise variety
 
-Added fill-in and predict exercises to:
+Added fill-in and predict exercises to ALL concepts:
 - control-flow.yaml: +12 exercises
 - functions.yaml: +12 exercises
 - comprehensions.yaml: +8 exercises
+- oop.yaml: +6 exercises
+- error-handling.yaml: +6 exercises
+- modules-files.yaml: +6 exercises
+- collections.yaml: +6 exercises
 
-Total new exercises: 32
-Total exercises now: ~320"
+Total new Phase 3 exercises: 56"
 ```
 
 ---
 
 ## Summary
 
-### Phase 1: Structural Cleanup
+### Phase 1: Structural Cleanup (10 tasks)
 - 3 file renames (loops→control-flow, classes→oop, exceptions→error-handling)
-- 4 file merges/deletions (basics, operators, lists, dictionaries)
-- Result: 10 files matching curriculum graph
+- 1 prereqs update step
+- 4 file deletions (basics, operators, lists, dictionaries)
+- 1 exercise cleanup (remove misplaced from foundations)
+- 1 validation
+- **Result:** 10 files matching curriculum graph exactly
 
-### Phase 2: Gap Filling
+### Phase 2: Gap Filling (6 tasks)
 - OOP: +18 exercises (inheritance, classmethod, properties)
 - Error Handling: +10 exercises (finally, raising)
-- Result: Critical gaps filled
+- **Result:** Critical gaps filled
 
-### Phase 3: Balance & Polish
-- Control Flow: +12 fill-in/predict exercises
-- Functions: +12 fill-in/predict exercises
-- Comprehensions: +8 fill-in/predict exercises
-- Result: Better exercise variety
+### Phase 3: Balance & Polish (8 tasks)
+- control-flow: +12 fill-in/predict
+- functions: +12 fill-in/predict
+- comprehensions: +8 fill-in/predict
+- oop: +6 fill-in/predict
+- error-handling: +6 fill-in/predict
+- modules-files: +6 fill-in/predict
+- collections: +6 fill-in/predict
+- **Result:** ALL concepts have exercise variety
 
 ### Final State
-- ~320 total exercises (up from 278)
+- ~330 total exercises
 - 10 files matching curriculum concepts
-- Better fill-in/predict coverage across all concepts
+- Fill-in/predict exercises in EVERY concept
+- Better balanced type distribution
