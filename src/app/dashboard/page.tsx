@@ -186,27 +186,31 @@ function DashboardContent() {
             <StatsGrid stats={stats} loading={statsLoading} />
           </motion.div>
 
-          {/* Quick Actions */}
+          {/* Quick Actions - Asymmetric Layout */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.3 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            className="grid grid-cols-1 md:grid-cols-3 gap-4"
           >
-            <QuickActionCard
-              title="Daily Goal"
-              description="Complete your practice to maintain your streak"
-              icon={
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              }
-              accentColor="var(--accent-success)"
-              progress={dueCount > 0 ? 0 : 100}
-            />
+            {/* Daily Goal - spans 2 columns */}
+            <div className="md:col-span-2">
+              <QuickActionCard
+                title="Daily Goal"
+                description="Complete your practice to maintain your streak"
+                icon={
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                }
+                accentColor="var(--accent-success)"
+                progress={dueCount > 0 ? 0 : 100}
+              />
+            </div>
+            {/* Learning Path - spans 1 column */}
             <QuickActionCard
               title="Learning Path"
-              description="50 Python exercises available"
+              description="218 Python exercises"
               icon={
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
