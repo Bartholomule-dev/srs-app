@@ -9,6 +9,7 @@ export {
   CodeInput,
   ExerciseFeedback,
   HintButton,
+  TeachingCard,
 } from './exercise';
 
 // Session components

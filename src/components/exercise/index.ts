@@ -4,3 +4,4 @@ export { HintButton } from './HintButton';
 export { ExerciseFeedback } from './ExerciseFeedback';
 export { ExerciseCard } from './ExerciseCard';
 export { FillInExercise } from './FillInExercise';
+export { TeachingCard } from './TeachingCard';
