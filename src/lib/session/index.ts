@@ -9,5 +9,6 @@ export type {
 export { interleaveCards } from './interleave';
 export { selectWithAntiRepeat } from './anti-repeat';
 export type { SelectionCandidate } from './anti-repeat';
+export { interleaveWithTeaching } from './interleave-teaching';
 export { buildTeachingPair, findExampleExercise } from './teaching-cards';
 export type { TeachingPair } from './teaching-cards';
