@@ -9,6 +9,7 @@ import {
   calculateSubconceptReview,
   createInitialSubconceptState,
 } from '@/lib/srs/concept-algorithm';
+import { getTargetsToCredit, getTargetsToPenalize } from '@/lib/srs/multi-target';
 import { handleSupabaseError } from '@/lib/errors';
 import type { SubconceptProgress, ExerciseAttempt, ConceptSlug } from '@/lib/curriculum/types';
 import type { Exercise, Quality } from '@/lib/types';
@@ -57,7 +58,8 @@ export interface UseConceptSRSReturn {
     conceptSlug: ConceptSlug,
     quality: Quality,
     exerciseSlug: string,
-    wasCorrect: boolean
+    wasCorrect: boolean,
+    targets?: string[] | null
   ) => Promise<void>;
   getNextExercise: (
     subconceptProgress: SubconceptProgress,
@@ -188,7 +190,8 @@ export function useConceptSRS(): UseConceptSRSReturn {
       conceptSlug: ConceptSlug,
       quality: Quality,
       exerciseSlug: string,
-      wasCorrect: boolean
+      wasCorrect: boolean,
+      targets: string[] | null = null
     ): Promise<void> => {
       if (!user) {
         setError(handleSupabaseError(new Error('Must be authenticated')));
@@ -197,61 +200,67 @@ export function useConceptSRS(): UseConceptSRSReturn {
 
       setError(null);
 
-      // Find existing subconcept progress
-      let currentProgress = dueSubconcepts.find(
-        (p) => p.subconceptSlug === subconceptSlug
-      );
+      // Determine which subconcepts to update
+      const subconceptsToUpdate = wasCorrect
+        ? getTargetsToCredit(targets, subconceptSlug, wasCorrect)
+        : getTargetsToPenalize(targets, subconceptSlug, wasCorrect);
 
-      // If no progress exists, we need to fetch or create it
-      if (!currentProgress) {
-        const { data: existingData, error: fetchErr } = await supabase
+      // Update each targeted subconcept
+      for (const targetSlug of subconceptsToUpdate) {
+        // Find existing progress for this target
+        let targetProgress = dueSubconcepts.find(
+          (p) => p.subconceptSlug === targetSlug
+        );
+
+        // If no progress exists, fetch or create it
+        if (!targetProgress) {
+          const { data: existingData, error: fetchErr } = await supabase
+            .from('subconcept_progress')
+            .select('*')
+            .eq('user_id', user.id)
+            .eq('subconcept_slug', targetSlug)
+            .single();
+
+          if (fetchErr && fetchErr.code !== 'PGRST116') {
+            console.error(`Failed to fetch progress for ${targetSlug}:`, fetchErr);
+            continue;
+          }
+
+          if (existingData) {
+            targetProgress = mapDbToSubconceptProgress(existingData as DbSubconceptProgress);
+          } else {
+            // Create initial state
+            targetProgress = createInitialSubconceptState(
+              targetSlug,
+              conceptSlug, // Use same concept for new subconcepts
+              user.id
+            );
+          }
+        }
+
+        // Calculate new SRS state
+        const result = calculateSubconceptReview(quality, targetProgress);
+
+        // Upsert subconcept progress
+        const { error: upsertError } = await supabase
           .from('subconcept_progress')
-          .select('*')
-          .eq('user_id', user.id)
-          .eq('subconcept_slug', subconceptSlug)
+          .upsert({
+            user_id: user.id,
+            subconcept_slug: targetSlug,
+            concept_slug: targetProgress.conceptSlug,
+            phase: result.phase,
+            ease_factor: result.easeFactor,
+            interval: result.interval,
+            next_review: result.nextReview.toISOString(),
+            last_reviewed: result.lastReviewed.toISOString(),
+            updated_at: new Date().toISOString(),
+          })
+          .select()
           .single();
 
-        if (fetchErr && fetchErr.code !== 'PGRST116') {
-          // PGRST116 = no rows returned
-          setError(handleSupabaseError(fetchErr));
-          return;
+        if (upsertError) {
+          console.error(`Failed to update progress for ${targetSlug}:`, upsertError);
         }
-
-        if (existingData) {
-          currentProgress = mapDbToSubconceptProgress(existingData as DbSubconceptProgress);
-        } else {
-          // Create initial state with the provided concept slug
-          currentProgress = createInitialSubconceptState(
-            subconceptSlug,
-            conceptSlug,
-            user.id
-          );
-        }
-      }
-
-      // Calculate new SRS state
-      const result = calculateSubconceptReview(quality, currentProgress);
-
-      // Upsert subconcept progress
-      const { error: upsertError } = await supabase
-        .from('subconcept_progress')
-        .upsert({
-          user_id: user.id,
-          subconcept_slug: subconceptSlug,
-          concept_slug: currentProgress.conceptSlug,
-          phase: result.phase,
-          ease_factor: result.easeFactor,
-          interval: result.interval,
-          next_review: result.nextReview.toISOString(),
-          last_reviewed: result.lastReviewed.toISOString(),
-          updated_at: new Date().toISOString(),
-        })
-        .select()
-        .single();
-
-      if (upsertError) {
-        setError(handleSupabaseError(upsertError));
-        return;
       }
 
       // Update exercise attempts
@@ -284,9 +293,10 @@ export function useConceptSRS(): UseConceptSRSReturn {
         });
       }
 
-      // Remove subconcept from due list (optimistic update)
+      // Remove all updated subconcepts from due list (optimistic update)
+      const updatedSlugs = new Set(subconceptsToUpdate);
       setDueSubconcepts((prev) =>
-        prev.filter((p) => p.subconceptSlug !== subconceptSlug)
+        prev.filter((p) => !updatedSlugs.has(p.subconceptSlug))
       );
     },
     [user, dueSubconcepts, attemptCache]

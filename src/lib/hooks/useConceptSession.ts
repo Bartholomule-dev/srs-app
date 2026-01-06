@@ -240,7 +240,8 @@ export function useConceptSession(): UseConceptSessionReturn {
           card.subconceptProgress.conceptSlug,
           quality,
           card.exercise.slug,
-          isCorrect
+          isCorrect,
+          card.exercise.targets
         );
       } catch {
         showToast('Failed to save progress', { type: 'error' });
