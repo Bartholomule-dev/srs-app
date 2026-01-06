@@ -12,9 +12,7 @@ import {
 } from '@/components';
 import { useAuth, useStats } from '@/lib/hooks';
 import { supabase } from '@/lib/supabase/client';
-import { mapUserProgress } from '@/lib/supabase/mappers';
-import { getDueCards } from '@/lib/srs';
-import type { UserProgress } from '@/lib/types';
+import type { Database } from '@/lib/types';
 
 function DashboardBackground() {
   return (
@@ -105,19 +103,23 @@ function DashboardContent() {
       setError(null);
 
       try {
-        // Fetch user progress
+        // Fetch subconcept progress (same source as practice session)
         const { data: progressData, error: progressError } = await supabase
-          .from('user_progress')
+          .from('subconcept_progress')
           .select('*')
           .eq('user_id', user!.id);
 
         if (progressError) throw progressError;
 
-        const progress: UserProgress[] = (progressData ?? []).map(mapUserProgress);
+        // Count due subconcepts (next_review <= now)
+        type SubconceptProgressRow = Database['public']['Tables']['subconcept_progress']['Row'];
+        const now = new Date();
+        const dueCount = (progressData ?? []).filter((p: SubconceptProgressRow) => {
+          if (!p.next_review) return false;
+          return new Date(p.next_review) <= now;
+        }).length;
 
-        const dueCards = getDueCards(progress);
-
-        setDueCount(dueCards.length);
+        setDueCount(dueCount);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load dashboard');
       } finally {
