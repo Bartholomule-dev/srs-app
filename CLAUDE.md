@@ -18,7 +18,7 @@
 
 A gamified web platform for practicing code syntax through spaced repetition. Target users are AI-assisted developers who want to maintain their programming fundamentals.
 
-**Current Status:** Learning Mode Complete - Teaching cards for new subconcepts, 218 Python exercises across 54 subconcepts, concept-based SRS with DAG structure. Next: fill-in exercise content, gamification (Phase 3).
+**Current Status:** Phase 2.7 Exercise Variety Complete - Three exercise types (write, fill-in, predict), user-selectable experience levels, type-balanced session selection. 278 Python exercises across 54 subconcepts. Next: Experience level onboarding integration, gamification (Phase 3).
 
 ---
 
@@ -30,7 +30,7 @@ A gamified web platform for practicing code syntax through spaced repetition. Ta
 | Language | TypeScript 5 (strict mode) |
 | UI | React 19, Tailwind CSS 4, framer-motion |
 | Backend | Supabase (PostgreSQL + Auth + Realtime) |
-| Testing | Vitest (696 unit/integration) + Playwright (E2E) |
+| Testing | Vitest (743 unit/integration) + Playwright (E2E) |
 | Deployment | Vercel + GitHub Actions CI/E2E |
 | Package Manager | pnpm |
 
@@ -43,7 +43,7 @@ pnpm dev              # Start dev server (localhost:3000)
 pnpm build            # Production build
 pnpm lint             # ESLint check
 pnpm typecheck        # TypeScript type checking
-pnpm test             # Run Vitest tests (696 tests)
+pnpm test             # Run Vitest tests (743 tests)
 pnpm test:e2e         # Run Playwright E2E tests
 pnpm test:e2e:headed  # Run E2E with browser visible
 pnpm db:start         # Start local Supabase
@@ -295,7 +295,7 @@ To disable (not recommended): `export DAEM0NMCP_DISABLE_COVENANT=1` in `~/.bashr
 See `Database-Schema.md` in Obsidian for full schema. Key tables:
 
 - `profiles` - User data with auto-generated username, stats (streak, accuracy, total)
-- `exercises` - Exercise content with slug-based identity (218 Python exercises)
+- `exercises` - Exercise content with slug-based identity (278 Python exercises)
 - `user_progress` - SRS state per user/exercise (SM-2 algorithm)
 - `subconcept_progress` - **(Phase 2)** Concept-based SRS state per subconcept
 - `exercise_attempts` - **(Phase 2)** Exercise usage tracking for selection algorithm
@@ -319,7 +319,7 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 | `subconcept` | Specific skill (e.g., `for`, `enumerate`, `lambda`) |
 | `level` | `intro` → `practice` → `edge` → `integrated` |
 | `prereqs` | Subconcepts that must be mastered first |
-| `type` | `write` or `fill-in` (future: `predict`, `debug`) |
+| `type` | `write`, `fill-in`, or `predict` |
 | `pattern` | Programming pattern (e.g., `iteration`, `accumulator`) |
 | `objective` | **(Phase 2.5)** Learning target, 10-150 chars starting with verb |
 | `targets` | **(Phase 2.5)** Subconcepts tested (required for `integrated` level) |
@@ -327,6 +327,7 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 **Exercise Types:**
 - `write`: Write code from scratch (CodeInput component)
 - `fill-in`: Complete blanks in template (FillInExercise component)
+- `predict`: Predict code output (PredictOutputExercise component)
 
 **Curriculum Graph:** `src/lib/curriculum/python.json` - 10 concepts, 54 subconcepts with DAG structure
 
@@ -354,7 +355,7 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 | modules-files | `pathlib`, `main-guard` |
 
 **Content Expansion:**
-- 218 total exercises (was 171, +47 new exercises)
+- 278 total exercises (was 171, +107 new across Phases 2.5-2.7)
 - All exercises now have `objective` field
 - Integrated exercises have `targets` arrays
 
@@ -385,12 +386,44 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 11. ✅ Theme System - CSS variables for colors/fonts, cn() utility, CodeEditor component, Card elevation variants
 12. ✅ Phase 2.5 Curriculum Enhancement - objective/targets fields, anti-repeat pattern selection, multi-target SRS credit, 47 new exercises (218 total)
 13. ✅ Learning Mode - Teaching cards for new subconcepts (explanation + example), TeachingCard component with blue styling, SessionProgress blue segments, interleaved teaching pairs, curriculum loader for teaching content
+14. ✅ Phase 2.7 Exercise Variety - Three exercise types (write, fill-in, predict), PredictOutputExercise component, user-selectable experience levels controlling type ratios, type-balanced session selection algorithm, 60 new exercises (30 fill-in + 30 predict)
+
+## Phase 2.7: Exercise Variety (Complete)
+
+**Exercise Types:**
+- `write`: Write code from scratch (CodeInput) - core skill
+- `fill-in`: Complete blanks in template (FillInExercise) - cued recall for learning
+- `predict`: Predict code output (PredictOutputExercise) - mental execution for maintenance
+
+**Experience Levels (user-selectable):**
+| Level | Write | Fill-in | Predict | Target Persona |
+|-------|-------|---------|---------|----------------|
+| `refresher` | 80% | 10% | 10% | Rusty Senior |
+| `learning` | 50% | 25% | 25% | Intermediate |
+| `beginner` | 30% | 35% | 35% | AI-Native Junior |
+
+**New Components:**
+- `PredictOutputExercise` - Code display + answer input
+- `ExperienceLevelSelector` - Onboarding component
+
+**New Hooks/Functions:**
+- `updateExperienceLevel` in useProfile
+- `selectExerciseByType` for type-balanced selection
+- `checkPredictAnswer` for predict answer matching
+
+**Content:** 60 new exercises across foundations, strings, numbers-booleans
+
+**Design Docs:**
+- `docs/plans/2026-01-06-phase27-exercise-variety-design.md`
+- `docs/plans/2026-01-06-phase27-implementation-plan.md`
+
+---
 
 ## Next Steps (Phase 3 Priorities)
 
-1. **Content:** Add `fill-in` type exercises across subconcepts (FillInExercise component ready)
+1. **Onboarding:** Integrate ExperienceLevelSelector into user flow
 2. **Gamification:** Achievements system, points, leaderboards
 3. **Mastery:** Implement milestone completion criteria with variety requirements
-4. **Analytics:** Track exercise usage and accuracy for selection algorithm improvements
+4. **Analytics:** Track exercise usage and accuracy per type for validation
 5. **Languages:** JavaScript/TypeScript exercises
 
