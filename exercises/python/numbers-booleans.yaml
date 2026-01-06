@@ -1,0 +1,480 @@
+# exercises/python/numbers-booleans.yaml
+language: python
+category: numbers-booleans
+
+exercises:
+  # --- Fill-in Exercises for Numbers-Booleans ---
+
+  - slug: int-floor-div-fill
+    title: Floor Division
+    type: fill-in
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: integers
+    level: intro
+    prereqs: [variables]
+    pattern: arithmetic
+    objective: Use floor division operator
+    prompt: Complete the expression for integer division
+    template: "result = 10 ___ 3  # result is 3"
+    blank_position: 0
+    expected_answer: "//"
+    accepted_solutions: ["//"]
+    hints:
+      - Floor division uses two slashes
+    tags: [integers, division]
+
+  - slug: int-power-fill
+    title: Exponentiation
+    type: fill-in
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: integers
+    level: practice
+    prereqs: [variables]
+    pattern: arithmetic
+    objective: Use exponentiation operator
+    prompt: Complete the expression to calculate 2 to the power of 8
+    template: "result = 2 ___ 8"
+    blank_position: 0
+    expected_answer: "**"
+    accepted_solutions: ["**"]
+    hints:
+      - Python uses ** for exponentiation
+    tags: [integers, exponentiation]
+
+  - slug: float-round-fill
+    title: Round Function
+    type: fill-in
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: floats
+    level: intro
+    prereqs: [integers]
+    pattern: invocation
+    objective: Use round() function
+    prompt: Complete the code to round to 2 decimal places
+    template: "result = ___(3.14159, 2)"
+    blank_position: 0
+    expected_answer: "round"
+    accepted_solutions: ["round"]
+    hints:
+      - Which built-in function rounds numbers?
+    tags: [floats, rounding]
+
+  - slug: float-abs-fill
+    title: Absolute Value
+    type: fill-in
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: floats
+    level: practice
+    prereqs: [integers]
+    pattern: invocation
+    objective: Get absolute value
+    prompt: Complete the code to get the absolute value
+    template: "positive = ___(-5.5)"
+    blank_position: 0
+    expected_answer: "abs"
+    accepted_solutions: ["abs"]
+    hints:
+      - Which function returns absolute value?
+    tags: [floats, absolute]
+
+  - slug: bool-and-fill
+    title: Logical AND
+    type: fill-in
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: booleans
+    level: intro
+    prereqs: [variables]
+    pattern: logical
+    objective: Use logical AND
+    prompt: Complete the boolean expression
+    template: "valid = is_admin ___ is_active"
+    blank_position: 0
+    expected_answer: "and"
+    accepted_solutions: ["and"]
+    hints:
+      - Python uses 'and' for logical AND
+    tags: [booleans, logic]
+
+  - slug: bool-or-fill
+    title: Logical OR
+    type: fill-in
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: booleans
+    level: practice
+    prereqs: [variables]
+    pattern: logical
+    objective: Use logical OR
+    prompt: Complete the boolean expression
+    template: "allowed = is_admin ___ has_permission"
+    blank_position: 0
+    expected_answer: "or"
+    accepted_solutions: ["or"]
+    hints:
+      - Python uses 'or' for logical OR
+    tags: [booleans, logic]
+
+  - slug: convert-int-fill
+    title: Convert to Integer
+    type: fill-in
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: conversion
+    level: intro
+    prereqs: [integers, floats]
+    pattern: conversion
+    objective: Convert string to integer
+    prompt: Complete the code to convert string to integer
+    template: 'number = ___("42")'
+    blank_position: 0
+    expected_answer: "int"
+    accepted_solutions: ["int"]
+    hints:
+      - Which function converts to integer?
+    tags: [conversion, int]
+
+  - slug: convert-str-fill
+    title: Convert to String
+    type: fill-in
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: conversion
+    level: practice
+    prereqs: [integers]
+    pattern: conversion
+    objective: Convert number to string
+    prompt: Complete the code to convert number to string
+    template: "text = ___(123)"
+    blank_position: 0
+    expected_answer: "str"
+    accepted_solutions: ["str"]
+    hints:
+      - Which function converts to string?
+    tags: [conversion, str]
+
+  - slug: truthiness-if-fill
+    title: Truthy Check
+    type: fill-in
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: truthiness
+    level: intro
+    prereqs: [booleans]
+    pattern: logical
+    objective: Use truthiness in condition
+    prompt: Complete the Pythonic way to check if list has items
+    template: "if ___:"
+    blank_position: 0
+    expected_answer: "items"
+    accepted_solutions: ["items", "my_list", "data"]
+    hints:
+      - Non-empty lists are truthy
+    tags: [truthiness, idiomatic]
+
+  - slug: truthiness-not-fill
+    title: Falsy Check
+    type: fill-in
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: truthiness
+    level: practice
+    prereqs: [booleans]
+    pattern: logical
+    objective: Check for empty/falsy value
+    prompt: Complete the Pythonic way to check if list is empty
+    template: "if ___ items:"
+    blank_position: 0
+    expected_answer: "not"
+    accepted_solutions: ["not"]
+    hints:
+      - Use 'not' to check for falsy values
+    tags: [truthiness, idiomatic]
+
+  - slug: comparison-is-fill
+    title: Identity Check
+    type: fill-in
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: comparisons
+    level: intro
+    prereqs: [booleans]
+    pattern: comparison
+    objective: Check for None identity
+    prompt: Complete the Pythonic way to check for None
+    template: "if value ___ None:"
+    blank_position: 0
+    expected_answer: "is"
+    accepted_solutions: ["is"]
+    hints:
+      - Use 'is' for identity comparisons with None
+    tags: [comparisons, identity]
+
+  - slug: comparison-in-fill
+    title: Membership Check
+    type: fill-in
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: comparisons
+    level: practice
+    prereqs: [booleans]
+    pattern: comparison
+    objective: Check membership in collection
+    prompt: Complete the code to check if item is in list
+    template: "if item ___ items:"
+    blank_position: 0
+    expected_answer: "in"
+    accepted_solutions: ["in"]
+    hints:
+      - Which operator checks membership?
+    tags: [comparisons, membership]
+
+  # --- Predict-output Exercises for Numbers-Booleans ---
+
+  - slug: int-predict-floor
+    title: Floor Division
+    type: predict
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: integers
+    level: intro
+    prereqs: [variables]
+    pattern: arithmetic
+    objective: Predict floor division result
+    prompt: What does this code print?
+    code: |
+      result = 7 // 2
+      print(result)
+    expected_answer: "3"
+    accepted_solutions: []
+    hints:
+      - Floor division rounds down
+    tags: [integers, division]
+
+  - slug: int-predict-modulo
+    title: Modulo Operation
+    type: predict
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: integers
+    level: practice
+    prereqs: [variables]
+    pattern: arithmetic
+    objective: Predict modulo result
+    prompt: What does this code print?
+    code: |
+      result = 10 % 3
+      print(result)
+    expected_answer: "1"
+    accepted_solutions: []
+    hints:
+      - Modulo returns the remainder
+    tags: [integers, modulo]
+
+  - slug: float-predict-division
+    title: Float Division
+    type: predict
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: floats
+    level: intro
+    prereqs: [integers]
+    pattern: arithmetic
+    objective: Predict true division result
+    prompt: What does this code print?
+    code: |
+      result = 5 / 2
+      print(result)
+    expected_answer: "2.5"
+    accepted_solutions: []
+    hints:
+      - Single / always returns a float
+    tags: [floats, division]
+
+  - slug: float-predict-round
+    title: Round Result
+    type: predict
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: floats
+    level: practice
+    prereqs: [integers]
+    pattern: invocation
+    objective: Predict round() result
+    prompt: What does this code print?
+    code: |
+      result = round(3.7)
+      print(result)
+    expected_answer: "4"
+    accepted_solutions: []
+    hints:
+      - round() rounds to nearest integer by default
+    tags: [floats, rounding]
+
+  - slug: bool-predict-and
+    title: AND Result
+    type: predict
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: booleans
+    level: intro
+    prereqs: [variables]
+    pattern: logical
+    objective: Predict AND result
+    prompt: What does this code print?
+    code: |
+      a = True
+      b = False
+      print(a and b)
+    expected_answer: "False"
+    accepted_solutions: []
+    hints:
+      - AND requires both to be True
+    tags: [booleans, logic]
+
+  - slug: bool-predict-not
+    title: NOT Result
+    type: predict
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: booleans
+    level: practice
+    prereqs: [variables]
+    pattern: logical
+    objective: Predict NOT result
+    prompt: What does this code print?
+    code: |
+      value = True
+      print(not value)
+    expected_answer: "False"
+    accepted_solutions: []
+    hints:
+      - not inverts the boolean
+    tags: [booleans, logic]
+
+  - slug: convert-predict-int
+    title: Int Conversion
+    type: predict
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: conversion
+    level: intro
+    prereqs: [integers, floats]
+    pattern: conversion
+    objective: Predict int() result
+    prompt: What does this code print?
+    code: |
+      result = int(3.9)
+      print(result)
+    expected_answer: "3"
+    accepted_solutions: []
+    hints:
+      - int() truncates toward zero
+    tags: [conversion, int]
+
+  - slug: convert-predict-bool
+    title: Bool Conversion
+    type: predict
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: conversion
+    level: practice
+    prereqs: [booleans]
+    pattern: conversion
+    objective: Predict bool() result
+    prompt: What does this code print?
+    code: |
+      print(bool(0))
+    expected_answer: "False"
+    accepted_solutions: []
+    hints:
+      - 0 is a falsy value
+    tags: [conversion, bool]
+
+  - slug: truthiness-predict-empty
+    title: Empty List Truthiness
+    type: predict
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: truthiness
+    level: intro
+    prereqs: [booleans]
+    pattern: logical
+    objective: Predict empty list truthiness
+    prompt: What does this code print?
+    code: |
+      items = []
+      if items:
+          print("has items")
+      else:
+          print("empty")
+    expected_answer: "empty"
+    accepted_solutions: []
+    hints:
+      - Empty collections are falsy
+    tags: [truthiness]
+
+  - slug: truthiness-predict-zero
+    title: Zero Truthiness
+    type: predict
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: truthiness
+    level: practice
+    prereqs: [booleans]
+    pattern: logical
+    objective: Predict zero truthiness
+    prompt: What does this code print?
+    code: |
+      count = 0
+      print("yes" if count else "no")
+    expected_answer: "no"
+    accepted_solutions: []
+    hints:
+      - 0 is falsy
+    tags: [truthiness]
+
+  - slug: comparison-predict-chain
+    title: Chained Comparison
+    type: predict
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: comparisons
+    level: intro
+    prereqs: [booleans]
+    pattern: comparison
+    objective: Predict chained comparison result
+    prompt: What does this code print?
+    code: |
+      x = 5
+      print(1 < x < 10)
+    expected_answer: "True"
+    accepted_solutions: []
+    hints:
+      - Python allows chained comparisons
+    tags: [comparisons, chaining]
+
+  - slug: comparison-predict-is
+    title: Identity vs Equality
+    type: predict
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: comparisons
+    level: practice
+    prereqs: [booleans]
+    pattern: comparison
+    objective: Understand is vs ==
+    prompt: What does this code print?
+    code: |
+      a = [1, 2, 3]
+      b = [1, 2, 3]
+      print(a == b, a is b)
+    expected_answer: "True False"
+    accepted_solutions: []
+    hints:
+      - == checks equality, is checks identity
+    tags: [comparisons, identity]
