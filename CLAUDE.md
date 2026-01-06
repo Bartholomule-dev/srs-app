@@ -18,7 +18,7 @@
 
 A gamified web platform for practicing code syntax through spaced repetition. Target users are AI-assisted developers who want to maintain their programming fundamentals.
 
-**Current Status:** Phase 2 In Progress - Curriculum overhaul with concept-based SRS, expanding to 170-220 exercises with DAG structure. See `docs/plans/2026-01-05-phase2-curriculum-overhaul.md` for implementation plan.
+**Current Status:** Learning Mode Complete - Teaching cards for new subconcepts, 218 Python exercises across 54 subconcepts, concept-based SRS with DAG structure. Next: fill-in exercise content, gamification (Phase 3).
 
 ---
 
@@ -30,7 +30,7 @@ A gamified web platform for practicing code syntax through spaced repetition. Ta
 | Language | TypeScript 5 (strict mode) |
 | UI | React 19, Tailwind CSS 4, **darwin-ui** (@pikoloo/darwin-ui) |
 | Backend | Supabase (PostgreSQL + Auth + Realtime) |
-| Testing | Vitest (429 unit/integration) + Playwright (E2E) |
+| Testing | Vitest (696 unit/integration) + Playwright (E2E) |
 | Deployment | Vercel + GitHub Actions CI/E2E |
 | Package Manager | pnpm |
 
@@ -43,7 +43,7 @@ pnpm dev              # Start dev server (localhost:3000)
 pnpm build            # Production build
 pnpm lint             # ESLint check
 pnpm typecheck        # TypeScript type checking
-pnpm test             # Run Vitest tests (429 tests)
+pnpm test             # Run Vitest tests (696 tests)
 pnpm test:e2e         # Run Playwright E2E tests
 pnpm test:e2e:headed  # Run E2E with browser visible
 pnpm db:start         # Start local Supabase
@@ -68,15 +68,16 @@ src/
 │   ├── ui/               # darwin-ui wrappers with project defaults
 │   ├── layout/           # Header, LandingHeader
 │   ├── landing/          # Hero, Features, HowItWorks, AuthForm
-│   ├── exercise/         # ExerciseCard, CodeInput, etc.
+│   ├── exercise/         # ExerciseCard, CodeInput, FillInExercise, TeachingCard
 │   ├── session/          # SessionProgress, SessionSummary (immersive mode)
 │   ├── dashboard/        # Greeting, PracticeCTA, DueCardsBanner, EmptyState
 │   └── stats/            # StatsCard, StatsGrid
 └── lib/
-    ├── hooks/            # useAuth, useProfile, useSRS, useSession, useStats
+    ├── hooks/            # useAuth, useProfile, useConceptSRS, useConceptSession, useStats
     ├── srs/              # SM-2 algorithm
     ├── exercise/         # Answer matching, quality inference
-    ├── session/          # Session types, interleaving
+    ├── session/          # Session types, interleaving, teaching cards
+    ├── curriculum/       # python.json curriculum graph, types, loader
     ├── stats/            # Stats queries, streak calculation
     ├── errors/           # AppError, handleSupabaseError
     ├── supabase/         # Client (browser), server, helpers, mappers
@@ -286,7 +287,7 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 
 ---
 
-## Phase 2: Curriculum System (In Progress)
+## Phase 2: Curriculum System (Complete)
 
 **Concept-Based SRS:**
 - SRS tracks subconcept mastery, not individual exercises
@@ -310,7 +311,7 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 - `write`: Write code from scratch (CodeInput component)
 - `fill-in`: Complete blanks in template (FillInExercise component)
 
-**Curriculum Graph:** `src/lib/curriculum/python.json` - 10 concepts with DAG structure
+**Curriculum Graph:** `src/lib/curriculum/python.json` - 10 concepts, 54 subconcepts with DAG structure
 
 **Implementation Plan:** `docs/plans/2026-01-05-phase2-curriculum-overhaul.md`
 
@@ -366,11 +367,13 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 10. ✅ darwin-ui Migration - Migrated to @pikoloo/darwin-ui for macOS-inspired aesthetic, wrapper components in src/components/ui/
 11. ✅ Theme System - CSS variables for colors/fonts, cn() utility, CodeEditor component, Card elevation variants
 12. ✅ Phase 2.5 Curriculum Enhancement - objective/targets fields, anti-repeat pattern selection, multi-target SRS credit, 47 new exercises (218 total)
+13. ✅ Learning Mode - Teaching cards for new subconcepts (explanation + example), TeachingCard component with blue styling, SessionProgress blue segments, interleaved teaching pairs, curriculum loader for teaching content
 
 ## Next Steps (Phase 3 Priorities)
 
-1. **UI:** FillInExercise component for fill-in exercise type
-2. **Content:** Add `fill-in` type exercises across subconcepts
+1. **Content:** Add `fill-in` type exercises across subconcepts (FillInExercise component ready)
+2. **Gamification:** Achievements system, points, leaderboards
 3. **Mastery:** Implement milestone completion criteria with variety requirements
 4. **Analytics:** Track exercise usage and accuracy for selection algorithm improvements
+5. **Languages:** JavaScript/TypeScript exercises
 

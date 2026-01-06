@@ -10,7 +10,6 @@ import { handleSupabaseError, AppError } from '@/lib/errors';
 import { updateProfileStats } from '@/lib/stats';
 import type { Exercise, Quality } from '@/lib/types';
 import type {
-  SessionCard,
   SessionStats,
   SessionCardType,
   ReviewSessionCard,
@@ -23,17 +22,8 @@ import {
 } from '@/lib/session';
 import { getSubconceptDefinition, getAllSubconcepts } from '@/lib/curriculum';
 
-/** Limit on new subconcepts introduced per session (old behavior, now unused) */
-const NEW_SUBCONCEPTS_LIMIT = 5;
-
 /** Limit on teaching pairs (new subconcepts with teaching content) per session */
 const TEACHING_PAIRS_LIMIT = 2;
-
-/** Legacy card type used for internal tracking of review cards with subconcept progress */
-interface ConceptSessionCard extends Omit<SessionCard, 'state'> {
-  /** The subconcept this exercise belongs to */
-  subconceptProgress: SubconceptProgress;
-}
 
 /** Card type strings for progress bar display */
 export type CardTypeLabel = 'teaching' | 'practice' | 'review';

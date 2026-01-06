@@ -10,12 +10,12 @@ SRS-App is a gamified web platform for practicing code syntax through spaced rep
 - **Auth System:** ✅ Complete (Magic Link via Supabase + auto-generated usernames)
 - **Database Schema:** ✅ Complete (profiles, exercises, user_progress)
 - **TypeScript Types:** ✅ Complete (auto-generated + camelCase mappers)
-- **Test Infrastructure:** ✅ Complete (Vitest 377+ tests + Playwright E2E)
+- **Test Infrastructure:** ✅ Complete (Vitest 696 tests + Playwright E2E)
 - **Error Handling:** ✅ Complete (AppError + ErrorBoundary + Toast)
-- **Core SRS Engine:** ✅ Complete (SM-2 algorithm + useSRS hook)
+- **Core SRS Engine:** ✅ Complete (SM-2 algorithm + useConceptSRS hook)
 - **Exercise Engine:** ✅ Complete (ExerciseCard + components)
-- **Practice Session:** ✅ Complete (useSession + /dashboard + /practice)
-- **Exercise Library:** ✅ Complete (50 Python exercises in 10 categories)
+- **Practice Session:** ✅ Complete (useConceptSession + /dashboard + /practice)
+- **Exercise Library:** ✅ Complete (218 Python exercises across 54 subconcepts)
 - **Basic Stats:** ✅ Complete (StatsGrid + useStats + streak/accuracy)
 - **Deployment:** ✅ Complete (Vercel + Supabase + GitHub Actions CI/E2E)
 - **UI/UX Redesign:** ✅ Complete (Landing page, Header, Dashboard, Practice flow)
@@ -30,6 +30,12 @@ SRS-App is a gamified web platform for practicing code syntax through spaced rep
 7. **Milestone 7: Basic Stats** - StatsCard, StatsGrid, useStats hook, streak/accuracy utilities
 8. **Milestone 8: MVP Deployment** - Vercel config, GitHub Actions CI/E2E, Playwright tests, username auto-gen
 9. **Milestone 9: UI/UX Redesign** - Landing page, Header components, Dashboard improvements, Practice flow polish
+10. **Milestone 10: darwin-ui Migration** - @pikoloo/darwin-ui components, wrapper pattern
+11. **Milestone 11: Theme System** - CSS variables, fonts, cn() utility, Card elevation
+12. **Milestone 12: Answer Matching** - accepted_solutions, alternative syntax support
+13. **Milestone 13: Phase 2 Curriculum** - Concept-based SRS, 171 exercises, useConceptSession
+14. **Milestone 14: Phase 2.5 Enhancement** - objective/targets fields, anti-repeat, 218 exercises
+15. **Milestone 15: Learning Mode** - Teaching cards for new subconcepts, TeachingCard component, blue progress segments
 
 ## Next Up
 - **Username Selection UI** (auto-generated for now)

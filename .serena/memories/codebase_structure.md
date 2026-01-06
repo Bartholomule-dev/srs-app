@@ -58,7 +58,9 @@ src/
 │   │   ├── ExercisePrompt.tsx # Language/category + prompt display
 │   │   ├── HintButton.tsx    # Hint reveal with SRS penalty warning
 │   │   ├── ExerciseFeedback.tsx # Correct/incorrect + next review
-│   │   └── ExerciseCard.tsx  # Orchestrator (answering → feedback)
+│   │   ├── ExerciseCard.tsx  # Orchestrator (answering → feedback)
+│   │   ├── FillInExercise.tsx # Fill-in-the-blank exercise type
+│   │   └── TeachingCard.tsx  # Teaching card for new subconcepts (blue styling)
 │   │
 │   ├── session/              # Session flow components
 │   │   ├── index.ts          # Barrel export
@@ -90,8 +92,8 @@ src/
     │   ├── useAuth.ts        # Auth context consumer
     │   ├── useProfile.ts     # User profile CRUD
     │   ├── useRequireAuth.ts # Auth guard with redirect
-    │   ├── useSRS.ts         # SRS session management (due cards)
-    │   ├── useSession.ts     # Practice session state
+    │   ├── useConceptSRS.ts  # Concept-based SRS scheduling
+    │   ├── useConceptSession.ts # Practice session with teaching cards
     │   └── useStats.ts       # User stats fetching
     │
     ├── errors/               # Error handling utilities
@@ -111,10 +113,19 @@ src/
     │   ├── matching.ts       # checkAnswer (normalized comparison)
     │   └── quality.ts        # inferQuality (time-based + hint penalty)
     │
+    ├── curriculum/           # Curriculum data & types
+    │   ├── index.ts          # Barrel export
+    │   ├── types.ts          # Concept, SubconceptTeaching, SubconceptDefinition
+    │   ├── loader.ts         # getSubconceptTeaching, getSubconceptDefinition
+    │   └── python.json       # Curriculum graph (10 concepts, 54 subconcepts)
+    │
     ├── session/              # Session management library
     │   ├── index.ts          # Barrel export
-    │   ├── types.ts          # SessionCard, SessionStats types
-    │   └── interleave.ts     # interleaveCards (spread new among due)
+    │   ├── types.ts          # SessionCard, SessionStats, TeachingSessionCard types
+    │   ├── interleave.ts     # interleaveCards (spread new among due)
+    │   ├── anti-repeat.ts    # selectWithAntiRepeat (pattern diversity)
+    │   ├── teaching-cards.ts # buildTeachingPair (teaching + practice card pairs)
+    │   └── interleave-teaching.ts # interleaveWithTeaching (insert teaching pairs)
     │
     ├── stats/                # Stats calculation library
     │   ├── index.ts          # Barrel export
@@ -188,17 +199,20 @@ supabase/
 ## Exercises (`exercises/`)
 ```
 exercises/
-└── python/                   # Python exercises (50 total)
+└── python/                   # Python exercises (218 total)
     ├── basics.yaml           # 5 exercises
     ├── operators.yaml        # 5 exercises
-    ├── strings.yaml          # 5 exercises
+    ├── strings.yaml          # 23 exercises
     ├── lists.yaml            # 5 exercises
     ├── dictionaries.yaml     # 5 exercises
-    ├── loops.yaml            # 5 exercises
-    ├── functions.yaml        # 5 exercises
+    ├── loops.yaml            # 33 exercises
+    ├── functions.yaml        # 29 exercises
     ├── classes.yaml          # 5 exercises
-    ├── comprehensions.yaml   # 5 exercises
-    └── exceptions.yaml       # 5 exercises
+    ├── comprehensions.yaml   # 9 exercises
+    ├── exceptions.yaml       # 5 exercises
+    ├── foundations.yaml      # 30 exercises
+    ├── collections.yaml      # 43 exercises
+    └── modules-files.yaml    # 21 exercises
 ```
 
 ## Key Configuration Files
