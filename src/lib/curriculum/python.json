@@ -21,28 +21,28 @@
       "name": "Numbers & Booleans",
       "description": "Numeric types, boolean logic, and type conversion",
       "prereqs": ["foundations"],
-      "subconcepts": ["integers", "floats", "booleans", "conversion"]
+      "subconcepts": ["integers", "floats", "booleans", "conversion", "truthiness", "comparisons"]
     },
     {
       "slug": "collections",
       "name": "Collections",
       "description": "Lists, tuples, dictionaries, and sets",
       "prereqs": ["strings", "numbers-booleans"],
-      "subconcepts": ["lists", "tuples", "dicts", "sets", "unpacking"]
+      "subconcepts": ["lists", "tuples", "dicts", "sets", "unpacking", "mutability"]
     },
     {
       "slug": "control-flow",
       "name": "Control Flow",
       "description": "Conditionals, loops, and iteration",
       "prereqs": ["collections"],
-      "subconcepts": ["conditionals", "for", "while", "iteration"]
+      "subconcepts": ["conditionals", "for", "while", "iteration", "zip", "reversed", "sorted", "any-all"]
     },
     {
       "slug": "functions",
       "name": "Functions",
       "description": "Function definitions, parameters, and scope",
       "prereqs": ["collections"],
-      "subconcepts": ["basics", "arguments", "scope", "lambda", "typehints"]
+      "subconcepts": ["basics", "arguments", "defaults", "args-kwargs", "scope", "lambda", "typehints"]
     },
     {
       "slug": "comprehensions",
@@ -70,7 +70,7 @@
       "name": "Modules & Files",
       "description": "Imports, file I/O, and context managers",
       "prereqs": ["error-handling", "oop"],
-      "subconcepts": ["imports", "reading", "writing", "context"]
+      "subconcepts": ["imports", "reading", "writing", "context", "pathlib", "main-guard"]
     }
   ]
 }
