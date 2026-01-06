@@ -18,7 +18,7 @@
 
 A gamified web platform for practicing code syntax through spaced repetition. Target users are AI-assisted developers who want to maintain their programming fundamentals.
 
-**Current Status:** Production Ready - Full practice flow complete with 50 Python exercises, 429 tests passing, UI/UX redesign complete, Vercel + Supabase deployment configured.
+**Current Status:** Phase 2 In Progress - Curriculum overhaul with concept-based SRS, expanding to 170-220 exercises with DAG structure. See `docs/plans/2026-01-05-phase2-curriculum-overhaul.md` for implementation plan.
 
 ---
 
@@ -277,10 +277,68 @@ To disable (not recommended): `export DAEM0NMCP_DISABLE_COVENANT=1` in `~/.bashr
 See `Database-Schema.md` in Obsidian for full schema. Key tables:
 
 - `profiles` - User data with auto-generated username, stats (streak, accuracy, total)
-- `exercises` - Exercise content with slug-based identity (50 Python exercises)
+- `exercises` - Exercise content with slug-based identity (218 Python exercises)
 - `user_progress` - SRS state per user/exercise (SM-2 algorithm)
+- `subconcept_progress` - **(Phase 2)** Concept-based SRS state per subconcept
+- `exercise_attempts` - **(Phase 2)** Exercise usage tracking for selection algorithm
 
 RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UUID prefix).
+
+---
+
+## Phase 2: Curriculum System (In Progress)
+
+**Concept-Based SRS:**
+- SRS tracks subconcept mastery, not individual exercises
+- Tables: `subconcept_progress` (SRS state), `exercise_attempts` (usage)
+- Hook: `useConceptSRS` for concept-based scheduling
+- Selection: Hybrid algorithm (level progression for learning, least-seen for review)
+
+**Taxonomy Fields (all exercises):**
+| Field | Description |
+|-------|-------------|
+| `concept` | Primary milestone (e.g., `control-flow`, `functions`) |
+| `subconcept` | Specific skill (e.g., `for`, `enumerate`, `lambda`) |
+| `level` | `intro` → `practice` → `edge` → `integrated` |
+| `prereqs` | Subconcepts that must be mastered first |
+| `type` | `write` or `fill-in` (future: `predict`, `debug`) |
+| `pattern` | Programming pattern (e.g., `iteration`, `accumulator`) |
+| `objective` | **(Phase 2.5)** Learning target, 10-150 chars starting with verb |
+| `targets` | **(Phase 2.5)** Subconcepts tested (required for `integrated` level) |
+
+**Exercise Types:**
+- `write`: Write code from scratch (CodeInput component)
+- `fill-in`: Complete blanks in template (FillInExercise component)
+
+**Curriculum Graph:** `src/lib/curriculum/python.json` - 10 concepts with DAG structure
+
+**Implementation Plan:** `docs/plans/2026-01-05-phase2-curriculum-overhaul.md`
+
+---
+
+## Phase 2.5: Curriculum Enhancement (Complete)
+
+**New Exercise Fields:**
+- `objective` (required): Learning target, 10-150 chars starting with verb
+- `targets` (conditional): Array of subconcepts for integrated exercises
+
+**Algorithm Improvements:**
+- **Anti-repeat pattern**: Sessions avoid showing same pattern consecutively (`src/lib/session/anti-repeat.ts`)
+- **Multi-subconcept SRS**: Integrated exercises credit all `targets` on success (`src/lib/srs/multi-target.ts`)
+
+**New Subconcepts Added (11 total):**
+| Concept | New Subconcepts |
+|---------|-----------------|
+| control-flow | `zip`, `reversed`, `sorted`, `any-all` |
+| collections | `mutability` |
+| numbers-booleans | `truthiness`, `comparisons` |
+| functions | `defaults`, `args-kwargs` |
+| modules-files | `pathlib`, `main-guard` |
+
+**Content Expansion:**
+- 218 total exercises (was 171, +47 new exercises)
+- All exercises now have `objective` field
+- Integrated exercises have `targets` arrays
 
 ---
 
@@ -307,10 +365,12 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 9. ✅ UI/UX Redesign - "IDE-Inspired Premium" aesthetic with dark-first theme, Space Grotesk/DM Sans/JetBrains Mono fonts, bento grids, segmented progress bars, confetti celebrations
 10. ✅ darwin-ui Migration - Migrated to @pikoloo/darwin-ui for macOS-inspired aesthetic, wrapper components in src/components/ui/
 11. ✅ Theme System - CSS variables for colors/fonts, cn() utility, CodeEditor component, Card elevation variants
+12. ✅ Phase 2.5 Curriculum Enhancement - objective/targets fields, anti-repeat pattern selection, multi-target SRS credit, 47 new exercises (218 total)
 
-## Next Steps
+## Next Steps (Phase 3 Priorities)
 
-1. Username selection UI (auto-generated for now)
-2. Advanced gamification (achievements, leaderboards)
-3. Additional languages (JavaScript/TypeScript, SQL)
+1. **UI:** FillInExercise component for fill-in exercise type
+2. **Content:** Add `fill-in` type exercises across subconcepts
+3. **Mastery:** Implement milestone completion criteria with variety requirements
+4. **Analytics:** Track exercise usage and accuracy for selection algorithm improvements
 
