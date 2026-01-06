@@ -21,7 +21,7 @@
   "definitions": {
     "exercise": {
       "type": "object",
-      "required": ["slug", "title", "prompt", "expected_answer", "hints", "concept", "subconcept", "level", "prereqs", "type", "pattern"],
+      "required": ["slug", "title", "prompt", "expected_answer", "hints", "concept", "subconcept", "level", "prereqs", "type", "pattern", "objective"],
       "properties": {
         "slug": {
           "type": "string",
@@ -74,6 +74,19 @@
           "enum": ["accumulator", "filtering", "indexing", "mapping", "lookup", "iteration", "mutation", "construction", "comparison", "conversion", "io", "definition", "invocation", "handling"],
           "description": "Programming pattern being practiced"
         },
+        "objective": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 150,
+          "pattern": "^[A-Z]",
+          "description": "Learning objective (start with verb, 10-150 chars)"
+        },
+        "targets": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "Subconcepts tested (required for integrated, optional otherwise)"
+        },
         "template": {
           "type": "string",
           "description": "For fill-in exercises: code with ___ blanks"
@@ -91,6 +104,13 @@
             "required": ["type"]
           },
           "then": { "required": ["template", "blank_position"] }
+        },
+        {
+          "if": {
+            "properties": { "level": { "const": "integrated" } },
+            "required": ["level"]
+          },
+          "then": { "required": ["targets"] }
         }
       ]
     }
