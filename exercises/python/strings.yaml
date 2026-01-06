@@ -415,3 +415,399 @@ exercises:
       - 0 before width means zero-pad
       - 05 = 5 chars wide with zeros
     tags: [strings, fstrings, padding]
+
+  # --- Fill-in Exercises ---
+
+  - slug: string-len-fill
+    title: String Length
+    type: fill-in
+    difficulty: 1
+    concept: strings
+    subconcept: basics
+    level: intro
+    prereqs: [variables]
+    pattern: invocation
+    objective: Use len() to get string length
+    prompt: Complete the code to get the length of the string
+    template: "length = ___(text)"
+    blank_position: 0
+    expected_answer: "len"
+    accepted_solutions: ["len"]
+    hints:
+      - Which built-in function returns the length?
+    tags: [strings, len]
+
+  - slug: string-concat-fill
+    title: String Concatenation
+    type: fill-in
+    difficulty: 1
+    concept: strings
+    subconcept: basics
+    level: intro
+    prereqs: [variables]
+    pattern: construction
+    objective: Concatenate strings
+    prompt: Complete the code to join two strings
+    template: "full = first ___ last"
+    blank_position: 0
+    expected_answer: "+"
+    accepted_solutions: ["+"]
+    hints:
+      - Use the addition operator to join strings
+    tags: [strings, concatenation]
+
+  - slug: string-index-first-fill
+    title: First Character
+    type: fill-in
+    difficulty: 1
+    concept: strings
+    subconcept: indexing
+    level: intro
+    prereqs: [basics]
+    pattern: indexing
+    objective: Access first character
+    prompt: Complete the code to get the first character
+    template: "first = text[___]"
+    blank_position: 0
+    expected_answer: "0"
+    accepted_solutions: ["0"]
+    hints:
+      - Python uses zero-based indexing
+    tags: [strings, indexing]
+
+  - slug: string-index-last-fill
+    title: Last Character
+    type: fill-in
+    difficulty: 1
+    concept: strings
+    subconcept: indexing
+    level: practice
+    prereqs: [basics]
+    pattern: indexing
+    objective: Access last character with negative index
+    prompt: Complete the code to get the last character
+    template: "last = text[___]"
+    blank_position: 0
+    expected_answer: "-1"
+    accepted_solutions: ["-1"]
+    hints:
+      - Negative indices count from the end
+    tags: [strings, indexing]
+
+  - slug: string-slice-start-fill
+    title: Slice from Start
+    type: fill-in
+    difficulty: 2
+    concept: strings
+    subconcept: slicing
+    level: intro
+    prereqs: [indexing]
+    pattern: indexing
+    objective: Slice first N characters
+    prompt: Complete the slice to get first 3 characters
+    template: "first_three = text[___]"
+    blank_position: 0
+    expected_answer: ":3"
+    accepted_solutions: [":3", "0:3"]
+    hints:
+      - Omitting start defaults to 0
+    tags: [strings, slicing]
+
+  - slug: string-slice-end-fill
+    title: Slice from End
+    type: fill-in
+    difficulty: 2
+    concept: strings
+    subconcept: slicing
+    level: practice
+    prereqs: [indexing]
+    pattern: indexing
+    objective: Slice last N characters
+    prompt: Complete the slice to get last 3 characters
+    template: "last_three = text[___]"
+    blank_position: 0
+    expected_answer: "-3:"
+    accepted_solutions: ["-3:"]
+    hints:
+      - Negative indices work in slices too
+    tags: [strings, slicing]
+
+  - slug: string-upper-fill
+    title: Uppercase Method
+    type: fill-in
+    difficulty: 1
+    concept: strings
+    subconcept: methods
+    level: intro
+    prereqs: [basics]
+    pattern: invocation
+    objective: Convert to uppercase
+    prompt: Complete the code to convert to uppercase
+    template: "loud = text.___()"
+    blank_position: 0
+    expected_answer: "upper"
+    accepted_solutions: ["upper"]
+    hints:
+      - Which string method converts to uppercase?
+    tags: [strings, methods]
+
+  - slug: string-strip-fill
+    title: Strip Whitespace
+    type: fill-in
+    difficulty: 1
+    concept: strings
+    subconcept: methods
+    level: practice
+    prereqs: [basics]
+    pattern: invocation
+    objective: Remove surrounding whitespace
+    prompt: Complete the code to remove whitespace from both ends
+    template: "clean = text.___()"
+    blank_position: 0
+    expected_answer: "strip"
+    accepted_solutions: ["strip"]
+    hints:
+      - This method removes whitespace from both ends
+    tags: [strings, methods]
+
+  - slug: fstring-basic-fill
+    title: F-String Variable
+    type: fill-in
+    difficulty: 1
+    concept: strings
+    subconcept: fstrings
+    level: intro
+    prereqs: [basics]
+    pattern: construction
+    objective: Use f-string for variable interpolation
+    prompt: Complete the f-string to include the name variable
+    template: "greeting = f\"Hello, {___}!\""
+    blank_position: 0
+    expected_answer: "name"
+    accepted_solutions: ["name"]
+    hints:
+      - Put the variable name inside the curly braces
+    tags: [strings, fstrings]
+
+  - slug: fstring-expression-fill
+    title: F-String Expression
+    type: fill-in
+    difficulty: 2
+    concept: strings
+    subconcept: fstrings
+    level: practice
+    prereqs: [basics]
+    pattern: construction
+    objective: Use expression in f-string
+    prompt: Complete the f-string to show the doubled value
+    template: "result = f\"Double is {x ___ 2}\""
+    blank_position: 0
+    expected_answer: "*"
+    accepted_solutions: ["*"]
+    hints:
+      - F-strings can contain expressions
+    tags: [strings, fstrings]
+
+  # --- Predict-output Exercises ---
+
+  - slug: string-predict-len
+    title: String Length
+    type: predict
+    difficulty: 1
+    concept: strings
+    subconcept: basics
+    level: intro
+    prereqs: [variables]
+    pattern: invocation
+    objective: Predict len() result
+    prompt: What does this code print?
+    code: |
+      text = "hello"
+      print(len(text))
+    expected_answer: "5"
+    accepted_solutions: []
+    hints:
+      - len() counts all characters
+    tags: [strings, len]
+
+  - slug: string-predict-concat
+    title: String Concatenation
+    type: predict
+    difficulty: 1
+    concept: strings
+    subconcept: basics
+    level: practice
+    prereqs: [variables]
+    pattern: construction
+    objective: Predict concatenation result
+    prompt: What does this code print?
+    code: |
+      a = "Hello"
+      b = "World"
+      print(a + " " + b)
+    expected_answer: "Hello World"
+    accepted_solutions: []
+    hints:
+      - + joins strings exactly as they are
+    tags: [strings, concatenation]
+
+  - slug: string-predict-index
+    title: String Index
+    type: predict
+    difficulty: 1
+    concept: strings
+    subconcept: indexing
+    level: intro
+    prereqs: [basics]
+    pattern: indexing
+    objective: Predict character at index
+    prompt: What does this code print?
+    code: |
+      text = "Python"
+      print(text[2])
+    expected_answer: "t"
+    accepted_solutions: []
+    hints:
+      - Index 0 is 'P', index 1 is 'y'...
+    tags: [strings, indexing]
+
+  - slug: string-predict-negative
+    title: Negative Index
+    type: predict
+    difficulty: 2
+    concept: strings
+    subconcept: indexing
+    level: practice
+    prereqs: [basics]
+    pattern: indexing
+    objective: Predict negative index result
+    prompt: What does this code print?
+    code: |
+      text = "Python"
+      print(text[-2])
+    expected_answer: "o"
+    accepted_solutions: []
+    hints:
+      - -1 is last, -2 is second to last
+    tags: [strings, indexing]
+
+  - slug: string-predict-slice
+    title: String Slice
+    type: predict
+    difficulty: 2
+    concept: strings
+    subconcept: slicing
+    level: intro
+    prereqs: [indexing]
+    pattern: indexing
+    objective: Predict slice result
+    prompt: What does this code print?
+    code: |
+      text = "Python"
+      print(text[1:4])
+    expected_answer: "yth"
+    accepted_solutions: []
+    hints:
+      - Slice includes start, excludes end
+    tags: [strings, slicing]
+
+  - slug: string-predict-reverse
+    title: String Reverse
+    type: predict
+    difficulty: 2
+    concept: strings
+    subconcept: slicing
+    level: practice
+    prereqs: [indexing]
+    pattern: indexing
+    objective: Predict reverse slice result
+    prompt: What does this code print?
+    code: |
+      text = "abc"
+      print(text[::-1])
+    expected_answer: "cba"
+    accepted_solutions: []
+    hints:
+      - Step of -1 reverses the string
+    tags: [strings, slicing]
+
+  - slug: string-predict-upper
+    title: Uppercase Result
+    type: predict
+    difficulty: 1
+    concept: strings
+    subconcept: methods
+    level: intro
+    prereqs: [basics]
+    pattern: invocation
+    objective: Predict upper() result
+    prompt: What does this code print?
+    code: |
+      text = "Hello"
+      print(text.upper())
+    expected_answer: "HELLO"
+    accepted_solutions: []
+    hints:
+      - upper() converts all letters to uppercase
+    tags: [strings, methods]
+
+  - slug: string-predict-replace
+    title: Replace Result
+    type: predict
+    difficulty: 2
+    concept: strings
+    subconcept: methods
+    level: practice
+    prereqs: [basics]
+    pattern: invocation
+    objective: Predict replace() result
+    prompt: What does this code print?
+    code: |
+      text = "hello world"
+      print(text.replace("l", "L"))
+    expected_answer: "heLLo worLd"
+    accepted_solutions: []
+    hints:
+      - replace() changes all occurrences
+    tags: [strings, methods]
+
+  - slug: fstring-predict-basic
+    title: F-String Output
+    type: predict
+    difficulty: 1
+    concept: strings
+    subconcept: fstrings
+    level: intro
+    prereqs: [basics]
+    pattern: construction
+    objective: Predict f-string output
+    prompt: What does this code print?
+    code: |
+      name = "Alice"
+      age = 30
+      print(f"{name} is {age}")
+    expected_answer: "Alice is 30"
+    accepted_solutions: []
+    hints:
+      - Variables in {} are replaced with their values
+    tags: [strings, fstrings]
+
+  - slug: fstring-predict-expr
+    title: F-String Expression
+    type: predict
+    difficulty: 2
+    concept: strings
+    subconcept: fstrings
+    level: practice
+    prereqs: [basics]
+    pattern: construction
+    objective: Predict f-string with expression
+    prompt: What does this code print?
+    code: |
+      x = 5
+      print(f"Double is {x * 2}")
+    expected_answer: "Double is 10"
+    accepted_solutions: []
+    hints:
+      - Expressions in {} are evaluated
+    tags: [strings, fstrings]
