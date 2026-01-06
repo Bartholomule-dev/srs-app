@@ -291,7 +291,7 @@ exercises:
       - "{'name': 'Alice'}"
     hints:
       - Use curly braces
-      - Format is key: value
+      - "Format is key: value"
     tags: [dicts, creation, beginner]
 
   - slug: dict-bracket-access

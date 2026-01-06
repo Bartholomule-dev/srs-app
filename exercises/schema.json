@@ -71,7 +71,20 @@
         },
         "pattern": {
           "type": "string",
-          "enum": ["accumulator", "filtering", "indexing", "mapping", "lookup", "iteration", "mutation", "construction", "comparison", "conversion", "io", "definition", "invocation", "handling"],
+          "enum": [
+            "accumulator", "aggregation", "arithmetic", "assignment", "attribute",
+            "comparison", "conditional", "construction", "context", "conversion",
+            "declaration", "definition",
+            "file", "filtering", "function",
+            "handling",
+            "import", "indexing", "input", "invocation", "io", "iteration",
+            "logic", "logical", "lookup",
+            "mapping", "mutation",
+            "output",
+            "query",
+            "swap",
+            "transformation"
+          ],
           "description": "Programming pattern being practiced"
         },
         "objective": {

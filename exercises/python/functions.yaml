@@ -185,7 +185,7 @@ exercises:
     prompt: Create a lambda that doubles its input x
     expected_answer: "lambda x: x * 2"
     hints:
-      - Format is lambda args: expression
+      - "Format is lambda args: expression"
     tags: [functions, lambda, beginner]
 
   - slug: lambda-two-args
@@ -289,7 +289,7 @@ exercises:
     prompt: Define greet(name) with name typed as str
     expected_answer: "def greet(name: str):"
     hints:
-      - Use : type after parameter
+      - "Use : type after parameter"
     tags: [functions, typehints, annotation]
 
   - slug: typehint-return

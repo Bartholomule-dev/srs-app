@@ -481,7 +481,7 @@ exercises:
       - len function as key
     tags: [sorted, key, length]
 
-  - slug: sorted-key-lambda
+  - slug: sorted-key-lambda-tuples
     objective: "Use sorted() with a lambda key function for custom sorting"
     title: Sorted with Lambda Key
     difficulty: 3

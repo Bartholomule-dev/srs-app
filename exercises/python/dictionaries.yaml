@@ -11,7 +11,7 @@ exercises:
     expected_answer: 'person = {"name": "Alice", "age": 30}'
     hints:
       - Use curly braces
-      - Use key: value pairs
+      - "Use key: value pairs"
     tags: [dictionaries, creation, beginner]
     concept: collections
     subconcept: dicts
