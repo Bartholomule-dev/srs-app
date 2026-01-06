@@ -4,6 +4,7 @@
 
 import type { SubconceptProgress, ExerciseAttempt, ConceptSlug, ExerciseLevel, ExercisePattern } from '@/lib/curriculum/types';
 import type { Exercise, Quality } from '@/lib/types';
+import { QUALITY_PASSING_THRESHOLD } from './types';
 
 // Constants
 export const LEVEL_ORDER: ExerciseLevel[] = ['intro', 'practice', 'edge', 'integrated'];
@@ -199,7 +200,7 @@ export function calculateSubconceptReview(
   currentState: SubconceptProgress
 ): SubconceptReviewResult {
   const now = new Date();
-  const wasCorrect = quality >= 3;
+  const wasCorrect = quality >= QUALITY_PASSING_THRESHOLD;
 
   if (!wasCorrect) {
     // Failure: reset to learning phase

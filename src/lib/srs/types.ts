@@ -50,3 +50,6 @@ export interface DueCard {
   state: CardState;
   isNew: boolean;
 }
+
+/** Quality threshold for considering an answer "correct" (passing) per SM-2 algorithm */
+export const QUALITY_PASSING_THRESHOLD = 3;

@@ -1,6 +1,6 @@
 // src/lib/srs/algorithm.ts
 import type { CardState, ReviewResult, SRSConfig, DueCard } from './types';
-import { DEFAULT_SRS_CONFIG } from './types';
+import { DEFAULT_SRS_CONFIG, QUALITY_PASSING_THRESHOLD } from './types';
 import type { Quality, UserProgress, Exercise } from '@/lib/types';
 
 /**
@@ -30,7 +30,7 @@ export function calculateNextReview(
   currentState: CardState,
   config: SRSConfig = DEFAULT_SRS_CONFIG
 ): ReviewResult {
-  const wasCorrect = quality >= 3;
+  const wasCorrect = quality >= QUALITY_PASSING_THRESHOLD;
   const now = new Date();
 
   if (!wasCorrect) {

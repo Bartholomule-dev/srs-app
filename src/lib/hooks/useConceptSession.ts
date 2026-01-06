@@ -14,6 +14,7 @@ import type {
   SessionCardType,
   ReviewSessionCard,
 } from '@/lib/session/types';
+import { QUALITY_PASSING_THRESHOLD } from '@/lib/srs/types';
 import type { SubconceptProgress, ExercisePattern } from '@/lib/curriculum/types';
 import {
   buildTeachingPair,
@@ -334,7 +335,7 @@ export function useConceptSession(): UseConceptSessionReturn {
       const willComplete = newCompleted >= stats.total;
 
       // For practice/review cards, run SRS logic
-      const isCorrect = quality >= 3;
+      const isCorrect = quality >= QUALITY_PASSING_THRESHOLD;
 
       // Update local stats immediately (optimistic)
       setStats((prev) => ({
