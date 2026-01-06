@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { ProtectedRoute, ExerciseCard, SessionProgress, SessionSummary } from '@/components';
+import { ProtectedRoute, ExerciseCard, SessionProgress, SessionSummary, TeachingCard } from '@/components';
 import { useConceptSession } from '@/lib/hooks';
 import { ErrorBoundary } from '@/components';
 import { Button } from '@/components/ui/Button';
@@ -144,6 +144,7 @@ function EmptyState({ onDashboard }: { onDashboard: () => void }) {
 function PracticeSessionContent() {
   const router = useRouter();
   const {
+    cardTypes,
     currentCard,
     isComplete,
     stats,
@@ -195,6 +196,7 @@ function PracticeSessionContent() {
             <SessionProgress
               current={stats.completed}
               total={stats.total}
+              cardTypes={cardTypes}
               className="flex-1"
             />
             <Link
@@ -220,30 +222,10 @@ function PracticeSessionContent() {
           className="w-full max-w-2xl"
         >
           {currentCard && isTeachingCard(currentCard) && (
-            // TODO: Replace with TeachingCard component in Task 5.3
-            <Card className="p-6">
-              <CardContent>
-                <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">
-                  Learning: {currentCard.subconcept}
-                </h3>
-                <p className="text-[var(--text-secondary)] mb-4">
-                  {currentCard.teaching.explanation}
-                </p>
-                <div className="bg-[var(--bg-surface-2)] rounded-lg p-4 mb-4">
-                  <p className="text-sm text-[var(--text-tertiary)] mb-2">Example:</p>
-                  <pre className="font-mono text-sm text-[var(--text-primary)]">
-                    {currentCard.exampleExercise.prompt}
-                  </pre>
-                </div>
-                <Button
-                  variant="primary"
-                  onClick={() => recordResult(5)}
-                  className="w-full"
-                >
-                  Continue
-                </Button>
-              </CardContent>
-            </Card>
+            <TeachingCard
+              card={currentCard}
+              onContinue={() => recordResult(5)}
+            />
           )}
           {currentCard && hasExercise(currentCard) && (
             <ExerciseCard
