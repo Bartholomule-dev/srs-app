@@ -28,7 +28,7 @@ A gamified web platform for practicing code syntax through spaced repetition. Ta
 |-------|------------|
 | Framework | Next.js 16.1.1 (App Router) |
 | Language | TypeScript 5 (strict mode) |
-| UI | React 19, Tailwind CSS 4, **darwin-ui** (@pikoloo/darwin-ui) |
+| UI | React 19, Tailwind CSS 4, framer-motion |
 | Backend | Supabase (PostgreSQL + Auth + Realtime) |
 | Testing | Vitest (696 unit/integration) + Playwright (E2E) |
 | Deployment | Vercel + GitHub Actions CI/E2E |
@@ -65,7 +65,7 @@ src/
 │   └── practice/page.tsx  # Practice session flow
 ├── middleware.ts         # Supabase session refresh
 ├── components/
-│   ├── ui/               # darwin-ui wrappers with project defaults
+│   ├── ui/               # Custom UI components (Button, Card, Input, etc.)
 │   ├── layout/           # Header, LandingHeader
 │   ├── landing/          # Hero, Features, HowItWorks, AuthForm
 │   ├── exercise/         # ExerciseCard, CodeInput, FillInExercise, TeachingCard
@@ -149,37 +149,6 @@ className={cn('base-classes', condition && 'conditional-class')}
 - Use `"use client"` directive for interactive components
 - Server Components for static/metadata content
 - React Compiler enabled for auto-optimization
-
-### darwin-ui (CRITICAL: Always Prefer)
-
-**darwin-ui (@pikoloo/darwin-ui) provides macOS-inspired components. ALWAYS use darwin-ui components instead of building custom ones.**
-
-**Available Components (use these first):**
-- `Button`, `IconButton` - All button variants
-- `Card`, `CardContent`, `CardHeader`, `CardFooter` - Container components
-- `Input`, `Textarea`, `Select`, `Checkbox`, `Switch`, `Slider` - Form controls
-- `Dialog`, `Popover`, `Tooltip`, `ContextMenu` - Overlays
-- `Tabs`, `Accordion`, `Collapsible` - Navigation/disclosure
-- `Badge`, `Avatar`, `Skeleton` - Display elements
-- `Alert`, `Separator`, `ScrollArea` - Utility components
-
-**Wrapper Pattern:**
-All darwin-ui components are re-exported via `src/components/ui/` with project defaults:
-```tsx
-// Import from our wrappers, not directly from darwin-ui
-import { Button, Card, Input } from '@/components/ui';
-```
-
-**Custom Implementations (exceptions):**
-- `Toast/ToastProvider` - Keep custom (darwin-ui requires breaking context change)
-- `Progress` - Custom wrapper for proper aria-progressbar attributes
-- `CodeEditor` - IDE-styled textarea with line numbers, focus glow
-
-**When creating new UI:**
-1. Check if darwin-ui has the component first
-2. If yes, use it via `@/components/ui/` wrapper
-3. If no, build custom with Tailwind following darwin-ui aesthetic
-4. Never duplicate functionality darwin-ui already provides
 
 ### Component Patterns
 
@@ -364,7 +333,7 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 7. ✅ Basic Stats - StatsGrid, useStats, streak/accuracy
 8. ✅ MVP Deployment - Vercel, GitHub Actions CI/E2E, Playwright
 9. ✅ UI/UX Redesign - "IDE-Inspired Premium" aesthetic with dark-first theme, Space Grotesk/DM Sans/JetBrains Mono fonts, bento grids, segmented progress bars, confetti celebrations
-10. ✅ darwin-ui Migration - Migrated to @pikoloo/darwin-ui for macOS-inspired aesthetic, wrapper components in src/components/ui/
+10. ✅ Custom UI Components - Premium Tailwind components with warm amber theme, framer-motion animations
 11. ✅ Theme System - CSS variables for colors/fonts, cn() utility, CodeEditor component, Card elevation variants
 12. ✅ Phase 2.5 Curriculum Enhancement - objective/targets fields, anti-repeat pattern selection, multi-target SRS credit, 47 new exercises (218 total)
 13. ✅ Learning Mode - Teaching cards for new subconcepts (explanation + example), TeachingCard component with blue styling, SessionProgress blue segments, interleaved teaching pairs, curriculum loader for teaching content
