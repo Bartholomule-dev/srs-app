@@ -24,9 +24,15 @@ export function ExerciseFeedback({
     <div className="space-y-4">
       {/* Result Banner */}
       <Alert variant={isCorrect ? 'success' : 'error'}>
-        <span className="text-xl" aria-hidden="true">
-          {isCorrect ? '\u2713' : '\u2717'}
-        </span>
+        {isCorrect ? (
+          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        ) : (
+          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        )}
         <span className="font-semibold">{isCorrect ? 'Correct!' : 'Incorrect'}</span>
       </Alert>
 

@@ -117,7 +117,7 @@ export function HowItWorks() {
                 className="relative flex flex-col items-center text-center"
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.2 + index * 0.15 }}
+                transition={{ duration: 0.5, delay: 0.2 + index * 0.2 }}
               >
                 {/* Number badge with glow */}
                 <div className="relative mb-6">

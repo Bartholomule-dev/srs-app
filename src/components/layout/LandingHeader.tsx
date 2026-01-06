@@ -20,11 +20,12 @@ export function LandingHeader() {
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2 group">
           <span
             className="text-xl font-display font-bold
                           bg-gradient-to-r from-[var(--accent-primary)] to-orange-500
-                          bg-clip-text text-transparent"
+                          bg-clip-text text-transparent
+                          group-hover:scale-105 transition-transform duration-150"
           >
             SyntaxSRS
           </span>
