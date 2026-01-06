@@ -1,9 +1,4 @@
-/**
- * Gets the UTC date string (YYYY-MM-DD) from a Date object.
- */
-function toUTCDateString(date: Date): string {
-  return date.toISOString().split('T')[0];
-}
+import { toUTCDateString } from '@/lib/utils/date';
 
 /**
  * Gets the number of days between two UTC date strings.

@@ -1,12 +1,6 @@
 // src/lib/stats/queries.ts
 import type { UserProgress } from '@/lib/types';
-
-/**
- * Formats a Date to YYYY-MM-DD string in UTC.
- */
-function toUTCDateString(date: Date): string {
-  return date.toISOString().split('T')[0];
-}
+import { toUTCDateString } from '@/lib/utils/date';
 
 /**
  * Counts how many cards were reviewed today (UTC).
