@@ -1,6 +1,5 @@
 export { ProtectedRoute } from './ProtectedRoute';
 export { ErrorBoundary } from './ErrorBoundary';
-// Toast is now provided by @pikoloo/darwin-ui
 
 // Exercise components
 export {
