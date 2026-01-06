@@ -16,10 +16,16 @@ export function TeachingCard({ card, onContinue }: TeachingCardProps) {
   const subconcept = getSubconceptDefinition(card.subconcept);
   const displayName = subconcept?.name ?? card.subconcept;
 
-  // Handle Enter key to advance
+  // Handle Enter key to advance (only when not focused on other inputs)
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
+      // Don't intercept if user is typing in an input field
+      const activeElement = document.activeElement;
+      const isTypingInInput =
+        activeElement?.tagName === 'INPUT' ||
+        activeElement?.tagName === 'TEXTAREA';
+
+      if (e.key === 'Enter' && !isTypingInInput) {
         onContinue();
       }
     },
