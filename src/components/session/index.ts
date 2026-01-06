@@ -1,2 +1,2 @@
-export { SessionProgress } from './SessionProgress';
+export { SessionProgress, type CardType } from './SessionProgress';
 export { SessionSummary } from './SessionSummary';

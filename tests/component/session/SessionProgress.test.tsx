@@ -56,4 +56,84 @@ describe('SessionProgress', () => {
     );
     expect(container.firstChild).toHaveClass('custom-class');
   });
+
+  describe('teaching card support', () => {
+    it('renders segments with data-segment attribute for testing', () => {
+      render(<SessionProgress current={2} total={5} />);
+
+      const progressbar = screen.getByRole('progressbar');
+      const segments = progressbar.querySelectorAll('[data-segment]');
+      expect(segments.length).toBe(5);
+    });
+
+    it('renders blue segments for teaching card types', () => {
+      const cardTypes: ('teaching' | 'practice' | 'review')[] = [
+        'teaching',
+        'practice',
+        'review',
+        'review',
+      ];
+
+      render(<SessionProgress current={1} total={4} cardTypes={cardTypes} />);
+
+      const progressbar = screen.getByRole('progressbar');
+      const segments = progressbar.querySelectorAll('[data-segment]');
+      expect(segments.length).toBe(4);
+
+      // First segment should be teaching type
+      expect(segments[0]).toHaveAttribute('data-segment-type', 'teaching');
+      // Others should be practice/review
+      expect(segments[1]).toHaveAttribute('data-segment-type', 'practice');
+      expect(segments[2]).toHaveAttribute('data-segment-type', 'review');
+      expect(segments[3]).toHaveAttribute('data-segment-type', 'review');
+    });
+
+    it('defaults to review type when cardTypes not provided', () => {
+      render(<SessionProgress current={1} total={3} />);
+
+      const progressbar = screen.getByRole('progressbar');
+      const segments = progressbar.querySelectorAll('[data-segment]');
+
+      // All segments should default to review type
+      segments.forEach((segment) => {
+        expect(segment).toHaveAttribute('data-segment-type', 'review');
+      });
+    });
+
+    it('applies blue styling to teaching segments', () => {
+      const cardTypes: ('teaching' | 'practice' | 'review')[] = [
+        'teaching',
+        'practice',
+      ];
+
+      render(<SessionProgress current={0} total={2} cardTypes={cardTypes} />);
+
+      const progressbar = screen.getByRole('progressbar');
+      const segments = progressbar.querySelectorAll('[data-segment]');
+
+      // Teaching segment (first, current) should have blue classes
+      const teachingInner = segments[0].querySelector('[data-segment-inner]');
+      expect(teachingInner).toHaveClass('bg-blue-500');
+
+      // Practice segment should have accent-primary
+      const practiceInner = segments[1].querySelector('[data-segment-inner]');
+      expect(practiceInner).not.toHaveClass('bg-blue-500');
+    });
+
+    it('applies blue glow to current teaching segment', () => {
+      const cardTypes: ('teaching' | 'practice' | 'review')[] = [
+        'teaching',
+        'teaching',
+      ];
+
+      render(<SessionProgress current={1} total={2} cardTypes={cardTypes} />);
+
+      const progressbar = screen.getByRole('progressbar');
+      const segments = progressbar.querySelectorAll('[data-segment]');
+
+      // Second segment is current (index 1), should have blue glow
+      const currentInner = segments[1].querySelector('[data-segment-inner]');
+      expect(currentInner?.className).toContain('shadow-[0_0_8px_rgb(59,130,246)]');
+    });
+  });
 });
