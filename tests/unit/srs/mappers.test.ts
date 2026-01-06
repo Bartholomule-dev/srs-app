@@ -82,26 +82,78 @@ describe('cardStateToProgressUpdate', () => {
 });
 
 describe('mapExercise', () => {
+  // Mock database exercise for reuse
+  const mockDbExercise = {
+    id: 'test-id',
+    slug: 'for-loop-range',
+    language: 'python',
+    category: 'loops',
+    difficulty: 1,
+    title: 'For Loop Range',
+    prompt: 'Write a for loop',
+    expected_answer: 'for i in range(5):',
+    accepted_solutions: [],
+    hints: ['Use range()'],
+    explanation: null,
+    tags: ['loops'],
+    times_practiced: 0,
+    avg_success_rate: null,
+    created_at: '2026-01-01T00:00:00Z',
+    updated_at: '2026-01-01T00:00:00Z',
+    // Taxonomy fields (Phase 2)
+    concept: 'control-flow',
+    subconcept: 'for',
+    level: 'intro',
+    prereqs: [],
+    exercise_type: 'write',
+    pattern: 'iteration',
+    template: null,
+    blank_position: null,
+    // Phase 2.5 fields
+    objective: null,
+    targets: null,
+  };
+
   it('maps slug field', () => {
-    const dbExercise = {
-      id: 'test-id',
-      slug: 'for-loop-range',
-      language: 'python',
-      category: 'loops',
-      difficulty: 1,
-      title: 'For Loop Range',
-      prompt: 'Write a for loop',
-      expected_answer: 'for i in range(5):',
-      accepted_solutions: [],
-      hints: ['Use range()'],
-      explanation: null,
-      tags: ['loops'],
-      times_practiced: 0,
-      avg_success_rate: null,
-      created_at: '2026-01-01T00:00:00Z',
-      updated_at: '2026-01-01T00:00:00Z',
-    };
-    const result = mapExercise(dbExercise);
+    const result = mapExercise(mockDbExercise);
     expect(result.slug).toBe('for-loop-range');
+  });
+
+  describe('mapExercise objective and targets', () => {
+    it('maps objective field', () => {
+      const db = {
+        ...mockDbExercise,
+        objective: 'Use enumerate to iterate with index',
+      };
+      const result = mapExercise(db);
+      expect(result.objective).toBe('Use enumerate to iterate with index');
+    });
+
+    it('maps targets array', () => {
+      const db = {
+        ...mockDbExercise,
+        targets: ['for', 'enumerate', 'list-comp'],
+      };
+      const result = mapExercise(db);
+      expect(result.targets).toEqual(['for', 'enumerate', 'list-comp']);
+    });
+
+    it('maps null targets when not provided', () => {
+      const db = {
+        ...mockDbExercise,
+        targets: null,
+      };
+      const result = mapExercise(db);
+      expect(result.targets).toBeNull();
+    });
+
+    it('defaults objective to empty string when null', () => {
+      const db = {
+        ...mockDbExercise,
+        objective: null,
+      };
+      const result = mapExercise(db);
+      expect(result.objective).toBe('');
+    });
   });
 });

@@ -161,6 +161,8 @@ describe('Concept-Based SRS', () => {
       pattern: 'iteration',
       template: null,
       blankPosition: null,
+      objective: '',
+      targets: null,
     });
 
     const exercises: Exercise[] = [

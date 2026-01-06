@@ -27,8 +27,13 @@ export function mapProfile(db: DbProfile): Profile {
 
 /**
  * Map database exercise to app exercise
+ * Note: Uses type assertion for Phase 2.5 fields (objective, targets) until
+ * database migration is applied and types are regenerated.
  */
 export function mapExercise(db: DbExercise): Exercise {
+  // Type assertion for fields not yet in generated database types
+  const dbExt = db as DbExercise & { objective?: string | null; targets?: string[] | null };
+
   return {
     id: db.id,
     slug: db.slug,
@@ -46,6 +51,18 @@ export function mapExercise(db: DbExercise): Exercise {
     avgSuccessRate: db.avg_success_rate,
     createdAt: db.created_at ?? new Date().toISOString(),
     updatedAt: db.updated_at ?? new Date().toISOString(),
+    // Taxonomy fields (Phase 2)
+    concept: (db.concept ?? 'foundations') as Exercise['concept'],
+    subconcept: db.subconcept ?? 'basics',
+    level: (db.level ?? 'intro') as Exercise['level'],
+    prereqs: db.prereqs ?? [],
+    exerciseType: (db.exercise_type ?? 'write') as Exercise['exerciseType'],
+    pattern: (db.pattern ?? 'construction') as Exercise['pattern'],
+    template: db.template ?? null,
+    blankPosition: db.blank_position ?? null,
+    // Phase 2.5 fields (using extended type until migration)
+    objective: dbExt.objective ?? '',
+    targets: dbExt.targets ?? null,
   };
 }
 
