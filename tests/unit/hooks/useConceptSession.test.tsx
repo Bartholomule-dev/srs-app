@@ -40,17 +40,14 @@ vi.mock('@/lib/hooks/useConceptSRS', () => ({
   }),
 }));
 
-// Mock showToast
-const mockShowToast = vi.fn();
-vi.mock('@pikoloo/darwin-ui', async (importOriginal) => {
-  const original = await importOriginal<typeof import('@pikoloo/darwin-ui')>();
-  return {
-    ...original,
-    useToast: () => ({
-      showToast: mockShowToast,
-    }),
-  };
-});
+// Mock toast context
+vi.mock('@/lib/context/ToastContext', () => ({
+  useToast: () => ({
+    showToast: vi.fn(),
+    toasts: [],
+    dismissToast: vi.fn(),
+  }),
+}));
 
 // Mock updateProfileStats
 const mockUpdateProfileStats = vi.fn();

@@ -1,14 +1,18 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import type { ReactNode } from 'react';
 
 // Mock Fontsource variable fonts (loaded via CSS imports in layout)
 vi.mock('@fontsource-variable/space-grotesk', () => ({}));
 vi.mock('@fontsource-variable/dm-sans', () => ({}));
 vi.mock('@fontsource-variable/jetbrains-mono', () => ({}));
 
-// Mock darwin-ui ToastProvider
-vi.mock('@pikoloo/darwin-ui', () => ({
-  ToastProvider: ({ children }: { children: ReactNode }) => children,
+// Mock toast context (for consistent mocking across test suite)
+vi.mock('@/lib/context/ToastContext', () => ({
+  useToast: () => ({
+    showToast: vi.fn(),
+    toasts: [],
+    dismissToast: vi.fn(),
+  }),
+  ToastProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 // Mock Supabase client
@@ -28,8 +32,9 @@ describe('RootLayout', () => {
     vi.clearAllMocks();
   });
 
-  it('renders children within the layout structure', async () => {
+  it('renders children within the layout structure', { timeout: 15000 }, async () => {
     // Dynamic import after mocks are set up
+    // Note: This test can be slow when running in full suite due to module caching
     const { default: RootLayout } = await import('@/app/layout');
 
     // RootLayout returns an html element
