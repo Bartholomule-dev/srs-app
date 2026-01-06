@@ -16,7 +16,7 @@ type Phase = 'answering' | 'feedback';
 
 interface ExerciseCardProps {
   exercise: Exercise;
-  onComplete: (exerciseId: string, quality: Quality) => void;
+  onComplete: (quality: Quality) => void;
 }
 
 export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
@@ -122,8 +122,8 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
     };
 
     const quality = inferQuality(inputs);
-    onComplete(exercise.id, quality);
-  }, [exercise.id, startTime, pausedMs, hintUsed, answerResult, onComplete]);
+    onComplete(quality);
+  }, [startTime, pausedMs, hintUsed, answerResult, onComplete]);
 
   // Calculate next review days (rough estimate based on current state)
   const nextReviewDays = answerResult?.isCorrect ? 6 : 1;

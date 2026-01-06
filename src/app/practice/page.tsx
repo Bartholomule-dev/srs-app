@@ -230,7 +230,7 @@ function PracticeSessionContent() {
           {currentCard && hasExercise(currentCard) && (
             <ExerciseCard
               exercise={currentCard.exercise}
-              onComplete={(exerciseId, quality) => recordResult(quality)}
+              onComplete={recordResult}
             />
           )}
         </motion.div>

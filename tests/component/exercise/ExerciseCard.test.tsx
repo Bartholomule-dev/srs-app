@@ -142,7 +142,7 @@ describe('ExerciseCard', () => {
   });
 
   describe('onComplete callback', () => {
-    it('calls onComplete with exerciseId and quality when continue clicked', async () => {
+    it('calls onComplete with quality when continue clicked', async () => {
       const handleComplete = vi.fn();
       render(<ExerciseCard exercise={mockExercise} onComplete={handleComplete} />);
 
@@ -156,7 +156,7 @@ describe('ExerciseCard', () => {
         fireEvent.click(screen.getByRole('button', { name: /continue/i }));
       });
 
-      expect(handleComplete).toHaveBeenCalledWith('ex-1', 5); // Fast correct = quality 5
+      expect(handleComplete).toHaveBeenCalledWith(5); // Fast correct = quality 5
     });
 
     it('calls onComplete with quality 2 for give up', async () => {
@@ -171,7 +171,7 @@ describe('ExerciseCard', () => {
         fireEvent.click(screen.getByRole('button', { name: /continue/i }));
       });
 
-      expect(handleComplete).toHaveBeenCalledWith('ex-1', 2);
+      expect(handleComplete).toHaveBeenCalledWith(2);
     });
 
     it('calls onComplete with quality 3 when hint used', async () => {
@@ -188,7 +188,7 @@ describe('ExerciseCard', () => {
         fireEvent.click(screen.getByRole('button', { name: /continue/i }));
       });
 
-      expect(handleComplete).toHaveBeenCalledWith('ex-1', 3);
+      expect(handleComplete).toHaveBeenCalledWith(3);
     });
   });
 
@@ -217,7 +217,7 @@ describe('ExerciseCard', () => {
       });
 
       // 20s is in the "hesitation" range (15-30s), quality 4
-      expect(handleComplete).toHaveBeenCalledWith('ex-1', 4);
+      expect(handleComplete).toHaveBeenCalledWith(4);
     });
   });
 
