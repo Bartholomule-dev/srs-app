@@ -63,6 +63,12 @@ export interface Exercise {
   exerciseType: ExerciseType; // 'type' is reserved, use 'exerciseType'
   pattern: ExercisePattern;
 
+  // Learning objective
+  objective: string;
+
+  // Multi-subconcept targeting (for integrated exercises)
+  targets: string[] | null;
+
   // Fill-in specific (optional)
   template: string | null;
   blankPosition: number | null;

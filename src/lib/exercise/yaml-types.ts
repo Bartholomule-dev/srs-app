@@ -29,6 +29,12 @@ export interface YamlExercise {
   type: ExerciseType;
   pattern: ExercisePattern;
 
+  // Learning objective
+  objective: string;
+
+  // Multi-subconcept targeting (required for integrated)
+  targets?: string[];
+
   // Fill-in specific
   template?: string;
   blank_position?: number;
