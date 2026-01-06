@@ -91,7 +91,7 @@ export function Features() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">Why SyntaxSRS?</h2>
+          <h2 className="text-3xl md:text-4xl font-display font-bold tracking-[-0.02em] mb-4">Why SyntaxSRS?</h2>
           <p className="text-[var(--text-secondary)] text-lg max-w-2xl mx-auto">
             Built specifically for developers who want to maintain their syntax fluency.
           </p>

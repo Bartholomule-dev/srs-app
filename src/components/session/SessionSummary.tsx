@@ -107,7 +107,7 @@ export function SessionSummary({ stats, onDashboard }: SessionSummaryProps) {
             >
               {isPerfectScore ? '🎉' : '✨'}
             </motion.span>
-            <h2 className="text-2xl font-bold font-display text-[var(--text-primary)]">
+            <h2 className="text-2xl font-bold font-display tracking-[-0.02em] text-[var(--text-primary)]">
               Session Complete!
             </h2>
             {isPerfectScore && (

@@ -88,7 +88,7 @@ export function HowItWorks() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl font-display font-bold tracking-[-0.02em] mb-4">
             How It Works
           </h2>
           <p className="text-[var(--text-secondary)] text-lg">

@@ -57,7 +57,7 @@ export function Hero() {
             {/* Headline with gradient */}
             <h1
               className="text-5xl md:text-6xl lg:text-7xl font-display font-bold
-                          tracking-tight leading-[1.1]"
+                          tracking-[-0.02em] leading-[1.1]"
             >
               Keep Your{' '}
               <span
