@@ -1,5 +1,5 @@
 // scripts/import-exercises.ts
-import { readFileSync, readdirSync, existsSync } from 'fs';
+import { readFileSync, readdirSync, existsSync, statSync } from 'fs';
 import { join, basename } from 'path';
 import { parse as parseYaml } from 'yaml';
 import { createClient } from '@supabase/supabase-js';
@@ -46,6 +46,8 @@ function findYamlFiles(baseDir: string): string[] {
   for (const language of readdirSync(baseDir)) {
     const langDir = join(baseDir, language);
     if (!existsSync(langDir)) continue;
+    // Skip non-directories (like schema.json)
+    if (!statSync(langDir).isDirectory()) continue;
 
     for (const file of readdirSync(langDir)) {
       if (file.endsWith('.yaml') || file.endsWith('.yml')) {
@@ -156,6 +158,8 @@ async function importToDatabase(
         pattern: exercise.pattern,
         template: exercise.template ?? null,
         blank_position: exercise.blank_position ?? null,
+        objective: exercise.objective,
+        targets: exercise.targets ?? null,
       };
 
       // Upsert on (language, slug) - check if exists first
