@@ -1,19 +1,11 @@
 'use client';
 
-import {
-  Card as DarwinCard,
-  CardHeader as DarwinCardHeader,
-  CardContent as DarwinCardContent,
-  CardFooter as DarwinCardFooter,
-  CardTitle as DarwinCardTitle,
-  CardDescription as DarwinCardDescription,
-} from '@pikoloo/darwin-ui';
-import type { ComponentProps, ReactNode } from 'react';
+import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
 export type CardElevation = 'flat' | 1 | 2 | 3;
 
-export interface CardProps extends ComponentProps<typeof DarwinCard> {
+export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   elevation?: CardElevation;
   interactive?: boolean;
@@ -26,90 +18,98 @@ const elevationStyles: Record<CardElevation, string> = {
   3: 'bg-[var(--bg-surface-3)] border border-[var(--border)] shadow-[0_4px_12px_rgba(0,0,0,0.3)]',
 };
 
-export function Card({
-  children,
-  elevation = 1,
-  interactive = false,
-  className = '',
-  ...props
-}: CardProps) {
-  return (
-    <DarwinCard
-      className={cn(
-        elevationStyles[elevation],
-        'transition-all duration-200',
-        interactive && [
-          'cursor-pointer',
-          'hover:-translate-y-0.5',
-          'hover:shadow-[0_4px_20px_rgba(245,158,11,0.15)]',
-          'hover:border-[var(--accent-primary)]/40',
-          'active:scale-[0.99]',
-        ],
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </DarwinCard>
-  );
-}
+export const Card = forwardRef<HTMLDivElement, CardProps>(
+  function Card({ children, elevation = 1, interactive = false, className, ...props }, ref) {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'rounded-xl',
+          elevationStyles[elevation],
+          'transition-all duration-200',
+          interactive && [
+            'cursor-pointer',
+            'hover:-translate-y-0.5',
+            'hover:shadow-[0_4px_20px_rgba(245,158,11,0.15)]',
+            'hover:border-[var(--accent-primary)]/40',
+            'active:scale-[0.99]',
+          ],
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
 
-export interface CardHeaderProps extends ComponentProps<typeof DarwinCardHeader> {
+export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
 }
 
-export function CardHeader({ children, className = '', ...props }: CardHeaderProps) {
-  return (
-    <DarwinCardHeader className={className} {...props}>
-      {children}
-    </DarwinCardHeader>
-  );
-}
+export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
+  function CardHeader({ children, className, ...props }, ref) {
+    return (
+      <div ref={ref} className={cn('px-6 pt-6', className)} {...props}>
+        {children}
+      </div>
+    );
+  }
+);
 
-export interface CardContentProps extends ComponentProps<typeof DarwinCardContent> {
+export interface CardContentProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
 }
 
-export function CardContent({ children, className = '', ...props }: CardContentProps) {
-  return (
-    <DarwinCardContent className={className} {...props}>
-      {children}
-    </DarwinCardContent>
-  );
-}
+export const CardContent = forwardRef<HTMLDivElement, CardContentProps>(
+  function CardContent({ children, className, ...props }, ref) {
+    return (
+      <div ref={ref} className={cn('px-6 py-4', className)} {...props}>
+        {children}
+      </div>
+    );
+  }
+);
 
-export interface CardFooterProps extends ComponentProps<typeof DarwinCardFooter> {
+export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
 }
 
-export function CardFooter({ children, className = '', ...props }: CardFooterProps) {
-  return (
-    <DarwinCardFooter className={className} {...props}>
-      {children}
-    </DarwinCardFooter>
-  );
-}
+export const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
+  function CardFooter({ children, className, ...props }, ref) {
+    return (
+      <div ref={ref} className={cn('px-6 pb-6 pt-2', className)} {...props}>
+        {children}
+      </div>
+    );
+  }
+);
 
-export interface CardTitleProps extends ComponentProps<typeof DarwinCardTitle> {
+export interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {
   children: ReactNode;
 }
 
-export function CardTitle({ children, className = '', ...props }: CardTitleProps) {
-  return (
-    <DarwinCardTitle className={className} {...props}>
-      {children}
-    </DarwinCardTitle>
-  );
-}
+export const CardTitle = forwardRef<HTMLHeadingElement, CardTitleProps>(
+  function CardTitle({ children, className, ...props }, ref) {
+    return (
+      <h3 ref={ref} className={cn('text-lg font-semibold text-[var(--text-primary)]', className)} {...props}>
+        {children}
+      </h3>
+    );
+  }
+);
 
-export interface CardDescriptionProps extends ComponentProps<typeof DarwinCardDescription> {
+export interface CardDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
   children: ReactNode;
 }
 
-export function CardDescription({ children, className = '', ...props }: CardDescriptionProps) {
-  return (
-    <DarwinCardDescription className={className} {...props}>
-      {children}
-    </DarwinCardDescription>
-  );
-}
+export const CardDescription = forwardRef<HTMLParagraphElement, CardDescriptionProps>(
+  function CardDescription({ children, className, ...props }, ref) {
+    return (
+      <p ref={ref} className={cn('text-sm text-[var(--text-secondary)] mt-1', className)} {...props}>
+        {children}
+      </p>
+    );
+  }
+);
