@@ -92,6 +92,7 @@ function DashboardContent() {
   const { user } = useAuth();
   const { stats, loading: statsLoading } = useStats();
   const [dueCount, setDueCount] = useState(0);
+  const [exerciseCount, setExerciseCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -103,23 +104,29 @@ function DashboardContent() {
       setError(null);
 
       try {
-        // Fetch subconcept progress (same source as practice session)
-        const { data: progressData, error: progressError } = await supabase
-          .from('subconcept_progress')
-          .select('*')
-          .eq('user_id', user!.id);
+        // Fetch subconcept progress and exercise count in parallel
+        const [progressResult, exerciseCountResult] = await Promise.all([
+          supabase
+            .from('subconcept_progress')
+            .select('*')
+            .eq('user_id', user!.id),
+          supabase
+            .from('exercises')
+            .select('id', { count: 'exact', head: true }),
+        ]);
 
-        if (progressError) throw progressError;
+        if (progressResult.error) throw progressResult.error;
 
         // Count due subconcepts (next_review <= now)
         type SubconceptProgressRow = Database['public']['Tables']['subconcept_progress']['Row'];
         const now = new Date();
-        const dueCount = (progressData ?? []).filter((p: SubconceptProgressRow) => {
+        const dueCount = (progressResult.data ?? []).filter((p: SubconceptProgressRow) => {
           if (!p.next_review) return false;
           return new Date(p.next_review) <= now;
         }).length;
 
         setDueCount(dueCount);
+        setExerciseCount(exerciseCountResult.count ?? null);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load dashboard');
       } finally {
@@ -218,7 +225,7 @@ function DashboardContent() {
             {/* Learning Path - spans 1 column */}
             <QuickActionCard
               title="Learning Path"
-              description="218 Python exercises"
+              description={`${exerciseCount ?? '...'} Python exercises`}
               icon={
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
