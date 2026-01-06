@@ -295,6 +295,151 @@ describe('useProfile', () => {
     });
   });
 
+  describe('updateExperienceLevel', () => {
+    const mockProfile = {
+      id: 'test-user-id',
+      username: null,
+      display_name: 'Test User',
+      avatar_url: null,
+      preferred_language: 'python',
+      daily_goal: 10,
+      notification_time: null,
+      current_streak: 5,
+      longest_streak: 10,
+      total_exercises_completed: 50,
+      experience_level: 'refresher',
+      created_at: '2026-01-01T00:00:00Z',
+      updated_at: '2026-01-02T00:00:00Z',
+    };
+
+    it('updates experience level in database and local state', async () => {
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
+        data: { user: mockUser },
+        error: null,
+      } as any);
+
+      const eqMock = vi.fn().mockResolvedValue({ error: null });
+      const updateMock = vi.fn().mockReturnValue({ eq: eqMock });
+
+      const mockFrom = vi.mocked(supabase.from);
+      mockFrom.mockImplementation((table: string) => {
+        if (table === 'profiles') {
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({ data: mockProfile, error: null }),
+              }),
+            }),
+            update: updateMock,
+          } as any;
+        }
+        return {} as any;
+      });
+
+      const { result } = renderHook(() => useProfile(), { wrapper });
+
+      // Wait for initial load
+      await waitFor(() => {
+        expect(result.current.profile).not.toBeNull();
+      });
+
+      // Verify initial experience level
+      expect(result.current.profile?.experienceLevel).toBe('refresher');
+
+      // Update experience level
+      await act(async () => {
+        await result.current.updateExperienceLevel('beginner');
+      });
+
+      // Verify supabase was called correctly
+      expect(updateMock).toHaveBeenCalledWith({ experience_level: 'beginner' });
+      expect(eqMock).toHaveBeenCalledWith('id', 'test-user-id');
+
+      // Verify local state is updated
+      expect(result.current.profile?.experienceLevel).toBe('beginner');
+    });
+
+    it('does nothing when profile is null', async () => {
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
+        data: { user: null },
+        error: null,
+      } as any);
+
+      const mockFrom = vi.mocked(supabase.from);
+      const updateMock = vi.fn();
+      mockFrom.mockReturnValue({
+        update: updateMock,
+      } as any);
+
+      const { result } = renderHook(() => useProfile(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // Profile should be null
+      expect(result.current.profile).toBeNull();
+
+      // Try to update experience level
+      await act(async () => {
+        await result.current.updateExperienceLevel('beginner');
+      });
+
+      // Update should not have been called
+      expect(updateMock).not.toHaveBeenCalled();
+    });
+
+    it('logs error but does not throw when update fails', async () => {
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
+        data: { user: mockUser },
+        error: null,
+      } as any);
+
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+      const updateError = { message: 'Update failed', code: 'PGRST116' };
+      const eqMock = vi.fn().mockResolvedValue({ error: updateError });
+      const updateMock = vi.fn().mockReturnValue({ eq: eqMock });
+
+      const mockFrom = vi.mocked(supabase.from);
+      mockFrom.mockImplementation((table: string) => {
+        if (table === 'profiles') {
+          return {
+            select: vi.fn().mockReturnValue({
+              eq: vi.fn().mockReturnValue({
+                single: vi.fn().mockResolvedValue({ data: mockProfile, error: null }),
+              }),
+            }),
+            update: updateMock,
+          } as any;
+        }
+        return {} as any;
+      });
+
+      const { result } = renderHook(() => useProfile(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.profile).not.toBeNull();
+      });
+
+      // Try to update experience level
+      await act(async () => {
+        await result.current.updateExperienceLevel('learning');
+      });
+
+      // Should log error
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Failed to update experience level:',
+        updateError
+      );
+
+      // State should not be updated
+      expect(result.current.profile?.experienceLevel).toBe('refresher');
+
+      consoleSpy.mockRestore();
+    });
+  });
+
   describe('refetch', () => {
     it('triggers a new fetch of the profile', async () => {
       const initialProfile = {
