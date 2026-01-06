@@ -7,6 +7,8 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./tests/setup.tsx'],
     include: ['tests/**/*.test.ts', 'tests/**/*.test.tsx'],
+    // Limit parallelism to prevent OOM kills
+    maxConcurrency: 5,
     server: {
       deps: {
         inline: ['@pikoloo/darwin-ui'],
