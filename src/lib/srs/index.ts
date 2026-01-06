@@ -23,6 +23,8 @@ export {
   selectExercise,
   calculateSubconceptReview,
   createInitialSubconceptState,
+  getUnderrepresentedType,
+  selectExerciseByType,
   LEVEL_ORDER,
   GRADUATING_INTERVAL,
   MIN_EASE_FACTOR,

@@ -2,9 +2,12 @@
 // Concept-Based SRS Algorithm for subconcept-level scheduling
 // SRS tracks subconcept mastery, exercises are "question pools"
 
-import type { SubconceptProgress, ExerciseAttempt, ConceptSlug, ExerciseLevel, ExercisePattern } from '@/lib/curriculum/types';
+import type { SubconceptProgress, ExerciseAttempt, ConceptSlug, ExerciseLevel, ExercisePattern, ExerciseType } from '@/lib/curriculum/types';
 import type { Exercise, Quality } from '@/lib/types';
 import { QUALITY_PASSING_THRESHOLD } from './types';
+
+// Type ratios for exercise type balancing
+type TypeRatios = Record<'write' | 'fill-in' | 'predict', number>;
 
 // Constants
 export const LEVEL_ORDER: ExerciseLevel[] = ['intro', 'practice', 'edge', 'integrated'];
@@ -298,4 +301,69 @@ export function createInitialSubconceptState(
  */
 function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+}
+
+/**
+ * Determine which exercise type is most underrepresented in the session.
+ * Returns null if ratios are approximately balanced.
+ */
+export function getUnderrepresentedType(
+  sessionHistory: ExerciseType[],
+  targetRatios: TypeRatios
+): ExerciseType | null {
+  if (sessionHistory.length === 0) {
+    // For empty session, prefer write (core skill)
+    return 'write';
+  }
+
+  const counts: Record<string, number> = { write: 0, 'fill-in': 0, predict: 0 };
+  for (const type of sessionHistory) {
+    if (type in counts) {
+      counts[type]++;
+    }
+  }
+
+  const total = sessionHistory.length;
+  let mostUnderrepresented: ExerciseType | null = null;
+  let maxDeficit = 0;
+
+  for (const [type, targetRatio] of Object.entries(targetRatios)) {
+    const actualRatio = counts[type] / total;
+    const deficit = targetRatio - actualRatio;
+
+    if (deficit > maxDeficit) {
+      maxDeficit = deficit;
+      mostUnderrepresented = type as ExerciseType;
+    }
+  }
+
+  // Only return if deficit is significant (>10%)
+  return maxDeficit > 0.1 ? mostUnderrepresented : null;
+}
+
+/**
+ * Select an exercise preferring the underrepresented type.
+ * Falls back to any available exercise if preferred type unavailable.
+ */
+export function selectExerciseByType(
+  exercises: Exercise[],
+  sessionHistory: ExerciseType[],
+  targetRatios: TypeRatios
+): Exercise | null {
+  if (exercises.length === 0) {
+    return null;
+  }
+
+  const preferredType = getUnderrepresentedType(sessionHistory, targetRatios);
+
+  if (preferredType) {
+    const preferredExercises = exercises.filter(e => e.exerciseType === preferredType);
+    if (preferredExercises.length > 0) {
+      // Random selection among preferred type
+      return preferredExercises[Math.floor(Math.random() * preferredExercises.length)];
+    }
+  }
+
+  // Fallback: random from all available
+  return exercises[Math.floor(Math.random() * exercises.length)];
 }
