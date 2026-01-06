@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from './useAuth';
 import { useConceptSRS } from './useConceptSRS';
-import { useToast } from '@pikoloo/darwin-ui';
+import { useToast } from '@/lib/context/ToastContext';
 import { createClient } from '@/lib/supabase/client';
 import { mapExercise } from '@/lib/supabase/mappers';
 import { handleSupabaseError, AppError } from '@/lib/errors';
@@ -14,7 +14,7 @@ import type {
   SessionCardType,
   ReviewSessionCard,
 } from '@/lib/session/types';
-import type { ExercisePattern, SubconceptProgress } from '@/lib/curriculum/types';
+import type { SubconceptProgress, ExercisePattern } from '@/lib/curriculum/types';
 import {
   buildTeachingPair,
   interleaveWithTeaching,
@@ -101,9 +101,6 @@ export function useConceptSession(): UseConceptSessionReturn {
   const [forceComplete, setForceComplete] = useState(false);
   // Track whether session has been initialized (prevents rebuilding on dueSubconcepts changes)
   const [sessionInitialized, setSessionInitialized] = useState(false);
-  // Track last pattern for anti-repeat selection (infrastructure ready, not yet wired)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_lastPattern, setLastPattern] = useState<ExercisePattern | null>(null);
 
   const currentCard = cards[currentIndex] ?? null;
   const isComplete =
@@ -168,26 +165,57 @@ export function useConceptSession(): UseConceptSessionReturn {
       const reviewCards: ReviewSessionCard[] = [];
       // Track subconcept progress for each review card by its index in reviewCards
       const reviewProgressMap: SubconceptProgress[] = [];
+      // Track last pattern for anti-repeat selection
+      let lastPattern: ExercisePattern | null = null;
 
       for (const subconceptProgress of dueSubconcepts) {
-        const exercise = getNextExercise(subconceptProgress, exercises);
+        const exercise = getNextExercise(subconceptProgress, exercises, lastPattern);
         if (exercise) {
           reviewCards.push({
             type: 'review',
             exercise,
           });
           reviewProgressMap.push(subconceptProgress);
+          // Update pattern for next selection
+          lastPattern = exercise.pattern;
         }
       }
 
       // === Step 2: Identify NEW subconcepts (no progress row) ===
       // Query ALL subconcept progress (not just due) to find truly new subconcepts
-      const { data: allProgressData } = await supabase
+      const { data: allProgressData, error: progressError } = await supabase
         .from('subconcept_progress')
         .select('subconcept_slug')
         .eq('user_id', userId);
 
       if (cancelled) return;
+
+      // Handle progress query error - show toast and skip teaching cards
+      // (don't treat all subconcepts as new if we can't verify)
+      if (progressError) {
+        console.error('Failed to fetch all progress:', progressError);
+        showToast({ title: 'Could not check for new concepts', variant: 'warning' });
+        // Fall back to just review cards - don't add teaching pairs
+        setCards(reviewCards);
+        const progressMap = new Map<number, SubconceptProgress>();
+        for (let i = 0; i < reviewCards.length; i++) {
+          const progress = reviewProgressMap[i];
+          if (progress) progressMap.set(i, progress);
+        }
+        setCardProgressMap(progressMap);
+        setCurrentIndex(0);
+        setStats({
+          total: reviewCards.length,
+          completed: 0,
+          correct: 0,
+          incorrect: 0,
+          startTime: new Date(),
+          endTime: undefined,
+        });
+        setSessionInitialized(true);
+        setLoading(false);
+        return;
+      }
 
       // Get all subconcepts user already has progress for (due or not)
       const progressSlugs = new Set(
@@ -259,11 +287,14 @@ export function useConceptSession(): UseConceptSessionReturn {
         // Teaching cards don't have progress - they don't update SRS
       }
 
+      // Calculate exercise count (practice + review, NOT teaching)
+      const exerciseCount = sessionCards.filter(c => c.type !== 'teaching').length;
+
       setCards(sessionCards);
       setCardProgressMap(progressMap);
       setCurrentIndex(0);
       setStats({
-        total: sessionCards.length,
+        total: exerciseCount, // Only count exercises, not teaching cards
         completed: 0,
         correct: 0,
         incorrect: 0,
@@ -279,7 +310,7 @@ export function useConceptSession(): UseConceptSessionReturn {
     return () => {
       cancelled = true;
     };
-  }, [dueSubconcepts, exercises, srsLoading, getNextExercise, user, sessionInitialized, supabase]);
+  }, [dueSubconcepts, exercises, srsLoading, getNextExercise, user, sessionInitialized, supabase, showToast]);
 
   // Set error from SRS hook
   useEffect(() => {
@@ -293,19 +324,15 @@ export function useConceptSession(): UseConceptSessionReturn {
       const card = cards[currentIndex];
       if (!card) return;
 
-      const newCompleted = stats.completed + 1;
-      const willComplete = newCompleted >= cards.length;
-
-      // Teaching cards don't record SRS - just advance
+      // Teaching cards don't record SRS or count toward stats - just advance
       if (card.type === 'teaching') {
-        setStats((prev) => ({
-          ...prev,
-          completed: newCompleted,
-          endTime: willComplete ? new Date() : undefined,
-        }));
         setCurrentIndex((prev) => prev + 1);
         return;
       }
+
+      // Only practice/review cards update stats
+      const newCompleted = stats.completed + 1;
+      const willComplete = newCompleted >= stats.total;
 
       // For practice/review cards, run SRS logic
       const isCorrect = quality >= 3;
@@ -322,9 +349,8 @@ export function useConceptSession(): UseConceptSessionReturn {
       // Advance to next card immediately
       setCurrentIndex((prev) => prev + 1);
 
-      // Track pattern for anti-repeat (only for cards with exercises)
+      // Get exercise for SRS update
       const exercise = card.exercise;
-      setLastPattern(exercise.pattern);
 
       // Get subconcept progress for this card
       const progress = cardProgressMap.get(currentIndex);
@@ -344,7 +370,7 @@ export function useConceptSession(): UseConceptSessionReturn {
           exercise.targets
         );
       } catch {
-        showToast('Failed to save progress', { type: 'error' });
+        showToast({ title: 'Failed to save progress', variant: 'error' });
         // Session continues even if save fails
       }
     },
@@ -367,7 +393,7 @@ export function useConceptSession(): UseConceptSessionReturn {
           lastPracticed: new Date(),
         });
       } catch {
-        showToast('Failed to update stats', { type: 'error' });
+        showToast({ title: 'Failed to update stats', variant: 'error' });
       }
     }
   }, [stats.completed, user, showToast]);
