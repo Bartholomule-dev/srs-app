@@ -3,11 +3,12 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Exercise, Quality } from '@/lib/types';
-import { checkAnswerWithAlternatives, checkFillInAnswer, inferQuality, type QualityInputs } from '@/lib/exercise';
+import { checkAnswerWithAlternatives, checkFillInAnswer, checkPredictAnswer, inferQuality, type QualityInputs } from '@/lib/exercise';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { CodeInput } from './CodeInput';
 import { FillInExercise } from './FillInExercise';
+import { PredictOutputExercise } from './PredictOutputExercise';
 import { ExercisePrompt } from './ExercisePrompt';
 import { HintButton } from './HintButton';
 import { ExerciseFeedback } from './ExerciseFeedback';
@@ -111,6 +112,18 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
     setPhase('feedback');
   }, [exercise.expectedAnswer, exercise.acceptedSolutions, startTime]);
 
+  const handlePredictSubmit = useCallback((answer: string) => {
+    if (startTime === null) setStartTime(Date.now());
+    const isCorrect = checkPredictAnswer(
+      answer,
+      exercise.expectedAnswer,
+      exercise.acceptedSolutions
+    );
+    setUserAnswer(answer);
+    setAnswerResult({ isCorrect, usedAstMatch: false });
+    setPhase('feedback');
+  }, [exercise.expectedAnswer, exercise.acceptedSolutions, startTime]);
+
   const handleContinue = useCallback(() => {
     const responseTimeMs = startTime !== null ? Date.now() - startTime - pausedMs : 0;
 
@@ -152,7 +165,13 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
                 prompt={exercise.prompt}
               />
 
-              {exercise.exerciseType === 'fill-in' && exercise.template ? (
+              {exercise.exerciseType === 'predict' && exercise.code ? (
+                <PredictOutputExercise
+                  code={exercise.code}
+                  onSubmit={handlePredictSubmit}
+                  disabled={phase !== 'answering'}
+                />
+              ) : exercise.exerciseType === 'fill-in' && exercise.template ? (
                 <FillInExercise
                   template={exercise.template}
                   blankPosition={exercise.blankPosition ?? 0}
