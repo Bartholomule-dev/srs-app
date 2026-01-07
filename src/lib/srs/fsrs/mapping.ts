@@ -1,5 +1,5 @@
 // src/lib/srs/fsrs/mapping.ts
-// Maps between SM-2 Quality scores and FSRS Ratings
+// Maps between Quality scores (legacy 0-5 scale) and FSRS Ratings
 
 import type { Quality } from '@/lib/types';
 import type { ReviewInput, FSRSRating } from './types';
@@ -11,7 +11,7 @@ const FAST_THRESHOLD_MS = 15_000;
 const SLOW_THRESHOLD_MS = 30_000;
 
 /**
- * Converts an SM-2 quality score (0-5) to an FSRS rating.
+ * Converts a quality score (0-5) to an FSRS rating.
  *
  * Mapping:
  * - 0-2 (fail) -> Again
