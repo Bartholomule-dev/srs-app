@@ -94,6 +94,7 @@ export function useConceptSession(): UseConceptSessionReturn {
     refetch: refetchSRS,
   } = useConceptSRS();
   const { showToast } = useToast();
+  const { loadPyodide } = usePyodide();
 
   const [exercises, setExercises] = useState<Exercise[]>([]);
   // Unified session cards (teaching, practice, review)
@@ -356,6 +357,23 @@ export function useConceptSession(): UseConceptSessionReturn {
       cancelled = true;
     };
   }, [dueSubconcepts, exercises, srsLoading, getNextExercise, user, sessionInitialized, showToast, profile]);
+
+  // Preload Pyodide if session contains predict exercises or execution-verified exercises
+  useEffect(() => {
+    const needsPyodide = cards.some((card) => {
+      if (card.type === 'teaching') return false;
+      const exercise = card.exercise;
+      return exercise.exerciseType === 'predict' || exercise.verifyByExecution === true;
+    });
+
+    if (needsPyodide && sessionInitialized) {
+      // Don't await - fire and forget to preload in background
+      loadPyodide().catch((err) => {
+        console.warn('Pyodide preload failed:', err);
+        // Non-fatal - will fall back to string matching
+      });
+    }
+  }, [cards, loadPyodide, sessionInitialized]);
 
   // Set error from SRS hook
   useEffect(() => {
