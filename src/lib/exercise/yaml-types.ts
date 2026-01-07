@@ -7,6 +7,7 @@ import type {
   ExerciseType,
   ExercisePattern,
 } from '../curriculum/types';
+import type { VariantMap } from '../generators/types';
 
 /**
  * Single exercise definition in YAML
@@ -53,6 +54,9 @@ export interface YamlExercise {
 
   // Execution verification flag (optional, for write exercises)
   verify_by_execution?: boolean;
+
+  // Variant overrides for dynamic exercises with multiple prompt/answer structures
+  variants?: VariantMap;
 }
 
 /**

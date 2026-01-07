@@ -4,7 +4,7 @@
 import Mustache from 'mustache';
 import { createSeed } from './seed';
 import { getGenerator } from './index';
-import type { RenderedExerciseMetadata } from './types';
+import type { RenderedExerciseMetadata, VariantMap } from './types';
 
 // Disable Mustache's HTML escaping (we're not rendering to HTML)
 Mustache.escape = (text: string) => text;
@@ -22,6 +22,8 @@ export interface RenderableExercise {
   generator?: string | null;
   code?: string | null;
   template?: string | null;
+  hints?: string[];
+  variants?: VariantMap;
 }
 
 /**
@@ -61,24 +63,42 @@ export function renderExercise<T extends RenderableExercise>(
   const seed = createSeed(userId, exercise.slug, dueDate);
   const params = generator.generate(seed);
 
+  // Check if generator returned a variant selection
+  const variantName = typeof params.variant === 'string' ? params.variant : undefined;
+  const variantOverrides =
+    variantName && exercise.variants?.[variantName]
+      ? exercise.variants[variantName]
+      : undefined;
+
+  // Determine which fields to use (variant overrides or base)
+  const promptToRender = variantOverrides?.prompt ?? exercise.prompt;
+  const expectedAnswerToRender = variantOverrides?.expectedAnswer ?? exercise.expectedAnswer;
+  const acceptedToRender = variantOverrides?.acceptedSolutions ?? exercise.acceptedSolutions;
+  const hintsToRender = variantOverrides?.hints ?? exercise.hints;
+  const codeToRender = variantOverrides?.code ?? exercise.code;
+  const templateToRender = variantOverrides?.template ?? exercise.template;
+
   // Render all template fields
   const rendered: RenderedExercise<T> = {
     ...exercise,
-    prompt: Mustache.render(exercise.prompt, params),
-    expectedAnswer: Mustache.render(exercise.expectedAnswer, params),
-    acceptedSolutions: exercise.acceptedSolutions.map((s) =>
-      Mustache.render(s, params)
-    ),
+    prompt: Mustache.render(promptToRender, params),
+    expectedAnswer: Mustache.render(expectedAnswerToRender, params),
+    acceptedSolutions: acceptedToRender.map((s) => Mustache.render(s, params)),
     _generatedParams: params,
     _seed: seed,
   };
 
-  // Render optional fields if present
-  if (exercise.code) {
-    rendered.code = Mustache.render(exercise.code, params);
+  // Render hints through Mustache if present
+  if (hintsToRender) {
+    rendered.hints = hintsToRender.map((h) => Mustache.render(h, params));
   }
-  if (exercise.template) {
-    rendered.template = Mustache.render(exercise.template, params);
+
+  // Render optional fields if present
+  if (codeToRender) {
+    rendered.code = Mustache.render(codeToRender, params);
+  }
+  if (templateToRender) {
+    rendered.template = Mustache.render(templateToRender, params);
   }
 
   return rendered;

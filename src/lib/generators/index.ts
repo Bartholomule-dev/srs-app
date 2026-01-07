@@ -1,7 +1,7 @@
 // src/lib/generators/index.ts
 // Generator registry and public API
 
-import type { Generator, GeneratorParams, TargetConstruct, RenderedExerciseMetadata } from './types';
+import type { Generator, GeneratorParams, TargetConstruct, RenderedExerciseMetadata, VariantOverrides, VariantMap } from './types';
 import { sliceBoundsGenerator } from './definitions/slice-bounds';
 import { variableNamesGenerator } from './definitions/variable-names';
 import { listValuesGenerator } from './definitions/list-values';
@@ -9,7 +9,7 @@ import { indexValuesGenerator } from './definitions/index-values';
 import { arithmeticValuesGenerator } from './definitions/arithmetic-values';
 
 // Re-export types
-export type { Generator, GeneratorParams, TargetConstruct, RenderedExerciseMetadata };
+export type { Generator, GeneratorParams, TargetConstruct, RenderedExerciseMetadata, VariantOverrides, VariantMap };
 
 // Re-export utilities
 export { createSeed, hashString } from './seed';

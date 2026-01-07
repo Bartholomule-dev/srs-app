@@ -50,6 +50,27 @@ export interface TargetConstruct {
 }
 
 /**
+ * Fields that can be overridden per variant.
+ * When a generator returns a `variant` param, these fields from the
+ * matching variant replace the base exercise fields before rendering.
+ */
+export interface VariantOverrides {
+  prompt?: string;
+  expectedAnswer?: string;
+  acceptedSolutions?: string[];
+  hints?: string[];
+  code?: string;
+  template?: string;
+}
+
+/**
+ * Map of variant name to its field overrides.
+ * Used in YAML exercises to define multiple prompt/answer structures
+ * for a single exercise slug.
+ */
+export type VariantMap = Record<string, VariantOverrides>;
+
+/**
  * Rendered exercise with generated parameters attached.
  * Extends the base Exercise type with generator metadata.
  */
