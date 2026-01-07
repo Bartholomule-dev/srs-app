@@ -1043,3 +1043,44 @@ exercises:
     type: write
     pattern: indexing
     generator: index-values
+
+  - slug: dict-access-dynamic
+    objective: Predict the result of dict key access
+    title: Dynamic Dict Access
+    difficulty: 1
+    concept: collections
+    subconcept: dicts
+    level: intro
+    prereqs: [collections.dicts]
+    type: predict
+    pattern: indexing
+    generator: dict-values
+    prompt: 'Given d = {{dict_str}}, what does d["{{key}}"] return?'
+    code: |
+      d = {{dict_str}}
+      print(d["{{key}}"])
+    expected_answer: "{{value}}"
+    hints:
+      - Look up the key in the dictionary
+      - If key doesn't exist, it raises KeyError
+    tags: [collections, dicts, dynamic]
+
+  - slug: list-insert-dynamic
+    objective: Use insert() to add an element at a specific position
+    title: Dynamic List Insert
+    difficulty: 2
+    concept: collections
+    subconcept: lists
+    level: practice
+    prereqs: [collections.lists]
+    type: write
+    pattern: mutation
+    generator: index-values
+    prompt: 'Insert value "x" at index {{idx}} in list items'
+    expected_answer: 'items.insert({{idx}}, "x")'
+    accepted_solutions:
+      - 'items.insert({{idx}}, "x")'
+      - "items.insert({{idx}}, 'x')"
+    hints:
+      - insert(index, value)
+    tags: [lists, insert, mutation, dynamic]

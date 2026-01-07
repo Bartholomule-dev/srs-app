@@ -924,3 +924,23 @@ exercises:
     hints:
       - Expressions in {} are evaluated
     tags: [strings, fstrings]
+
+  - slug: string-method-dynamic
+    objective: Predict the result of a string method call
+    title: Dynamic String Method
+    difficulty: 1
+    concept: strings
+    subconcept: string-methods
+    level: intro
+    prereqs: [strings.basics]
+    type: predict
+    pattern: invocation
+    generator: string-ops
+    prompt: 'What does "{{original}}".{{method}}() return?'
+    code: |
+      s = "{{original}}"
+      print(s.{{method}}())
+    expected_answer: "{{result}}"
+    hints:
+      - Apply the string method mentally
+    tags: [strings, methods, dynamic]

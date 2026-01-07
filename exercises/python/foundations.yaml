@@ -684,3 +684,23 @@ exercises:
     hints:
       - The sep parameter changes what goes between arguments
     tags: [io, print]
+
+  - slug: exponentiation-dynamic
+    objective: Calculate powers using the exponentiation operator
+    title: Dynamic Exponentiation
+    difficulty: 1
+    concept: foundations
+    subconcept: operators
+    level: practice
+    prereqs: [operators]
+    type: write
+    pattern: arithmetic
+    generator: arithmetic-values
+    prompt: "Calculate {{x}} to the power of {{y}}"
+    expected_answer: "{{x}} ** {{y}}"
+    accepted_solutions:
+      - "{{x}} ** {{y}}"
+      - "{{x}}**{{y}}"
+    hints:
+      - Use ** for exponentiation
+    tags: [operators, power, exponent, dynamic]

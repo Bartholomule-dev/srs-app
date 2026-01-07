@@ -958,3 +958,43 @@ exercises:
       - Use while with a condition
       - Decrement count inside the loop
     tags: [control-flow, while, dynamic]
+
+  - slug: range-output-dynamic
+    objective: Predict the output of range() with dynamic parameters
+    title: Dynamic Range Output
+    difficulty: 2
+    concept: control-flow
+    subconcept: for
+    level: practice
+    prereqs: [control-flow.for]
+    type: predict
+    pattern: iteration
+    generator: loop-simulation
+    prompt: "What does this code print?"
+    code: |
+      for i in range({{start}}, {{stop}}, {{step}}):
+          print(i)
+    expected_answer: "{{output}}"
+    hints:
+      - range(start, stop, step) generates numbers
+      - stop is exclusive
+    tags: [control-flow, range, dynamic]
+
+  - slug: comparison-result-dynamic
+    objective: Predict the result of a comparison expression
+    title: Dynamic Comparison Result
+    difficulty: 1
+    concept: control-flow
+    subconcept: conditionals
+    level: intro
+    prereqs: [foundations]
+    type: predict
+    pattern: comparison
+    generator: comparison-logic
+    prompt: "What does {{a}} {{op}} {{b}} evaluate to?"
+    code: |
+      print({{a}} {{op}} {{b}})
+    expected_answer: "{{result}}"
+    hints:
+      - Compare the two values using the operator
+    tags: [control-flow, comparison, dynamic]
