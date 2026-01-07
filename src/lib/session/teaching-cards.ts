@@ -50,28 +50,37 @@ export function buildTeachingPair(
   subconcept: SubconceptDefinition,
   exercises: Exercise[]
 ): TeachingPair | null {
-  const { exampleSlug } = subconcept.teaching;
+  const teaching = subconcept.teaching;
 
-  // exampleSlug is required for now (exampleCode support coming later)
-  if (!exampleSlug) {
-    console.warn(`Teaching missing exampleSlug for subconcept: ${subconceptSlug}`);
-    return null;
+  // If we have exampleCode, we don't need exampleSlug
+  const hasExampleCode = !!teaching.exampleCode;
+
+  // Find example exercise (only needed if no exampleCode or for legacy)
+  let exampleExercise: Exercise | null = null;
+  if (teaching.exampleSlug) {
+    exampleExercise = findExampleExercise(teaching.exampleSlug, exercises);
+    if (!exampleExercise && !hasExampleCode) {
+      console.warn(`Teaching example not found: ${teaching.exampleSlug}`);
+      return null;
+    }
   }
 
-  // Find the example exercise
-  const exampleExercise = findExampleExercise(exampleSlug, exercises);
+  // If no exampleCode and no valid exampleSlug, we need at least one exercise
+  if (!hasExampleCode && !exampleExercise) {
+    // Try to find ANY intro exercise for this subconcept
+    exampleExercise = exercises.find(
+      e => e.subconcept === subconceptSlug && e.level === 'intro'
+    ) ?? null;
 
-  if (!exampleExercise) {
-    console.warn(`Teaching example not found: ${exampleSlug}`);
-    return null;
+    if (!exampleExercise) {
+      console.warn(`No example exercise found for subconcept: ${subconceptSlug}`);
+      return null;
+    }
   }
 
-  // Find a different exercise for practice
-  const practiceExercise = findPracticeExercise(
-    subconceptSlug,
-    exampleSlug,
-    exercises
-  );
+  // Find practice exercise (different from example if we have one)
+  const excludeSlug = exampleExercise?.slug ?? '';
+  const practiceExercise = findPracticeExercise(subconceptSlug, excludeSlug, exercises);
 
   if (!practiceExercise) {
     console.warn(`No practice exercise found for subconcept: ${subconceptSlug}`);
@@ -83,7 +92,7 @@ export function buildTeachingPair(
     type: 'teaching',
     subconcept: subconceptSlug,
     teaching: subconcept.teaching,
-    exampleExercise,
+    exampleExercise: exampleExercise ?? practiceExercise, // Fallback for type safety
   };
 
   // Build the practice card
