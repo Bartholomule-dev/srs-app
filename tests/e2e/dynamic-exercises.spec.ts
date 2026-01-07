@@ -1069,4 +1069,125 @@ test.describe('Dynamic Exercise E2E Tests', () => {
       }
     });
   });
+
+  test.describe('Multi-User Seed Isolation', () => {
+    const adminClient = getAdminClient();
+    let userA: TestUser;
+    let userB: TestUser;
+
+    test.beforeAll(async () => {
+      // Create two separate test users
+      userA = await createTestUser();
+      userB = await createTestUser();
+    });
+
+    test.afterAll(async () => {
+      // Clean up both test users
+      if (userA?.id) {
+        await deleteTestUser(userA.id);
+      }
+      if (userB?.id) {
+        await deleteTestUser(userB.id);
+      }
+    });
+
+    test('different users see DIFFERENT generated values for same exercise on same date', async ({ browser }) => {
+      test.setTimeout(120000);
+
+      // Create a dynamic exercise with generator
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-multi-user-isolation-${Date.now()}`,
+        prompt: 'Slice from {{start}} to {{end}}',
+        expectedAnswer: 's[{{start}}:{{end}}]',
+        acceptedSolutions: ['s[{{start}}:{{end}}]'],
+        generator: 'slice-bounds',
+        targetConstruct: null,
+      });
+
+      let userAValues: { start: number; end: number } | null = null;
+      let userBValues: { start: number; end: number } | null = null;
+
+      try {
+        // Fixed date to ensure same date for both users
+        const fixedDate = new Date('2026-06-15T12:00:00Z');
+        const pattern = /from\s+(\d+)\s+to\s+(\d+)/i;
+
+        // --- User A sees the exercise ---
+        const contextA = await browser.newContext();
+        await mockDate(contextA, fixedDate);
+        await authenticateContext(contextA, userA);
+        const pageA = await contextA.newPage();
+
+        await pageA.goto(`/practice/test?slug=${slug}`);
+
+        const submitBtnA = pageA.getByRole('button', { name: /submit/i });
+        await expect(submitBtnA).toBeVisible({ timeout: 15000 });
+
+        const promptLocatorA = pageA.locator('[data-testid="exercise-prompt"]');
+        await expect(promptLocatorA).toBeVisible({ timeout: 5000 });
+        const promptTextA = await promptLocatorA.textContent();
+
+        const matchA = promptTextA?.match(pattern);
+        if (matchA) {
+          userAValues = {
+            start: parseInt(matchA[1], 10),
+            end: parseInt(matchA[2], 10),
+          };
+          console.log(`User A (${userA.id.slice(0, 8)}...) values: start=${userAValues.start}, end=${userAValues.end}`);
+        }
+
+        await contextA.close();
+
+        // --- User B sees the same exercise on the same date ---
+        const contextB = await browser.newContext();
+        await mockDate(contextB, fixedDate);
+        await authenticateContext(contextB, userB);
+        const pageB = await contextB.newPage();
+
+        await pageB.goto(`/practice/test?slug=${slug}`);
+
+        const submitBtnB = pageB.getByRole('button', { name: /submit/i });
+        await expect(submitBtnB).toBeVisible({ timeout: 15000 });
+
+        const promptLocatorB = pageB.locator('[data-testid="exercise-prompt"]');
+        await expect(promptLocatorB).toBeVisible({ timeout: 5000 });
+        const promptTextB = await promptLocatorB.textContent();
+
+        const matchB = promptTextB?.match(pattern);
+        if (matchB) {
+          userBValues = {
+            start: parseInt(matchB[1], 10),
+            end: parseInt(matchB[2], 10),
+          };
+          console.log(`User B (${userB.id.slice(0, 8)}...) values: start=${userBValues.start}, end=${userBValues.end}`);
+        }
+
+        await contextB.close();
+
+        // --- Assertions ---
+        // Both users should have extracted valid values
+        expect(userAValues).not.toBeNull();
+        expect(userBValues).not.toBeNull();
+
+        // CRITICAL: Different users should see DIFFERENT values
+        // This ensures:
+        // 1. Users cannot share answers
+        // 2. Exercises feel personalized
+        // 3. The seed includes userId (sha256(userId:exerciseSlug:date))
+        const valuesAreIdentical =
+          userAValues!.start === userBValues!.start &&
+          userAValues!.end === userBValues!.end;
+
+        // With the hash function and different user IDs, there's approximately
+        // 1/(5*6) = ~3% chance of collision for this generator's value space.
+        // We assert they should be different, which passes ~97% of the time.
+        // If this test ever flakes, the user isolation is still working - just unlucky.
+        expect(valuesAreIdentical).toBe(false);
+
+        console.log('Multi-user seed isolation test passed - different users see different values');
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+  });
 });
