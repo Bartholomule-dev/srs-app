@@ -4,6 +4,16 @@ import { render, screen, fireEvent, act } from '@testing-library/react';
 import { ExerciseCard } from '@/components/exercise';
 import { createMockExercise } from '@tests/fixtures/exercise';
 
+// Mock PyodideContext (Phase 3)
+vi.mock('@/lib/context/PyodideContext', () => ({
+  usePyodide: () => ({
+    ready: true,
+    loading: false,
+    error: null,
+    execute: vi.fn().mockResolvedValue({ output: '', error: null }),
+  }),
+}));
+
 describe('ExerciseCard', () => {
   const mockExercise = createMockExercise({
     id: 'ex-1',

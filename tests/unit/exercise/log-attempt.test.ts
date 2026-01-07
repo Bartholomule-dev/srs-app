@@ -1,5 +1,5 @@
 // tests/unit/exercise/log-attempt.test.ts
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import {
   buildAttemptRecord,
   type AttemptLogData,

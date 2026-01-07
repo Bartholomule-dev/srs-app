@@ -53,6 +53,16 @@ vi.mock('@/lib/context/ToastContext', () => ({
   }),
 }));
 
+// Mock PyodideContext (added by Phase 3)
+vi.mock('@/lib/context/PyodideContext', () => ({
+  usePyodide: () => ({
+    ready: true,
+    loading: false,
+    error: null,
+    execute: vi.fn().mockResolvedValue({ output: '', error: null }),
+  }),
+}));
+
 // Mock updateProfileStats
 const mockUpdateProfileStats = vi.fn();
 vi.mock('@/lib/stats', () => ({
