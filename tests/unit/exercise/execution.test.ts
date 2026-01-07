@@ -121,16 +121,12 @@ describe('verifyPredictAnswer', () => {
     expect(isCorrect).toBe(true);
   });
 
-  it('returns false on execution error', async () => {
+  it('throws error on execution failure for fallback', async () => {
     const mockPyodide = createMockPyodide(undefined, new Error('Error'));
 
-    const isCorrect = await verifyPredictAnswer(
-      mockPyodide,
-      'invalid',
-      'expected'
-    );
-
-    expect(isCorrect).toBe(false);
+    await expect(
+      verifyPredictAnswer(mockPyodide, 'invalid', 'expected')
+    ).rejects.toThrow('Execution failed');
   });
 });
 

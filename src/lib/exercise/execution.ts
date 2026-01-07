@@ -92,6 +92,7 @@ export async function executePythonCode(
  * @param code - Code to execute
  * @param expectedOutput - Expected output to compare against
  * @returns Whether actual output matches expected
+ * @throws Error if execution fails (caller should fall back to string matching)
  */
 export async function verifyPredictAnswer(
   pyodide: PyodideInterface,
@@ -100,7 +101,12 @@ export async function verifyPredictAnswer(
 ): Promise<boolean> {
   const result = await executePythonCode(pyodide, code);
 
-  if (!result.success || result.output === null) {
+  if (!result.success) {
+    // Execution failed - throw so caller can fall back to string matching
+    throw new Error(`Execution failed: ${result.error}`);
+  }
+
+  if (result.output === null) {
     return false;
   }
 
@@ -119,6 +125,7 @@ export async function verifyPredictAnswer(
  * @param expectedOutput - Expected output after execution
  * @param verificationTemplate - Template with {{answer}} placeholder
  * @returns Whether execution output matches expected
+ * @throws Error if execution fails (caller should fall back to string matching)
  */
 export async function verifyWriteAnswer(
   pyodide: PyodideInterface,
@@ -131,7 +138,12 @@ export async function verifyWriteAnswer(
 
   const result = await executePythonCode(pyodide, codeToRun);
 
-  if (!result.success || result.output === null) {
+  if (!result.success) {
+    // Execution failed - throw so caller can fall back to string matching
+    throw new Error(`Execution failed: ${result.error}`);
+  }
+
+  if (result.output === null) {
     return false;
   }
 
