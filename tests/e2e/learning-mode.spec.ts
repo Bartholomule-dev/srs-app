@@ -83,11 +83,29 @@ test.describe('Learning Mode', () => {
       await expect(gotItButton).toBeVisible();
       await expect(gotItButton).toHaveClass(/bg-blue-600/);
 
-      // Teaching card should have an explanation visible (look for "Example" text which appears in teaching cards)
+      // Teaching card should have an explanation visible
+      const explanationText = page.locator('p.text-\\[var\\(--text-secondary\\)\\]');
+      await expect(explanationText).toBeVisible();
+
+      // Verify example code block structure:
+      // 1. "Example" label should be visible
       const exampleLabel = page.getByText('Example', { exact: true });
       await expect(exampleLabel).toBeVisible();
 
-      console.log('Teaching card found and verified for new user');
+      // 2. Pre element containing the example code should be visible
+      const codeBlock = page.locator('pre.whitespace-pre-wrap');
+      await expect(codeBlock).toBeVisible();
+
+      // 3. Code block should contain actual code content (not empty)
+      const codeContent = await codeBlock.textContent();
+      expect(codeContent).toBeTruthy();
+      expect(codeContent!.length).toBeGreaterThan(0);
+
+      // 4. Code block should be inside a styled container with mono font
+      const codeContainer = page.locator('.font-mono pre');
+      await expect(codeContainer).toBeVisible();
+
+      console.log('Teaching card found and verified with example code block for new user');
     } else {
       // New user might go straight to exercises if no teaching content defined
       // or if all caught up (rare for new user but possible)
