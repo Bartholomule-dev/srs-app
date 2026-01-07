@@ -18,7 +18,7 @@
 
 A gamified web platform for practicing code syntax through spaced repetition. Target users are AI-assisted developers who want to maintain their programming fundamentals.
 
-**Current Status:** Curriculum Restructure Complete - 332 Python exercises across 10 files matching curriculum graph exactly. Three exercise types (write 65%, fill-in 17%, predict 18%), user-selectable experience levels, all 52 subconcepts have teaching cards. Next: Experience level onboarding integration, gamification (Phase 3).
+**Current Status:** FSRS Migration Complete - Migrated SRS algorithm from SM-2 to FSRS (ts-fsrs library). 332 Python exercises across 10 files, three exercise types (write 65%, fill-in 17%, predict 18%), user-selectable experience levels, all 52 subconcepts have teaching cards. Next: Experience level onboarding integration, gamification (Phase 3).
 
 ---
 
@@ -30,7 +30,7 @@ A gamified web platform for practicing code syntax through spaced repetition. Ta
 | Language | TypeScript 5 (strict mode) |
 | UI | React 19, Tailwind CSS 4, framer-motion |
 | Backend | Supabase (PostgreSQL + Auth + Realtime) |
-| Testing | Vitest (747 unit/integration) + Playwright (E2E) |
+| Testing | Vitest (797 unit/integration) + Playwright (E2E) |
 | Deployment | Vercel + GitHub Actions CI/E2E |
 | Package Manager | pnpm |
 
@@ -43,7 +43,7 @@ pnpm dev              # Start dev server (localhost:3000)
 pnpm build            # Production build
 pnpm lint             # ESLint check
 pnpm typecheck        # TypeScript type checking
-pnpm test             # Run Vitest tests (747 tests)
+pnpm test             # Run Vitest tests (797 tests)
 pnpm test:e2e         # Run Playwright E2E tests
 pnpm test:e2e:headed  # Run E2E with browser visible
 pnpm db:start         # Start local Supabase
@@ -387,7 +387,8 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 12. ✅ Phase 2.5 Curriculum Enhancement - objective/targets fields, anti-repeat pattern selection, multi-target SRS credit, 47 new exercises (218 total)
 13. ✅ Learning Mode - Teaching cards for new subconcepts (explanation + example), TeachingCard component with blue styling, SessionProgress blue segments, interleaved teaching pairs, curriculum loader for teaching content
 14. ✅ Phase 2.7 Exercise Variety - Three exercise types (write, fill-in, predict), PredictOutputExercise component, user-selectable experience levels controlling type ratios, type-balanced session selection algorithm, 60 new exercises (30 fill-in + 30 predict)
-15. ✅ Curriculum Restructure - Restructured 10 exercise files to match curriculum graph exactly, renamed files (loops→control-flow, classes→oop, exceptions→error-handling), deleted redundant files, added 84 new exercises including OOP (inheritance, classmethod, properties) and error-handling (finally, raising), fill-in/predict for all concepts. 332 total exercises, 747 tests.
+15. ✅ Curriculum Restructure - Restructured 10 exercise files to match curriculum graph exactly, renamed files (loops→control-flow, classes→oop, exceptions→error-handling), deleted redundant files, added 84 new exercises including OOP (inheritance, classmethod, properties) and error-handling (finally, raising), fill-in/predict for all concepts. 332 total exercises.
+16. ✅ SM-2 to FSRS Migration - Migrated SRS algorithm from SM-2 to FSRS (ts-fsrs library). Adapter pattern isolates library (`src/lib/srs/fsrs/`), Quality→Rating mapping (0-2→Again, 3→Hard, 4→Good, 5→Easy), new DB columns (stability, difficulty, fsrs_state, reps, lapses), validateFsrsState guard for corrupted data. 97 FSRS tests across 8 files (adapter, mapping, regression, invariants, edge-cases, tsfsrs-contract, integration, fsrs-flow). 797 total tests.
 
 ## Phase 2.7: Exercise Variety (Complete)
 

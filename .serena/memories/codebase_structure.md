@@ -101,10 +101,17 @@ src/
     │   ├── AppError.ts       # Custom error class with codes
     │   └── handleSupabaseError.ts  # Supabase error mapper
     │
-    ├── srs/                  # SM-2 spaced repetition algorithm
+    ├── srs/                  # FSRS spaced repetition algorithm (migrated from SM-2)
     │   ├── index.ts          # Barrel export
-    │   ├── types.ts          # CardState, DueCard, SRSConfig
-    │   └── algorithm.ts      # calculateNextReview, getDueCards, getNewCards
+    │   ├── types.ts          # CardState, DueCard, SRSConfig (legacy)
+    │   ├── algorithm.ts      # Legacy SM-2 (deprecated, kept for reference)
+    │   ├── exercise-selection.ts # mapFSRSStateToPhase, selectExercise
+    │   ├── multi-target.ts   # getTargetsToCredit, getTargetsToPenalize
+    │   └── fsrs/             # FSRS implementation
+    │       ├── index.ts      # Barrel export
+    │       ├── types.ts      # FSRSCardState, FSRSState, FSRSRating, STATE_MAP
+    │       ├── adapter.ts    # createEmptyFSRSCard, reviewCard, progressToCardState
+    │       └── mapping.ts    # qualityToRating, inferRating, isPassingRating
     │
     ├── exercise/             # Exercise evaluation library
     │   ├── index.ts          # Barrel export
@@ -159,6 +166,14 @@ tests/
 │   ├── errors/               # Error handling tests
 │   ├── context/              # Context tests
 │   ├── srs/                  # SRS algorithm tests
+│   │   └── fsrs/             # FSRS-specific tests (97 tests across 7 files)
+│   │       ├── adapter.test.ts       # 16 tests - adapter functions
+│   │       ├── mapping.test.ts       # 18 tests - quality→rating + boundary tests
+│   │       ├── regression.test.ts    # 12 tests - pinned values for upgrades
+│   │       ├── invariants.test.ts    # 14 tests - property-based tests
+│   │       ├── edge-cases.test.ts    # 17 tests - corrupted data handling
+│   │       ├── tsfsrs-contract.test.ts # 3 tests - ts-fsrs behavior docs
+│   │       └── integration.test.ts   # 6 tests - cross-module flows
 │   ├── exercise/             # Exercise library tests
 │   ├── session/              # Session library tests
 │   ├── stats/                # Stats library tests
@@ -168,12 +183,16 @@ tests/
 │   ├── migrations/           # Database migration tests
 │   ├── hooks/                # Hook integration tests
 │   ├── srs/                  # SRS flow tests
+│   │   └── fsrs-flow.test.ts # 11 tests - DB round-trip, field preservation
 │   ├── rls/                  # Row-level security tests
 │   ├── session/              # Session integration tests
 │   └── seed/                 # Seed data tests
 │
 └── e2e/                      # Playwright E2E tests
     ├── critical-path.spec.ts # Login → Dashboard → Practice → Submit → Feedback
+    ├── fsrs-integration.spec.ts # FSRS hard assertions (4 tests - progress, reps, attempts, scheduling)
+    ├── full-session.spec.ts  # Complete session E2E
+    ├── learning-mode.spec.ts # Teaching cards E2E
     └── utils/
         ├── auth.ts           # Test user create/delete via admin API
         └── index.ts          # Barrel export
@@ -199,20 +218,19 @@ supabase/
 ## Exercises (`exercises/`)
 ```
 exercises/
-└── python/                   # Python exercises (218 total)
-    ├── basics.yaml           # 5 exercises
-    ├── operators.yaml        # 5 exercises
-    ├── strings.yaml          # 23 exercises
-    ├── lists.yaml            # 5 exercises
-    ├── dictionaries.yaml     # 5 exercises
-    ├── loops.yaml            # 33 exercises
-    ├── functions.yaml        # 29 exercises
-    ├── classes.yaml          # 5 exercises
-    ├── comprehensions.yaml   # 9 exercises
-    ├── exceptions.yaml       # 5 exercises
-    ├── foundations.yaml      # 30 exercises
-    ├── collections.yaml      # 43 exercises
-    └── modules-files.yaml    # 21 exercises
+└── python/                   # Python exercises (332 total, restructured to match curriculum graph)
+    ├── foundations.yaml      # variables, operators, expressions, io (4 subconcepts)
+    ├── strings.yaml          # basics, indexing, slicing, methods, fstrings (5 subconcepts)
+    ├── numbers-booleans.yaml # integers, floats, booleans, conversion, truthiness, comparisons (6 subconcepts)
+    ├── collections.yaml      # lists, tuples, dictionaries, sets, mutability (5 subconcepts)
+    ├── control-flow.yaml     # if, for, while, range, enumerate, zip, etc. (11 subconcepts)
+    ├── functions.yaml        # defining, parameters, returns, scope, lambda, etc. (9 subconcepts)
+    ├── comprehensions.yaml   # list, dict, set, generator, nested (5 subconcepts)
+    ├── error-handling.yaml   # try-except, finally, raising, custom (4 subconcepts)
+    ├── oop.yaml              # classes, methods, dunder, inheritance, etc. (6 subconcepts)
+    └── modules-files.yaml    # importing, packages, reading, writing, etc. (6 subconcepts)
+
+Exercise types: write (65%), fill-in (17%), predict (18%)
 ```
 
 ## Key Configuration Files
