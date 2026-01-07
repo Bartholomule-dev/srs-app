@@ -161,7 +161,7 @@
       "prereqs": ["variables"],
       "teaching": {
         "explanation": "Integers are whole numbers with unlimited precision. Use //, %, ** for floor division, modulo, exponentiation.",
-        "exampleSlug": "floor-division"
+        "exampleSlug": "floor-division-intro"
       }
     },
     "floats": {
@@ -170,7 +170,7 @@
       "prereqs": ["integers"],
       "teaching": {
         "explanation": "Floats represent decimal numbers. Use round() for precision. Be aware of floating-point inaccuracy.",
-        "exampleSlug": "exponentiation"
+        "exampleSlug": "exponentiation-intro"
       }
     },
     "booleans": {
@@ -179,7 +179,7 @@
       "prereqs": ["variables"],
       "teaching": {
         "explanation": "Booleans are True or False. Combine with `and`, `or`, `not`. Use in conditionals and while loops.",
-        "exampleSlug": "logical-and"
+        "exampleSlug": "boolean-and"
       }
     },
     "conversion": {
@@ -188,7 +188,7 @@
       "prereqs": ["integers", "floats"],
       "teaching": {
         "explanation": "Convert types with int(), float(), str(), bool(). Use type() to check a value's type.",
-        "exampleSlug": "type-check"
+        "exampleSlug": "convert-int-fill"
       }
     },
     "truthiness": {
@@ -197,7 +197,7 @@
       "prereqs": ["booleans"],
       "teaching": {
         "explanation": "Falsy values: False, None, 0, \"\", [], {}, set(). Everything else is truthy. Use `if items:` not `if len(items) > 0:`.",
-        "exampleSlug": "truthiness-empty-list"
+        "exampleSlug": "truthiness-predict-empty"
       }
     },
     "comparisons": {
@@ -206,7 +206,7 @@
       "prereqs": ["booleans"],
       "teaching": {
         "explanation": "Use `is` for identity (None), `==` for equality. Chain comparisons: `0 < x < 10`. Use `in` for membership.",
-        "exampleSlug": "comparison-is-none"
+        "exampleSlug": "comparison-is-fill"
       }
     },
     "lists": {
@@ -341,7 +341,7 @@
       "prereqs": [],
       "teaching": {
         "explanation": "Functions are defined with `def name(params):`. They organize reusable code. Use `return` to send back values.",
-        "exampleSlug": "simple-function"
+        "exampleSlug": "define-function"
       }
     },
     "arguments": {
