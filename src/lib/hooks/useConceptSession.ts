@@ -5,10 +5,12 @@ import { useAuth } from './useAuth';
 import { useConceptSRS } from './useConceptSRS';
 import { useProfile } from './useProfile';
 import { useToast } from '@/lib/context/ToastContext';
+import { usePyodide } from '@/lib/context/PyodideContext';
 import { supabase } from '@/lib/supabase/client';
 import { mapExercise } from '@/lib/supabase/mappers';
 import { handleSupabaseError, AppError } from '@/lib/errors';
 import { updateProfileStats } from '@/lib/stats';
+import { logExerciseAttempt } from '@/lib/exercise';
 import { selectExerciseByType } from '@/lib/srs/exercise-selection';
 import type { Exercise, Quality } from '@/lib/types';
 import { EXPERIENCE_LEVEL_RATIOS } from '@/lib/types/app.types';
@@ -111,6 +113,8 @@ export function useConceptSession(): UseConceptSessionReturn {
   const [sessionInitialized, setSessionInitialized] = useState(false);
   // Track exercise types shown in session for type-balanced selection
   const [sessionTypeHistory, setSessionTypeHistory] = useState<ExerciseType[]>([]);
+  // Track start time for response time calculation
+  const [cardStartTime, setCardStartTime] = useState<number>(Date.now());
 
   const currentCard = cards[currentIndex] ?? null;
   const isComplete =
@@ -414,8 +418,37 @@ export function useConceptSession(): UseConceptSessionReturn {
         showToast({ title: 'Failed to save progress', variant: 'error' });
         // Session continues even if save fails
       }
+
+      // Log attempt for metrics (non-blocking)
+      if (user) {
+        const responseTimeMs = Date.now() - cardStartTime;
+        logExerciseAttempt({
+          userId: user.id,
+          exerciseSlug: exercise.slug,
+          gradingResult: {
+            isCorrect,
+            usedTargetConstruct: null, // Full grading result not available here
+            coachingFeedback: null,
+            gradingMethod: 'string',
+            normalizedUserAnswer: '',
+            normalizedExpectedAnswer: '',
+            matchedAlternative: null,
+          },
+          responseTimeMs,
+          hintUsed: false, // Hint tracking not implemented yet
+          qualityScore: quality,
+          // Generator metadata would be passed from exercise if available
+          generatedParams: (exercise as Record<string, unknown>)._generatedParams as Record<string, string | number | boolean | (string | number)[]> | undefined,
+          seed: (exercise as Record<string, unknown>)._seed as string | undefined,
+        }).catch(() => {
+          // Non-fatal - don't show error for logging failure
+          console.warn('Failed to log exercise attempt');
+        });
+        // Reset timer for next card
+        setCardStartTime(Date.now());
+      }
     },
-    [cards, currentIndex, stats.completed, stats.total, cardProgressMap, recordSubconceptResult, showToast]
+    [cards, currentIndex, stats.completed, stats.total, cardProgressMap, recordSubconceptResult, showToast, user, cardStartTime]
   );
 
   const endSession = useCallback(async () => {
