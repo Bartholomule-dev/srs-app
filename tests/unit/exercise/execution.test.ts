@@ -1,11 +1,10 @@
 // tests/unit/exercise/execution.test.ts
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import {
   executePythonCode,
   verifyPredictAnswer,
   verifyWriteAnswer,
   captureStdout,
-  type ExecutionResult,
 } from '@/lib/exercise/execution';
 import type { PyodideInterface } from '@/lib/context/PyodideContext';
 
@@ -15,11 +14,11 @@ function createMockPyodide(
   throwError: Error | null = null
 ): PyodideInterface {
   return {
-    runPython: vi.fn((code: string) => {
+    runPython: vi.fn(() => {
       if (throwError) throw throwError;
       return runPythonResult;
     }),
-    runPythonAsync: vi.fn(async (code: string) => {
+    runPythonAsync: vi.fn(async () => {
       if (throwError) throw throwError;
       return runPythonResult;
     }),

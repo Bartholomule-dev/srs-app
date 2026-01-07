@@ -3,6 +3,17 @@ import { render, screen } from '@testing-library/react';
 import { ExerciseCard } from '@/components/exercise/ExerciseCard';
 import type { Exercise } from '@/lib/types';
 
+// Mock PyodideContext (Phase 3)
+vi.mock('@/lib/context/PyodideContext', () => ({
+  usePyodide: () => ({
+    pyodide: null,
+    loading: false,
+    error: null,
+    loadPyodide: vi.fn().mockResolvedValue(null),
+    isReady: false,
+  }),
+}));
+
 describe('ExerciseCard fill-in support', () => {
   const baseExercise: Partial<Exercise> = {
     id: '1',

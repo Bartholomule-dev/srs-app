@@ -47,6 +47,17 @@ vi.mock('@/lib/stats', () => ({
   updateProfileStats: (...args: unknown[]) => mockUpdateProfileStats(...args),
 }));
 
+// Mock PyodideContext (Phase 3)
+vi.mock('@/lib/context/PyodideContext', () => ({
+  usePyodide: () => ({
+    pyodide: null,
+    loading: false,
+    error: null,
+    loadPyodide: vi.fn().mockResolvedValue(null),
+    isReady: false,
+  }),
+}));
+
 // Mock Supabase
 vi.mock('@/lib/supabase/client', () => {
   const mockExercise = {
