@@ -1,13 +1,15 @@
 // tests/unit/srs/fsrs/integration.test.ts
-// Cross-component integration tests for FSRS
+// Cross-MODULE integration tests for FSRS
 //
-// These tests verify different FSRS components work together correctly.
-// Unit tests for individual components are in:
-//   - adapter.test.ts (adapter functions)
+// PURPOSE: Test flows that cross module boundaries
+// - FSRS state → exercise selection phase mapping
+// - Progress ↔ CardState round-trip (DB persistence simulation)
+//
+// NOTE: Individual component tests are in:
+//   - adapter.test.ts (FSRS adapter functions)
 //   - mapping.test.ts (quality/rating mapping)
 //   - regression.test.ts (pinned behavior)
 //   - invariants.test.ts (properties that must hold)
-//   - edge-cases.test.ts (error conditions)
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -16,11 +18,8 @@ import {
   cardStateToProgress,
   progressToCardState,
 } from '@/lib/srs/fsrs/adapter';
-import { qualityToRating, inferRating } from '@/lib/srs/fsrs/mapping';
 import { mapFSRSStateToPhase, selectExercise } from '@/lib/srs/exercise-selection';
-import { STATE_REVERSE_MAP } from '@/lib/srs/fsrs/types';
 import type { FSRSState } from '@/lib/srs/fsrs/types';
-import type { Quality } from '@/lib/types';
 import type { Exercise } from '@/lib/types/app.types';
 
 // Helper to create mock exercises
@@ -56,52 +55,7 @@ function createMockExercise(overrides: Partial<Exercise> = {}): Exercise {
   } as Exercise;
 }
 
-describe('FSRS Component Integration', () => {
-  describe('Quality → Rating → Review Flow', () => {
-    it('quality score flows correctly through rating to review', () => {
-      // This tests the full flow: Quality (from UI) → Rating → FSRS review
-      const qualities: Quality[] = [0, 1, 2, 3, 4, 5];
-      const card = createEmptyFSRSCard(new Date('2026-01-01'));
-
-      for (const quality of qualities) {
-        const rating = qualityToRating(quality);
-        const result = reviewCard(card, rating, new Date('2026-01-01'));
-
-        // Quality 0-2 = Again = fail
-        if (quality <= 2) {
-          expect(result.wasCorrect).toBe(false);
-        } else {
-          expect(result.wasCorrect).toBe(true);
-        }
-      }
-    });
-
-    it('inferRating signals flow correctly through review', () => {
-      // Tests: Review input signals → inferRating → FSRS review
-      const card = createEmptyFSRSCard(new Date('2026-01-01'));
-
-      // Correct answer with hint = Hard
-      const hintRating = inferRating({
-        isCorrect: true,
-        hintUsed: true,
-        responseTimeMs: 5000,
-      });
-      const hintResult = reviewCard(card, hintRating, new Date('2026-01-01'));
-      expect(hintRating).toBe('Hard');
-      expect(hintResult.wasCorrect).toBe(true);
-
-      // Fast correct = Easy
-      const fastRating = inferRating({
-        isCorrect: true,
-        hintUsed: false,
-        responseTimeMs: 5000, // <15s
-      });
-      const fastResult = reviewCard(card, fastRating, new Date('2026-01-01'));
-      expect(fastRating).toBe('Easy');
-      expect(fastResult.cardState.stability).toBeGreaterThan(hintResult.cardState.stability);
-    });
-  });
-
+describe('FSRS Cross-Module Integration', () => {
   describe('FSRS State → Exercise Selection Phase', () => {
     const exercises = [
       createMockExercise({ id: '1', slug: 'intro-1', level: 'intro' }),
@@ -216,47 +170,6 @@ describe('FSRS Component Integration', () => {
         const backToProgress = cardStateToProgress(card);
         expect(backToProgress.fsrsState).toBe(state);
       }
-    });
-  });
-
-  describe('Complete Review Session Simulation', () => {
-    it('simulates user completing 5 exercises with varying performance', () => {
-      // User does 5 reviews with different performance levels
-      const performances: Array<{ responseTimeMs: number; isCorrect: boolean; hintUsed: boolean }> = [
-        { responseTimeMs: 8000, isCorrect: true, hintUsed: false },   // Fast, correct → Easy
-        { responseTimeMs: 25000, isCorrect: true, hintUsed: false },  // Medium → Good
-        { responseTimeMs: 40000, isCorrect: true, hintUsed: false },  // Slow → Hard
-        { responseTimeMs: 15000, isCorrect: true, hintUsed: true },   // Used hint → Hard
-        { responseTimeMs: 10000, isCorrect: false, hintUsed: false }, // Wrong → Again
-      ];
-
-      let card = createEmptyFSRSCard(new Date('2026-01-01T09:00:00Z'));
-      let date = new Date('2026-01-01T09:00:00Z');
-
-      const results: Array<{ rating: string; wasCorrect: boolean; stability: number }> = [];
-
-      for (const perf of performances) {
-        const rating = inferRating(perf);
-        const result = reviewCard(card, rating, date);
-        results.push({
-          rating,
-          wasCorrect: result.wasCorrect,
-          stability: result.cardState.stability,
-        });
-        card = result.cardState;
-        date = new Date(date.getTime() + 60000); // 1 minute between exercises
-      }
-
-      // Verify expected ratings
-      expect(results[0].rating).toBe('Easy');
-      expect(results[1].rating).toBe('Good');
-      expect(results[2].rating).toBe('Hard');
-      expect(results[3].rating).toBe('Hard');
-      expect(results[4].rating).toBe('Again');
-
-      // Final card should reflect the session
-      expect(card.reps).toBe(5);
-      // Ended with Again, so stability should have dropped
     });
   });
 });

@@ -187,6 +187,115 @@ describe('FSRS Flow Integration', () => {
     });
   });
 
+  describe('Database Round-Trip Field Preservation', () => {
+    it('preserves all FSRS fields with exact precision through insert/select', async () => {
+      // Test values chosen to catch precision loss and type coercion bugs
+      const testValues = {
+        stability: 45.6789,        // High precision decimal
+        difficulty: 0.123456,      // Sub-1 decimal
+        fsrs_state: 2,             // Review state
+        reps: 42,
+        lapses: 7,
+        elapsed_days: 15,
+        scheduled_days: 28,
+        next_review: new Date('2026-06-15T14:30:00.000Z'),
+        last_reviewed: new Date('2026-06-01T10:00:00.000Z'),
+      };
+
+      // Insert raw row with known values
+      const { data: inserted, error: insertError } = await serviceClient
+        .from('subconcept_progress')
+        .insert({
+          user_id: testUserId,
+          subconcept_slug: 'test-precision',
+          concept_slug: 'foundations',
+          stability: testValues.stability,
+          difficulty: testValues.difficulty,
+          fsrs_state: testValues.fsrs_state,
+          reps: testValues.reps,
+          lapses: testValues.lapses,
+          elapsed_days: testValues.elapsed_days,
+          scheduled_days: testValues.scheduled_days,
+          next_review: testValues.next_review.toISOString(),
+          last_reviewed: testValues.last_reviewed.toISOString(),
+        })
+        .select()
+        .single();
+
+      expect(insertError).toBeNull();
+      expect(inserted).toBeDefined();
+
+      // Verify all fields preserved with exact precision
+      expect(inserted.stability).toBeCloseTo(testValues.stability, 4);
+      expect(inserted.difficulty).toBeCloseTo(testValues.difficulty, 4);
+      expect(inserted.fsrs_state).toBe(testValues.fsrs_state);
+      expect(inserted.reps).toBe(testValues.reps);
+      expect(inserted.lapses).toBe(testValues.lapses);
+      expect(inserted.elapsed_days).toBe(testValues.elapsed_days);
+      expect(inserted.scheduled_days).toBe(testValues.scheduled_days);
+
+      // Date round-trip (string conversion)
+      const retrievedNextReview = new Date(inserted.next_review);
+      expect(retrievedNextReview.getTime()).toBe(testValues.next_review.getTime());
+
+      const retrievedLastReviewed = new Date(inserted.last_reviewed);
+      expect(retrievedLastReviewed.getTime()).toBe(testValues.last_reviewed.getTime());
+    });
+
+    it('handles null last_reviewed correctly', async () => {
+      // New cards have null last_reviewed
+      const { data, error } = await serviceClient
+        .from('subconcept_progress')
+        .insert({
+          user_id: testUserId,
+          subconcept_slug: 'null-lastrev-test',
+          concept_slug: 'foundations',
+          stability: 0,
+          difficulty: 0,
+          fsrs_state: 0,
+          reps: 0,
+          lapses: 0,
+          elapsed_days: 0,
+          scheduled_days: 0,
+          next_review: new Date().toISOString(),
+          last_reviewed: null,
+        })
+        .select()
+        .single();
+
+      expect(error).toBeNull();
+      expect(data.last_reviewed).toBeNull();
+    });
+
+    it('fsrs_state accepts all valid values 0-3', async () => {
+      const validStates = [0, 1, 2, 3]; // New, Learning, Review, Relearning
+
+      for (const state of validStates) {
+        const { data, error } = await serviceClient
+          .from('subconcept_progress')
+          .insert({
+            user_id: testUserId,
+            subconcept_slug: `state-test-${state}`,
+            concept_slug: 'foundations',
+            stability: 0,
+            difficulty: 0,
+            fsrs_state: state,
+            reps: 0,
+            lapses: 0,
+            elapsed_days: 0,
+            scheduled_days: 0,
+            next_review: new Date().toISOString(),
+            last_reviewed: null,
+          })
+          .select()
+          .single();
+
+        expect(error).toBeNull();
+        expect(data.fsrs_state).toBe(state);
+      }
+    });
+  });
+
   describe('FSRS Behavior Verification', () => {
     it('stability increases with consecutive Good ratings', async () => {
       const now = new Date();

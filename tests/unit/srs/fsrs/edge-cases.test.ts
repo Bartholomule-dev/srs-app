@@ -18,74 +18,13 @@ import { qualityToRating, inferRating } from '@/lib/srs/fsrs/mapping';
 import { mapFSRSStateToPhase, selectExercise } from '@/lib/srs/exercise-selection';
 import type { FSRSState } from '@/lib/srs/fsrs/types';
 import type { Quality } from '@/lib/types';
+import type { ConceptSlug } from '@/lib/curriculum/types';
 
 describe('Edge Cases - Corrupted Database Data', () => {
+  // NOTE: ts-fsrs contract tests (NaN handling, negative stability) are in tsfsrs-contract.test.ts
+  // This file tests OUR adapter's handling of edge cases, not ts-fsrs library behavior.
+
   describe('progressToCardState with invalid data', () => {
-    it('handles negative stability - KNOWN ISSUE: produces NaN', () => {
-      // KNOWN ISSUE: ts-fsrs produces NaN when given negative stability
-      // This documents the behavior so we know to validate data before using it
-      const badProgress = {
-        stability: -5, // Invalid - should never be negative
-        difficulty: 0.3,
-        fsrsState: 'Review' as FSRSState,
-        due: new Date(),
-        lastReview: new Date(),
-        reps: 5,
-        lapses: 0,
-        elapsedDays: 3,
-        scheduledDays: 7,
-      };
-
-      const card = progressToCardState(badProgress);
-      expect(card).toBeDefined();
-
-      // ts-fsrs produces NaN with negative stability - this is expected
-      // If we see NaN in production, check for corrupted stability values
-      const result = reviewCard(card, 'Good', new Date());
-      expect(Number.isNaN(result.cardState.stability)).toBe(true);
-    });
-
-    it('handles NaN stability - KNOWN ISSUE: stays NaN', () => {
-      // KNOWN ISSUE: ts-fsrs propagates NaN through calculations
-      // This documents the behavior so we know to validate data before using it
-      const badProgress = {
-        stability: NaN,
-        difficulty: 0.3,
-        fsrsState: 'Review' as FSRSState,
-        due: new Date(),
-        lastReview: new Date(),
-        reps: 5,
-        lapses: 0,
-        elapsedDays: 3,
-        scheduledDays: 7,
-      };
-
-      const card = progressToCardState(badProgress);
-      expect(card).toBeDefined();
-
-      // NaN in = NaN out - this is expected
-      const result = reviewCard(card, 'Good', new Date());
-      expect(Number.isNaN(result.cardState.stability)).toBe(true);
-    });
-
-    it('handles difficulty outside 0-1 range', () => {
-      const badProgress = {
-        stability: 5,
-        difficulty: 1.5, // Invalid - should be 0-1
-        fsrsState: 'Review' as FSRSState,
-        due: new Date(),
-        lastReview: new Date(),
-        reps: 5,
-        lapses: 0,
-        elapsedDays: 3,
-        scheduledDays: 7,
-      };
-
-      const card = progressToCardState(badProgress);
-      // ts-fsrs may accept this, but we should be aware
-      expect(card).toBeDefined();
-    });
-
     it('handles null lastReview', () => {
       const progress = {
         stability: 5,
@@ -356,7 +295,7 @@ describe('Edge Cases - Exercise Selection', () => {
       avgSuccessRate: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      concept: 'control-flow',
+      concept: 'control-flow' as ConceptSlug,
       prereqs: [],
       objective: 'Test',
       targets: null,

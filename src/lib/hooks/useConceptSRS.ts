@@ -74,6 +74,21 @@ export interface UseConceptSRSReturn {
 }
 
 /**
+ * Validate fsrs_state from database - guards against corrupted data.
+ * Returns 0 (New) for invalid values.
+ */
+function validateFsrsState(value: number | null | undefined): 0 | 1 | 2 | 3 {
+  const state = value ?? 0;
+  if (state >= 0 && state <= 3 && Number.isInteger(state)) {
+    return state as 0 | 1 | 2 | 3;
+  }
+  // Invalid state - fall back to New (0) which is safest
+  // This handles corruption, NaN, decimals, negative values, etc.
+  console.warn(`Invalid fsrs_state value: ${value}, defaulting to 0 (New)`);
+  return 0;
+}
+
+/**
  * Map database row to app type for SubconceptProgress (FSRS schema)
  */
 function mapDbToSubconceptProgress(row: DbSubconceptProgress): SubconceptProgress {
@@ -84,7 +99,7 @@ function mapDbToSubconceptProgress(row: DbSubconceptProgress): SubconceptProgres
     conceptSlug: row.concept_slug as ConceptSlug,
     stability: row.stability ?? 0,
     difficulty: row.difficulty ?? 0,
-    fsrsState: (row.fsrs_state ?? 0) as 0 | 1 | 2 | 3,
+    fsrsState: validateFsrsState(row.fsrs_state),
     reps: row.reps ?? 0,
     lapses: row.lapses ?? 0,
     elapsedDays: row.elapsed_days ?? 0,

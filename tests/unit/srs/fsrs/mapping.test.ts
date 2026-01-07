@@ -46,6 +46,30 @@ describe('inferRating', () => {
   it('returns Hard for slow correct (>30s)', () => {
     expect(inferRating({ isCorrect: true, hintUsed: false, responseTimeMs: 35000 })).toBe('Hard');
   });
+
+  describe('boundary conditions at thresholds', () => {
+    // FAST_THRESHOLD_MS = 15000 - boundary between Easy and Good
+    it('returns Easy at 14999ms (just under fast threshold)', () => {
+      expect(inferRating({ isCorrect: true, hintUsed: false, responseTimeMs: 14999 })).toBe('Easy');
+    });
+
+    it('returns Good at exactly 15000ms (fast threshold)', () => {
+      // responseTimeMs < FAST_THRESHOLD_MS returns Easy
+      // At exactly 15000ms, it's NOT less than 15000, so it falls through to Good
+      expect(inferRating({ isCorrect: true, hintUsed: false, responseTimeMs: 15000 })).toBe('Good');
+    });
+
+    // SLOW_THRESHOLD_MS = 30000 - boundary between Good and Hard
+    it('returns Good at 29999ms (just under slow threshold)', () => {
+      expect(inferRating({ isCorrect: true, hintUsed: false, responseTimeMs: 29999 })).toBe('Good');
+    });
+
+    it('returns Hard at exactly 30000ms (slow threshold)', () => {
+      // responseTimeMs < SLOW_THRESHOLD_MS returns Good
+      // At exactly 30000ms, it's NOT less than 30000, so it falls through to Hard
+      expect(inferRating({ isCorrect: true, hintUsed: false, responseTimeMs: 30000 })).toBe('Hard');
+    });
+  });
 });
 
 describe('isPassingRating', () => {
