@@ -878,3 +878,166 @@ exercises:
     hints:
       - Union combines unique elements
     tags: [sets, union, predict]
+
+  # --- Dynamic Exercises ---
+  - slug: list-indexing-dynamic
+    objective: Use bracket notation to access list elements
+    title: Dynamic List Indexing
+    difficulty: 1
+    prompt: "Given nums = [{{a}}, {{b}}, {{c}}], what does nums[1] return?"
+    expected_answer: "{{b}}"
+    hints:
+      - List indices start at 0
+      - nums[1] returns the second element
+    tags: [lists, indexing, dynamic]
+    concept: collections
+    subconcept: lists
+    level: intro
+    prereqs: []
+    type: predict
+    pattern: indexing
+    generator: list-values
+    code: |
+      nums = [{{a}}, {{b}}, {{c}}]
+      print(nums[1])
+
+  - slug: list-sum-dynamic
+    objective: Predict the output of adding two numbers
+    title: Dynamic Addition
+    difficulty: 1
+    prompt: "Given x = {{x}} and y = {{y}}, what does x + y print?"
+    expected_answer: "{{sum}}"
+    hints:
+      - Addition is straightforward arithmetic
+    tags: [arithmetic, dynamic]
+    concept: numbers-booleans
+    subconcept: arithmetic
+    level: practice
+    prereqs: []
+    type: predict
+    pattern: arithmetic
+    generator: arithmetic-values
+    code: |
+      x = {{x}}
+      y = {{y}}
+      print(x + y)
+
+  - slug: list-slice-write-dynamic
+    objective: Write slice syntax to extract elements from index start to end
+    title: Dynamic List Slice Write
+    difficulty: 2
+    prompt: "Extract elements from index {{start}} to {{end}} (exclusive) from list nums"
+    expected_answer: "nums[{{start}}:{{end}}]"
+    hints:
+      - List slicing uses [start:end] syntax
+      - The end index is exclusive
+    tags: [lists, slicing, dynamic]
+    concept: collections
+    subconcept: lists
+    level: practice
+    prereqs: [collections.lists]
+    type: write
+    pattern: slicing
+    generator: slice-bounds
+    target_construct: slice
+
+  - slug: list-negative-index-dynamic
+    objective: Use negative indexing to access list elements from the end
+    title: Dynamic Negative Index
+    difficulty: 2
+    prompt: "Given nums = [{{a}}, {{b}}, {{c}}], what does nums[-1] return?"
+    expected_answer: "{{c}}"
+    hints:
+      - Negative indices count from the end
+      - nums[-1] is the last element
+    tags: [lists, indexing, negative, dynamic]
+    concept: collections
+    subconcept: lists
+    level: practice
+    prereqs: [collections.lists]
+    type: predict
+    pattern: indexing
+    generator: list-values
+    code: |
+      nums = [{{a}}, {{b}}, {{c}}]
+      print(nums[-1])
+
+  - slug: list-len-dynamic
+    objective: Predict the length of a list
+    title: Dynamic List Length
+    difficulty: 1
+    prompt: "Given nums = [{{a}}, {{b}}, {{c}}], what does len(nums) return?"
+    expected_answer: "3"
+    hints:
+      - len() returns the number of elements
+    tags: [lists, len, dynamic]
+    concept: collections
+    subconcept: lists
+    level: intro
+    prereqs: [collections.lists]
+    type: predict
+    pattern: query
+    generator: list-values
+    code: |
+      nums = [{{a}}, {{b}}, {{c}}]
+      print(len(nums))
+
+  - slug: list-append-dynamic
+    objective: Predict the result of appending an element to a list
+    title: Dynamic List Append
+    difficulty: 2
+    prompt: "Given nums = [{{a}}, {{b}}], what is nums after nums.append({{c}})?"
+    expected_answer: "[{{a}}, {{b}}, {{c}}]"
+    hints:
+      - append() adds element to the end
+      - The list is modified in place
+    tags: [lists, append, mutation, dynamic]
+    concept: collections
+    subconcept: lists
+    level: practice
+    prereqs: [collections.lists]
+    type: predict
+    pattern: mutation
+    generator: list-values
+    code: |
+      nums = [{{a}}, {{b}}]
+      nums.append({{c}})
+      print(nums)
+
+  - slug: list-pop-dynamic
+    objective: Predict the value returned when popping from a list
+    title: Dynamic List Pop
+    difficulty: 2
+    prompt: "Given nums = [{{a}}, {{b}}, {{c}}], what does nums.pop() return?"
+    expected_answer: "{{c}}"
+    hints:
+      - pop() removes and returns the last element
+    tags: [lists, pop, mutation, dynamic]
+    concept: collections
+    subconcept: lists
+    level: practice
+    prereqs: [collections.lists]
+    type: predict
+    pattern: mutation
+    generator: list-values
+    code: |
+      nums = [{{a}}, {{b}}, {{c}}]
+      print(nums.pop())
+
+  - slug: list-access-index-dynamic
+    objective: Write bracket notation to access a list element by index
+    title: Dynamic List Access
+    difficulty: 1
+    prompt: "Get the element at index {{idx}} from list items"
+    expected_answer: "items[{{idx}}]"
+    hints:
+      - Use square bracket notation
+      - Indices start at 0
+    tags: [lists, indexing, dynamic]
+    concept: collections
+    subconcept: lists
+    level: intro
+    prereqs: [collections.lists]
+    type: write
+    pattern: indexing
+    generator: index-values

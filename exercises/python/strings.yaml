@@ -37,6 +37,119 @@ exercises:
     type: write
     pattern: indexing
 
+  - slug: string-slicing-dynamic
+    objective: Use slice notation to extract a substring from a string
+    title: Dynamic String Slicing
+    difficulty: 2
+    prompt: Get characters from index {{start}} to {{end}} (exclusive) of string s
+    expected_answer: "s[{{start}}:{{end}}]"
+    hints:
+      - Use slice notation [start:end]
+      - End index is exclusive
+    tags: [strings, slicing, intermediate, dynamic]
+    concept: strings
+    subconcept: slicing
+    level: practice
+    prereqs: [indexing]
+    type: write
+    pattern: indexing
+    generator: slice-bounds
+    target_construct:
+      type: slice
+      feedback: "Try using slice notation s[start:end] for cleaner extraction"
+    accepted_solutions:
+      - "s[{{start}}:{{end}}]"
+
+  - slug: string-index-dynamic
+    objective: Use bracket notation to access a specific character by index
+    title: Dynamic Character Index
+    difficulty: 1
+    prompt: Get the character at index {{idx}} of string s
+    expected_answer: "s[{{idx}}]"
+    hints:
+      - Use square bracket indexing
+      - Remember indices start at 0
+    tags: [strings, indexing, dynamic]
+    concept: strings
+    subconcept: indexing
+    level: intro
+    prereqs: [strings.basics]
+    type: write
+    pattern: indexing
+    generator: index-values
+    accepted_solutions:
+      - "s[{{idx}}]"
+
+  - slug: string-slice-step-dynamic
+    objective: Use slice with step parameter to skip characters
+    title: Dynamic Slice with Step
+    difficulty: 2
+    prompt: Get every other character of string s starting from index {{idx}}
+    expected_answer: "s[{{idx}}::2]"
+    hints:
+      - Use slice notation [start:end:step]
+      - Step of 2 means every other character
+    tags: [strings, slicing, step, dynamic]
+    concept: strings
+    subconcept: slicing
+    level: edge
+    prereqs: [strings.slicing]
+    type: write
+    pattern: indexing
+    generator: index-values
+    target_construct:
+      type: slice
+      feedback: "Try using slice with step s[start::step] for cleaner iteration"
+    accepted_solutions:
+      - "s[{{idx}}::2]"
+
+  - slug: fstring-variable-dynamic
+    objective: Create an f-string embedding a variable name
+    title: Dynamic F-String Variable
+    difficulty: 2
+    prompt: Create an f-string that says "Value is " followed by the variable {{name}}
+    expected_answer: 'f"Value is {{{name}}}"'
+    hints:
+      - Start string with f prefix
+      - Use curly braces for variable interpolation
+    tags: [strings, fstrings, dynamic]
+    concept: strings
+    subconcept: fstrings
+    level: practice
+    prereqs: [strings.basics]
+    type: write
+    pattern: construction
+    generator: variable-names
+    target_construct:
+      type: f-string
+      feedback: "Try using an f-string f\"...{var}...\" for cleaner formatting"
+    accepted_solutions:
+      - 'f"Value is {{{name}}}"'
+      - "f'Value is {{{name}}}'"
+
+  - slug: string-slice-from-end-dynamic
+    objective: Use slice notation to get last N characters
+    title: Dynamic Slice from End
+    difficulty: 2
+    prompt: Get the last {{end}} characters of string s using negative slicing
+    expected_answer: "s[-{{end}}:]"
+    hints:
+      - Negative indices count from the end
+      - Omitting the end index goes to the end
+    tags: [strings, slicing, negative, dynamic]
+    concept: strings
+    subconcept: slicing
+    level: practice
+    prereqs: [strings.indexing]
+    type: write
+    pattern: indexing
+    generator: slice-bounds
+    target_construct:
+      type: slice
+      feedback: "Try using negative slice s[-n:] to get last n characters"
+    accepted_solutions:
+      - "s[-{{end}}:]"
+
   - slug: string-upper
     objective: "Apply the upper() method to convert string case"
     title: String Uppercase

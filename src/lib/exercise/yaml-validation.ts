@@ -5,6 +5,7 @@ import type {
   YamlValidationError,
   YamlValidationResult
 } from './yaml-types';
+import { hasGenerator } from '@/lib/generators';
 
 const KEBAB_CASE_REGEX = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
@@ -109,6 +110,43 @@ export function validateYamlExercise(
         slug,
         field: 'blank_position',
         message: "fill-in type requires 'blank_position' field",
+      });
+    }
+  }
+
+  // Validate generator reference if present
+  if (exercise.generator) {
+    if (!hasGenerator(exercise.generator)) {
+      errors.push({
+        file,
+        slug,
+        field: 'generator',
+        message: `Unknown generator: ${exercise.generator}`,
+      });
+    }
+  }
+
+  // Validate target_construct structure
+  if (exercise.target_construct) {
+    if (!exercise.target_construct.type) {
+      errors.push({
+        file,
+        slug,
+        field: 'target_construct',
+        message: 'target_construct must have a type field',
+      });
+    }
+  }
+
+  // Validate template placeholders if generator present
+  if (exercise.generator && exercise.prompt) {
+    const placeholders = exercise.prompt.match(/\{\{(\w+)\}\}/g);
+    if (!placeholders || placeholders.length === 0) {
+      errors.push({
+        file,
+        slug,
+        field: 'prompt',
+        message: 'Exercise has generator but no {{placeholders}} in prompt',
       });
     }
   }

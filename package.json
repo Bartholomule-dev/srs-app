@@ -19,7 +19,8 @@
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:ui": "playwright test --ui",
-    "validate:exercises": "npx tsx scripts/validate-exercises.ts"
+    "validate:exercises": "npx tsx scripts/validate-exercises.ts",
+    "validate:dynamic": "npx tsx scripts/validate-dynamic-exercises.ts"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.2.8",

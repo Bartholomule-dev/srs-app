@@ -223,11 +223,102 @@ describe('generator field validation', () => {
       level: 'practice',
       prereqs: [],
       type: 'write',
-      pattern: 'function-definition',
+      pattern: 'definition',
       objective: 'Define a simple function',
       verify_by_execution: true,
     };
     expect(exercise.verify_by_execution).toBe(true);
+  });
+
+  it('errors on unknown generator', () => {
+    const exercise: YamlExercise = {
+      slug: 'unknown-gen',
+      title: 'Unknown Generator Test',
+      prompt: 'Test {{param}}',
+      expected_answer: 'result',
+      hints: ['hint'],
+      concept: 'strings',
+      subconcept: 'slicing',
+      level: 'practice',
+      prereqs: [],
+      type: 'write',
+      pattern: 'indexing',
+      objective: 'Test unknown generator',
+      generator: 'non-existent-generator',
+    };
+    const errors = validateYamlExercise(exercise, 'test.yaml');
+    expect(errors).toContainEqual(expect.objectContaining({
+      field: 'generator',
+      message: expect.stringContaining('Unknown generator'),
+    }));
+  });
+
+  it('accepts valid generator', () => {
+    const exercise: YamlExercise = {
+      slug: 'valid-gen',
+      title: 'Valid Generator Test',
+      prompt: 'Get chars from {{start}} to {{end}}',
+      expected_answer: 's[{{start}}:{{end}}]',
+      hints: ['Use slice'],
+      concept: 'strings',
+      subconcept: 'slicing',
+      level: 'practice',
+      prereqs: [],
+      type: 'write',
+      pattern: 'indexing',
+      objective: 'Test valid generator',
+      generator: 'slice-bounds',
+    };
+    const errors = validateYamlExercise(exercise, 'test.yaml');
+    expect(errors.filter(e => e.field === 'generator')).toHaveLength(0);
+  });
+
+  it('errors on target_construct without type', () => {
+    const exercise = {
+      slug: 'no-type-construct',
+      title: 'No Type Construct Test',
+      prompt: 'Test prompt',
+      expected_answer: 'result',
+      hints: ['hint'],
+      concept: 'strings',
+      subconcept: 'slicing',
+      level: 'practice',
+      prereqs: [],
+      type: 'write',
+      pattern: 'indexing',
+      objective: 'Test target_construct without type',
+      target_construct: {
+        feedback: 'Some feedback without type',
+      },
+    } as unknown as YamlExercise;
+    const errors = validateYamlExercise(exercise, 'test.yaml');
+    expect(errors).toContainEqual(expect.objectContaining({
+      field: 'target_construct',
+      message: expect.stringContaining('must have a type field'),
+    }));
+  });
+
+  it('errors on generator without placeholders in prompt', () => {
+    const exercise: YamlExercise = {
+      slug: 'no-placeholder',
+      title: 'No Placeholder Test',
+      prompt: 'This prompt has no placeholders',
+      expected_answer: 'result',
+      hints: ['hint'],
+      concept: 'strings',
+      subconcept: 'slicing',
+      level: 'practice',
+      prereqs: [],
+      type: 'write',
+      pattern: 'indexing',
+      objective: 'Test missing placeholders',
+      generator: 'slice-bounds',
+    };
+    const errors = validateYamlExercise(exercise, 'test.yaml');
+    expect(errors).toContainEqual(expect.objectContaining({
+      field: 'prompt',
+      message: expect.stringContaining('no {{placeholders}}'),
+    }));
   });
 });
 

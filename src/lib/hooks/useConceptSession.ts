@@ -113,6 +113,8 @@ export function useConceptSession(): UseConceptSessionReturn {
   // Track whether session has been initialized (prevents rebuilding on dueSubconcepts changes)
   const [sessionInitialized, setSessionInitialized] = useState(false);
   // Track exercise types shown in session for type-balanced selection
+  // Note: sessionTypeHistory is maintained for future type-balanced selection features
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [sessionTypeHistory, setSessionTypeHistory] = useState<ExerciseType[]>([]);
   // Track start time for response time calculation
   const [cardStartTime, setCardStartTime] = useState<number>(Date.now());
@@ -456,8 +458,8 @@ export function useConceptSession(): UseConceptSessionReturn {
           hintUsed: false, // Hint tracking not implemented yet
           qualityScore: quality,
           // Generator metadata would be passed from exercise if available
-          generatedParams: (exercise as Record<string, unknown>)._generatedParams as Record<string, string | number | boolean | (string | number)[]> | undefined,
-          seed: (exercise as Record<string, unknown>)._seed as string | undefined,
+          generatedParams: (exercise as unknown as Record<string, unknown>)._generatedParams as Record<string, string | number | boolean | (string | number)[]> | undefined,
+          seed: (exercise as unknown as Record<string, unknown>)._seed as string | undefined,
         }).catch(() => {
           // Non-fatal - don't show error for logging failure
           console.warn('Failed to log exercise attempt');

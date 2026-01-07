@@ -10,7 +10,7 @@ SRS-App is a gamified web platform for practicing code syntax through spaced rep
 - **Auth System:** ✅ Complete (Magic Link via Supabase + auto-generated usernames)
 - **Database Schema:** ✅ Complete (profiles, exercises, user_progress)
 - **TypeScript Types:** ✅ Complete (auto-generated + camelCase mappers)
-- **Test Infrastructure:** ✅ Complete (Vitest 696 tests + Playwright E2E)
+- **Test Infrastructure:** ✅ Complete (Vitest 998 tests + Playwright E2E)
 - **Error Handling:** ✅ Complete (AppError + ErrorBoundary + Toast)
 - **Core SRS Engine:** ✅ Complete (SM-2 algorithm + useConceptSRS hook)
 - **Exercise Engine:** ✅ Complete (ExerciseCard + components)
@@ -36,6 +36,12 @@ SRS-App is a gamified web platform for practicing code syntax through spaced rep
 13. **Milestone 13: Phase 2 Curriculum** - Concept-based SRS, 171 exercises, useConceptSession
 14. **Milestone 14: Phase 2.5 Enhancement** - objective/targets fields, anti-repeat, 218 exercises
 15. **Milestone 15: Learning Mode** - Teaching cards for new subconcepts, TeachingCard component, blue progress segments
+16. **Milestone 16: Phase 2.7 Exercise Variety** - Three exercise types (write/fill-in/predict), experience levels
+17. **Milestone 17: Curriculum Restructure** - 332 exercises across 10 files matching curriculum graph
+18. **Milestone 18: SM-2 to FSRS Migration** - FSRS algorithm with ts-fsrs library, adapter pattern
+19. **Milestone 19: Dedicated Teaching Examples** - exampleCode field, instructional examples
+20. **Milestone 20: Dynamic Exercises Phase 1** - Generator infrastructure, deterministic seeding, Mustache templates
+21. **Milestone 21: Dynamic Exercises Phase 2 (Grading)** - Two-pass grading (correctness + construct coaching), 8 construct patterns, CoachingFeedback component
 
 ## Next Up
 - **Username Selection UI** (auto-generated for now)

@@ -3,6 +3,10 @@
 
 import type { Generator, GeneratorParams, TargetConstruct, RenderedExerciseMetadata } from './types';
 import { sliceBoundsGenerator } from './definitions/slice-bounds';
+import { variableNamesGenerator } from './definitions/variable-names';
+import { listValuesGenerator } from './definitions/list-values';
+import { indexValuesGenerator } from './definitions/index-values';
+import { arithmeticValuesGenerator } from './definitions/arithmetic-values';
 
 // Re-export types
 export type { Generator, GeneratorParams, TargetConstruct, RenderedExerciseMetadata };
@@ -47,3 +51,7 @@ export function getGeneratorNames(): string[] {
 
 // Register built-in generators
 registerGenerator(sliceBoundsGenerator);
+registerGenerator(variableNamesGenerator);
+registerGenerator(listValuesGenerator);
+registerGenerator(indexValuesGenerator);
+registerGenerator(arithmeticValuesGenerator);

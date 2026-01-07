@@ -58,9 +58,10 @@ src/
 │   │   ├── ExercisePrompt.tsx # Language/category + prompt display
 │   │   ├── HintButton.tsx    # Hint reveal with SRS penalty warning
 │   │   ├── ExerciseFeedback.tsx # Correct/incorrect + next review
-│   │   ├── ExerciseCard.tsx  # Orchestrator (answering → feedback)
+│   │   ├── ExerciseCard.tsx  # Orchestrator (answering → feedback) - uses gradeAnswer
 │   │   ├── FillInExercise.tsx # Fill-in-the-blank exercise type
-│   │   └── TeachingCard.tsx  # Teaching card for new subconcepts (blue styling)
+│   │   ├── TeachingCard.tsx  # Teaching card for new subconcepts (blue styling)
+│   │   └── CoachingFeedback.tsx # ✅ Non-punitive coaching (Phase 2) - blue info styling
 │   │
 │   ├── session/              # Session flow components
 │   │   ├── index.ts          # Barrel export
@@ -134,6 +135,15 @@ src/
     │   ├── teaching-cards.ts # buildTeachingPair (teaching + practice card pairs)
     │   └── interleave-teaching.ts # interleaveWithTeaching (insert teaching pairs)
     │
+    ├── generators/           # ✅ Dynamic exercise generation (Phase 1)
+    │   ├── index.ts          # Registry (getGenerator, registerGenerator, hasGenerator)
+    │   ├── types.ts          # Generator, GeneratorParams, TargetConstruct
+    │   ├── seed.ts           # createSeed, hashString (deterministic seeding)
+    │   ├── utils.ts          # seededRandom (int, pick, shuffle)
+    │   ├── render.ts         # renderExercise, renderExercises (Mustache)
+    │   └── definitions/      # Generator implementations
+    │       └── slice-bounds.ts  # start/end indices generator
+    │
     ├── stats/                # Stats calculation library
     │   ├── index.ts          # Barrel export
     │   ├── types.ts          # UserStats, DailyStats types
@@ -175,6 +185,12 @@ tests/
 │   │       ├── tsfsrs-contract.test.ts # 3 tests - ts-fsrs behavior docs
 │   │       └── integration.test.ts   # 6 tests - cross-module flows
 │   ├── exercise/             # Exercise library tests
+│   ├── generators/           # Generator tests (59 tests)
+│   │   ├── types.test.ts     # Type definitions tests
+│   │   ├── seed.test.ts      # Seed generation tests
+│   │   ├── utils.test.ts     # Seeded random utility tests
+│   │   ├── slice-bounds.test.ts # slice-bounds generator + property tests
+│   │   └── render.test.ts    # Render pipeline tests
 │   ├── session/              # Session library tests
 │   ├── stats/                # Stats library tests
 │   └── helpers.test.ts       # Supabase helper tests

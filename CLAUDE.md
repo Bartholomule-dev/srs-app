@@ -18,7 +18,7 @@
 
 A gamified web platform for practicing code syntax through spaced repetition. Target users are AI-assisted developers who want to maintain their programming fundamentals.
 
-**Current Status:** FSRS Migration Complete - Migrated SRS algorithm from SM-2 to FSRS (ts-fsrs library). 332 Python exercises across 10 files, three exercise types (write 65%, fill-in 17%, predict 18%), user-selectable experience levels, all 52 subconcepts have teaching cards. Next: Experience level onboarding integration, gamification (Phase 3).
+**Current Status:** Dynamic Exercise System Complete (All 5 Phases) - 23 dynamic exercises across 4 concept files using 5 generators (slice-bounds, list-values, variable-names, index-values, arithmetic-values). Two-pass grading (correctness + construct coaching), 8 construct detection patterns, Pyodide integration for execution-based grading with fallback, metrics logging. FSRS algorithm (ts-fsrs), 355 Python exercises across 10 files, three exercise types (write 65%, fill-in 17%, predict 18%). Next: Gamification (achievements, points, leaderboards).
 
 ---
 
@@ -30,7 +30,7 @@ A gamified web platform for practicing code syntax through spaced repetition. Ta
 | Language | TypeScript 5 (strict mode) |
 | UI | React 19, Tailwind CSS 4, framer-motion |
 | Backend | Supabase (PostgreSQL + Auth + Realtime) |
-| Testing | Vitest (797 unit/integration) + Playwright (E2E) |
+| Testing | Vitest (1088 unit/integration) + Playwright (E2E) |
 | Deployment | Vercel + GitHub Actions CI/E2E |
 | Package Manager | pnpm |
 
@@ -43,7 +43,7 @@ pnpm dev              # Start dev server (localhost:3000)
 pnpm build            # Production build
 pnpm lint             # ESLint check
 pnpm typecheck        # TypeScript type checking
-pnpm test             # Run Vitest tests (797 tests)
+pnpm test             # Run Vitest tests (1088 tests)
 pnpm test:e2e         # Run Playwright E2E tests
 pnpm test:e2e:headed  # Run E2E with browser visible
 pnpm db:start         # Start local Supabase
@@ -68,16 +68,17 @@ src/
 │   ├── ui/               # Custom UI components (Button, Card, Input, etc.)
 │   ├── layout/           # Header, LandingHeader
 │   ├── landing/          # Hero, Features, HowItWorks, AuthForm
-│   ├── exercise/         # ExerciseCard, CodeInput, FillInExercise, TeachingCard
+│   ├── exercise/         # ExerciseCard, CodeInput, FillInExercise, TeachingCard, CoachingFeedback
 │   ├── session/          # SessionProgress, SessionSummary (immersive mode)
 │   ├── dashboard/        # Greeting, PracticeCTA, DueCardsBanner, EmptyState
 │   └── stats/            # StatsCard, StatsGrid
 └── lib/
     ├── hooks/            # useAuth, useProfile, useConceptSRS, useConceptSession, useStats
-    ├── srs/              # SM-2 algorithm
-    ├── exercise/         # Answer matching, quality inference
+    ├── srs/              # FSRS algorithm (ts-fsrs adapter)
+    ├── exercise/         # Answer matching, quality inference, two-pass grading, construct detection
     ├── session/          # Session types, interleaving, teaching cards
     ├── curriculum/       # python.json curriculum graph, types, loader
+    ├── generators/       # Dynamic exercise generation (types, seed, utils, render, registry)
     ├── stats/            # Stats queries, streak calculation
     ├── errors/           # AppError, handleSupabaseError
     ├── supabase/         # Client (browser), server, helpers, mappers
@@ -389,6 +390,12 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 14. ✅ Phase 2.7 Exercise Variety - Three exercise types (write, fill-in, predict), PredictOutputExercise component, user-selectable experience levels controlling type ratios, type-balanced session selection algorithm, 60 new exercises (30 fill-in + 30 predict)
 15. ✅ Curriculum Restructure - Restructured 10 exercise files to match curriculum graph exactly, renamed files (loops→control-flow, classes→oop, exceptions→error-handling), deleted redundant files, added 84 new exercises including OOP (inheritance, classmethod, properties) and error-handling (finally, raising), fill-in/predict for all concepts. 332 total exercises.
 16. ✅ SM-2 to FSRS Migration - Migrated SRS algorithm from SM-2 to FSRS (ts-fsrs library). Adapter pattern isolates library (`src/lib/srs/fsrs/`), Quality→Rating mapping (0-2→Again, 3→Hard, 4→Good, 5→Easy), new DB columns (stability, difficulty, fsrs_state, reps, lapses), validateFsrsState guard for corrupted data. 97 FSRS tests across 8 files (adapter, mapping, regression, invariants, edge-cases, tsfsrs-contract, integration, fsrs-flow). 797 total tests.
+17. ✅ Dedicated Teaching Examples - Added `exampleCode` field to `SubconceptTeaching` type for dedicated instructional examples. Teaching cards now show curated examples instead of exercise answers, preventing "see example → do exact same thing" anti-pattern. All 54 subconcepts updated with dedicated `exampleCode` content. TeachingCard prefers exampleCode, session supports exampleCode-only teaching cards. Design doc: `docs/plans/2026-01-07-dedicated-teaching-examples.md`.
+18. ✅ Dynamic Exercises Phase 1 (Foundation) - Generator infrastructure for parameterized exercises preventing rote memorization. Deterministic seeding (`sha256(userId:exerciseSlug:date)`), Mustache template rendering (`{{param}}`), seeded random utilities (seedrandom library), slice-bounds generator with property-based tests (fast-check, 1000 seeds). 59 new generator tests, 870 total tests. Files: `src/lib/generators/` (types, seed, utils, render, index, definitions/slice-bounds). Design docs: `docs/plans/2026-01-06-dynamic-exercise-system-design.md`, `docs/plans/2026-01-07-dynamic-exercises-master-plan.md`.
+19. ✅ Dynamic Exercises Phase 2 (Grading Infrastructure) - Two-pass grading system (Pass 1: correctness, Pass 2: construct coaching). 8 construct detection patterns (slice, comprehension, f-string, ternary, enumerate, zip, lambda, generator-expr). `gradeAnswer()` orchestrator, `checkConstruct()`/`checkAnyConstruct()` functions, `CoachingFeedback` React component. Types: `GradingMethod`, `GradingResult`, `ConstructCheckResult`. Multi-AI review (Codex + Gemini) confirmed implementation solid with known limitations acceptable for coaching. 131 Phase 2 tests (types: 12, construct-check: 68, grading: 26, integration: 25), 998 total tests. Files: `src/lib/exercise/grading.ts`, `construct-check.ts`, `src/components/exercise/CoachingFeedback.tsx`. Design doc: `docs/plans/2026-01-07-dynamic-exercises-phase2-grading.md`.
+20. ✅ Dynamic Exercises Phase 3 (Pyodide Integration) - Lazy-loaded Python execution for predict exercises. PyodideContext provider with CDN loading, `usePyodide` hook, `gradeAnswerAsync()` with execution-based grading, graceful fallback to string matching on failure. Execution verification for predict exercises and opt-in write exercises. Files: `src/lib/context/PyodideContext.tsx`, `src/lib/exercise/execution.ts`. Design doc: `docs/plans/2026-01-07-dynamic-exercises-phase3-pyodide.md`.
+21. ✅ Dynamic Exercises Phase 4 (Metrics & Logging) - Audit logging for dynamic exercises via `logAttempt()`, dynamic metrics queries for retention/transfer analysis, construct adoption tracking. Files: `src/lib/exercise/log-attempt.ts`, `src/lib/stats/dynamic-metrics.ts`. Design doc: `docs/plans/2026-01-07-dynamic-exercises-phase4-metrics.md`.
+22. ✅ Dynamic Exercises Phase 5 (Content Migration) - 23 dynamic exercises across 4 concept files (strings, collections, numbers-booleans, control-flow). 5 generators: slice-bounds, list-values, variable-names, index-values, arithmetic-values. Each generator with property-based tests (fast-check). Dynamic validation script (`pnpm validate:dynamic`). 1088 total tests. Design doc: `docs/plans/2026-01-07-dynamic-exercises-phase5-content.md`.
 
 ## Phase 2.7: Exercise Variety (Complete)
 
@@ -421,11 +428,10 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 
 ---
 
-## Next Steps (Phase 3 Priorities)
+## Next Steps
 
 1. **Onboarding:** Integrate ExperienceLevelSelector into user flow
 2. **Gamification:** Achievements system, points, leaderboards
-3. **Mastery:** Implement milestone completion criteria with variety requirements
-4. **Analytics:** Track exercise usage and accuracy per type for validation
-5. **Languages:** JavaScript/TypeScript exercises
+3. **Languages:** JavaScript/TypeScript exercises
+4. **More Dynamic Exercises:** Continue migrating static exercises to use generators
 

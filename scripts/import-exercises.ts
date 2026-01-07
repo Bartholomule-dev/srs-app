@@ -175,6 +175,10 @@ async function importToDatabase(
         objective: exercise.objective,
         targets: exercise.targets ?? null,
         code: exercise.code ?? null,
+        // Dynamic exercise generator fields
+        generator: exercise.generator ?? null,
+        target_construct: exercise.target_construct ?? null,
+        verify_by_execution: exercise.verify_by_execution ?? false,
       };
 
       // Upsert on (language, slug) - check if exists first

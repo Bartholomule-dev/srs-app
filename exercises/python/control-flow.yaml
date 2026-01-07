@@ -828,3 +828,133 @@ exercises:
     hints:
       - Inner loop completes for each outer iteration
     tags: [control-flow, nested, predict]
+
+  # --- Dynamic Exercises ---
+  - slug: for-loop-list-dynamic
+    objective: Write a for loop to iterate over a list with specific values
+    title: Dynamic For Loop List
+    difficulty: 1
+    concept: control-flow
+    subconcept: for
+    level: intro
+    prereqs: [foundations]
+    type: write
+    pattern: iteration
+    generator: list-values
+    prompt: Write a for loop that prints each number in the list [{{a}}, {{b}}, {{c}}]
+    expected_answer: |
+      for num in [{{a}}, {{b}}, {{c}}]:
+          print(num)
+    accepted_solutions:
+      - |
+        for num in [{{a}}, {{b}}, {{c}}]:
+            print(num)
+      - |
+        for n in [{{a}}, {{b}}, {{c}}]:
+            print(n)
+      - |
+        for x in [{{a}}, {{b}}, {{c}}]:
+            print(x)
+      - |
+        for i in [{{a}}, {{b}}, {{c}}]:
+            print(i)
+    hints:
+      - Use for x in list syntax
+      - Print each item inside the loop
+    tags: [control-flow, for, dynamic]
+
+  - slug: if-greater-dynamic
+    objective: Write an if statement comparing two dynamic values
+    title: Dynamic If Greater
+    difficulty: 1
+    concept: control-flow
+    subconcept: conditionals
+    level: intro
+    prereqs: [foundations]
+    type: write
+    pattern: conditional
+    generator: arithmetic-values
+    prompt: Write an if statement that checks if {{x}} is greater than {{y}}
+    expected_answer: "if {{x}} > {{y}}:"
+    accepted_solutions:
+      - "if {{x}} > {{y}}:"
+    hints:
+      - Use the > comparison operator
+      - End with a colon
+    tags: [control-flow, conditionals, dynamic]
+
+  - slug: enumerate-start-dynamic
+    objective: Use enumerate with a custom starting index
+    title: Dynamic Enumerate Start
+    difficulty: 2
+    concept: control-flow
+    subconcept: iteration
+    level: practice
+    prereqs: [control-flow.for]
+    type: write
+    pattern: iteration
+    generator: index-values
+    target_construct:
+      type: enumerate
+      feedback: "Use enumerate(items, start={{idx}}) for numbered iteration"
+    prompt: Loop over items with enumerate starting at index {{idx}}
+    expected_answer: "for i, item in enumerate(items, {{idx}}):"
+    accepted_solutions:
+      - "for i, item in enumerate(items, {{idx}}):"
+      - "for i, item in enumerate(items, start={{idx}}):"
+      - "for idx, item in enumerate(items, {{idx}}):"
+      - "for idx, item in enumerate(items, start={{idx}}):"
+    hints:
+      - enumerate() accepts a start parameter
+      - Use tuple unpacking for index and value
+    tags: [control-flow, enumerate, dynamic]
+
+  - slug: for-sum-pair-dynamic
+    objective: Predict the sum accumulated in a for loop
+    title: Dynamic For Sum Predict
+    difficulty: 2
+    concept: control-flow
+    subconcept: for
+    level: practice
+    prereqs: [control-flow.for]
+    type: predict
+    pattern: accumulator
+    generator: arithmetic-values
+    prompt: "Given x = {{x}} and y = {{y}}, what does this code print?"
+    code: |
+      total = 0
+      for num in [{{x}}, {{y}}]:
+          total += num
+      print(total)
+    expected_answer: "{{sum}}"
+    hints:
+      - Track the running total through each iteration
+      - Add each number to total
+    tags: [control-flow, for, accumulator, dynamic]
+
+  - slug: while-countdown-dynamic
+    objective: Predict the output of a while loop countdown
+    title: Dynamic While Countdown Predict
+    difficulty: 2
+    concept: control-flow
+    subconcept: while
+    level: practice
+    prereqs: [control-flow.while]
+    type: write
+    pattern: iteration
+    generator: index-values
+    prompt: Write a while loop that decrements count from {{idx}} to 0
+    expected_answer: |
+      while count > 0:
+          count -= 1
+    accepted_solutions:
+      - |
+        while count > 0:
+            count -= 1
+      - |
+        while count > 0:
+            count = count - 1
+    hints:
+      - Use while with a condition
+      - Decrement count inside the loop
+    tags: [control-flow, while, dynamic]

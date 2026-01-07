@@ -478,3 +478,112 @@ exercises:
     hints:
       - == checks equality, is checks identity
     tags: [comparisons, identity]
+
+  # --- Dynamic Exercises for Numbers-Booleans ---
+
+  - slug: int-addition-dynamic
+    title: Dynamic Addition
+    type: predict
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: integers
+    level: intro
+    prereqs: [variables]
+    pattern: arithmetic
+    objective: Predict addition result with varying operands
+    prompt: "Given x = {{x}} and y = {{y}}, what does x + y print?"
+    expected_answer: "{{sum}}"
+    accepted_solutions: []
+    hints:
+      - Add the two values together
+    tags: [integers, arithmetic, dynamic]
+    generator: arithmetic-values
+    code: |
+      x = {{x}}
+      y = {{y}}
+      print(x + y)
+
+  - slug: int-multiply-dynamic
+    title: Dynamic Multiplication
+    type: predict
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: integers
+    level: practice
+    prereqs: [variables]
+    pattern: arithmetic
+    objective: Predict multiplication result with varying operands
+    prompt: "Given x = {{x}} and y = {{y}}, what does x * y print?"
+    expected_answer: "{{product}}"
+    accepted_solutions: []
+    hints:
+      - Multiply the two values together
+    tags: [integers, arithmetic, dynamic]
+    generator: arithmetic-values
+    code: |
+      x = {{x}}
+      y = {{y}}
+      print(x * y)
+
+  - slug: int-modulo-dynamic
+    title: Dynamic Modulo
+    type: write
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: integers
+    level: practice
+    prereqs: [variables]
+    pattern: arithmetic
+    objective: Write modulo expression with varying operands
+    prompt: "Write an expression to get the remainder when {{x}} is divided by {{y}}"
+    expected_answer: "{{x}} % {{y}}"
+    accepted_solutions:
+      - "{{x}} % {{y}}"
+      - "{{x}}%{{y}}"
+    hints:
+      - Use the modulo operator %
+      - modulo returns the remainder after division
+    tags: [integers, modulo, dynamic]
+    generator: arithmetic-values
+
+  - slug: int-subtract-write-dynamic
+    title: Dynamic Subtraction Expression
+    type: write
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: integers
+    level: intro
+    prereqs: [variables]
+    pattern: arithmetic
+    objective: Write a subtraction expression with varying operands
+    prompt: "Write an expression to subtract {{y}} from {{x}}"
+    expected_answer: "{{x}} - {{y}}"
+    accepted_solutions:
+      - "{{x}} - {{y}}"
+      - "{{x}}-{{y}}"
+    hints:
+      - Use the subtraction operator -
+      - First operand minus second operand
+    tags: [integers, arithmetic, dynamic]
+    generator: arithmetic-values
+
+  - slug: variable-assign-dynamic
+    title: Dynamic Variable Assignment
+    type: write
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: integers
+    level: intro
+    prereqs: [variables]
+    pattern: assignment
+    objective: Assign a value to a variable with varying names
+    prompt: "Assign the value 42 to a variable named {{name}}"
+    expected_answer: "{{name}} = 42"
+    accepted_solutions:
+      - "{{name}} = 42"
+      - "{{name}}=42"
+    hints:
+      - Use the assignment operator =
+      - Variable name goes on the left
+    tags: [variables, assignment, dynamic]
+    generator: variable-names
