@@ -1191,6 +1191,274 @@ test.describe('Dynamic Exercise E2E Tests', () => {
     });
   });
 
+  test.describe('Hydration and Focus Management', () => {
+    const adminClient = getAdminClient();
+
+    test('no hydration mismatches on dynamic exercise render', async ({ page }) => {
+      test.setTimeout(60000);
+
+      // Collect console messages to check for hydration errors
+      const consoleMessages: { type: string; text: string }[] = [];
+      page.on('console', (msg) => {
+        consoleMessages.push({
+          type: msg.type(),
+          text: msg.text(),
+        });
+      });
+
+      // Create a dynamic exercise with generator (most likely to cause hydration issues)
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-hydration-test-${Date.now()}`,
+        prompt: 'Slice from {{start}} to {{end}}',
+        expectedAnswer: 's[{{start}}:{{end}}]',
+        acceptedSolutions: ['s[{{start}}:{{end}}]'],
+        generator: 'slice-bounds',
+        targetConstruct: null,
+      });
+
+      try {
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise to fully load
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+
+        // Give time for any delayed hydration errors to appear
+        await page.waitForTimeout(2000);
+
+        // Check for hydration-related error messages
+        // React hydration errors contain specific text patterns
+        const hydrationErrors = consoleMessages.filter((msg) => {
+          const text = msg.text.toLowerCase();
+          return (
+            msg.type === 'error' &&
+            (text.includes('hydration') ||
+              text.includes('server rendered') ||
+              text.includes("didn't match") ||
+              text.includes('text content does not match') ||
+              text.includes('expected server html'))
+          );
+        });
+
+        // No hydration errors should be present
+        if (hydrationErrors.length > 0) {
+          console.error('Hydration errors found:', hydrationErrors);
+        }
+        expect(hydrationErrors).toHaveLength(0);
+
+        // Verify the exercise rendered correctly (no template placeholders)
+        const promptLocator = page.locator('[data-testid="exercise-prompt"]');
+        await expect(promptLocator).toBeVisible({ timeout: 5000 });
+        const promptText = await promptLocator.textContent();
+        expect(promptText).not.toContain('{{');
+        expect(promptText).not.toContain('}}');
+
+        console.log(
+          `Hydration test passed - no hydration errors found (${consoleMessages.length} console messages checked)`
+        );
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+
+    test('write exercise input receives focus on load', async ({ page }) => {
+      test.setTimeout(60000);
+
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-focus-write-${Date.now()}`,
+        prompt: 'Print hello world',
+        expectedAnswer: 'print("hello")',
+        acceptedSolutions: ['print("hello")', 'print(\'hello\')'],
+        exerciseType: 'write',
+        generator: null,
+        targetConstruct: null,
+      });
+
+      try {
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise to load
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+
+        // Find the CodeInput textarea
+        const codeInput = page.locator('[data-testid="code-input"]');
+        await expect(codeInput).toBeVisible({ timeout: 5000 });
+        const textarea = codeInput.locator('textarea');
+
+        // Verify the textarea has focus - typing should work immediately without clicking
+        // Type directly without clicking the input first
+        await page.keyboard.type('x = 1');
+
+        // Verify the typed text appeared in the textarea
+        const textareaValue = await textarea.inputValue();
+        expect(textareaValue).toContain('x = 1');
+
+        console.log('Write exercise focus test passed - input received focus on load');
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+
+    test('fill-in exercise input receives focus on load', async ({ page }) => {
+      test.setTimeout(60000);
+
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-focus-fillin-${Date.now()}`,
+        prompt: 'Complete the list comprehension',
+        expectedAnswer: 'x * 2',
+        acceptedSolutions: ['x * 2', 'x*2'],
+        exerciseType: 'fill-in',
+        template: '[___ for x in range(5)]',
+        generator: null,
+        targetConstruct: null,
+      });
+
+      try {
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise to load
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+
+        // Find the FillInExercise component
+        const fillInExercise = page.locator('[data-testid="fill-in-exercise"]');
+        await expect(fillInExercise).toBeVisible({ timeout: 5000 });
+
+        // Verify input has focus - typing should work immediately
+        await page.keyboard.type('test');
+
+        // Find the input and check its value
+        const input = fillInExercise.locator('input');
+        const inputValue = await input.inputValue();
+        expect(inputValue).toBe('test');
+
+        console.log('Fill-in exercise focus test passed - input received focus on load');
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+
+    test('predict exercise input receives focus on load', async ({ page }) => {
+      test.setTimeout(120000); // Longer timeout for Pyodide
+
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-focus-predict-${Date.now()}`,
+        prompt: 'What will this code print?',
+        expectedAnswer: '42',
+        acceptedSolutions: ['42'],
+        exerciseType: 'predict',
+        code: 'print(6 * 7)',
+        generator: null,
+        targetConstruct: null,
+      });
+
+      try {
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise and Pyodide to load
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+        await expect(submitBtn).toBeEnabled({ timeout: 60000 });
+
+        // Find the PredictOutputExercise component
+        const predictExercise = page.locator('[data-testid="predict-output-exercise"]');
+        await expect(predictExercise).toBeVisible({ timeout: 5000 });
+
+        // Verify input has focus - typing should work immediately
+        await page.keyboard.type('42');
+
+        // Find the input and check its value
+        const input = predictExercise.locator('input');
+        const inputValue = await input.inputValue();
+        expect(inputValue).toBe('42');
+
+        console.log('Predict exercise focus test passed - input received focus on load');
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+
+    test('focus is properly managed across exercise transitions', async ({ page }) => {
+      test.setTimeout(120000);
+
+      // Create two exercises to test focus management during transitions
+      const slug1 = await insertDynamicExercise(adminClient, {
+        slug: `e2e-focus-transition-1-${Date.now()}`,
+        prompt: 'First exercise',
+        expectedAnswer: 'x',
+        acceptedSolutions: ['x'],
+        exerciseType: 'write',
+        generator: null,
+        targetConstruct: null,
+      });
+
+      const slug2 = await insertDynamicExercise(adminClient, {
+        slug: `e2e-focus-transition-2-${Date.now()}`,
+        prompt: 'Second exercise',
+        expectedAnswer: 'y',
+        acceptedSolutions: ['y'],
+        exerciseType: 'write',
+        generator: null,
+        targetConstruct: null,
+      });
+
+      try {
+        await authenticateUser(page, testUser);
+
+        // Visit first exercise
+        await page.goto(`/practice/test?slug=${slug1}`);
+
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+
+        // Verify focus on first exercise
+        const codeInput1 = page.locator('[data-testid="code-input"]');
+        await expect(codeInput1).toBeVisible({ timeout: 5000 });
+
+        // Type without clicking
+        await page.keyboard.type('x');
+
+        const textarea1 = codeInput1.locator('textarea');
+        const value1 = await textarea1.inputValue();
+        expect(value1).toBe('x');
+
+        // Submit the answer
+        await submitBtn.click();
+
+        // Wait for feedback
+        const continueBtn = page.getByRole('button', { name: /continue/i });
+        await expect(continueBtn).toBeVisible({ timeout: 15000 });
+
+        // Navigate to second exercise
+        await page.goto(`/practice/test?slug=${slug2}`);
+
+        // Wait for second exercise to load
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+
+        // Verify focus is set on the new exercise input
+        const codeInput2 = page.locator('[data-testid="code-input"]');
+        await expect(codeInput2).toBeVisible({ timeout: 5000 });
+
+        // Clear any existing content and type - focus should be on input
+        await page.keyboard.type('y');
+
+        const textarea2 = codeInput2.locator('textarea');
+        const value2 = await textarea2.inputValue();
+        expect(value2).toBe('y');
+
+        console.log('Focus transition test passed - focus properly managed across exercises');
+      } finally {
+        await deleteExercise(adminClient, slug1);
+        await deleteExercise(adminClient, slug2);
+      }
+    });
+  });
+
   test.describe('Pyodide Failure Handling', () => {
     const adminClient = getAdminClient();
 
