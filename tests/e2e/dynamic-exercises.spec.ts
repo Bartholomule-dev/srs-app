@@ -42,14 +42,25 @@ async function authenticateUser(page: Page, user: TestUser): Promise<void> {
  * Helper to authenticate a test user into a specific browser context.
  */
 async function authenticateContext(context: BrowserContext, user: TestUser): Promise<void> {
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  // Create fresh client to avoid connection pooling issues
+  const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  });
+
   const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
     email: user.email,
     password: user.password,
   });
 
   if (signInError) {
-    throw new Error(`Failed to sign in: ${signInError.message}`);
+    throw new Error(`Failed to sign in for ${user.email}: ${signInError.message}`);
+  }
+
+  if (!signInData.session) {
+    throw new Error(`No session returned for ${user.email}`);
   }
 
   const session = signInData.session;
@@ -67,6 +78,9 @@ async function authenticateContext(context: BrowserContext, user: TestUser): Pro
       sameSite: 'Lax',
     },
   ]);
+
+  // Small delay to ensure cookies are properly set before navigation
+  await new Promise((resolve) => setTimeout(resolve, 200));
 }
 
 /**
