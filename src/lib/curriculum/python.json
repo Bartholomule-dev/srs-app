@@ -14,7 +14,7 @@
       "name": "Strings",
       "description": "String manipulation, formatting, and f-strings",
       "prereqs": ["foundations"],
-      "subconcepts": ["basics", "indexing", "slicing", "methods", "fstrings"]
+      "subconcepts": ["basics", "indexing", "slicing", "string-methods", "fstrings"]
     },
     {
       "slug": "numbers-booleans",
@@ -137,7 +137,7 @@
         "exampleSlug": "string-slice-start"
       }
     },
-    "methods": {
+    "string-methods": {
       "name": "String Methods",
       "concept": "strings",
       "prereqs": ["basics"],

@@ -49,7 +49,7 @@ exercises:
     concept: functions
     subconcept: arguments
     level: practice
-    prereqs: [foundations, functions/basics]
+    prereqs: [foundations, fn-basics]
     type: write
     pattern: definition
 
@@ -65,7 +65,7 @@ exercises:
     concept: functions
     subconcept: arguments
     level: practice
-    prereqs: [foundations, functions/basics]
+    prereqs: [foundations, fn-basics]
     type: write
     pattern: definition
 
@@ -81,7 +81,7 @@ exercises:
     concept: functions
     subconcept: arguments
     level: edge
-    prereqs: [foundations, functions/basics, functions/arguments]
+    prereqs: [foundations, fn-basics, arguments]
     type: write
     pattern: definition
 

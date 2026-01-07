@@ -389,7 +389,7 @@ exercises:
     concept: modules-files
     subconcept: main-guard
     level: edge
-    prereqs: [modules-files.main-guard, functions.definition]
+    prereqs: [main-guard, fn-basics]
     type: write
     pattern: function
     prompt: Define a main() function that prints "Running" and call it from a main guard

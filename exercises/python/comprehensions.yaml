@@ -15,7 +15,7 @@ exercises:
     concept: comprehensions
     subconcept: list-comp
     level: intro
-    prereqs: [for, range, lists]
+    prereqs: [for, iteration, lists]
     type: write
     pattern: mapping
 
@@ -31,7 +31,7 @@ exercises:
     concept: comprehensions
     subconcept: list-comp
     level: practice
-    prereqs: [for, range, lists, if]
+    prereqs: [for, iteration, lists, conditionals]
     type: write
     pattern: filtering
 
@@ -47,7 +47,7 @@ exercises:
     concept: comprehensions
     subconcept: dict-comp
     level: practice
-    prereqs: [for, range, dicts, list-comp]
+    prereqs: [for, iteration, dicts, list-comp]
     type: write
     pattern: mapping
 
@@ -80,7 +80,7 @@ exercises:
     concept: comprehensions
     subconcept: list-comp
     level: edge
-    prereqs: [for, lists, list-comp, nested-loops]
+    prereqs: [for, lists, list-comp]
     type: write
     pattern: mapping
 

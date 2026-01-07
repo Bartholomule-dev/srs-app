@@ -47,7 +47,7 @@ exercises:
       - Use the upper() method
     tags: [strings, methods, beginner]
     concept: strings
-    subconcept: methods
+    subconcept: string-methods
     level: intro
     prereqs: [strings.basics]
     type: write
@@ -85,7 +85,7 @@ exercises:
       - Pass the delimiter as argument
     tags: [strings, methods, intermediate]
     concept: strings
-    subconcept: methods
+    subconcept: string-methods
     level: practice
     prereqs: [strings.basics]
     type: write
@@ -249,7 +249,7 @@ exercises:
     title: String Lowercase
     difficulty: 1
     concept: strings
-    subconcept: methods
+    subconcept: string-methods
     level: intro
     prereqs: [strings.basics]
     type: write
@@ -265,7 +265,7 @@ exercises:
     title: String Strip
     difficulty: 1
     concept: strings
-    subconcept: methods
+    subconcept: string-methods
     level: intro
     prereqs: [strings.basics]
     type: write
@@ -281,7 +281,7 @@ exercises:
     title: String Replace
     difficulty: 2
     concept: strings
-    subconcept: methods
+    subconcept: string-methods
     level: practice
     prereqs: [strings.methods]
     type: write
@@ -301,7 +301,7 @@ exercises:
     title: String Join
     difficulty: 2
     concept: strings
-    subconcept: methods
+    subconcept: string-methods
     level: practice
     prereqs: [strings.methods]
     type: write
@@ -321,7 +321,7 @@ exercises:
     title: String Find
     difficulty: 2
     concept: strings
-    subconcept: methods
+    subconcept: string-methods
     level: practice
     prereqs: [strings.methods]
     type: write
@@ -341,7 +341,7 @@ exercises:
     title: String Starts With
     difficulty: 2
     concept: strings
-    subconcept: methods
+    subconcept: string-methods
     level: practice
     prereqs: [strings.methods]
     type: write
@@ -537,7 +537,7 @@ exercises:
     type: fill-in
     difficulty: 1
     concept: strings
-    subconcept: methods
+    subconcept: string-methods
     level: intro
     prereqs: [basics]
     pattern: invocation
@@ -556,7 +556,7 @@ exercises:
     type: fill-in
     difficulty: 1
     concept: strings
-    subconcept: methods
+    subconcept: string-methods
     level: practice
     prereqs: [basics]
     pattern: invocation
@@ -736,7 +736,7 @@ exercises:
     type: predict
     difficulty: 1
     concept: strings
-    subconcept: methods
+    subconcept: string-methods
     level: intro
     prereqs: [basics]
     pattern: invocation
@@ -756,7 +756,7 @@ exercises:
     type: predict
     difficulty: 2
     concept: strings
-    subconcept: methods
+    subconcept: string-methods
     level: practice
     prereqs: [basics]
     pattern: invocation

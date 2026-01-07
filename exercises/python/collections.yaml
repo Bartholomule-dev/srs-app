@@ -697,7 +697,7 @@ exercises:
     concept: collections
     subconcept: mutability
     level: practice
-    prereqs: [collections.lists, collections.mutability, modules-files.import]
+    prereqs: [lists, mutability, imports]
     type: write
     pattern: construction
     prompt: Create a deep copy of nested list items using copy module
