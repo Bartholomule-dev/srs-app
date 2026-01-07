@@ -19,7 +19,7 @@ test.describe('Full Practice Session Flow', () => {
   });
 
   test('complete multiple questions without session resetting', async ({ page }) => {
-    test.setTimeout(60000); // 60 second timeout
+    test.setTimeout(240000); // 4 minute timeout for full session (teaching cards + exercises)
     // Sign in programmatically
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
     const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
@@ -51,12 +51,19 @@ test.describe('Full Practice Session Flow', () => {
     // Navigate to practice page directly
     await page.goto('/practice');
 
-    // Wait for practice page to load - either exercise or empty state
+    // Wait for practice page to load - either exercise, teaching card, or empty state
     const submitButton = page.getByRole('button', { name: /submit/i });
+    const gotItButton = page.getByRole('button', { name: /got it/i });
     const allCaughtUp = page.getByText(/all caught up/i);
 
-    // Wait for either submit button or empty state to appear
-    await expect(submitButton.or(allCaughtUp)).toBeVisible({ timeout: 15000 });
+    // Wait for either submit button, teaching card, or empty state to appear
+    await expect(submitButton.or(gotItButton).or(allCaughtUp)).toBeVisible({ timeout: 15000 });
+
+    // Handle teaching cards - click through them to get to exercises
+    while (await gotItButton.isVisible({ timeout: 500 }).catch(() => false)) {
+      await gotItButton.click();
+      await page.waitForTimeout(300);
+    }
 
     // Check if we have exercises or empty state
     const hasExercises = await submitButton.isVisible().catch(() => false);
@@ -69,62 +76,85 @@ test.describe('Full Practice Session Flow', () => {
 
     // Track completed questions
     let questionsCompleted = 0;
-    const maxQuestions = 10; // Safety limit
-    let previousProgressText = '';
+    const maxQuestions = 5; // Safety limit (typical session has 5 exercises)
+    let teachingCardsClicked = 0;
+    const maxTeachingCards = 10; // Safety limit for teaching cards
 
     while (questionsCompleted < maxQuestions) {
-      // Check if session is complete
+      // Check if session is complete (multiple indicators)
       const sessionComplete = page.getByText(/great work|session complete|all caught up/i);
-      if (await sessionComplete.isVisible({ timeout: 1000 }).catch(() => false)) {
+      const backToDashboard = page.getByRole('button', { name: /back to dashboard/i });
+      const sessionSummary = page.locator('[class*="SessionSummary"]');
+
+      const isComplete = await Promise.race([
+        sessionComplete.isVisible({ timeout: 500 }).catch(() => false),
+        backToDashboard.isVisible({ timeout: 500 }).catch(() => false),
+        sessionSummary.isVisible({ timeout: 500 }).catch(() => false),
+      ]);
+
+      if (isComplete) {
         console.log(`Session complete after ${questionsCompleted} questions`);
         break;
       }
 
-      // Get current progress (e.g., "1 / 5")
-      const progressIndicator = page.locator('[class*="SessionProgress"]').first();
-      const currentProgressText = await progressIndicator.textContent().catch(() => '');
+      // Handle teaching cards - click "Got it" to advance (with limit)
+      const gotItBtn = page.getByRole('button', { name: /got it/i });
+      if (await gotItBtn.isVisible({ timeout: 300 }).catch(() => false)) {
+        if (teachingCardsClicked >= maxTeachingCards) {
+          console.log('Max teaching cards reached - breaking');
+          break;
+        }
+        await gotItBtn.click();
+        teachingCardsClicked++;
+        console.log(`Clicked teaching card ${teachingCardsClicked}`);
+        await page.waitForTimeout(200);
+        continue;
+      }
 
       // Answer the question
       const answerInput = page.getByRole('textbox').first();
-      if (await answerInput.isVisible({ timeout: 2000 }).catch(() => false)) {
-        // Type a simple answer (might be wrong, but we want to test the flow)
+      if (await answerInput.isVisible({ timeout: 1000 }).catch(() => false)) {
         await answerInput.fill('test_answer');
+        console.log('Filled answer input');
+      } else {
+        console.log('No answer input found');
       }
 
       // Submit answer
       const currentSubmitBtn = page.getByRole('button', { name: /submit/i });
-      if (await currentSubmitBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
+      if (await currentSubmitBtn.isVisible({ timeout: 1000 }).catch(() => false)) {
         await currentSubmitBtn.click();
+        console.log('Clicked submit');
       } else {
-        // No submit button - might be complete
+        console.log('No submit button - session might be complete');
         break;
       }
 
       // Wait for feedback and continue button
       const continueButton = page.getByRole('button', { name: /continue/i });
-      await expect(continueButton).toBeVisible({ timeout: 5000 });
+      try {
+        await expect(continueButton).toBeVisible({ timeout: 5000 });
+      } catch {
+        console.log('Continue button not visible - checking if session complete');
+        // Check if we completed the session
+        if (await sessionComplete.isVisible({ timeout: 1000 }).catch(() => false)) {
+          console.log('Session completed after submit');
+          break;
+        }
+        throw new Error('Neither Continue button nor session complete visible');
+      }
 
       questionsCompleted++;
       console.log(`Completed question ${questionsCompleted}`);
 
       // Click continue to go to next question
       await continueButton.click();
-
-      // Brief pause to let state update
-      await page.waitForTimeout(300);
-
-      // Verify progress advanced (not reset to beginning)
-      const newProgressText = await progressIndicator.textContent().catch(() => '') ?? '';
-      if (questionsCompleted > 1 && newProgressText === previousProgressText) {
-        // Progress didn't change - might be at the end or there's an issue
-        console.log('Progress unchanged - checking for completion');
-      }
-      previousProgressText = newProgressText;
+      await page.waitForTimeout(200);
     }
 
     // Verify session completed successfully (should see summary or completion message)
     // Allow some time for the completion state to render
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
 
     const completionIndicators = [
       page.getByText(/session complete/i),
@@ -181,10 +211,17 @@ test.describe('Full Practice Session Flow', () => {
 
     await page.goto('/practice');
 
-    // Wait for either submit button or empty state
+    // Wait for either submit button, teaching card, or empty state
     const submitButton = page.getByRole('button', { name: /submit/i });
+    const gotItButton = page.getByRole('button', { name: /got it/i });
     const allCaughtUp = page.getByText(/all caught up/i);
-    await expect(submitButton.or(allCaughtUp)).toBeVisible({ timeout: 15000 });
+    await expect(submitButton.or(gotItButton).or(allCaughtUp)).toBeVisible({ timeout: 15000 });
+
+    // Handle teaching cards - click through them to get to exercises
+    while (await gotItButton.isVisible({ timeout: 500 }).catch(() => false)) {
+      await gotItButton.click();
+      await page.waitForTimeout(300);
+    }
 
     const hasExercises = await submitButton.isVisible().catch(() => false);
 
@@ -204,19 +241,22 @@ test.describe('Full Practice Session Flow', () => {
 
     // After clicking continue, verify we're either:
     // 1. On the next question (different content)
-    // 2. At session complete (if only 1 question)
+    // 2. On a teaching card
+    // 3. At session complete (if only 1 question)
     await page.waitForTimeout(1000);
 
     const nextSubmit = page.getByRole('button', { name: /submit/i });
+    const nextGotIt = page.getByRole('button', { name: /got it/i });
     const sessionComplete = page.getByText('Session Complete!');
 
     // Wait for either to appear
-    await expect(nextSubmit.or(sessionComplete)).toBeVisible({ timeout: 5000 });
+    await expect(nextSubmit.or(nextGotIt).or(sessionComplete)).toBeVisible({ timeout: 5000 });
 
     const hasNextQuestion = await nextSubmit.isVisible().catch(() => false);
+    const hasTeachingCard = await nextGotIt.isVisible().catch(() => false);
     const isComplete = await sessionComplete.isVisible().catch(() => false);
 
-    console.log(`After first question: hasNext=${hasNextQuestion}, isComplete=${isComplete}`);
-    expect(hasNextQuestion || isComplete).toBe(true);
+    console.log(`After first question: hasNext=${hasNextQuestion}, hasTeaching=${hasTeachingCard}, isComplete=${isComplete}`);
+    expect(hasNextQuestion || hasTeachingCard || isComplete).toBe(true);
   });
 });

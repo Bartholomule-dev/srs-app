@@ -3,7 +3,6 @@
  */
 
 import type { DbProfile, DbExercise, DbUserProgress, Profile, Exercise, UserProgress, ExperienceLevel } from '../types/app.types';
-import type { CardState } from '../srs/types';
 
 /**
  * Map database profile to app profile
@@ -125,15 +124,3 @@ export function toDbUserProgressUpdate(app: Partial<Omit<UserProgress, 'id' | 'u
   return db;
 }
 
-/**
- * Convert CardState to database update format
- */
-export function cardStateToProgressUpdate(state: CardState) {
-  return {
-    ease_factor: state.easeFactor,
-    interval: state.interval,
-    repetitions: state.repetitions,
-    next_review: state.nextReview.toISOString(),
-    last_reviewed: state.lastReviewed ? state.lastReviewed.toISOString() : null,
-  };
-}

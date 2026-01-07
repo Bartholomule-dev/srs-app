@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { selectExerciseByType, getUnderrepresentedType } from '@/lib/srs/concept-algorithm';
+import { selectExerciseByType, getUnderrepresentedType } from '@/lib/srs/exercise-selection';
 import type { Exercise } from '@/lib/types/app.types';
 import type { ExerciseType } from '@/lib/curriculum/types';
 

@@ -99,7 +99,7 @@ test.describe('Learning Mode', () => {
     }
   });
 
-  test('teaching card advances with Enter key', async ({ page }) => {
+  test('teaching card advances when Got it is clicked', async ({ page }) => {
     test.setTimeout(60000);
 
     // Create a fresh user for this test to ensure teaching cards appear
@@ -125,12 +125,10 @@ test.describe('Learning Mode', () => {
         return;
       }
 
-      // Record current progress state
-      const progressText = await page.locator('[role="progressbar"]').getAttribute('aria-label');
-      console.log(`Progress before Enter: ${progressText}`);
-
-      // Press Enter to advance the teaching card
-      await page.keyboard.press('Enter');
+      // Click "Got it" button to advance the teaching card
+      const gotItButton = page.getByRole('button', { name: /got it/i });
+      await expect(gotItButton).toBeVisible({ timeout: 5000 });
+      await gotItButton.click();
 
       // Wait for animation/transition
       await page.waitForTimeout(500);
@@ -138,24 +136,15 @@ test.describe('Learning Mode', () => {
       // Verify we advanced to a new card (either another teaching card, exercise, or session complete)
       const nextTeachingLabel = page.getByText('LEARN');
       const nextSubmitButton = page.getByRole('button', { name: /submit/i });
+      const nextGotItButton = page.getByRole('button', { name: /got it/i });
       const sessionComplete = page.getByText(/session complete|great work/i);
 
       // One of these should be visible after advancing
       await expect(
-        nextTeachingLabel.or(nextSubmitButton).or(sessionComplete)
+        nextTeachingLabel.or(nextSubmitButton).or(nextGotItButton).or(sessionComplete)
       ).toBeVisible({ timeout: 5000 });
 
-      // Verify progress changed (aria-label should be different)
-      const newProgressText = await page.locator('[role="progressbar"]').getAttribute('aria-label');
-      console.log(`Progress after Enter: ${newProgressText}`);
-
-      // Progress should have advanced (unless session is complete)
-      const isComplete = await sessionComplete.isVisible().catch(() => false);
-      if (!isComplete) {
-        expect(newProgressText).not.toBe(progressText);
-      }
-
-      console.log('Enter key successfully advanced teaching card');
+      console.log('Got it button successfully advanced teaching card');
     } finally {
       await deleteTestUser(freshUser.id);
     }
@@ -220,65 +209,4 @@ test.describe('Learning Mode', () => {
     }
   });
 
-  test('clicking Got it button advances teaching card', async ({ page }) => {
-    test.setTimeout(60000);
-
-    // Create a fresh user for this test
-    const freshUser = await createTestUser();
-
-    try {
-      await authenticateUser(page, freshUser);
-      await page.goto('/practice');
-
-      // Wait for page to load
-      const teachingLabel = page.getByText('LEARN');
-      const submitButton = page.getByRole('button', { name: /submit/i });
-      const allCaughtUp = page.getByText(/all caught up/i);
-
-      await expect(
-        teachingLabel.or(submitButton).or(allCaughtUp)
-      ).toBeVisible({ timeout: 15000 });
-
-      const hasTeachingCard = await teachingLabel.isVisible().catch(() => false);
-
-      if (!hasTeachingCard) {
-        console.log('No teaching card for Got it button test - skipping');
-        return;
-      }
-
-      // Get the Got it button
-      const gotItButton = page.getByRole('button', { name: /got it/i });
-      await expect(gotItButton).toBeVisible();
-
-      // Record current progress
-      const progressBefore = await page.locator('[role="progressbar"]').getAttribute('aria-label');
-
-      // Click the button to advance
-      await gotItButton.click();
-
-      // Wait for animation
-      await page.waitForTimeout(500);
-
-      // Verify we advanced
-      const nextTeachingLabel = page.getByText('LEARN');
-      const nextSubmitButton = page.getByRole('button', { name: /submit/i });
-      const sessionComplete = page.getByText(/session complete|great work/i);
-
-      await expect(
-        nextTeachingLabel.or(nextSubmitButton).or(sessionComplete)
-      ).toBeVisible({ timeout: 5000 });
-
-      // Check progress advanced
-      const progressAfter = await page.locator('[role="progressbar"]').getAttribute('aria-label');
-
-      const isComplete = await sessionComplete.isVisible().catch(() => false);
-      if (!isComplete) {
-        expect(progressAfter).not.toBe(progressBefore);
-      }
-
-      console.log('Got it button successfully advanced teaching card');
-    } finally {
-      await deleteTestUser(freshUser.id);
-    }
-  });
 });

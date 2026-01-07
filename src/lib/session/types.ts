@@ -1,19 +1,5 @@
 import type { Exercise } from '@/lib/types';
-import type { CardState } from '@/lib/srs';
 import type { SubconceptTeaching } from '@/lib/curriculum/types';
-
-/**
- * A card in the practice session queue, combining exercise content with SRS state.
- * This is the legacy type - prefer SessionCardType for new code.
- */
-export interface SessionCard {
-  /** Full exercise data (prompt, answer, hints, etc.) */
-  exercise: Exercise;
-  /** SRS state (easeFactor, interval, repetitions, etc.) */
-  state: CardState;
-  /** True if user has never seen this exercise */
-  isNew: boolean;
-}
 
 /**
  * Teaching card - shows explanation and example for first encounter

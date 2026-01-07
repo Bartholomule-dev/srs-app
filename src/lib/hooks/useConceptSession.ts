@@ -9,7 +9,7 @@ import { supabase } from '@/lib/supabase/client';
 import { mapExercise } from '@/lib/supabase/mappers';
 import { handleSupabaseError, AppError } from '@/lib/errors';
 import { updateProfileStats } from '@/lib/stats';
-import { selectExerciseByType } from '@/lib/srs/concept-algorithm';
+import { selectExerciseByType } from '@/lib/srs/exercise-selection';
 import type { Exercise, Quality } from '@/lib/types';
 import { EXPERIENCE_LEVEL_RATIOS } from '@/lib/types/app.types';
 import type { ExperienceLevel } from '@/lib/types/app.types';
@@ -18,7 +18,6 @@ import type {
   SessionCardType,
   ReviewSessionCard,
 } from '@/lib/session/types';
-import { QUALITY_PASSING_THRESHOLD } from '@/lib/srs/types';
 import type { SubconceptProgress, ExercisePattern, ExerciseType } from '@/lib/curriculum/types';
 import {
   buildTeachingPair,
@@ -26,9 +25,13 @@ import {
   type TeachingPair,
 } from '@/lib/session';
 import { getSubconceptDefinition, getAllSubconcepts } from '@/lib/curriculum';
+import { createEmptyFSRSCard } from '@/lib/srs/fsrs/adapter';
 
 /** Limit on teaching pairs (new subconcepts with teaching content) per session */
 const TEACHING_PAIRS_LIMIT = 5;
+
+/** Quality threshold for passing (3+ = pass) */
+const QUALITY_PASSING_THRESHOLD = 3;
 
 /** Card type strings for progress bar display */
 export type CardTypeLabel = 'teaching' | 'practice' | 'review';
@@ -270,18 +273,23 @@ export function useConceptSession(): UseConceptSessionReturn {
           const pair = buildTeachingPair(slug, definition, exercises);
           if (pair) {
             teachingPairs.push(pair);
-            // Create initial progress for the practice card
+            // Create initial progress for the practice card using FSRS
             const practiceExercise = pair.practiceCard.exercise;
+            const initialCard = createEmptyFSRSCard(new Date());
             const newProgress: SubconceptProgress = {
               id: `new-${slug}`,
               userId: userId,
               subconceptSlug: slug,
               conceptSlug: practiceExercise.concept,
-              phase: 'learning',
-              easeFactor: 2.5,
-              interval: 0,
-              nextReview: new Date(),
-              lastReviewed: null,
+              stability: initialCard.stability,
+              difficulty: initialCard.difficulty,
+              fsrsState: 0 as 0 | 1 | 2 | 3, // New state
+              reps: initialCard.reps,
+              lapses: initialCard.lapses,
+              elapsedDays: initialCard.elapsedDays,
+              scheduledDays: initialCard.scheduledDays,
+              nextReview: initialCard.due,
+              lastReviewed: initialCard.lastReview,
               createdAt: new Date(),
               updatedAt: new Date(),
             };

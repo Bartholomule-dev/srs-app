@@ -1,5 +1,4 @@
 export type {
-  SessionCard,
   SessionStats,
   TeachingSessionCard,
   PracticeSessionCard,
@@ -14,7 +13,6 @@ export {
   getCardKey,
   getCardExercise,
 } from './types';
-export { interleaveCards } from './interleave';
 export { interleaveWithTeaching } from './interleave-teaching';
 export { buildTeachingPair, findExampleExercise } from './teaching-cards';
 export type { TeachingPair } from './teaching-cards';

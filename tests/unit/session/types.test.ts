@@ -1,7 +1,6 @@
 // tests/unit/session/types.test.ts
 import { describe, it, expect } from 'vitest';
 import type {
-  SessionCard,
   SessionStats,
   TeachingSessionCard,
   PracticeSessionCard,
@@ -11,33 +10,6 @@ import type {
 import { createMockExercise } from '@tests/fixtures/exercise';
 
 describe('session types', () => {
-  describe('SessionCard', () => {
-    it('has required properties', () => {
-      const card: SessionCard = {
-        exercise: createMockExercise({
-          id: 'ex-1',
-          slug: 'print-statement',
-          title: 'Print Statement',
-          prompt: 'Write a print statement',
-          expectedAnswer: 'print("hello")',
-          hints: ['Use print()'],
-          tags: ['print'],
-        }),
-        state: {
-          easeFactor: 2.5,
-          interval: 1,
-          repetitions: 0,
-          nextReview: new Date(),
-          lastReviewed: null,
-        },
-        isNew: true,
-      };
-      expect(card.exercise.id).toBe('ex-1');
-      expect(card.state.easeFactor).toBe(2.5);
-      expect(card.isNew).toBe(true);
-    });
-  });
-
   describe('SessionStats', () => {
     it('has required properties', () => {
       const stats: SessionStats = {

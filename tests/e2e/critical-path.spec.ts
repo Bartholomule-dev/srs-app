@@ -80,12 +80,20 @@ test.describe('Critical Path: Login → Dashboard → Practice', () => {
       await practiceButton.click();
       await expect(page).toHaveURL(/practice/);
 
-      // Verify practice page loads - look for Submit button or no cards state
+      // Verify practice page loads - look for Submit button, "Got it" (teaching card), or no cards state
       const submitButton = page.getByRole('button', { name: /submit/i });
+      const gotItButton = page.getByRole('button', { name: /got it/i });
       const noCardsOnPractice = page.getByText(/no cards to practice/i);
 
-      // Wait for either submit button or no cards message
-      await expect(submitButton.or(noCardsOnPractice)).toBeVisible({ timeout: 10000 });
+      // Wait for either submit button, teaching card, or no cards message
+      await expect(submitButton.or(gotItButton).or(noCardsOnPractice)).toBeVisible({ timeout: 10000 });
+
+      // Handle teaching cards - click through them to get to exercises
+      while (await gotItButton.isVisible({ timeout: 1000 }).catch(() => false)) {
+        await gotItButton.click();
+        // Wait a moment for the next card/exercise to load
+        await page.waitForTimeout(500);
+      }
 
       // If there's an exercise (Submit button visible), try to interact with it
       if (await submitButton.isVisible({ timeout: 3000 }).catch(() => false)) {
