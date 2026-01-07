@@ -939,7 +939,9 @@ exercises:
     type: write
     pattern: slicing
     generator: slice-bounds
-    target_construct: slice
+    target_construct:
+      type: slice
+      feedback: "Try using slice notation [start:end] for extracting a range of elements"
 
   - slug: list-negative-index-dynamic
     objective: Use negative indexing to access list elements from the end
