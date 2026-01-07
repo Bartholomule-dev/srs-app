@@ -1,5 +1,6 @@
 // tests/unit/generators/slice-bounds.test.ts
 import { describe, it, expect } from 'vitest';
+import * as fc from 'fast-check';
 import { sliceBoundsGenerator } from '@/lib/generators/definitions/slice-bounds';
 
 describe('sliceBoundsGenerator', () => {
@@ -89,5 +90,62 @@ describe('sliceBoundsGenerator', () => {
       expect(sliceBoundsGenerator.validate({ end: 5 })).toBe(false);
       expect(sliceBoundsGenerator.validate({})).toBe(false);
     });
+  });
+});
+
+describe('sliceBoundsGenerator property tests', () => {
+  it('always produces valid params for any seed', () => {
+    fc.assert(
+      fc.property(fc.string(), (seed) => {
+        const params = sliceBoundsGenerator.generate(seed);
+        return sliceBoundsGenerator.validate(params);
+      }),
+      { numRuns: 1000 }
+    );
+  });
+
+  it('always satisfies end > start constraint', () => {
+    fc.assert(
+      fc.property(fc.string(), (seed) => {
+        const params = sliceBoundsGenerator.generate(seed);
+        const start = params.start as number;
+        const end = params.end as number;
+        return end > start;
+      }),
+      { numRuns: 1000 }
+    );
+  });
+
+  it('start is always in [0, 4]', () => {
+    fc.assert(
+      fc.property(fc.string(), (seed) => {
+        const params = sliceBoundsGenerator.generate(seed);
+        const start = params.start as number;
+        return start >= 0 && start <= 4;
+      }),
+      { numRuns: 1000 }
+    );
+  });
+
+  it('end is always in [1, 7]', () => {
+    fc.assert(
+      fc.property(fc.string(), (seed) => {
+        const params = sliceBoundsGenerator.generate(seed);
+        const end = params.end as number;
+        return end >= 1 && end <= 7;
+      }),
+      { numRuns: 1000 }
+    );
+  });
+
+  it('same seed always produces same output', () => {
+    fc.assert(
+      fc.property(fc.string(), (seed) => {
+        const params1 = sliceBoundsGenerator.generate(seed);
+        const params2 = sliceBoundsGenerator.generate(seed);
+        return params1.start === params2.start && params1.end === params2.end;
+      }),
+      { numRuns: 500 }
+    );
   });
 });
