@@ -11,3 +11,17 @@ export {
   updateProfileStats,
   type UpdateProfileStatsInput,
 } from './updateProfile';
+
+// Dynamic exercise metrics
+export {
+  calculateRetentionRate,
+  calculateTransferRate,
+  calculateConstructAdoptionRate,
+  calculateCompletionStability,
+  getSuccessMetrics,
+  type RetentionMetric,
+  type TransferMetric,
+  type ConstructAdoptionMetric,
+  type CompletionStabilityMetric,
+  type SuccessMetrics,
+} from './dynamic-metrics';
