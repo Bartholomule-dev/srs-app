@@ -7,6 +7,10 @@ import { variableNamesGenerator } from './definitions/variable-names';
 import { listValuesGenerator } from './definitions/list-values';
 import { indexValuesGenerator } from './definitions/index-values';
 import { arithmeticValuesGenerator } from './definitions/arithmetic-values';
+import { loopSimulationGenerator } from './definitions/loop-simulation';
+import { comparisonLogicGenerator } from './definitions/comparison-logic';
+import { stringOpsGenerator } from './definitions/string-ops';
+import { dictValuesGenerator } from './definitions/dict-values';
 
 // Re-export types
 export type { Generator, GeneratorParams, TargetConstruct, RenderedExerciseMetadata, VariantOverrides, VariantMap };
@@ -55,3 +59,7 @@ registerGenerator(variableNamesGenerator);
 registerGenerator(listValuesGenerator);
 registerGenerator(indexValuesGenerator);
 registerGenerator(arithmeticValuesGenerator);
+registerGenerator(loopSimulationGenerator);
+registerGenerator(comparisonLogicGenerator);
+registerGenerator(stringOpsGenerator);
+registerGenerator(dictValuesGenerator);
