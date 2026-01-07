@@ -19,9 +19,9 @@ export interface RenderableExercise {
   prompt: string;
   expectedAnswer: string;
   acceptedSolutions: string[];
-  generator?: string;
-  code?: string;
-  template?: string;
+  generator?: string | null;
+  code?: string | null;
+  template?: string | null;
 }
 
 /**
