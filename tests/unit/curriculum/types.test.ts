@@ -12,6 +12,23 @@ describe('Curriculum Types', () => {
       expect(teaching.explanation).toBe('For loops iterate over sequences.');
       expect(teaching.exampleSlug).toBe('for-loop-range-intro');
     });
+
+    it('supports exampleCode field', () => {
+      const teaching: SubconceptTeaching = {
+        explanation: 'Use print() to display output.',
+        exampleCode: 'print("Hello, World!")',
+      };
+      expect(teaching.exampleCode).toBe('print("Hello, World!")');
+    });
+
+    it('allows optional exampleSlug for backward compatibility', () => {
+      const teaching: SubconceptTeaching = {
+        explanation: 'Use print() to display output.',
+        exampleCode: 'print("Hello, World!")',
+        exampleSlug: 'print-string', // deprecated but allowed
+      };
+      expect(teaching.exampleSlug).toBe('print-string');
+    });
   });
 
   describe('SubconceptDefinition', () => {

@@ -106,8 +106,10 @@ export interface CurriculumGraph {
 export interface SubconceptTeaching {
   /** 2-3 sentence explanation of the concept (max 200 chars) */
   explanation: string;
-  /** Slug of an intro-level exercise to show as example */
-  exampleSlug: string;
+  /** Dedicated code example to show (preferred) */
+  exampleCode?: string;
+  /** @deprecated Slug of exercise to use as example - use exampleCode instead */
+  exampleSlug?: string;
 }
 
 /** Subconcept definition in curriculum graph */

@@ -50,21 +50,26 @@ export function buildTeachingPair(
   subconcept: SubconceptDefinition,
   exercises: Exercise[]
 ): TeachingPair | null {
+  const { exampleSlug } = subconcept.teaching;
+
+  // exampleSlug is required for now (exampleCode support coming later)
+  if (!exampleSlug) {
+    console.warn(`Teaching missing exampleSlug for subconcept: ${subconceptSlug}`);
+    return null;
+  }
+
   // Find the example exercise
-  const exampleExercise = findExampleExercise(
-    subconcept.teaching.exampleSlug,
-    exercises
-  );
+  const exampleExercise = findExampleExercise(exampleSlug, exercises);
 
   if (!exampleExercise) {
-    console.warn(`Teaching example not found: ${subconcept.teaching.exampleSlug}`);
+    console.warn(`Teaching example not found: ${exampleSlug}`);
     return null;
   }
 
   // Find a different exercise for practice
   const practiceExercise = findPracticeExercise(
     subconceptSlug,
-    subconcept.teaching.exampleSlug,
+    exampleSlug,
     exercises
   );
 
