@@ -80,6 +80,7 @@
       "prereqs": [],
       "teaching": {
         "explanation": "Variables store data using the assignment operator (=). Use descriptive names like `user_count` or `total_price`.",
+        "exampleCode": "greeting = \"Welcome to Python!\"",
         "exampleSlug": "assign-variable"
       }
     },
@@ -89,6 +90,7 @@
       "prereqs": ["variables"],
       "teaching": {
         "explanation": "Python supports arithmetic (+, -, *, /), comparison (==, <, >), and logical (and, or, not) operators.",
+        "exampleCode": "result = 10 + 7",
         "exampleSlug": "add-numbers"
       }
     },
@@ -98,6 +100,7 @@
       "prereqs": ["operators"],
       "teaching": {
         "explanation": "Expressions combine values and operators to produce results. Use `and`, `or`, `not` for boolean logic.",
+        "exampleCode": "is_valid = x > 0 and y > 0",
         "exampleSlug": "boolean-and"
       }
     },
@@ -107,6 +110,7 @@
       "prereqs": ["variables"],
       "teaching": {
         "explanation": "Use `print()` to display output and `input()` to get user input. Input always returns a string.",
+        "exampleCode": "print(\"Welcome to Python!\")",
         "exampleSlug": "print-string"
       }
     },
@@ -116,6 +120,7 @@
       "prereqs": ["variables"],
       "teaching": {
         "explanation": "Strings are sequences of characters. Create with quotes, concatenate with +, repeat with *, get length with len().",
+        "exampleCode": "full_name = first + \" \" + last",
         "exampleSlug": "string-concatenate"
       }
     },
@@ -125,6 +130,7 @@
       "prereqs": ["basics"],
       "teaching": {
         "explanation": "Access characters by position with `s[i]`. Index 0 is first, -1 is last. Raises IndexError if out of range.",
+        "exampleCode": "last_char = word[-1]",
         "exampleSlug": "string-indexing"
       }
     },
@@ -134,6 +140,7 @@
       "prereqs": ["indexing"],
       "teaching": {
         "explanation": "Extract substrings with `s[start:end:step]`. Omit start/end for beginning/end. Use [::-1] to reverse.",
+        "exampleCode": "middle = text[2:5]",
         "exampleSlug": "string-slice-start"
       }
     },
@@ -143,6 +150,7 @@
       "prereqs": ["basics"],
       "teaching": {
         "explanation": "Strings have methods like upper(), lower(), strip(), split(), replace(), find(). They return new strings.",
+        "exampleCode": "clean = text.strip().lower()",
         "exampleSlug": "string-upper"
       }
     },
@@ -152,6 +160,7 @@
       "prereqs": ["basics"],
       "teaching": {
         "explanation": "F-strings embed expressions in strings: `f\"Hello, {name}!\"`. Use format specs like `{x:.2f}` for precision.",
+        "exampleCode": "message = f\"{user} has {points} points\"",
         "exampleSlug": "f-string-basic"
       }
     },
@@ -161,6 +170,7 @@
       "prereqs": ["variables"],
       "teaching": {
         "explanation": "Integers are whole numbers with unlimited precision. Use //, %, ** for floor division, modulo, exponentiation.",
+        "exampleCode": "remainder = 17 % 5  # Result: 2",
         "exampleSlug": "floor-division-intro"
       }
     },
@@ -170,6 +180,7 @@
       "prereqs": ["integers"],
       "teaching": {
         "explanation": "Floats represent decimal numbers. Use round() for precision. Be aware of floating-point inaccuracy.",
+        "exampleCode": "price = round(19.995, 2)  # Result: 20.0",
         "exampleSlug": "exponentiation-intro"
       }
     },
@@ -179,6 +190,7 @@
       "prereqs": ["variables"],
       "teaching": {
         "explanation": "Booleans are True or False. Combine with `and`, `or`, `not`. Use in conditionals and while loops.",
+        "exampleCode": "is_ready = has_data and not is_loading",
         "exampleSlug": "boolean-and"
       }
     },
@@ -188,6 +200,7 @@
       "prereqs": ["integers", "floats"],
       "teaching": {
         "explanation": "Convert types with int(), float(), str(), bool(). Use type() to check a value's type.",
+        "exampleCode": "count = int(\"42\")",
         "exampleSlug": "convert-int-fill"
       }
     },
@@ -197,6 +210,7 @@
       "prereqs": ["booleans"],
       "teaching": {
         "explanation": "Falsy values: False, None, 0, \"\", [], {}, set(). Everything else is truthy. Use `if items:` not `if len(items) > 0:`.",
+        "exampleCode": "if items:  # True if items is non-empty",
         "exampleSlug": "truthiness-predict-empty"
       }
     },
@@ -206,6 +220,7 @@
       "prereqs": ["booleans"],
       "teaching": {
         "explanation": "Use `is` for identity (None), `==` for equality. Chain comparisons: `0 < x < 10`. Use `in` for membership.",
+        "exampleCode": "is_none = value is None",
         "exampleSlug": "comparison-is-fill"
       }
     },
@@ -215,6 +230,7 @@
       "prereqs": ["variables"],
       "teaching": {
         "explanation": "Lists are mutable sequences: `[1, 2, 3]`. Use append(), extend(), pop(). Access by index, slice like strings.",
+        "exampleCode": "colors = [\"red\", \"green\", \"blue\"]",
         "exampleSlug": "list-create-empty"
       }
     },
@@ -224,6 +240,7 @@
       "prereqs": ["lists"],
       "teaching": {
         "explanation": "Tuples are immutable sequences: `(1, 2, 3)`. Use for fixed data, function returns, dict keys. Single item: `(x,)`.",
+        "exampleCode": "point = (10, 20)",
         "exampleSlug": "tuple-create"
       }
     },
@@ -233,6 +250,7 @@
       "prereqs": ["lists"],
       "teaching": {
         "explanation": "Dicts map keys to values: `{\"name\": \"Alice\"}`. Use get() for safe access, keys(), values(), items() for iteration.",
+        "exampleCode": "user = {\"name\": \"Alice\", \"age\": 30}",
         "exampleSlug": "dict-create-empty"
       }
     },
@@ -242,6 +260,7 @@
       "prereqs": ["lists"],
       "teaching": {
         "explanation": "Sets store unique values: `{1, 2, 3}`. Use add(), remove(), |, &, - for union, intersection, difference.",
+        "exampleCode": "unique = {1, 2, 3, 2, 1}  # {1, 2, 3}",
         "exampleSlug": "set-create"
       }
     },
@@ -251,6 +270,7 @@
       "prereqs": ["lists", "tuples"],
       "teaching": {
         "explanation": "Unpack sequences: `a, b, c = [1, 2, 3]`. Use * for rest: `first, *rest = items`. ** unpacks dict kwargs.",
+        "exampleCode": "first, *rest = [1, 2, 3, 4]",
         "exampleSlug": "star-unpack"
       }
     },
@@ -260,6 +280,7 @@
       "prereqs": ["lists", "dicts"],
       "teaching": {
         "explanation": "Lists, dicts, sets are mutable (can change). Tuples, strings are immutable. Use copy() to avoid aliasing bugs.",
+        "exampleCode": "copy = original[:]  # Shallow copy to avoid aliasing",
         "exampleSlug": "list-aliasing"
       }
     },
@@ -269,6 +290,7 @@
       "prereqs": ["expressions"],
       "teaching": {
         "explanation": "Use `if`, `elif`, `else` for branching. Combine conditions with `and`, `or`. Use `in` for membership tests.",
+        "exampleCode": "if score >= 90:\\n    grade = \"A\"",
         "exampleSlug": "if-statement"
       }
     },
@@ -278,6 +300,7 @@
       "prereqs": ["lists"],
       "teaching": {
         "explanation": "For loops iterate over sequences. Use `for item in sequence:` to process each element. Use range() for numbers.",
+        "exampleCode": "for name in names:\\n    print(name)",
         "exampleSlug": "for-loop-range"
       }
     },
@@ -287,6 +310,7 @@
       "prereqs": ["conditionals"],
       "teaching": {
         "explanation": "While loops run until condition is False. Use break to exit early, continue to skip iteration. Watch for infinite loops!",
+        "exampleCode": "while attempts < 3:\\n    try_again()",
         "exampleSlug": "while-loop"
       }
     },
@@ -296,6 +320,7 @@
       "prereqs": ["for"],
       "teaching": {
         "explanation": "Use enumerate() for index+value, zip() for parallel iteration, range() for number sequences.",
+        "exampleCode": "for i, item in enumerate(items):\\n    print(f\"{i}: {item}\")",
         "exampleSlug": "enumerate-loop"
       }
     },
@@ -305,6 +330,7 @@
       "prereqs": ["for"],
       "teaching": {
         "explanation": "zip() pairs elements from multiple iterables: `for a, b in zip(list1, list2):`. Stops at shortest iterable.",
+        "exampleCode": "for name, score in zip(names, scores):\\n    results[name] = score",
         "exampleSlug": "zip-two-lists"
       }
     },
@@ -314,6 +340,7 @@
       "prereqs": ["for"],
       "teaching": {
         "explanation": "reversed() iterates backwards without modifying the original. Use `for item in reversed(items):` for reverse order.",
+        "exampleCode": "for item in reversed(history):\\n    process(item)",
         "exampleSlug": "reversed-list"
       }
     },
@@ -323,6 +350,7 @@
       "prereqs": ["for"],
       "teaching": {
         "explanation": "sorted() returns a new sorted list. Use key= for custom sorting, reverse=True for descending order.",
+        "exampleCode": "for user in sorted(users, key=lambda u: u.name):\\n    print(user)",
         "exampleSlug": "sorted-list"
       }
     },
@@ -332,6 +360,7 @@
       "prereqs": ["conditionals", "for"],
       "teaching": {
         "explanation": "any() returns True if any element is truthy. all() returns True if all are truthy. Use with generator expressions.",
+        "exampleCode": "has_errors = any(item.error for item in results)",
         "exampleSlug": "any-basic"
       }
     },
@@ -341,6 +370,7 @@
       "prereqs": [],
       "teaching": {
         "explanation": "Functions are defined with `def name(params):`. They organize reusable code. Use `return` to send back values.",
+        "exampleCode": "def square(n):\\n    return n ** 2",
         "exampleSlug": "define-function"
       }
     },
@@ -350,6 +380,7 @@
       "prereqs": ["fn-basics"],
       "teaching": {
         "explanation": "Functions take positional and keyword arguments. Use name=value for keyword args. Order: positional, *args, keyword, **kwargs.",
+        "exampleCode": "def greet(name, greeting=\"Hello\"):\\n    return f\"{greeting}, {name}!\"",
         "exampleSlug": "default-parameter"
       }
     },
@@ -359,6 +390,7 @@
       "prereqs": ["fn-basics"],
       "teaching": {
         "explanation": "Set defaults with `def f(x=10):`. Never use mutable defaults like []. Use None and create inside the function.",
+        "exampleCode": "def connect(host, port=8080, timeout=30):\\n    ...",
         "exampleSlug": "default-param-simple"
       }
     },
@@ -368,6 +400,7 @@
       "prereqs": ["arguments"],
       "teaching": {
         "explanation": "*args captures variable positional args as tuple. **kwargs captures keyword args as dict. Use to forward arguments.",
+        "exampleCode": "def log(*messages, **options):\\n    for msg in messages:\\n        print(msg)",
         "exampleSlug": "args-intro"
       }
     },
@@ -377,6 +410,7 @@
       "prereqs": ["fn-basics"],
       "teaching": {
         "explanation": "Variables have local, enclosing, global, built-in scope (LEGB). Use `global` or `nonlocal` to modify outer variables.",
+        "exampleCode": "def increment():\\n    global counter\\n    counter += 1",
         "exampleSlug": "global-keyword"
       }
     },
@@ -386,6 +420,7 @@
       "prereqs": ["fn-basics"],
       "teaching": {
         "explanation": "Lambda creates anonymous functions: `lambda x: x * 2`. Use for simple operations, especially with map, filter, sorted key.",
+        "exampleCode": "square = lambda n: n ** 2",
         "exampleSlug": "lambda-simple"
       }
     },
@@ -395,6 +430,7 @@
       "prereqs": ["fn-basics"],
       "teaching": {
         "explanation": "Add type hints: `def greet(name: str) -> str:`. Use list[int], Optional[str], Callable. Checked by mypy, not at runtime.",
+        "exampleCode": "def add(a: int, b: int) -> int:\\n    return a + b",
         "exampleSlug": "typehint-param"
       }
     },
@@ -404,6 +440,7 @@
       "prereqs": ["for", "lists"],
       "teaching": {
         "explanation": "Create lists with `[expr for x in iterable if condition]`. More readable than map/filter for simple transformations.",
+        "exampleCode": "doubled = [n * 2 for n in numbers]",
         "exampleSlug": "list-comp-basic"
       }
     },
@@ -413,6 +450,7 @@
       "prereqs": ["list-comp", "dicts"],
       "teaching": {
         "explanation": "Create dicts with `{key: value for x in iterable}`. Use zip() to combine two lists into a dict.",
+        "exampleCode": "lengths = {word: len(word) for word in words}",
         "exampleSlug": "dict-comp-basic"
       }
     },
@@ -422,6 +460,7 @@
       "prereqs": ["list-comp", "sets"],
       "teaching": {
         "explanation": "Create sets with `{expr for x in iterable}`. Automatically deduplicates values. Use for unique transformations.",
+        "exampleCode": "initials = {name[0] for name in names}",
         "exampleSlug": "set-comp-basic"
       }
     },
@@ -431,6 +470,7 @@
       "prereqs": ["list-comp"],
       "teaching": {
         "explanation": "Use `(expr for x in iterable)` for memory-efficient iteration. Values computed on demand, not stored in memory.",
+        "exampleCode": "total = sum(n ** 2 for n in range(1000))",
         "exampleSlug": "generator-exp-basic"
       }
     },
@@ -440,6 +480,7 @@
       "prereqs": ["conditionals"],
       "teaching": {
         "explanation": "Wrap risky code in try/except. Catch specific exceptions like ValueError. Use `as e` to access exception details.",
+        "exampleCode": "try:\\n    result = int(user_input)\\nexcept ValueError:\\n    print(\"Invalid number\")",
         "exampleSlug": "try-except-basic"
       }
     },
@@ -449,6 +490,7 @@
       "prereqs": ["try-except"],
       "teaching": {
         "explanation": "finally: always runs, even if exception occurs or return is called. Use for cleanup like closing files.",
+        "exampleCode": "try:\\n    f = open(path)\\n    data = f.read()\\nfinally:\\n    f.close()",
         "exampleSlug": "try-finally"
       }
     },
@@ -458,6 +500,7 @@
       "prereqs": ["try-except"],
       "teaching": {
         "explanation": "Use `raise ValueError(\"message\")` to signal errors. Re-raise with bare `raise`. Create custom exceptions by subclassing.",
+        "exampleCode": "if age < 0:\\n    raise ValueError(\"Age must be positive\")",
         "exampleSlug": "raise-exception"
       }
     },
@@ -467,6 +510,7 @@
       "prereqs": ["basics"],
       "teaching": {
         "explanation": "Classes define object blueprints. Use __init__ for setup, self for instance access. Create instances with ClassName().",
+        "exampleCode": "class Dog:\\n    def __init__(self, name):\\n        self.name = name",
         "exampleSlug": "define-class"
       }
     },
@@ -476,6 +520,7 @@
       "prereqs": ["classes"],
       "teaching": {
         "explanation": "Methods are functions on classes. Instance methods take self first. Use __init__ for constructor, __str__ for string representation.",
+        "exampleCode": "def bark(self):\\n    return f\"{self.name} says woof!\"",
         "exampleSlug": "init-method"
       }
     },
@@ -485,6 +530,7 @@
       "prereqs": ["classes", "methods"],
       "teaching": {
         "explanation": "Subclass with `class Child(Parent):`. Use super().__init__() to call parent constructor. Override methods to specialize.",
+        "exampleCode": "class Cat(Animal):\\n    def speak(self):\\n        return \"meow\"",
         "exampleSlug": "class-inheritance"
       }
     },
@@ -494,7 +540,8 @@
       "prereqs": ["methods"],
       "teaching": {
         "explanation": "Use @classmethod for methods that operate on the class, not instances. First parameter is cls. Often used for alternative constructors.",
-        "exampleSlug": "define-class"
+        "exampleCode": "@classmethod\\ndef from_json(cls, data):\\n    return cls(data[\"name\"])",
+        "exampleSlug": "classmethod-basic"
       }
     },
     "properties": {
@@ -503,7 +550,8 @@
       "prereqs": ["methods"],
       "teaching": {
         "explanation": "Use @property to create computed attributes. Add @name.setter for write access. Provides encapsulation with attribute syntax.",
-        "exampleSlug": "instance-attribute"
+        "exampleCode": "@property\\ndef full_name(self):\\n    return f\"{self.first} {self.last}\"",
+        "exampleSlug": "property-getter"
       }
     },
     "imports": {
@@ -512,6 +560,7 @@
       "prereqs": [],
       "teaching": {
         "explanation": "Use `import module` or `from module import name`. Alias with `as`. Organize imports: stdlib, third-party, local.",
+        "exampleCode": "from pathlib import Path\\nimport json",
         "exampleSlug": "import-module"
       }
     },
@@ -521,6 +570,7 @@
       "prereqs": ["imports"],
       "teaching": {
         "explanation": "Open files with open(path, 'r'). Use read() for all content, readlines() for lines list, readline() for one line.",
+        "exampleCode": "with open(\"config.json\") as f:\\n    data = json.load(f)",
         "exampleSlug": "file-open-read"
       }
     },
@@ -530,6 +580,7 @@
       "prereqs": ["reading"],
       "teaching": {
         "explanation": "Use open(path, 'w') to write (overwrites), 'a' to append. Use write() for strings, writelines() for lists.",
+        "exampleCode": "with open(\"log.txt\", \"a\") as f:\\n    f.write(message + \"\\n\")",
         "exampleSlug": "file-open-write"
       }
     },
@@ -539,6 +590,7 @@
       "prereqs": ["reading"],
       "teaching": {
         "explanation": "Use `with open(path) as f:` for automatic cleanup. File closes even if exception occurs. Works with any context manager.",
+        "exampleCode": "with open(\"in.txt\") as src, open(\"out.txt\", \"w\") as dst:\\n    dst.write(src.read())",
         "exampleSlug": "context-manager-open"
       }
     },
@@ -548,6 +600,7 @@
       "prereqs": ["imports"],
       "teaching": {
         "explanation": "Use Path from pathlib for cross-platform paths. Join with /: `Path('dir') / 'file.txt'`. Methods: exists(), is_dir(), parent.",
+        "exampleCode": "config = Path(\"~/.config/app\").expanduser()\\ndata = (config / \"settings.json\").read_text()",
         "exampleSlug": "pathlib-create-path"
       }
     },
@@ -557,6 +610,7 @@
       "prereqs": ["imports"],
       "teaching": {
         "explanation": "Use `if __name__ == \"__main__\":` to run code only when script is executed directly, not when imported as module.",
+        "exampleCode": "def main():\\n    print(\"Running!\")\\n\\nif __name__ == \"__main__\":\\n    main()",
         "exampleSlug": "main-guard-basic"
       }
     }
