@@ -16,16 +16,20 @@ import type { Exercise, Quality } from '@/lib/types';
 import type { AppError } from '@/lib/errors';
 
 /**
- * Database row type for subconcept_progress table
+ * Database row type for subconcept_progress table (FSRS schema)
  */
 interface DbSubconceptProgress {
   id: string;
   user_id: string;
   subconcept_slug: string;
   concept_slug: string;
-  phase: 'learning' | 'review';
-  ease_factor: number;
-  interval: number;
+  stability: number | null;
+  difficulty: number | null;
+  fsrs_state: number | null;
+  reps: number | null;
+  lapses: number | null;
+  elapsed_days: number | null;
+  scheduled_days: number | null;
   next_review: string;
   last_reviewed: string | null;
   created_at: string;
@@ -71,7 +75,7 @@ export interface UseConceptSRSReturn {
 }
 
 /**
- * Map database row to app type for SubconceptProgress
+ * Map database row to app type for SubconceptProgress (FSRS schema)
  */
 function mapDbToSubconceptProgress(row: DbSubconceptProgress): SubconceptProgress {
   return {
@@ -79,9 +83,13 @@ function mapDbToSubconceptProgress(row: DbSubconceptProgress): SubconceptProgres
     userId: row.user_id,
     subconceptSlug: row.subconcept_slug,
     conceptSlug: row.concept_slug as ConceptSlug,
-    phase: row.phase,
-    easeFactor: row.ease_factor,
-    interval: row.interval,
+    stability: row.stability ?? 0,
+    difficulty: row.difficulty ?? 0,
+    fsrsState: (row.fsrs_state ?? 0) as 0 | 1 | 2 | 3,
+    reps: row.reps ?? 0,
+    lapses: row.lapses ?? 0,
+    elapsedDays: row.elapsed_days ?? 0,
+    scheduledDays: row.scheduled_days ?? 0,
     nextReview: new Date(row.next_review),
     lastReviewed: row.last_reviewed ? new Date(row.last_reviewed) : null,
     createdAt: new Date(row.created_at),

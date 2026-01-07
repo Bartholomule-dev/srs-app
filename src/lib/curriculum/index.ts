@@ -6,7 +6,6 @@ export type {
   ExerciseLevel,
   ExerciseType,
   ExercisePattern,
-  LearningPhase,
   Concept,
   SubconceptProgress,
   ExerciseAttempt,

@@ -54,9 +54,6 @@ export type ExercisePattern =
   | 'swap'
   | 'transformation';
 
-/** SRS learning phase for a subconcept */
-export type LearningPhase = 'learning' | 'review';
-
 /** Concept definition in curriculum graph */
 export interface Concept {
   slug: ConceptSlug;
@@ -66,15 +63,23 @@ export interface Concept {
   subconcepts: string[];
 }
 
-/** Subconcept progress (SRS state) */
+/** Subconcept progress (SRS state using FSRS algorithm) */
 export interface SubconceptProgress {
   id: string;
   userId: string;
   subconceptSlug: string;
   conceptSlug: ConceptSlug;
-  phase: LearningPhase;
-  easeFactor: number;
-  interval: number;
+
+  // FSRS fields
+  stability: number;
+  difficulty: number;
+  fsrsState: 0 | 1 | 2 | 3; // 0=New, 1=Learning, 2=Review, 3=Relearning
+  reps: number;
+  lapses: number;
+  elapsedDays: number;
+  scheduledDays: number;
+
+  // Timestamps
   nextReview: Date;
   lastReviewed: Date | null;
   createdAt: Date;
