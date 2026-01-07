@@ -1,8 +1,8 @@
 // tests/e2e/dynamic-exercises.spec.ts
-import { test, expect, Page } from '@playwright/test';
+import { test, expect, Page, BrowserContext } from '@playwright/test';
 import { createClient } from '@supabase/supabase-js';
 import { createTestUser, deleteTestUser, TestUser } from './utils/auth';
-import { getAdminClient, insertDynamicExercise, deleteExercise } from './utils/exercises';
+import { getAdminClient, insertDynamicExercise, deleteExercise, mockDate } from './utils/exercises';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -26,6 +26,37 @@ async function authenticateUser(page: Page, user: TestUser): Promise<void> {
   const cookieName = `sb-${projectRef}-auth-token`;
 
   await page.context().addCookies([
+    {
+      name: cookieName,
+      value: encodeURIComponent(JSON.stringify(session)),
+      domain: 'localhost',
+      path: '/',
+      httpOnly: false,
+      secure: false,
+      sameSite: 'Lax',
+    },
+  ]);
+}
+
+/**
+ * Helper to authenticate a test user into a specific browser context.
+ */
+async function authenticateContext(context: BrowserContext, user: TestUser): Promise<void> {
+  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+    email: user.email,
+    password: user.password,
+  });
+
+  if (signInError) {
+    throw new Error(`Failed to sign in: ${signInError.message}`);
+  }
+
+  const session = signInData.session;
+  const projectRef = new URL(supabaseUrl).hostname.split('.')[0];
+  const cookieName = `sb-${projectRef}-auth-token`;
+
+  await context.addCookies([
     {
       name: cookieName,
       value: encodeURIComponent(JSON.stringify(session)),
@@ -840,6 +871,199 @@ test.describe('Dynamic Exercise E2E Tests', () => {
         await expect(expectedAnswer).toBeVisible({ timeout: 5000 });
 
         console.log('Pyodide execution grading test passed - wrong answer marked as incorrect');
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+  });
+
+  test.describe('Date Seed Rotation', () => {
+    const adminClient = getAdminClient();
+
+    test('same exercise produces DIFFERENT values on different dates', async ({ browser }) => {
+      test.setTimeout(120000);
+
+      // Create a dynamic exercise with generator
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-date-rotation-${Date.now()}`,
+        prompt: 'Slice from {{start}} to {{end}}',
+        expectedAnswer: 's[{{start}}:{{end}}]',
+        acceptedSolutions: ['s[{{start}}:{{end}}]'],
+        generator: 'slice-bounds',
+        targetConstruct: null,
+      });
+
+      let day1Values: { start: number; end: number } | null = null;
+      let day2Values: { start: number; end: number } | null = null;
+
+      try {
+        // --- Day 1: January 1, 2026 ---
+        const context1 = await browser.newContext();
+        await mockDate(context1, new Date('2026-01-01T12:00:00Z'));
+        await authenticateContext(context1, testUser);
+        const page1 = await context1.newPage();
+
+        await page1.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise to load
+        const submitBtn1 = page1.getByRole('button', { name: /submit/i });
+        await expect(submitBtn1).toBeVisible({ timeout: 15000 });
+
+        // Get the rendered prompt and extract values
+        const promptLocator1 = page1.locator('[data-testid="exercise-prompt"]');
+        await expect(promptLocator1).toBeVisible({ timeout: 5000 });
+        const promptText1 = await promptLocator1.textContent();
+
+        // Extract numbers: "Slice from X to Y"
+        const pattern = /from\s+(\d+)\s+to\s+(\d+)/i;
+        const match1 = promptText1?.match(pattern);
+
+        if (match1) {
+          day1Values = {
+            start: parseInt(match1[1], 10),
+            end: parseInt(match1[2], 10),
+          };
+          console.log(`Day 1 (2026-01-01) values: start=${day1Values.start}, end=${day1Values.end}`);
+        }
+
+        await context1.close();
+
+        // --- Day 2: January 2, 2026 ---
+        const context2 = await browser.newContext();
+        await mockDate(context2, new Date('2026-01-02T12:00:00Z'));
+        await authenticateContext(context2, testUser);
+        const page2 = await context2.newPage();
+
+        await page2.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise to load
+        const submitBtn2 = page2.getByRole('button', { name: /submit/i });
+        await expect(submitBtn2).toBeVisible({ timeout: 15000 });
+
+        // Get the rendered prompt and extract values
+        const promptLocator2 = page2.locator('[data-testid="exercise-prompt"]');
+        await expect(promptLocator2).toBeVisible({ timeout: 5000 });
+        const promptText2 = await promptLocator2.textContent();
+
+        const match2 = promptText2?.match(pattern);
+
+        if (match2) {
+          day2Values = {
+            start: parseInt(match2[1], 10),
+            end: parseInt(match2[2], 10),
+          };
+          console.log(`Day 2 (2026-01-02) values: start=${day2Values.start}, end=${day2Values.end}`);
+        }
+
+        await context2.close();
+
+        // --- Assertions ---
+        // Both days should have extracted valid values
+        expect(day1Values).not.toBeNull();
+        expect(day2Values).not.toBeNull();
+
+        // CRITICAL: Values should be DIFFERENT on different dates
+        // This ensures seed rotation is working (exercises don't become stale)
+        const valuesAreIdentical =
+          day1Values!.start === day2Values!.start &&
+          day1Values!.end === day2Values!.end;
+
+        // With the hash function and different date strings, there's approximately
+        // 1/(5*6) = ~3% chance of collision for this generator's value space.
+        // We assert they should be different, which passes ~97% of the time.
+        // If this test ever flakes, the seed rotation is still working - just unlucky.
+        expect(valuesAreIdentical).toBe(false);
+
+        console.log('Date seed rotation test passed - different dates produce different values');
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+
+    test('same date produces SAME values (determinism check)', async ({ browser }) => {
+      test.setTimeout(120000);
+
+      // Create a dynamic exercise with generator
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-date-determinism-${Date.now()}`,
+        prompt: 'Slice from {{start}} to {{end}}',
+        expectedAnswer: 's[{{start}}:{{end}}]',
+        acceptedSolutions: ['s[{{start}}:{{end}}]'],
+        generator: 'slice-bounds',
+        targetConstruct: null,
+      });
+
+      let visit1Values: { start: number; end: number } | null = null;
+      let visit2Values: { start: number; end: number } | null = null;
+
+      try {
+        const fixedDate = new Date('2026-03-15T12:00:00Z');
+
+        // --- Visit 1 ---
+        const context1 = await browser.newContext();
+        await mockDate(context1, fixedDate);
+        await authenticateContext(context1, testUser);
+        const page1 = await context1.newPage();
+
+        await page1.goto(`/practice/test?slug=${slug}`);
+
+        const submitBtn1 = page1.getByRole('button', { name: /submit/i });
+        await expect(submitBtn1).toBeVisible({ timeout: 15000 });
+
+        const promptLocator1 = page1.locator('[data-testid="exercise-prompt"]');
+        await expect(promptLocator1).toBeVisible({ timeout: 5000 });
+        const promptText1 = await promptLocator1.textContent();
+
+        const pattern = /from\s+(\d+)\s+to\s+(\d+)/i;
+        const match1 = promptText1?.match(pattern);
+
+        if (match1) {
+          visit1Values = {
+            start: parseInt(match1[1], 10),
+            end: parseInt(match1[2], 10),
+          };
+          console.log(`Visit 1 values: start=${visit1Values.start}, end=${visit1Values.end}`);
+        }
+
+        await context1.close();
+
+        // --- Visit 2 (same date, new context simulating different session) ---
+        const context2 = await browser.newContext();
+        await mockDate(context2, fixedDate);
+        await authenticateContext(context2, testUser);
+        const page2 = await context2.newPage();
+
+        await page2.goto(`/practice/test?slug=${slug}`);
+
+        const submitBtn2 = page2.getByRole('button', { name: /submit/i });
+        await expect(submitBtn2).toBeVisible({ timeout: 15000 });
+
+        const promptLocator2 = page2.locator('[data-testid="exercise-prompt"]');
+        await expect(promptLocator2).toBeVisible({ timeout: 5000 });
+        const promptText2 = await promptLocator2.textContent();
+
+        const match2 = promptText2?.match(pattern);
+
+        if (match2) {
+          visit2Values = {
+            start: parseInt(match2[1], 10),
+            end: parseInt(match2[2], 10),
+          };
+          console.log(`Visit 2 values: start=${visit2Values.start}, end=${visit2Values.end}`);
+        }
+
+        await context2.close();
+
+        // --- Assertions ---
+        expect(visit1Values).not.toBeNull();
+        expect(visit2Values).not.toBeNull();
+
+        // CRITICAL: Values should be IDENTICAL on the same date
+        // This confirms deterministic seeding is working
+        expect(visit2Values!.start).toBe(visit1Values!.start);
+        expect(visit2Values!.end).toBe(visit1Values!.end);
+
+        console.log('Date determinism test passed - same date produces same values');
       } finally {
         await deleteExercise(adminClient, slug);
       }
