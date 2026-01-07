@@ -3,17 +3,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase/client';
 import { useAuth } from './useAuth';
-import {
-  getDueSubconcepts,
-  selectExercise,
-  calculateSubconceptReview,
-  createInitialSubconceptState,
-} from '@/lib/srs/concept-algorithm';
+import { selectExercise, mapFSRSStateToPhase, type SubconceptSelectionInfo } from '@/lib/srs/exercise-selection';
+import { reviewCard, createEmptyFSRSCard, progressToCardState } from '@/lib/srs/fsrs/adapter';
+import { qualityToRating } from '@/lib/srs/fsrs/mapping';
+import { STATE_MAP, STATE_REVERSE_MAP } from '@/lib/srs/fsrs/types';
 import { getTargetsToCredit, getTargetsToPenalize } from '@/lib/srs/multi-target';
 import { handleSupabaseError } from '@/lib/errors';
 import type { SubconceptProgress, ExerciseAttempt, ConceptSlug, ExercisePattern } from '@/lib/curriculum/types';
 import type { Exercise, Quality } from '@/lib/types';
 import type { AppError } from '@/lib/errors';
+import type { FSRSState } from '@/lib/srs/fsrs/types';
 
 /**
  * Database row type for subconcept_progress table (FSRS schema)
@@ -112,11 +111,48 @@ function mapDbToExerciseAttempt(row: DbExerciseAttempt): ExerciseAttempt {
 }
 
 /**
+ * Get due subconcepts sorted by most overdue first
+ */
+function getDueSubconcepts(progress: SubconceptProgress[], now: Date): SubconceptProgress[] {
+  return progress
+    .filter((p) => p.nextReview <= now)
+    .sort((a, b) => a.nextReview.getTime() - b.nextReview.getTime());
+}
+
+/**
+ * Create initial subconcept state using FSRS empty card
+ */
+function createInitialSubconceptState(
+  subconceptSlug: string,
+  conceptSlug: ConceptSlug,
+  userId: string
+): SubconceptProgress {
+  const card = createEmptyFSRSCard(new Date());
+  return {
+    id: '', // Will be assigned by database
+    userId,
+    subconceptSlug,
+    conceptSlug,
+    stability: card.stability,
+    difficulty: card.difficulty,
+    fsrsState: STATE_MAP[card.state] as 0 | 1 | 2 | 3,
+    reps: card.reps,
+    lapses: card.lapses,
+    elapsedDays: card.elapsedDays,
+    scheduledDays: card.scheduledDays,
+    nextReview: card.due,
+    lastReviewed: card.lastReview,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+}
+
+/**
  * Hook for concept-based SRS scheduling
  *
  * Manages subconcept progress:
  * - Fetches due subconcepts from subconcept_progress table
- * - Records results using SM-2 calculation
+ * - Records results using FSRS algorithm
  * - Tracks exercise attempts
  * - Provides exercise selection using hybrid algorithm
  */
@@ -208,7 +244,7 @@ export function useConceptSRS(): UseConceptSRSReturn {
    * Record a subconcept review result
    *
    * 1. Gets or creates subconcept progress
-   * 2. Calculates new SRS state using SM-2
+   * 2. Calculates new SRS state using FSRS
    * 3. Upserts subconcept_progress
    * 4. Updates exercise_attempts
    * 5. Refreshes due list
@@ -267,21 +303,41 @@ export function useConceptSRS(): UseConceptSRSReturn {
           }
         }
 
-        // Calculate new SRS state
-        const result = calculateSubconceptReview(quality, targetProgress);
+        // Convert quality to FSRS rating
+        const rating = qualityToRating(quality);
 
-        // Upsert subconcept progress
+        // Convert progress to FSRS card state
+        const cardState = progressToCardState({
+          stability: targetProgress.stability,
+          difficulty: targetProgress.difficulty,
+          fsrsState: STATE_REVERSE_MAP[targetProgress.fsrsState] as FSRSState,
+          due: targetProgress.nextReview,
+          lastReview: targetProgress.lastReviewed,
+          reps: targetProgress.reps,
+          lapses: targetProgress.lapses,
+          elapsedDays: targetProgress.elapsedDays,
+          scheduledDays: targetProgress.scheduledDays,
+        });
+
+        // Calculate new SRS state using FSRS
+        const result = reviewCard(cardState, rating);
+
+        // Upsert subconcept progress with FSRS fields
         const { error: upsertError } = await supabase
           .from('subconcept_progress')
           .upsert({
             user_id: user.id,
             subconcept_slug: targetSlug,
             concept_slug: targetProgress.conceptSlug,
-            phase: result.phase,
-            ease_factor: result.easeFactor,
-            interval: result.interval,
-            next_review: result.nextReview.toISOString(),
-            last_reviewed: result.lastReviewed.toISOString(),
+            stability: result.cardState.stability,
+            difficulty: result.cardState.difficulty,
+            fsrs_state: STATE_MAP[result.cardState.state],
+            reps: result.cardState.reps,
+            lapses: result.cardState.lapses,
+            elapsed_days: result.cardState.elapsedDays,
+            scheduled_days: result.cardState.scheduledDays,
+            next_review: result.cardState.due.toISOString(),
+            last_reviewed: result.cardState.lastReview?.toISOString() ?? new Date().toISOString(),
             updated_at: new Date().toISOString(),
           })
           .select()
@@ -354,7 +410,13 @@ export function useConceptSRS(): UseConceptSRSReturn {
         .map((slug) => attemptCache.get(slug))
         .filter((a): a is ExerciseAttempt => a !== undefined);
 
-      return selectExercise(subconceptProgress, exercises, attempts, lastPattern);
+      // Convert SubconceptProgress to SubconceptSelectionInfo using FSRS state mapping
+      const selectionInfo: SubconceptSelectionInfo = {
+        subconceptSlug: subconceptProgress.subconceptSlug,
+        phase: mapFSRSStateToPhase(STATE_REVERSE_MAP[subconceptProgress.fsrsState] as FSRSState),
+      };
+
+      return selectExercise(selectionInfo, exercises, attempts, lastPattern);
     },
     [attemptCache]
   );
