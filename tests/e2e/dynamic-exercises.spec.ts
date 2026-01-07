@@ -159,6 +159,12 @@ test.describe('Dynamic Exercise E2E Tests', () => {
     expect(firstPrompt).not.toContain('{{');
     expect(secondPrompt).not.toContain('{{');
 
-    console.log('Determinism test passed - no template placeholders after reload');
+    // CRITICAL ASSERTION: Deterministic seeding means same content
+    // If the exercise has dynamic values, both renders should show identical prompt
+    if (firstPrompt.length > 0 && secondPrompt.length > 0) {
+      expect(secondPrompt).toBe(firstPrompt);
+    }
+
+    console.log('Determinism test passed - identical content after reload');
   });
 });
