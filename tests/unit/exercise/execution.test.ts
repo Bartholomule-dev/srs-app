@@ -1,0 +1,173 @@
+// tests/unit/exercise/execution.test.ts
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import {
+  executePythonCode,
+  verifyPredictAnswer,
+  verifyWriteAnswer,
+  captureStdout,
+  type ExecutionResult,
+} from '@/lib/exercise/execution';
+import type { PyodideInterface } from '@/lib/context/PyodideContext';
+
+// Mock Pyodide interface
+function createMockPyodide(
+  runPythonResult: unknown = undefined,
+  throwError: Error | null = null
+): PyodideInterface {
+  return {
+    runPython: vi.fn((code: string) => {
+      if (throwError) throw throwError;
+      return runPythonResult;
+    }),
+    runPythonAsync: vi.fn(async (code: string) => {
+      if (throwError) throw throwError;
+      return runPythonResult;
+    }),
+    loadPackage: vi.fn(async () => {}),
+    globals: new Map(),
+  };
+}
+
+describe('captureStdout', () => {
+  it('returns wrapper code that captures stdout', () => {
+    const code = 'print("hello")';
+    const wrapped = captureStdout(code);
+
+    expect(wrapped).toContain('import io');
+    expect(wrapped).toContain('sys.stdout');
+    expect(wrapped).toContain('print("hello")');
+  });
+});
+
+describe('executePythonCode', () => {
+  it('returns success result with output', async () => {
+    const mockPyodide = createMockPyodide('hello\n');
+
+    const result = await executePythonCode(mockPyodide, 'print("hello")');
+
+    expect(result.success).toBe(true);
+    expect(result.output).toBe('hello\n');
+    expect(result.error).toBeNull();
+  });
+
+  it('returns error result on execution failure', async () => {
+    const mockPyodide = createMockPyodide(undefined, new Error('SyntaxError'));
+
+    const result = await executePythonCode(mockPyodide, 'invalid python');
+
+    expect(result.success).toBe(false);
+    expect(result.output).toBeNull();
+    expect(result.error).toBe('SyntaxError');
+  });
+
+  it('handles timeout', async () => {
+    // Create a pyodide that hangs
+    const mockPyodide: PyodideInterface = {
+      runPython: vi.fn(() => {
+        // Simulate hang - but test should use timeout
+        return new Promise(() => {}); // never resolves
+      }),
+      runPythonAsync: vi.fn(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 10000));
+        return 'result';
+      }),
+      loadPackage: vi.fn(async () => {}),
+      globals: new Map(),
+    };
+
+    const result = await executePythonCode(mockPyodide, 'while True: pass', {
+      timeoutMs: 100,
+    });
+
+    expect(result.success).toBe(false);
+    expect(result.error).toContain('timeout');
+  });
+});
+
+describe('verifyPredictAnswer', () => {
+  it('returns true when output matches expected', async () => {
+    const mockPyodide = createMockPyodide('42\n');
+
+    const isCorrect = await verifyPredictAnswer(
+      mockPyodide,
+      'print(6 * 7)',
+      '42'
+    );
+
+    expect(isCorrect).toBe(true);
+  });
+
+  it('returns false when output differs', async () => {
+    const mockPyodide = createMockPyodide('43\n');
+
+    const isCorrect = await verifyPredictAnswer(
+      mockPyodide,
+      'print(6 * 7)',
+      '42'
+    );
+
+    expect(isCorrect).toBe(false);
+  });
+
+  it('normalizes whitespace in comparison', async () => {
+    const mockPyodide = createMockPyodide('hello\n\n');
+
+    const isCorrect = await verifyPredictAnswer(
+      mockPyodide,
+      'print("hello")',
+      'hello'
+    );
+
+    expect(isCorrect).toBe(true);
+  });
+
+  it('returns false on execution error', async () => {
+    const mockPyodide = createMockPyodide(undefined, new Error('Error'));
+
+    const isCorrect = await verifyPredictAnswer(
+      mockPyodide,
+      'invalid',
+      'expected'
+    );
+
+    expect(isCorrect).toBe(false);
+  });
+});
+
+describe('verifyWriteAnswer', () => {
+  it('returns true when user code produces expected output', async () => {
+    const mockPyodide = createMockPyodide('[2, 4, 6]\n');
+
+    const isCorrect = await verifyWriteAnswer(
+      mockPyodide,
+      '[x*2 for x in [1, 2, 3]]',
+      '[2, 4, 6]',
+      'result = {{answer}}\nprint(result)'
+    );
+
+    expect(isCorrect).toBe(true);
+  });
+
+  it('substitutes {{answer}} in verification template', async () => {
+    const mockPyodide = createMockPyodide('6\n');
+
+    await verifyWriteAnswer(
+      mockPyodide,
+      '1 + 2 + 3',
+      '6',
+      'print({{answer}})'
+    );
+
+    expect(mockPyodide.runPython).toHaveBeenCalledWith(
+      expect.stringContaining('print(1 + 2 + 3)')
+    );
+  });
+
+  it('uses default template when none provided', async () => {
+    const mockPyodide = createMockPyodide('result\n');
+
+    await verifyWriteAnswer(mockPyodide, '"result"', 'result');
+
+    expect(mockPyodide.runPython).toHaveBeenCalled();
+  });
+});
