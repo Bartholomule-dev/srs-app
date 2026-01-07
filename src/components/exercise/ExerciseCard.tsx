@@ -174,6 +174,14 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
                 prompt={exercise.prompt}
               />
 
+              {/* Pyodide loading indicator for predict exercises */}
+              {exercise.exerciseType === 'predict' && pyodideLoading && (
+                <div className="text-sm text-text-secondary flex items-center gap-2 mb-4">
+                  <span className="animate-spin">&#8635;</span>
+                  Loading Python runtime...
+                </div>
+              )}
+
               {exercise.exerciseType === 'predict' && exercise.code ? (
                 <PredictOutputExercise
                   code={exercise.code}
