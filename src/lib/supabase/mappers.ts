@@ -30,12 +30,20 @@ export function mapProfile(db: DbProfile): Profile {
 
 /**
  * Map database exercise to app exercise
- * Note: Uses type assertion for Phase 2.5 fields (objective, targets) until
- * database migration is applied and types are regenerated.
+ * Note: Uses type assertion for Phase 2.5 fields (objective, targets) and
+ * dynamic exercise fields until database migration is applied and types are regenerated.
  */
 export function mapExercise(db: DbExercise): Exercise {
   // Type assertion for fields not yet in generated database types
-  const dbExt = db as DbExercise & { objective?: string | null; targets?: string[] | null; code?: string | null };
+  const dbExt = db as DbExercise & {
+    objective?: string | null;
+    targets?: string[] | null;
+    code?: string | null;
+    // Dynamic exercise fields (Phase 1)
+    generator?: string | null;
+    target_construct?: { type: string; feedback?: string } | null;
+    verify_by_execution?: boolean | null;
+  };
 
   return {
     id: db.id,
@@ -68,6 +76,13 @@ export function mapExercise(db: DbExercise): Exercise {
     targets: dbExt.targets ?? null,
     // Phase 2.7: predict-output exercise code
     code: dbExt.code ?? undefined,
+    // Dynamic exercise fields (Phase 1)
+    generator: dbExt.generator ?? undefined,
+    targetConstruct: dbExt.target_construct ? {
+      type: dbExt.target_construct.type,
+      feedback: dbExt.target_construct.feedback,
+    } : undefined,
+    verifyByExecution: dbExt.verify_by_execution ?? false,
   };
 }
 
