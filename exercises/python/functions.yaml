@@ -13,7 +13,7 @@ exercises:
       - Start with the def keyword
     tags: [functions, def, beginner]
     concept: functions
-    subconcept: basics
+    subconcept: fn-basics
     level: intro
     prereqs: [foundations]
     type: write
@@ -31,7 +31,7 @@ exercises:
       - Use return to send back a value
     tags: [functions, return, parameters]
     concept: functions
-    subconcept: basics
+    subconcept: fn-basics
     level: intro
     prereqs: [foundations]
     type: write
@@ -91,7 +91,7 @@ exercises:
     title: Function No Parameters
     difficulty: 1
     concept: functions
-    subconcept: basics
+    subconcept: fn-basics
     level: intro
     prereqs: [foundations]
     type: write
@@ -107,7 +107,7 @@ exercises:
     title: Call Function
     difficulty: 1
     concept: functions
-    subconcept: basics
+    subconcept: fn-basics
     level: intro
     prereqs: [functions.basics]
     type: write
@@ -126,7 +126,7 @@ exercises:
     title: Return Multiple Values
     difficulty: 2
     concept: functions
-    subconcept: basics
+    subconcept: fn-basics
     level: practice
     prereqs: [functions.basics]
     type: write
@@ -510,7 +510,7 @@ exercises:
     title: Def Keyword Fill-in
     difficulty: 1
     concept: functions
-    subconcept: basics
+    subconcept: fn-basics
     level: intro
     prereqs: []
     type: fill-in
@@ -528,7 +528,7 @@ exercises:
     title: Return Fill-in
     difficulty: 1
     concept: functions
-    subconcept: basics
+    subconcept: fn-basics
     level: intro
     prereqs: [functions.basics]
     type: fill-in
@@ -621,7 +621,7 @@ exercises:
     title: Return Value Predict
     difficulty: 1
     concept: functions
-    subconcept: basics
+    subconcept: fn-basics
     level: intro
     prereqs: [functions.basics]
     type: predict

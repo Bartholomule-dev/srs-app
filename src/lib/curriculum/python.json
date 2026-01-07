@@ -42,7 +42,7 @@
       "name": "Functions",
       "description": "Function definitions, parameters, and scope",
       "prereqs": ["collections"],
-      "subconcepts": ["basics", "arguments", "defaults", "args-kwargs", "scope", "lambda", "typehints"]
+      "subconcepts": ["fn-basics", "arguments", "defaults", "args-kwargs", "scope", "lambda", "typehints"]
     },
     {
       "slug": "comprehensions",
@@ -335,10 +335,19 @@
         "exampleSlug": "any-basic"
       }
     },
+    "fn-basics": {
+      "name": "Function Basics",
+      "concept": "functions",
+      "prereqs": [],
+      "teaching": {
+        "explanation": "Functions are defined with `def name(params):`. They organize reusable code. Use `return` to send back values.",
+        "exampleSlug": "simple-function"
+      }
+    },
     "arguments": {
       "name": "Function Arguments",
       "concept": "functions",
-      "prereqs": ["basics"],
+      "prereqs": ["fn-basics"],
       "teaching": {
         "explanation": "Functions take positional and keyword arguments. Use name=value for keyword args. Order: positional, *args, keyword, **kwargs.",
         "exampleSlug": "default-parameter"
@@ -347,7 +356,7 @@
     "defaults": {
       "name": "Default Parameters",
       "concept": "functions",
-      "prereqs": ["basics"],
+      "prereqs": ["fn-basics"],
       "teaching": {
         "explanation": "Set defaults with `def f(x=10):`. Never use mutable defaults like []. Use None and create inside the function.",
         "exampleSlug": "default-param-simple"
@@ -365,7 +374,7 @@
     "scope": {
       "name": "Scope",
       "concept": "functions",
-      "prereqs": ["basics"],
+      "prereqs": ["fn-basics"],
       "teaching": {
         "explanation": "Variables have local, enclosing, global, built-in scope (LEGB). Use `global` or `nonlocal` to modify outer variables.",
         "exampleSlug": "global-keyword"
@@ -374,7 +383,7 @@
     "lambda": {
       "name": "Lambda Functions",
       "concept": "functions",
-      "prereqs": ["basics"],
+      "prereqs": ["fn-basics"],
       "teaching": {
         "explanation": "Lambda creates anonymous functions: `lambda x: x * 2`. Use for simple operations, especially with map, filter, sorted key.",
         "exampleSlug": "lambda-simple"
@@ -383,7 +392,7 @@
     "typehints": {
       "name": "Type Hints",
       "concept": "functions",
-      "prereqs": ["basics"],
+      "prereqs": ["fn-basics"],
       "teaching": {
         "explanation": "Add type hints: `def greet(name: str) -> str:`. Use list[int], Optional[str], Callable. Checked by mypy, not at runtime.",
         "exampleSlug": "typehint-param"
