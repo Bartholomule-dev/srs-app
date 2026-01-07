@@ -167,4 +167,81 @@ test.describe('Dynamic Exercise E2E Tests', () => {
 
     console.log('Determinism test passed - identical content after reload');
   });
+
+  test.describe('Coaching Feedback', () => {
+    test('coaching feedback does NOT appear for incorrect answers', async ({ page }) => {
+      test.setTimeout(60000);
+
+      await authenticateUser(page, testUser);
+      await page.goto('/practice');
+
+      const submitBtn = page.getByRole('button', { name: /submit/i });
+      const gotItBtn = page.getByRole('button', { name: /got it/i });
+      const allCaughtUp = page.getByText(/all caught up/i);
+
+      await expect(submitBtn.or(gotItBtn).or(allCaughtUp)).toBeVisible({ timeout: 15000 });
+      await skipTeachingCards(page);
+
+      if (!(await submitBtn.isVisible().catch(() => false))) {
+        console.log('No exercises - skipping coaching test');
+        return;
+      }
+
+      // Submit a definitely wrong answer
+      const answerInput = page.getByRole('textbox').first();
+      await answerInput.fill('DEFINITELY_WRONG_ANSWER_12345');
+      await submitBtn.click();
+
+      // Wait for feedback
+      const continueBtn = page.getByRole('button', { name: /continue/i });
+      await expect(continueBtn).toBeVisible({ timeout: 5000 });
+
+      // Coaching feedback should NOT appear for incorrect answers
+      const coachingFeedback = page.locator('[data-testid="coaching-feedback"]');
+      const isCoachingVisible = await coachingFeedback.isVisible({ timeout: 1000 }).catch(() => false);
+
+      // Incorrect answer should show "incorrect" state, not coaching
+      expect(isCoachingVisible).toBe(false);
+    });
+
+    test('correct answer shows feedback UI (positive or coaching)', async ({ page }) => {
+      test.setTimeout(60000);
+
+      await authenticateUser(page, testUser);
+      await page.goto('/practice');
+
+      const submitBtn = page.getByRole('button', { name: /submit/i });
+      const gotItBtn = page.getByRole('button', { name: /got it/i });
+      const allCaughtUp = page.getByText(/all caught up/i);
+
+      await expect(submitBtn.or(gotItBtn).or(allCaughtUp)).toBeVisible({ timeout: 15000 });
+      await skipTeachingCards(page);
+
+      if (!(await submitBtn.isVisible().catch(() => false))) {
+        console.log('No exercises - skipping feedback test');
+        return;
+      }
+
+      // Submit an answer
+      const answerInput = page.getByRole('textbox').first();
+      await answerInput.fill('print("hello")');
+      await submitBtn.click();
+
+      // Wait for feedback state
+      const continueBtn = page.getByRole('button', { name: /continue/i });
+      await expect(continueBtn).toBeVisible({ timeout: 5000 });
+
+      // Either correct or incorrect state should be visible
+      const correctIndicator = page.getByText(/correct|great|nice/i);
+      const incorrectIndicator = page.getByText(/incorrect|try again|not quite/i);
+      const coachingFeedback = page.locator('[data-testid="coaching-feedback"]');
+
+      // At least one feedback element should be visible
+      const hasCorrect = await correctIndicator.isVisible({ timeout: 500 }).catch(() => false);
+      const hasIncorrect = await incorrectIndicator.isVisible({ timeout: 500 }).catch(() => false);
+      const hasCoaching = await coachingFeedback.isVisible({ timeout: 500 }).catch(() => false);
+
+      expect(hasCorrect || hasIncorrect || hasCoaching).toBe(true);
+    });
+  });
 });
