@@ -53,6 +53,16 @@ async function skipTeachingCards(page: Page): Promise<void> {
 // Run tests serially to avoid database connection pool issues
 test.describe.configure({ mode: 'serial' });
 
+/**
+ * Maximum number of exercises to process in a single session test.
+ * This limit prevents infinite loops if the session never completes.
+ * The value of 10 is chosen because:
+ * - Default session size is typically 5-7 exercises
+ * - Teaching cards may add 2-3 extra interactions
+ * - 10 provides a safety margin while keeping test runtime reasonable
+ */
+const MAX_SESSION_EXERCISES = 10;
+
 test.describe('Dynamic Exercise E2E Tests', () => {
   let testUser: TestUser;
 
@@ -441,10 +451,9 @@ test.describe('Dynamic Exercise E2E Tests', () => {
       }
 
       let exercisesCompleted = 0;
-      const maxExercises = 10; // Safety limit to prevent infinite loops
 
       // Loop through exercises until session is complete or we hit the limit
-      while (exercisesCompleted < maxExercises) {
+      while (exercisesCompleted < MAX_SESSION_EXERCISES) {
         // Check if session is complete
         if (await sessionComplete.isVisible({ timeout: 500 }).catch(() => false)) {
           console.log(`Session complete after ${exercisesCompleted} exercises`);
@@ -460,7 +469,8 @@ test.describe('Dynamic Exercise E2E Tests', () => {
         // Handle teaching cards - click "Got it" to continue
         if (await gotItBtn.isVisible({ timeout: 500 }).catch(() => false)) {
           await gotItBtn.click();
-          await page.waitForTimeout(300);
+          // Wait for teaching card to disappear before continuing
+          await expect(gotItBtn).not.toBeVisible({ timeout: 5000 });
           continue;
         }
 
@@ -471,7 +481,9 @@ test.describe('Dynamic Exercise E2E Tests', () => {
           const fillInExercise = page.locator('[data-testid="fill-in-exercise"]');
           const predictExercise = page.locator('[data-testid="predict-output-exercise"]');
 
-          // For predict exercises, wait for Pyodide to load (button becomes enabled)
+          // Note: We intentionally use generic answers (not correct ones) because this test
+          // verifies session flow completion, not answer correctness. The session should
+          // complete regardless of whether answers are right or wrong.
           if (await predictExercise.isVisible({ timeout: 500 }).catch(() => false)) {
             // Wait for submit button to be enabled (Pyodide loaded)
             await expect(submitBtn).toBeEnabled({ timeout: 60000 });
@@ -508,8 +520,8 @@ test.describe('Dynamic Exercise E2E Tests', () => {
           await continueBtn.click();
           exercisesCompleted++;
 
-          // Small delay for the next exercise to load
-          await page.waitForTimeout(500);
+          // Wait for continue button to disappear (next state loading)
+          await expect(continueBtn).not.toBeVisible({ timeout: 5000 });
         }
 
         // Safety check - if we can't find any interactive elements, break
@@ -526,7 +538,13 @@ test.describe('Dynamic Exercise E2E Tests', () => {
       const finalAllCaughtUp = await allCaughtUp.isVisible({ timeout: 2000 }).catch(() => false);
 
       // At least one completion state should be visible
-      expect(finalSessionComplete || finalAllCaughtUp).toBe(true);
+      if (!finalSessionComplete && !finalAllCaughtUp) {
+        throw new Error(
+          `Session did not reach a completion state after ${exercisesCompleted} exercises. ` +
+          `Expected either "Session Complete" or "All Caught Up" to be visible, but neither was found. ` +
+          `This may indicate a stuck session state or UI rendering issue.`
+        );
+      }
 
       if (finalSessionComplete) {
         // Verify session summary elements
