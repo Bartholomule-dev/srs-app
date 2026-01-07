@@ -1,5 +1,14 @@
 // tests/unit/srs/fsrs/integration.test.ts
-// Integration tests for the complete FSRS migration
+// Cross-component integration tests for FSRS
+//
+// These tests verify different FSRS components work together correctly.
+// Unit tests for individual components are in:
+//   - adapter.test.ts (adapter functions)
+//   - mapping.test.ts (quality/rating mapping)
+//   - regression.test.ts (pinned behavior)
+//   - invariants.test.ts (properties that must hold)
+//   - edge-cases.test.ts (error conditions)
+
 import { describe, it, expect } from 'vitest';
 import {
   createEmptyFSRSCard,
@@ -7,36 +16,12 @@ import {
   cardStateToProgress,
   progressToCardState,
 } from '@/lib/srs/fsrs/adapter';
-import { qualityToRating, inferRating, isPassingRating } from '@/lib/srs/fsrs/mapping';
+import { qualityToRating, inferRating } from '@/lib/srs/fsrs/mapping';
 import { mapFSRSStateToPhase, selectExercise } from '@/lib/srs/exercise-selection';
 import { STATE_REVERSE_MAP } from '@/lib/srs/fsrs/types';
-import type { FSRSCardState, FSRSRating, FSRSState } from '@/lib/srs/fsrs/types';
+import type { FSRSState } from '@/lib/srs/fsrs/types';
 import type { Quality } from '@/lib/types';
-import type { SubconceptProgress } from '@/lib/curriculum/types';
 import type { Exercise } from '@/lib/types/app.types';
-
-// Helper to create a mock SubconceptProgress with FSRS fields
-function createMockProgress(overrides: Partial<SubconceptProgress> = {}): SubconceptProgress {
-  const card = createEmptyFSRSCard(new Date());
-  return {
-    id: 'test-progress-1',
-    userId: 'user-123',
-    subconceptSlug: 'for',
-    conceptSlug: 'control-flow',
-    stability: card.stability,
-    difficulty: card.difficulty,
-    fsrsState: 0 as 0 | 1 | 2 | 3,
-    reps: card.reps,
-    lapses: card.lapses,
-    elapsedDays: card.elapsedDays,
-    scheduledDays: card.scheduledDays,
-    nextReview: card.due,
-    lastReviewed: card.lastReview,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    ...overrides,
-  };
-}
 
 // Helper to create mock exercises
 function createMockExercise(overrides: Partial<Exercise> = {}): Exercise {
@@ -71,335 +56,207 @@ function createMockExercise(overrides: Partial<Exercise> = {}): Exercise {
   } as Exercise;
 }
 
-describe('FSRS Integration', () => {
-  describe('Quality to Rating Mapping', () => {
-    it('maps all quality values correctly', () => {
-      const qualityRatings: Array<[Quality, FSRSRating]> = [
-        [0, 'Again'],
-        [1, 'Again'],
-        [2, 'Again'],
-        [3, 'Hard'],
-        [4, 'Good'],
-        [5, 'Easy'],
-      ];
+describe('FSRS Component Integration', () => {
+  describe('Quality → Rating → Review Flow', () => {
+    it('quality score flows correctly through rating to review', () => {
+      // This tests the full flow: Quality (from UI) → Rating → FSRS review
+      const qualities: Quality[] = [0, 1, 2, 3, 4, 5];
+      const card = createEmptyFSRSCard(new Date('2026-01-01'));
 
-      for (const [quality, expectedRating] of qualityRatings) {
-        expect(qualityToRating(quality)).toBe(expectedRating);
+      for (const quality of qualities) {
+        const rating = qualityToRating(quality);
+        const result = reviewCard(card, rating, new Date('2026-01-01'));
+
+        // Quality 0-2 = Again = fail
+        if (quality <= 2) {
+          expect(result.wasCorrect).toBe(false);
+        } else {
+          expect(result.wasCorrect).toBe(true);
+        }
       }
     });
 
-    it('correctly identifies passing ratings', () => {
-      expect(isPassingRating('Again')).toBe(false);
-      expect(isPassingRating('Hard')).toBe(true);
-      expect(isPassingRating('Good')).toBe(true);
-      expect(isPassingRating('Easy')).toBe(true);
-    });
-  });
+    it('inferRating signals flow correctly through review', () => {
+      // Tests: Review input signals → inferRating → FSRS review
+      const card = createEmptyFSRSCard(new Date('2026-01-01'));
 
-  describe('Rating Inference from Review Input', () => {
-    it('returns Again for incorrect answers', () => {
-      expect(inferRating({
-        isCorrect: false,
-        hintUsed: false,
-        responseTimeMs: 5000,
-      })).toBe('Again');
-    });
-
-    it('caps at Hard when hint is used', () => {
-      expect(inferRating({
+      // Correct answer with hint = Hard
+      const hintRating = inferRating({
         isCorrect: true,
         hintUsed: true,
         responseTimeMs: 5000,
-      })).toBe('Hard');
-    });
-
-    it('caps at Good when AST match is used', () => {
-      expect(inferRating({
-        isCorrect: true,
-        hintUsed: false,
-        responseTimeMs: 5000,
-        usedAstMatch: true,
-      })).toBe('Good');
-    });
-
-    it('returns Easy for fast correct answers', () => {
-      expect(inferRating({
-        isCorrect: true,
-        hintUsed: false,
-        responseTimeMs: 10000, // 10 seconds (fast)
-      })).toBe('Easy');
-    });
-
-    it('returns Good for medium speed correct answers', () => {
-      expect(inferRating({
-        isCorrect: true,
-        hintUsed: false,
-        responseTimeMs: 20000, // 20 seconds (medium)
-      })).toBe('Good');
-    });
-
-    it('returns Hard for slow correct answers', () => {
-      expect(inferRating({
-        isCorrect: true,
-        hintUsed: false,
-        responseTimeMs: 45000, // 45 seconds (slow)
-      })).toBe('Hard');
-    });
-  });
-
-  describe('FSRS State Progression', () => {
-    it('progresses from New to Learning to Review', () => {
-      let card = createEmptyFSRSCard(new Date('2026-01-01'));
-      expect(card.state).toBe('New');
-
-      // First review
-      let result = reviewCard(card, 'Good', new Date('2026-01-01'));
-      expect(result.cardState.state).toBe('Learning');
-
-      // Continue reviewing with Good until reaching Review state
-      let date = new Date('2026-01-01');
-      while (result.cardState.state !== 'Review') {
-        date = new Date(date.getTime() + (result.cardState.scheduledDays + 1) * 24 * 60 * 60 * 1000);
-        result = reviewCard(result.cardState, 'Good', date);
-      }
-
-      expect(result.cardState.state).toBe('Review');
-    });
-
-    it('moves to Relearning on lapse', () => {
-      let card = createEmptyFSRSCard(new Date('2026-01-01'));
-      let date = new Date('2026-01-01');
-      let result = reviewCard(card, 'Good', date);
-
-      // Progress to Review state
-      while (result.cardState.state !== 'Review') {
-        date = new Date(date.getTime() + (result.cardState.scheduledDays + 1) * 24 * 60 * 60 * 1000);
-        result = reviewCard(result.cardState, 'Good', date);
-      }
-
-      expect(result.cardState.state).toBe('Review');
-
-      // Lapse (Again rating)
-      date = new Date(date.getTime() + (result.cardState.scheduledDays + 1) * 24 * 60 * 60 * 1000);
-      result = reviewCard(result.cardState, 'Again', date);
-      expect(result.cardState.state).toBe('Relearning');
-    });
-  });
-
-  describe('SubconceptProgress Integration', () => {
-    it('creates valid SubconceptProgress from FSRS card', () => {
-      const card = createEmptyFSRSCard(new Date('2026-01-01'));
-      const progress = createMockProgress({
-        stability: card.stability,
-        difficulty: card.difficulty,
-        fsrsState: 0, // New
-        reps: card.reps,
-        lapses: card.lapses,
       });
+      const hintResult = reviewCard(card, hintRating, new Date('2026-01-01'));
+      expect(hintRating).toBe('Hard');
+      expect(hintResult.wasCorrect).toBe(true);
 
-      expect(progress.fsrsState).toBe(0);
-      expect(progress.stability).toBe(0);
-      expect(progress.difficulty).toBe(0);
-    });
-
-    it('round-trips SubconceptProgress through FSRS card state', () => {
-      const progress = createMockProgress();
-
-      // Convert to FSRS card state
-      const cardState = progressToCardState({
-        stability: progress.stability,
-        difficulty: progress.difficulty,
-        fsrsState: STATE_REVERSE_MAP[progress.fsrsState] as FSRSState,
-        due: progress.nextReview,
-        lastReview: progress.lastReviewed,
-        reps: progress.reps,
-        lapses: progress.lapses,
-        elapsedDays: progress.elapsedDays,
-        scheduledDays: progress.scheduledDays,
+      // Fast correct = Easy
+      const fastRating = inferRating({
+        isCorrect: true,
+        hintUsed: false,
+        responseTimeMs: 5000, // <15s
       });
-
-      expect(cardState.state).toBe('New');
-      expect(cardState.stability).toBe(progress.stability);
-
-      // Review the card
-      const result = reviewCard(cardState, 'Good', new Date());
-      const newProgress = cardStateToProgress(result.cardState);
-
-      expect(newProgress.reps).toBe(1);
-      expect(newProgress.stability).toBeGreaterThan(0);
+      const fastResult = reviewCard(card, fastRating, new Date('2026-01-01'));
+      expect(fastRating).toBe('Easy');
+      expect(fastResult.cardState.stability).toBeGreaterThan(hintResult.cardState.stability);
     });
   });
 
-  describe('FSRS State to Selection Phase Mapping', () => {
-    it('maps New state to learning phase', () => {
-      expect(mapFSRSStateToPhase('New')).toBe('learning');
-    });
-
-    it('maps Learning state to learning phase', () => {
-      expect(mapFSRSStateToPhase('Learning')).toBe('learning');
-    });
-
-    it('maps Relearning state to learning phase', () => {
-      expect(mapFSRSStateToPhase('Relearning')).toBe('learning');
-    });
-
-    it('maps Review state to review phase', () => {
-      expect(mapFSRSStateToPhase('Review')).toBe('review');
-    });
-  });
-
-  describe('Exercise Selection with FSRS', () => {
+  describe('FSRS State → Exercise Selection Phase', () => {
     const exercises = [
-      createMockExercise({ id: '1', slug: 'for-1', level: 'intro', pattern: 'iteration' }),
-      createMockExercise({ id: '2', slug: 'for-2', level: 'intro', pattern: 'accumulator' }),
-      createMockExercise({ id: '3', slug: 'for-3', level: 'practice', pattern: 'iteration' }),
-      createMockExercise({ id: '4', slug: 'for-4', level: 'edge', pattern: 'iteration' }),
+      createMockExercise({ id: '1', slug: 'intro-1', level: 'intro' }),
+      createMockExercise({ id: '2', slug: 'practice-1', level: 'practice' }),
+      createMockExercise({ id: '3', slug: 'edge-1', level: 'edge' }),
     ];
 
-    it('selects intro exercises first for New state', () => {
-      const selectionInfo = {
-        subconceptSlug: 'for',
-        phase: mapFSRSStateToPhase('New'),
-      };
+    it('New state maps to learning phase, selecting intro exercises', () => {
+      const card = createEmptyFSRSCard(new Date());
+      expect(card.state).toBe('New');
 
-      const selected = selectExercise(selectionInfo, exercises, []);
-      expect(selected).not.toBeNull();
-      expect(selected!.level).toBe('intro');
+      const phase = mapFSRSStateToPhase(card.state);
+      expect(phase).toBe('learning');
+
+      const selected = selectExercise(
+        { subconceptSlug: 'for', phase },
+        exercises,
+        []
+      );
+      expect(selected?.level).toBe('intro');
     });
 
-    it('selects from all levels for Review state', () => {
-      const selectionInfo = {
-        subconceptSlug: 'for',
-        phase: mapFSRSStateToPhase('Review'),
-      };
-
-      // With empty attempts, should still select (least-seen)
-      const selected = selectExercise(selectionInfo, exercises, []);
-      expect(selected).not.toBeNull();
-    });
-
-    it('applies anti-repeat pattern selection', () => {
-      const selectionInfo = {
-        subconceptSlug: 'for',
-        phase: 'learning' as const,
-      };
-
-      // Select with lastPattern = 'iteration'
-      const selected = selectExercise(selectionInfo, exercises, [], 'iteration');
-
-      // Should prefer accumulator pattern to avoid repetition
-      if (selected && exercises.some(e => e.pattern === 'accumulator' && e.level === 'intro')) {
-        expect(selected.pattern).toBe('accumulator');
-      }
-    });
-  });
-
-  describe('Full Review Flow Simulation', () => {
-    it('simulates a complete learning session', () => {
-      // Start with a new card
-      let card = createEmptyFSRSCard(new Date('2026-01-01T09:00:00Z'));
-      let currentTime = new Date('2026-01-01T09:00:00Z');
-
-      // Day 1: First review - Good
-      let result = reviewCard(card, 'Good', currentTime);
-      expect(result.cardState.reps).toBe(1);
-      expect(result.cardState.state).toBe('Learning');
-
-      // Day 1: Second review (after short interval) - Good
-      currentTime = result.cardState.due;
-      result = reviewCard(result.cardState, 'Good', currentTime);
-      expect(result.cardState.reps).toBe(2);
-
-      // Continue until Review state
-      while (result.cardState.state !== 'Review') {
-        currentTime = new Date(result.cardState.due.getTime() + 1000);
-        result = reviewCard(result.cardState, 'Good', currentTime);
-      }
-
-      // Now in Review state - intervals should be longer
-      expect(result.cardState.state).toBe('Review');
-      expect(result.cardState.scheduledDays).toBeGreaterThan(0);
-
-      // Simulate a lapse
-      currentTime = new Date(result.cardState.due.getTime() + 1000);
-      result = reviewCard(result.cardState, 'Again', currentTime);
-      expect(result.cardState.state).toBe('Relearning');
-      expect(result.cardState.lapses).toBe(1);
-
-      // Recover from lapse
-      currentTime = new Date(result.cardState.due.getTime() + 1000);
-      result = reviewCard(result.cardState, 'Good', currentTime);
-      expect(['Learning', 'Review', 'Relearning']).toContain(result.cardState.state);
-    });
-
-    it('maintains stability growth with consistent Good ratings', () => {
+    it('Learning state maps to learning phase', () => {
       let card = createEmptyFSRSCard(new Date('2026-01-01'));
-      let currentTime = new Date('2026-01-01');
-      const stabilities: number[] = [];
+      card = reviewCard(card, 'Good', new Date('2026-01-01')).cardState;
+      expect(card.state).toBe('Learning');
 
-      // 10 reviews with Good rating
-      for (let i = 0; i < 10; i++) {
-        const result = reviewCard(card, 'Good', currentTime);
-        stabilities.push(result.cardState.stability);
+      const phase = mapFSRSStateToPhase(card.state);
+      expect(phase).toBe('learning');
+    });
+
+    it('Review state maps to review phase', () => {
+      let card = createEmptyFSRSCard(new Date('2026-01-01'));
+      let date = new Date('2026-01-01');
+
+      // Graduate to Review
+      while (card.state !== 'Review') {
+        const result = reviewCard(card, 'Good', date);
         card = result.cardState;
-        currentTime = new Date(result.cardState.due.getTime() + 1000);
+        date = new Date(card.due.getTime() + 1000);
       }
 
-      // Stability should generally increase
-      const lastFiveStabilities = stabilities.slice(-5);
-      const firstFiveStabilities = stabilities.slice(0, 5);
-      const avgLast = lastFiveStabilities.reduce((a, b) => a + b, 0) / 5;
-      const avgFirst = firstFiveStabilities.reduce((a, b) => a + b, 0) / 5;
+      const phase = mapFSRSStateToPhase(card.state);
+      expect(phase).toBe('review');
+    });
 
-      expect(avgLast).toBeGreaterThan(avgFirst);
+    it('Relearning state maps to learning phase', () => {
+      let card = createEmptyFSRSCard(new Date('2026-01-01'));
+      let date = new Date('2026-01-01');
+
+      // Graduate to Review, then lapse
+      while (card.state !== 'Review') {
+        const result = reviewCard(card, 'Good', date);
+        card = result.cardState;
+        date = new Date(card.due.getTime() + 1000);
+      }
+
+      // Lapse
+      card = reviewCard(card, 'Again', date).cardState;
+      expect(card.state).toBe('Relearning');
+
+      const phase = mapFSRSStateToPhase(card.state);
+      expect(phase).toBe('learning');
     });
   });
 
-  describe('Database Field Mapping', () => {
-    it('cardStateToProgress extracts all required database fields', () => {
-      const card = createEmptyFSRSCard(new Date('2026-01-01'));
-      const result = reviewCard(card, 'Good', new Date('2026-01-01'));
-      const progress = cardStateToProgress(result.cardState);
+  describe('Progress ↔ CardState Round-Trip', () => {
+    it('preserves all fields through database-style round-trip', () => {
+      // Simulate: FSRS review → save to DB → load from DB → continue reviewing
+      let card = createEmptyFSRSCard(new Date('2026-01-01'));
+      let date = new Date('2026-01-01');
 
-      // Verify all FSRS fields are present
-      expect(progress).toHaveProperty('stability');
-      expect(progress).toHaveProperty('difficulty');
-      expect(progress).toHaveProperty('fsrsState');
-      expect(progress).toHaveProperty('due');
-      expect(progress).toHaveProperty('lastReview');
-      expect(progress).toHaveProperty('reps');
-      expect(progress).toHaveProperty('lapses');
-      expect(progress).toHaveProperty('elapsedDays');
-      expect(progress).toHaveProperty('scheduledDays');
+      // Do a few reviews
+      for (let i = 0; i < 3; i++) {
+        card = reviewCard(card, 'Good', date).cardState;
+        date = new Date(card.due.getTime() + 1000);
+      }
 
-      // Verify values are reasonable
-      expect(progress.stability).toBeGreaterThan(0);
-      expect(progress.reps).toBe(1);
-      expect(progress.lapses).toBe(0);
+      // "Save to database" - extract progress fields
+      const progress = cardStateToProgress(card);
+
+      // "Load from database" - reconstruct card state
+      const restored = progressToCardState(progress);
+
+      // Continue reviewing with restored card
+      const nextResult = reviewCard(restored, 'Good', date);
+
+      // Should work correctly
+      expect(nextResult.cardState.reps).toBe(card.reps + 1);
+      expect(nextResult.cardState.state).toBeDefined();
     });
 
-    it('handles all FSRS states correctly', () => {
+    it('handles all FSRS states through round-trip', () => {
       const states: FSRSState[] = ['New', 'Learning', 'Review', 'Relearning'];
 
       for (const state of states) {
-        const cardState: FSRSCardState = {
-          due: new Date(),
+        const progress = {
           stability: 5,
           difficulty: 0.3,
+          fsrsState: state,
+          due: new Date(),
+          lastReview: state === 'New' ? null : new Date(),
+          reps: state === 'New' ? 0 : 5,
+          lapses: state === 'Relearning' ? 1 : 0,
           elapsedDays: 1,
           scheduledDays: 1,
-          reps: 3,
-          lapses: 0,
-          state,
-          lastReview: new Date(),
         };
 
-        const progress = cardStateToProgress(cardState);
-        expect(progress.fsrsState).toBe(state);
+        const card = progressToCardState(progress);
+        expect(card.state).toBe(state);
 
-        const restored = progressToCardState(progress);
-        expect(restored.state).toBe(state);
+        const backToProgress = cardStateToProgress(card);
+        expect(backToProgress.fsrsState).toBe(state);
       }
+    });
+  });
+
+  describe('Complete Review Session Simulation', () => {
+    it('simulates user completing 5 exercises with varying performance', () => {
+      // User does 5 reviews with different performance levels
+      const performances: Array<{ responseTimeMs: number; isCorrect: boolean; hintUsed: boolean }> = [
+        { responseTimeMs: 8000, isCorrect: true, hintUsed: false },   // Fast, correct → Easy
+        { responseTimeMs: 25000, isCorrect: true, hintUsed: false },  // Medium → Good
+        { responseTimeMs: 40000, isCorrect: true, hintUsed: false },  // Slow → Hard
+        { responseTimeMs: 15000, isCorrect: true, hintUsed: true },   // Used hint → Hard
+        { responseTimeMs: 10000, isCorrect: false, hintUsed: false }, // Wrong → Again
+      ];
+
+      let card = createEmptyFSRSCard(new Date('2026-01-01T09:00:00Z'));
+      let date = new Date('2026-01-01T09:00:00Z');
+
+      const results: Array<{ rating: string; wasCorrect: boolean; stability: number }> = [];
+
+      for (const perf of performances) {
+        const rating = inferRating(perf);
+        const result = reviewCard(card, rating, date);
+        results.push({
+          rating,
+          wasCorrect: result.wasCorrect,
+          stability: result.cardState.stability,
+        });
+        card = result.cardState;
+        date = new Date(date.getTime() + 60000); // 1 minute between exercises
+      }
+
+      // Verify expected ratings
+      expect(results[0].rating).toBe('Easy');
+      expect(results[1].rating).toBe('Good');
+      expect(results[2].rating).toBe('Hard');
+      expect(results[3].rating).toBe('Hard');
+      expect(results[4].rating).toBe('Again');
+
+      // Final card should reflect the session
+      expect(card.reps).toBe(5);
+      // Ended with Again, so stability should have dropped
     });
   });
 });
