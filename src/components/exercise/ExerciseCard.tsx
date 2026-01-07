@@ -172,6 +172,7 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
                 category={exercise.category}
                 language={exercise.language}
                 prompt={exercise.prompt}
+                exerciseType={exercise.exerciseType}
               />
 
               {/* Pyodide loading indicator for predict exercises */}
