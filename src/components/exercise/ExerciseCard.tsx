@@ -3,7 +3,8 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Exercise, Quality } from '@/lib/types';
-import { checkAnswerWithAlternatives, checkFillInAnswer, checkPredictAnswer, inferQuality, type QualityInputs } from '@/lib/exercise';
+import { gradeAnswerAsync, type GradingResult, inferQuality, type QualityInputs } from '@/lib/exercise';
+import { usePyodide } from '@/lib/context/PyodideContext';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { CodeInput } from './CodeInput';
@@ -21,13 +22,16 @@ interface ExerciseCardProps {
 }
 
 export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
+  const { pyodide, loading: pyodideLoading } = usePyodide();
+
   const [phase, setPhase] = useState<Phase>('answering');
   const [userAnswer, setUserAnswer] = useState('');
   const [hintUsed, setHintUsed] = useState(false);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [pausedMs, setPausedMs] = useState(0);
-  const [answerResult, setAnswerResult] = useState<{ isCorrect: boolean; usedAstMatch: boolean } | null>(null);
+  const [gradingResult, setGradingResult] = useState<GradingResult | null>(null);
   const [prevExerciseId, setPrevExerciseId] = useState(exercise.id);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const pauseStartRef = useRef<number | null>(null);
   const prevIdForRef = useRef(exercise.id);
@@ -42,7 +46,8 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
     setHintUsed(false);
     setStartTime(null);
     setPausedMs(0);
-    setAnswerResult(null);
+    setGradingResult(null);
+    setIsSubmitting(false);
   }
 
   // Reset pause timer ref when exercise changes
@@ -80,58 +85,51 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
     setHintUsed(true);
   }, []);
 
-  const handleSubmit = useCallback(() => {
-    const result = checkAnswerWithAlternatives(
-      userAnswer,
-      exercise.expectedAnswer,
-      exercise.acceptedSolutions
-    );
-    setAnswerResult({ isCorrect: result.isCorrect, usedAstMatch: result.usedAstMatch });
-    setPhase('feedback');
-  }, [userAnswer, exercise.expectedAnswer, exercise.acceptedSolutions]);
+  // Core async grading function - all submit handlers use this
+  const performGrading = useCallback(async (answer: string) => {
+    setIsSubmitting(true);
+    try {
+      const result = await gradeAnswerAsync(answer, exercise, pyodide);
+      setGradingResult(result);
+      setPhase('feedback');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [exercise, pyodide]);
 
-  const handleGiveUp = useCallback(() => {
-    setAnswerResult({ isCorrect: false, usedAstMatch: false });
-    setPhase('feedback');
-  }, []);
+  const handleSubmit = useCallback(async () => {
+    await performGrading(userAnswer);
+  }, [userAnswer, performGrading]);
 
-  const handleFillInSubmit = useCallback((answer: string) => {
+  const handleGiveUp = useCallback(async () => {
+    // Create a "give up" grading result - user didn't attempt an answer
+    await performGrading('');
+  }, [performGrading]);
+
+  const handleFillInSubmit = useCallback(async (answer: string) => {
     // Start timer if not already started
     if (startTime === null) {
       setStartTime(Date.now());
     }
 
-    const isCorrect = checkFillInAnswer(
-      answer,
-      exercise.expectedAnswer,
-      exercise.acceptedSolutions
-    );
-
     setUserAnswer(answer);
-    setAnswerResult({ isCorrect, usedAstMatch: false });
-    setPhase('feedback');
-  }, [exercise.expectedAnswer, exercise.acceptedSolutions, startTime]);
+    await performGrading(answer);
+  }, [startTime, performGrading]);
 
-  const handlePredictSubmit = useCallback((answer: string) => {
+  const handlePredictSubmit = useCallback(async (answer: string) => {
     if (startTime === null) setStartTime(Date.now());
-    const isCorrect = checkPredictAnswer(
-      answer,
-      exercise.expectedAnswer,
-      exercise.acceptedSolutions
-    );
     setUserAnswer(answer);
-    setAnswerResult({ isCorrect, usedAstMatch: false });
-    setPhase('feedback');
-  }, [exercise.expectedAnswer, exercise.acceptedSolutions, startTime]);
+    await performGrading(answer);
+  }, [startTime, performGrading]);
 
   // Unified submit handler that routes to correct checker based on exercise type
-  const handleButtonSubmit = useCallback(() => {
+  const handleButtonSubmit = useCallback(async () => {
     if (exercise.exerciseType === 'predict') {
-      handlePredictSubmit(userAnswer);
+      await handlePredictSubmit(userAnswer);
     } else if (exercise.exerciseType === 'fill-in') {
-      handleFillInSubmit(userAnswer);
+      await handleFillInSubmit(userAnswer);
     } else {
-      handleSubmit();
+      await handleSubmit();
     }
   }, [exercise.exerciseType, userAnswer, handlePredictSubmit, handleFillInSubmit, handleSubmit]);
 
@@ -139,18 +137,18 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
     const responseTimeMs = startTime !== null ? Date.now() - startTime - pausedMs : 0;
 
     const inputs: QualityInputs = {
-      isCorrect: answerResult?.isCorrect ?? false,
+      isCorrect: gradingResult?.isCorrect ?? false,
       hintUsed,
       responseTimeMs,
-      usedAstMatch: answerResult?.usedAstMatch ?? false,
+      usedAstMatch: false, // GradingResult uses gradingMethod instead
     };
 
     const quality = inferQuality(inputs);
     onComplete(quality);
-  }, [startTime, pausedMs, hintUsed, answerResult, onComplete]);
+  }, [startTime, pausedMs, hintUsed, gradingResult, onComplete]);
 
   // Calculate next review days (rough estimate based on current state)
-  const nextReviewDays = answerResult?.isCorrect ? 6 : 1;
+  const nextReviewDays = gradingResult?.isCorrect ? 6 : 1;
 
   const firstHint = exercise.hints[0] ?? '';
 
@@ -214,6 +212,7 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
                     type="button"
                     variant="secondary"
                     onClick={handleGiveUp}
+                    disabled={isSubmitting}
                   >
                     Give Up
                   </Button>
@@ -221,8 +220,9 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
                     type="button"
                     variant="primary"
                     onClick={handleButtonSubmit}
+                    disabled={isSubmitting || (pyodideLoading && (exercise.exerciseType === 'predict' || exercise.verifyByExecution))}
                   >
-                    Submit
+                    {isSubmitting ? 'Checking...' : 'Submit'}
                   </Button>
                 </div>
               </div>
@@ -236,11 +236,12 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
               transition={{ duration: 0.2 }}
             >
               <ExerciseFeedback
-                isCorrect={answerResult?.isCorrect ?? false}
+                isCorrect={gradingResult?.isCorrect ?? false}
                 userAnswer={userAnswer}
                 expectedAnswer={exercise.expectedAnswer}
                 nextReviewDays={nextReviewDays}
                 onContinue={handleContinue}
+                coachingFeedback={gradingResult?.coachingFeedback}
               />
             </motion.div>
           )}
