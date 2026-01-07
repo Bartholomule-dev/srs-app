@@ -418,6 +418,138 @@ test.describe('Dynamic Exercise E2E Tests', () => {
     });
   });
 
+  test.describe('Full Session Completion', () => {
+    test('complete practice session and reach session summary', async ({ page }) => {
+      // Session completion may take time with multiple exercises
+      test.setTimeout(180000);
+
+      await authenticateUser(page, testUser);
+      await page.goto('/practice');
+
+      // Wait for session to load
+      const submitBtn = page.getByRole('button', { name: /submit/i });
+      const gotItBtn = page.getByRole('button', { name: /got it/i });
+      const allCaughtUp = page.getByText(/all caught up/i);
+      const sessionComplete = page.getByText(/session complete/i);
+
+      await expect(submitBtn.or(gotItBtn).or(allCaughtUp).or(sessionComplete)).toBeVisible({ timeout: 15000 });
+
+      // Check if we have no exercises to practice
+      if (await allCaughtUp.isVisible({ timeout: 1000 }).catch(() => false)) {
+        console.log('No exercises due - session already complete (all caught up)');
+        return;
+      }
+
+      let exercisesCompleted = 0;
+      const maxExercises = 10; // Safety limit to prevent infinite loops
+
+      // Loop through exercises until session is complete or we hit the limit
+      while (exercisesCompleted < maxExercises) {
+        // Check if session is complete
+        if (await sessionComplete.isVisible({ timeout: 500 }).catch(() => false)) {
+          console.log(`Session complete after ${exercisesCompleted} exercises`);
+          break;
+        }
+
+        // Check for "all caught up" state
+        if (await allCaughtUp.isVisible({ timeout: 500 }).catch(() => false)) {
+          console.log('All caught up - no more exercises');
+          break;
+        }
+
+        // Handle teaching cards - click "Got it" to continue
+        if (await gotItBtn.isVisible({ timeout: 500 }).catch(() => false)) {
+          await gotItBtn.click();
+          await page.waitForTimeout(300);
+          continue;
+        }
+
+        // Handle exercise submission
+        if (await submitBtn.isVisible({ timeout: 1000 }).catch(() => false)) {
+          // Determine exercise type and find the input
+          const codeInput = page.locator('[data-testid="code-input"]');
+          const fillInExercise = page.locator('[data-testid="fill-in-exercise"]');
+          const predictExercise = page.locator('[data-testid="predict-output-exercise"]');
+
+          // For predict exercises, wait for Pyodide to load (button becomes enabled)
+          if (await predictExercise.isVisible({ timeout: 500 }).catch(() => false)) {
+            // Wait for submit button to be enabled (Pyodide loaded)
+            await expect(submitBtn).toBeEnabled({ timeout: 60000 });
+
+            // Enter a generic answer for predict exercises
+            const predictInput = predictExercise.locator('input');
+            await predictInput.fill('0');
+          } else if (await fillInExercise.isVisible({ timeout: 500 }).catch(() => false)) {
+            // For fill-in exercises, find the input within the fill-in component
+            const fillInInput = fillInExercise.locator('input').first();
+            if (await fillInInput.isVisible().catch(() => false)) {
+              await fillInInput.fill('x');
+            }
+          } else if (await codeInput.isVisible({ timeout: 500 }).catch(() => false)) {
+            // For write exercises, use the code input
+            const textarea = codeInput.locator('textarea');
+            await textarea.fill('print("hello")');
+          } else {
+            // Fallback: try to find any textbox
+            const anyInput = page.getByRole('textbox').first();
+            if (await anyInput.isVisible({ timeout: 500 }).catch(() => false)) {
+              await anyInput.fill('x');
+            }
+          }
+
+          // Submit the answer
+          await submitBtn.click();
+
+          // Wait for feedback phase - Continue button appears
+          const continueBtn = page.getByRole('button', { name: /continue/i });
+          await expect(continueBtn).toBeVisible({ timeout: 15000 });
+
+          // Click continue to move to next exercise
+          await continueBtn.click();
+          exercisesCompleted++;
+
+          // Small delay for the next exercise to load
+          await page.waitForTimeout(500);
+        }
+
+        // Safety check - if we can't find any interactive elements, break
+        const anyInteractiveElement = await submitBtn.or(gotItBtn).or(sessionComplete).or(allCaughtUp).isVisible({ timeout: 2000 }).catch(() => false);
+        if (!anyInteractiveElement) {
+          console.log('No interactive elements found, breaking loop');
+          break;
+        }
+      }
+
+      // Final verification: Session should be complete or all caught up
+      // Re-check session complete state
+      const finalSessionComplete = await sessionComplete.isVisible({ timeout: 2000 }).catch(() => false);
+      const finalAllCaughtUp = await allCaughtUp.isVisible({ timeout: 2000 }).catch(() => false);
+
+      // At least one completion state should be visible
+      expect(finalSessionComplete || finalAllCaughtUp).toBe(true);
+
+      if (finalSessionComplete) {
+        // Verify session summary elements
+        // Check for stats display (Reviewed count, Accuracy, Time)
+        const reviewedStat = page.getByText(/reviewed/i);
+        const accuracyStat = page.getByText(/%/);
+        const dashboardBtn = page.getByRole('button', { name: /back to dashboard/i });
+
+        await expect(reviewedStat).toBeVisible({ timeout: 5000 });
+        await expect(accuracyStat).toBeVisible({ timeout: 5000 });
+        await expect(dashboardBtn).toBeVisible({ timeout: 5000 });
+
+        // Verify we can navigate back to dashboard
+        await dashboardBtn.click();
+        await expect(page).toHaveURL(/dashboard/);
+
+        console.log(`Full session test passed - completed ${exercisesCompleted} exercises and returned to dashboard`);
+      } else {
+        console.log('Session ended with "All Caught Up" state (no exercises due)');
+      }
+    });
+  });
+
   test.describe('Pyodide Execution', () => {
     const adminClient = getAdminClient();
 
