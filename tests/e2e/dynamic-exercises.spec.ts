@@ -2,6 +2,7 @@
 import { test, expect, Page } from '@playwright/test';
 import { createClient } from '@supabase/supabase-js';
 import { createTestUser, deleteTestUser, TestUser } from './utils/auth';
+import { getAdminClient, insertDynamicExercise, deleteExercise } from './utils/exercises';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -83,24 +84,21 @@ test.describe('Dynamic Exercise E2E Tests', () => {
 
     // If we have an exercise, check for template placeholders
     if (await submitBtn.isVisible().catch(() => false)) {
-      // Get the full page content
-      const pageContent = await page.content();
-
-      // CRITICAL: Template placeholders like {{start}} should NOT appear in rendered page
-      expect(pageContent).not.toContain('{{');
-      expect(pageContent).not.toContain('}}');
-
-      // Check prompt specifically
+      // Check prompt specifically for template placeholders
+      // Note: We check the text content, not the raw HTML (which contains class names with braces)
       const promptLocator = page.locator('[data-testid="exercise-prompt"]');
       if (await promptLocator.isVisible({ timeout: 2000 }).catch(() => false)) {
         const promptText = await promptLocator.textContent();
+        // Template placeholders like {{start}} should NOT appear in rendered exercise
+        expect(promptText).not.toContain('{{');
+        expect(promptText).not.toContain('}}');
         expect(promptText).not.toContain('{{start}}');
         expect(promptText).not.toContain('{{end}}');
         expect(promptText).not.toContain('{{a}}');
         expect(promptText).not.toContain('{{b}}');
       }
 
-      console.log('Template placeholder test passed - no {{}} found in page');
+      console.log('Template placeholder test passed - no {{}} found in exercise prompt');
     } else {
       console.log('No exercises available - skipping placeholder test');
     }
@@ -169,79 +167,129 @@ test.describe('Dynamic Exercise E2E Tests', () => {
   });
 
   test.describe('Coaching Feedback', () => {
-    test('coaching feedback does NOT appear for incorrect answers', async ({ page }) => {
+    const adminClient = getAdminClient();
+
+    test('no coaching when targetConstruct present and user uses the construct', async ({ page }) => {
       test.setTimeout(60000);
 
-      await authenticateUser(page, testUser);
-      await page.goto('/practice');
+      // Create exercise WITH targetConstruct (slice)
+      // Expected answer uses slice: s[1:4]
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-coaching-with-construct-${Date.now()}`,
+        prompt: 'Extract characters 1 through 4 from string s',
+        expectedAnswer: 's[1:4]',
+        acceptedSolutions: ['s[1:4]', 'result'],
+        targetConstruct: { type: 'slice', feedback: 'Try using slice notation!' },
+        generator: null, // No generator for this test
+      });
 
-      const submitBtn = page.getByRole('button', { name: /submit/i });
-      const gotItBtn = page.getByRole('button', { name: /got it/i });
-      const allCaughtUp = page.getByText(/all caught up/i);
+      try {
+        await authenticateUser(page, testUser);
 
-      await expect(submitBtn.or(gotItBtn).or(allCaughtUp)).toBeVisible({ timeout: 15000 });
-      await skipTeachingCards(page);
+        // Navigate to the test page which loads a specific exercise by slug
+        await page.goto(`/practice/test?slug=${slug}`);
 
-      if (!(await submitBtn.isVisible().catch(() => false))) {
-        console.log('No exercises - skipping coaching test');
-        return;
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+
+        // Submit answer that USES the slice construct
+        const answerInput = page.getByRole('textbox').first();
+        await answerInput.fill('s[1:4]');
+        await submitBtn.click();
+
+        // Wait for feedback
+        const continueBtn = page.getByRole('button', { name: /continue/i });
+        await expect(continueBtn).toBeVisible({ timeout: 5000 });
+
+        // Coaching feedback should NOT appear (user used the target construct)
+        const coachingFeedback = page.locator('[data-testid="coaching-feedback"]');
+        const isCoachingVisible = await coachingFeedback.isVisible({ timeout: 1000 }).catch(() => false);
+        expect(isCoachingVisible).toBe(false);
+      } finally {
+        await deleteExercise(adminClient, slug);
       }
-
-      // Submit a definitely wrong answer
-      const answerInput = page.getByRole('textbox').first();
-      await answerInput.fill('DEFINITELY_WRONG_ANSWER_12345');
-      await submitBtn.click();
-
-      // Wait for feedback
-      const continueBtn = page.getByRole('button', { name: /continue/i });
-      await expect(continueBtn).toBeVisible({ timeout: 5000 });
-
-      // Coaching feedback should NOT appear for incorrect answers
-      const coachingFeedback = page.locator('[data-testid="coaching-feedback"]');
-      const isCoachingVisible = await coachingFeedback.isVisible({ timeout: 1000 }).catch(() => false);
-
-      // Incorrect answer should show "incorrect" state, not coaching
-      expect(isCoachingVisible).toBe(false);
     });
 
-    test('correct answer shows feedback UI (positive or coaching)', async ({ page }) => {
+    test('coaching shown when targetConstruct present but user does NOT use the construct', async ({ page }) => {
       test.setTimeout(60000);
 
-      await authenticateUser(page, testUser);
-      await page.goto('/practice');
+      const feedbackText = 'Try using slice notation for more Pythonic code!';
 
-      const submitBtn = page.getByRole('button', { name: /submit/i });
-      const gotItBtn = page.getByRole('button', { name: /got it/i });
-      const allCaughtUp = page.getByText(/all caught up/i);
+      // Create exercise WITH targetConstruct (slice)
+      // Accept 'result' as alternative (doesn't use slice)
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-coaching-without-construct-${Date.now()}`,
+        prompt: 'Extract characters 1 through 4 from string s',
+        expectedAnswer: 's[1:4]',
+        acceptedSolutions: ['s[1:4]', 'result'],
+        targetConstruct: { type: 'slice', feedback: feedbackText },
+        generator: null,
+      });
 
-      await expect(submitBtn.or(gotItBtn).or(allCaughtUp)).toBeVisible({ timeout: 15000 });
-      await skipTeachingCards(page);
+      try {
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
 
-      if (!(await submitBtn.isVisible().catch(() => false))) {
-        console.log('No exercises - skipping feedback test');
-        return;
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+
+        // Submit answer that does NOT use slice (but is still correct)
+        const answerInput = page.getByRole('textbox').first();
+        await answerInput.fill('result');
+        await submitBtn.click();
+
+        // Wait for feedback
+        const continueBtn = page.getByRole('button', { name: /continue/i });
+        await expect(continueBtn).toBeVisible({ timeout: 5000 });
+
+        // Coaching feedback SHOULD appear with the configured feedback text
+        const coachingFeedback = page.locator('[data-testid="coaching-feedback"]');
+        await expect(coachingFeedback).toBeVisible({ timeout: 2000 });
+
+        // Verify the feedback text matches what we configured
+        const feedbackContent = await coachingFeedback.textContent();
+        expect(feedbackContent).toContain(feedbackText);
+      } finally {
+        await deleteExercise(adminClient, slug);
       }
+    });
 
-      // Submit an answer
-      const answerInput = page.getByRole('textbox').first();
-      await answerInput.fill('print("hello")');
-      await submitBtn.click();
+    test('no coaching when targetConstruct is NOT present', async ({ page }) => {
+      test.setTimeout(60000);
 
-      // Wait for feedback state
-      const continueBtn = page.getByRole('button', { name: /continue/i });
-      await expect(continueBtn).toBeVisible({ timeout: 5000 });
+      // Create exercise WITHOUT targetConstruct
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-coaching-no-construct-${Date.now()}`,
+        prompt: 'Print hello world',
+        expectedAnswer: 'print("hello")',
+        acceptedSolutions: ['print("hello")', 'print(\'hello\')'],
+        targetConstruct: null,
+        generator: null,
+      });
 
-      // Either correct or incorrect state should be visible
-      const correctIndicator = page.getByText(/correct|great|nice/i);
-      const incorrectIndicator = page.getByText(/incorrect|try again|not quite/i);
-      const coachingFeedback = page.locator('[data-testid="coaching-feedback"]');
+      try {
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
 
-      // At least one feedback element should be visible
-      const hasCorrect = await correctIndicator.isVisible({ timeout: 500 }).catch(() => false);
-      const hasIncorrect = await incorrectIndicator.isVisible({ timeout: 500 }).catch(() => false);
-      const hasCoaching = await coachingFeedback.isVisible({ timeout: 500 }).catch(() => false);
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
 
-      expect(hasCorrect || hasIncorrect || hasCoaching).toBe(true);
+        // Submit correct answer
+        const answerInput = page.getByRole('textbox').first();
+        await answerInput.fill('print("hello")');
+        await submitBtn.click();
+
+        // Wait for feedback
+        const continueBtn = page.getByRole('button', { name: /continue/i });
+        await expect(continueBtn).toBeVisible({ timeout: 5000 });
+
+        // Coaching feedback should NOT appear (no targetConstruct configured)
+        const coachingFeedback = page.locator('[data-testid="coaching-feedback"]');
+        const isCoachingVisible = await coachingFeedback.isVisible({ timeout: 1000 }).catch(() => false);
+        expect(isCoachingVisible).toBe(false);
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
     });
   });
 });

@@ -22,7 +22,7 @@ export async function insertDynamicExercise(
   adminClient: SupabaseClient,
   overrides: Partial<{
     slug: string;
-    generator: string;
+    generator: string | null;
     targetConstruct: { type: string; feedback: string } | null;
     exerciseType: string;
     expectedAnswer: string;
@@ -33,6 +33,9 @@ export async function insertDynamicExercise(
   }> = {}
 ): Promise<string> {
   const slug = overrides.slug ?? `e2e-dynamic-${Date.now()}`;
+
+  // Handle generator - use null if explicitly passed, otherwise default to 'slice-bounds'
+  const generator = 'generator' in overrides ? overrides.generator : 'slice-bounds';
 
   const { error } = await adminClient.from('exercises').insert({
     slug,
@@ -52,7 +55,7 @@ export async function insertDynamicExercise(
     exercise_type: overrides.exerciseType ?? 'write',
     pattern: 'indexing',
     objective: 'E2E test exercise',
-    generator: overrides.generator ?? 'slice-bounds',
+    generator,
     target_construct: overrides.targetConstruct ?? null,
     code: overrides.code ?? null,
     template: overrides.template ?? null,
