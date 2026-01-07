@@ -1,4 +1,9 @@
 // scripts/import-exercises.ts
+// Load environment variables FIRST - before any other imports that might use process.env
+import { config } from 'dotenv';
+config({ path: '.env.test.local' });
+config({ path: '.env.local' }); // fallback
+
 import { readFileSync, readdirSync, existsSync, statSync } from 'fs';
 import { join, basename } from 'path';
 import { parse as parseYaml } from 'yaml';
