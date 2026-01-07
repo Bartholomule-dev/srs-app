@@ -2,6 +2,8 @@
 import { describe, it, expect } from 'vitest';
 import * as fc from 'fast-check';
 import { sliceBoundsGenerator } from '@/lib/generators/definitions/slice-bounds';
+import type { Generator } from '@/lib/generators/types';
+import { getGenerator, registerGenerator, hasGenerator } from '@/lib/generators';
 
 describe('sliceBoundsGenerator', () => {
   it('has correct name', () => {
@@ -147,5 +149,33 @@ describe('sliceBoundsGenerator property tests', () => {
       }),
       { numRuns: 500 }
     );
+  });
+});
+
+describe('Generator registry', () => {
+  it('slice-bounds is registered', () => {
+    expect(hasGenerator('slice-bounds')).toBe(true);
+  });
+
+  it('getGenerator returns slice-bounds generator', () => {
+    const gen = getGenerator('slice-bounds');
+    expect(gen).toBeDefined();
+    expect(gen?.name).toBe('slice-bounds');
+  });
+
+  it('getGenerator returns undefined for unknown generator', () => {
+    const gen = getGenerator('non-existent');
+    expect(gen).toBeUndefined();
+  });
+
+  it('registerGenerator adds new generator', () => {
+    const testGen: Generator = {
+      name: 'test-gen',
+      generate: () => ({ value: 1 }),
+      validate: () => true,
+    };
+    registerGenerator(testGen);
+    expect(hasGenerator('test-gen')).toBe(true);
+    expect(getGenerator('test-gen')).toBe(testGen);
   });
 });
