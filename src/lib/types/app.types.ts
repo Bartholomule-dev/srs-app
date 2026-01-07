@@ -76,6 +76,19 @@ export interface Exercise {
 
   // Predict-output specific (optional)
   code?: string;
+
+  // Dynamic exercise fields (optional)
+  /** Generator name for dynamic exercises */
+  generator?: string;
+
+  /** Target construct for two-pass grading */
+  targetConstruct?: {
+    type: string;
+    feedback?: string;
+  };
+
+  /** Verify answer by execution (for write exercises) */
+  verifyByExecution?: boolean;
 }
 
 /**
