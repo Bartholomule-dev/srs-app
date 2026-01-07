@@ -41,6 +41,18 @@ export interface YamlExercise {
 
   // Predict-output specific
   code?: string; // Read-only code snippet for predict-output exercises
+
+  // Dynamic exercise generation (optional)
+  generator?: string;
+
+  // Target construct for two-pass grading (optional)
+  target_construct?: {
+    type: string;
+    feedback?: string;
+  };
+
+  // Execution verification flag (optional, for write exercises)
+  verify_by_execution?: boolean;
 }
 
 /**

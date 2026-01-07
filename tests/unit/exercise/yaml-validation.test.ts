@@ -168,6 +168,69 @@ describe('validateYamlExercise', () => {
   });
 });
 
+describe('generator field validation', () => {
+  it('accepts exercises with generator field', () => {
+    const exercise: YamlExercise = {
+      slug: 'dynamic-test',
+      title: 'Dynamic Test',
+      prompt: 'Get chars from {{start}} to {{end}}',
+      expected_answer: 's[{{start}}:{{end}}]',
+      hints: ['Use slice'],
+      concept: 'strings',
+      subconcept: 'slicing',
+      level: 'practice',
+      prereqs: [],
+      type: 'write',
+      pattern: 'indexing',
+      objective: 'Practice dynamic slicing',
+      generator: 'slice-bounds',
+    };
+    // Should not throw
+    expect(exercise.generator).toBe('slice-bounds');
+  });
+
+  it('accepts exercises with target_construct', () => {
+    const exercise: YamlExercise = {
+      slug: 'construct-test',
+      title: 'Construct Test',
+      prompt: 'Sum the list',
+      expected_answer: 'sum(nums)',
+      hints: ['Use sum()'],
+      concept: 'collections',
+      subconcept: 'lists',
+      level: 'practice',
+      prereqs: [],
+      type: 'write',
+      pattern: 'aggregation',
+      objective: 'Use built-in sum',
+      target_construct: {
+        type: 'builtin',
+        feedback: 'Try using the sum() function',
+      },
+    };
+    expect(exercise.target_construct?.type).toBe('builtin');
+  });
+
+  it('accepts exercises with verify_by_execution flag', () => {
+    const exercise: YamlExercise = {
+      slug: 'execution-test',
+      title: 'Execution Test',
+      prompt: 'Write a function that doubles a number',
+      expected_answer: 'def double(n): return n * 2',
+      hints: ['Use return'],
+      concept: 'functions',
+      subconcept: 'definition',
+      level: 'practice',
+      prereqs: [],
+      type: 'write',
+      pattern: 'function-definition',
+      objective: 'Define a simple function',
+      verify_by_execution: true,
+    };
+    expect(exercise.verify_by_execution).toBe(true);
+  });
+});
+
 describe('validateYamlFile', () => {
   const validFile: YamlExerciseFile = {
     language: 'python',
