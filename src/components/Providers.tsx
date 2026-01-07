@@ -3,6 +3,7 @@
 import { ReactNode } from 'react';
 import { AuthProvider } from '@/lib/context/AuthContext';
 import { ToastProvider } from '@/lib/context/ToastContext';
+import { PyodideProvider } from '@/lib/context/PyodideContext';
 import { ToastContainer } from '@/components/Toast';
 
 interface ProvidersProps {
@@ -13,7 +14,9 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <AuthProvider>
       <ToastProvider>
-        {children}
+        <PyodideProvider>
+          {children}
+        </PyodideProvider>
         <ToastContainer />
       </ToastProvider>
     </AuthProvider>
