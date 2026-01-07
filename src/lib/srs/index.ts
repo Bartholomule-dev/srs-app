@@ -1,38 +1,18 @@
 // src/lib/srs/index.ts
 
-// Exercise-based SRS (legacy)
+// FSRS algorithm (primary SRS implementation)
+export * from './fsrs';
+
+// Exercise selection (algorithm-agnostic)
 export {
-  calculateNextReview,
-  createInitialCardState,
-  getDueCards,
-  getNewCards,
-} from './algorithm';
-
-export type {
-  CardState,
-  ReviewResult,
-  SRSConfig,
-  DueCard,
-} from './types';
-
-export { DEFAULT_SRS_CONFIG } from './types';
-
-// Concept-based SRS (new)
-export {
-  getDueSubconcepts,
   selectExercise,
-  calculateSubconceptReview,
-  createInitialSubconceptState,
   getUnderrepresentedType,
   selectExerciseByType,
+  mapFSRSStateToPhase,
   LEVEL_ORDER,
-  GRADUATING_INTERVAL,
-  MIN_EASE_FACTOR,
-  MAX_EASE_FACTOR,
-  INITIAL_EASE_FACTOR,
-} from './concept-algorithm';
+} from './exercise-selection';
 
-export type { SubconceptReviewResult } from './concept-algorithm';
+export type { SubconceptSelectionInfo } from './exercise-selection';
 
-// Multi-target credit/penalty logic
+// Multi-target SRS credit/penalty logic
 export { getTargetsToCredit, getTargetsToPenalize } from './multi-target';
