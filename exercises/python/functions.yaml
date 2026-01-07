@@ -37,38 +37,6 @@ exercises:
     type: write
     pattern: definition
 
-  - slug: default-parameter
-    objective: "Use default parameter values in function definitions"
-    title: Default Parameter
-    difficulty: 2
-    prompt: Define greet(name, greeting="Hello") with a default greeting
-    expected_answer: 'def greet(name, greeting="Hello"):'
-    hints:
-      - Default values use =
-    tags: [functions, defaults, intermediate]
-    concept: functions
-    subconcept: arguments
-    level: practice
-    prereqs: [foundations, fn-basics]
-    type: write
-    pattern: definition
-
-  - slug: args-function
-    objective: "Apply *args to accept variable positional arguments"
-    title: Variable Arguments
-    difficulty: 3
-    prompt: Define a function sum_all that accepts any number of arguments
-    expected_answer: "def sum_all(*args):"
-    hints:
-      - Use *args for variable arguments
-    tags: [functions, args, advanced]
-    concept: functions
-    subconcept: arguments
-    level: practice
-    prereqs: [foundations, fn-basics]
-    type: write
-    pattern: definition
-
   - slug: kwargs-function
     objective: "Use **kwargs to accept variable keyword arguments"
     title: Keyword Arguments

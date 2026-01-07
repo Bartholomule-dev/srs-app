@@ -56,22 +56,6 @@ exercises:
     type: write
     pattern: handling
 
-  - slug: try-finally
-    objective: Write a finally block that executes regardless of exceptions
-    title: Try Finally
-    difficulty: 3
-    prompt: Write a finally block that always runs
-    expected_answer: "finally:"
-    hints:
-      - finally runs whether exception occurs or not
-    tags: [exceptions, finally, advanced]
-    concept: error-handling
-    subconcept: try-except
-    level: practice
-    prereqs: [functions]
-    type: write
-    pattern: handling
-
   - slug: except-as
     objective: Catch an exception and bind it to a variable using the as keyword
     title: Except with Alias
