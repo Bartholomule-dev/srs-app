@@ -568,6 +568,128 @@ test.describe('Dynamic Exercise E2E Tests', () => {
     });
   });
 
+  test.describe('Generator Parameter Visibility', () => {
+    const adminClient = getAdminClient();
+
+    test('generated parameters appear correctly in rendered exercise', async ({ page }) => {
+      test.setTimeout(60000);
+
+      // Create exercise with slice-bounds generator and templated prompt
+      // The generator produces: start (0-4), end (start+1 to 7)
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-generator-visibility-${Date.now()}`,
+        prompt: 'Extract characters from index {{start}} to index {{end}} from the string',
+        expectedAnswer: 's[{{start}}:{{end}}]',
+        acceptedSolutions: ['s[{{start}}:{{end}}]'],
+        generator: 'slice-bounds',
+        targetConstruct: null,
+      });
+
+      try {
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise to load
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+
+        // Get the rendered prompt
+        const promptLocator = page.locator('[data-testid="exercise-prompt"]');
+        await expect(promptLocator).toBeVisible({ timeout: 5000 });
+        const promptText = await promptLocator.textContent();
+
+        // NEGATIVE CHECK: Template placeholders should NOT appear
+        expect(promptText).not.toContain('{{start}}');
+        expect(promptText).not.toContain('{{end}}');
+        expect(promptText).not.toContain('{{');
+        expect(promptText).not.toContain('}}');
+
+        // POSITIVE CHECK: Extract numbers from the prompt and verify they're in valid ranges
+        // Pattern: "Extract characters from index X to index Y from the string"
+        const indexPattern = /index\s+(\d+)\s+to\s+index\s+(\d+)/i;
+        const match = promptText?.match(indexPattern);
+
+        expect(match).not.toBeNull();
+        expect(match).toBeDefined();
+
+        if (match) {
+          const startValue = parseInt(match[1], 10);
+          const endValue = parseInt(match[2], 10);
+
+          // Verify start is in valid range for slice-bounds generator: [0, 4]
+          expect(startValue).toBeGreaterThanOrEqual(0);
+          expect(startValue).toBeLessThanOrEqual(4);
+
+          // Verify end is in valid range: [start+1, 7]
+          expect(endValue).toBeGreaterThan(startValue);
+          expect(endValue).toBeLessThanOrEqual(7);
+
+          console.log(`Generator visibility test passed - start: ${startValue}, end: ${endValue}`);
+        }
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+
+    test('generator values consistent between prompt and expected answer', async ({ page }) => {
+      test.setTimeout(60000);
+
+      // Create exercise where both prompt and expected answer use generator params
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-generator-consistency-${Date.now()}`,
+        prompt: 'Slice from {{start}} to {{end}}',
+        expectedAnswer: 's[{{start}}:{{end}}]',
+        acceptedSolutions: ['s[{{start}}:{{end}}]'],
+        generator: 'slice-bounds',
+        targetConstruct: null,
+      });
+
+      try {
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise to load
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+
+        // Get the rendered prompt
+        const promptLocator = page.locator('[data-testid="exercise-prompt"]');
+        await expect(promptLocator).toBeVisible({ timeout: 5000 });
+        const promptText = await promptLocator.textContent();
+
+        // Extract numbers from prompt: "Slice from X to Y"
+        const promptPattern = /from\s+(\d+)\s+to\s+(\d+)/i;
+        const promptMatch = promptText?.match(promptPattern);
+
+        expect(promptMatch).not.toBeNull();
+
+        if (promptMatch) {
+          const promptStart = parseInt(promptMatch[1], 10);
+          const promptEnd = parseInt(promptMatch[2], 10);
+
+          // Submit the correct answer with those same values
+          const expectedAnswer = `s[${promptStart}:${promptEnd}]`;
+          const codeInput = page.locator('[data-testid="code-input"]');
+          const textarea = codeInput.locator('textarea');
+          await textarea.fill(expectedAnswer);
+          await submitBtn.click();
+
+          // Wait for feedback
+          const continueBtn = page.getByRole('button', { name: /continue/i });
+          await expect(continueBtn).toBeVisible({ timeout: 5000 });
+
+          // Verify the answer was marked correct (values were consistent)
+          const successIndicator = page.getByText(/correct|well done|great/i);
+          await expect(successIndicator).toBeVisible({ timeout: 5000 });
+
+          console.log(`Generator consistency test passed - answer s[${promptStart}:${promptEnd}] was correct`);
+        }
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+  });
+
   test.describe('Pyodide Execution', () => {
     const adminClient = getAdminClient();
 

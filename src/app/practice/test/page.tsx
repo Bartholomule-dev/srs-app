@@ -7,13 +7,16 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ProtectedRoute, ExerciseCard } from '@/components';
+import { useAuth } from '@/lib/hooks/useAuth';
 import { supabase } from '@/lib/supabase/client';
 import { mapExercise } from '@/lib/supabase/mappers';
+import { renderExercise } from '@/lib/generators/render';
 import type { Exercise } from '@/lib/types';
 
 function PracticeTestContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { user } = useAuth();
   const slug = searchParams.get('slug');
 
   const [exercise, setExercise] = useState<Exercise | null>(null);
@@ -24,6 +27,11 @@ function PracticeTestContent() {
     if (!slug) {
       setError('No exercise slug provided. Use ?slug=exercise-slug');
       setLoading(false);
+      return;
+    }
+
+    // Wait for user to be available for deterministic seed generation
+    if (!user) {
       return;
     }
 
@@ -46,12 +54,15 @@ function PracticeTestContent() {
         return;
       }
 
-      setExercise(mapExercise(data));
+      // Map exercise and render any generator templates
+      const mappedExercise = mapExercise(data);
+      const renderedExercise = renderExercise(mappedExercise, user!.id, new Date());
+      setExercise(renderedExercise);
       setLoading(false);
     }
 
     loadExercise();
-  }, [slug]);
+  }, [slug, user]);
 
   const handleComplete = () => {
     // Stay on the page after completion for E2E assertions
