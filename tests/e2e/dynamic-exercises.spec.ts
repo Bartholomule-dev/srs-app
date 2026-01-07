@@ -1190,4 +1190,203 @@ test.describe('Dynamic Exercise E2E Tests', () => {
       }
     });
   });
+
+  test.describe('Pyodide Failure Handling', () => {
+    const adminClient = getAdminClient();
+
+    test('predict exercise falls back to string matching when Pyodide CDN is blocked', async ({ page }) => {
+      test.setTimeout(120000);
+
+      // Create a predict exercise
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-pyodide-fallback-${Date.now()}`,
+        prompt: 'What will this code output?',
+        expectedAnswer: '42',
+        acceptedSolutions: ['42'],
+        exerciseType: 'predict',
+        code: 'print(6 * 7)',
+        generator: null,
+        targetConstruct: null,
+      });
+
+      try {
+        // Block requests to Pyodide CDN to simulate network failure
+        // This covers both the pyodide npm package requests and direct CDN requests
+        await page.route('**/cdn.jsdelivr.net/pyodide/**', (route) => {
+          route.abort('failed');
+        });
+
+        // Also block the pyodide npm package if it makes requests elsewhere
+        await page.route('**/pyodide*', (route) => {
+          const url = route.request().url();
+          // Only abort if it's a pyodide-related CDN request
+          if (url.includes('pyodide') && (url.includes('wasm') || url.includes('.js'))) {
+            route.abort('failed');
+          } else {
+            route.continue();
+          }
+        });
+
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise to load
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+
+        // The loading indicator may appear briefly then disappear when load fails
+        // Wait a bit for the Pyodide load attempt to fail
+        await page.waitForTimeout(3000);
+
+        // Submit button should eventually become enabled (fallback mode)
+        // Even if Pyodide fails, the exercise should still be submittable
+        await expect(submitBtn).toBeEnabled({ timeout: 30000 });
+
+        // Find the predict exercise input
+        const predictExercise = page.locator('[data-testid="predict-output-exercise"]');
+        await expect(predictExercise).toBeVisible({ timeout: 5000 });
+
+        // Enter the correct answer (matches expectedAnswer string)
+        const answerInput = predictExercise.locator('input');
+        await answerInput.fill('42');
+
+        // Submit the answer
+        await submitBtn.click();
+
+        // Wait for feedback - the answer should be graded via string matching fallback
+        const continueBtn = page.getByRole('button', { name: /continue/i });
+        await expect(continueBtn).toBeVisible({ timeout: 15000 });
+
+        // Verify the answer was marked correct (string matching fallback worked)
+        const successIndicator = page.getByText(/correct|well done|great/i);
+        await expect(successIndicator).toBeVisible({ timeout: 5000 });
+
+        console.log('Pyodide fallback test passed - string matching worked when CDN blocked');
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+  });
+
+  test.describe('Double Submit Prevention', () => {
+    const adminClient = getAdminClient();
+
+    test('submit button is disabled while submission is in progress', async ({ page }) => {
+      test.setTimeout(60000);
+
+      // Create a simple write exercise (faster than predict, no Pyodide)
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-double-submit-${Date.now()}`,
+        prompt: 'Print hello world',
+        expectedAnswer: 'print("hello")',
+        acceptedSolutions: ['print("hello")', 'print(\'hello\')'],
+        exerciseType: 'write',
+        generator: null,
+        targetConstruct: null,
+      });
+
+      try {
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise to load
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+        await expect(submitBtn).toBeEnabled({ timeout: 5000 });
+
+        // Find the code input
+        const codeInput = page.locator('[data-testid="code-input"]');
+        const textarea = codeInput.locator('textarea');
+        await textarea.fill('print("hello")');
+
+        // Verify button is enabled before clicking
+        const isEnabledBefore = await submitBtn.isEnabled();
+        expect(isEnabledBefore).toBe(true);
+
+        // Click submit and immediately check button state
+        await submitBtn.click();
+
+        // The button should become disabled while submitting
+        // Check that button text changes to "Checking..." or button is disabled
+        const checkingButton = page.getByRole('button', { name: /checking/i });
+        const buttonDisabledOrChecking = await Promise.race([
+          submitBtn.isDisabled().then((disabled) => disabled ? 'disabled' : 'enabled'),
+          checkingButton.isVisible({ timeout: 500 }).then(() => 'checking').catch(() => null),
+        ]);
+
+        // Either the button is disabled OR shows "Checking..." text
+        // Both indicate double-submit prevention
+        expect(['disabled', 'checking']).toContain(buttonDisabledOrChecking);
+
+        // Wait for feedback to appear (submission completed)
+        const continueBtn = page.getByRole('button', { name: /continue/i });
+        await expect(continueBtn).toBeVisible({ timeout: 15000 });
+
+        // Verify there's only ONE feedback section (not duplicated from double submit)
+        // We check Continue button count as a proxy for feedback sections
+        const continueBtns = page.getByRole('button', { name: /continue/i });
+        const continueBtnCount = await continueBtns.count();
+        expect(continueBtnCount).toBe(1);
+
+        console.log('Double-submit prevention test passed - button disabled during submission');
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+
+    test('rapid double-click does not cause duplicate feedback', async ({ page }) => {
+      test.setTimeout(60000);
+
+      // Create a simple write exercise
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-rapid-click-${Date.now()}`,
+        prompt: 'Print test',
+        expectedAnswer: 'print("test")',
+        acceptedSolutions: ['print("test")', 'print(\'test\')'],
+        exerciseType: 'write',
+        generator: null,
+        targetConstruct: null,
+      });
+
+      try {
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise to load
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+        await expect(submitBtn).toBeEnabled({ timeout: 5000 });
+
+        // Find the code input
+        const codeInput = page.locator('[data-testid="code-input"]');
+        const textarea = codeInput.locator('textarea');
+        await textarea.fill('print("test")');
+
+        // Perform rapid double-click using dblclick()
+        await submitBtn.dblclick();
+
+        // Wait for submission to complete
+        const continueBtn = page.getByRole('button', { name: /continue/i });
+        await expect(continueBtn).toBeVisible({ timeout: 15000 });
+
+        // Verify answer was marked correct
+        const successIndicator = page.getByText(/correct|well done|great/i);
+        await expect(successIndicator).toBeVisible({ timeout: 5000 });
+
+        // Verify only one Continue button exists (no duplicate submissions)
+        const continueBtns = page.getByRole('button', { name: /continue/i });
+        const count = await continueBtns.count();
+        expect(count).toBe(1);
+
+        // Verify the page is in a clean feedback state (not corrupted)
+        // The "answering" phase elements should be hidden
+        const codeInputAfter = page.locator('[data-testid="code-input"]');
+        await expect(codeInputAfter).not.toBeVisible({ timeout: 2000 });
+
+        console.log('Rapid double-click test passed - no duplicate feedback');
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+  });
 });
