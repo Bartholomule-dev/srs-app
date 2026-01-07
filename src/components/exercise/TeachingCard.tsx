@@ -72,7 +72,7 @@ export function TeachingCard({ card, onContinue }: TeachingCardProps) {
             </span>
             <div className="rounded-lg bg-[var(--bg-surface-2)] border border-[var(--border)] p-4 font-mono text-sm">
               <pre className="whitespace-pre-wrap text-[var(--text-primary)]">
-                {card.exampleExercise.expectedAnswer}
+                {card.teaching.exampleCode ?? card.exampleExercise.expectedAnswer}
               </pre>
             </div>
           </div>

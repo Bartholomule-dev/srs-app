@@ -61,4 +61,45 @@ describe('TeachingCard', () => {
 
     expect(screen.getByText(/LEARN/)).toBeInTheDocument();
   });
+
+  it('displays exampleCode when provided', () => {
+    const card: TeachingSessionCard = {
+      type: 'teaching',
+      subconcept: 'io',
+      teaching: {
+        explanation: 'Use print() to display output.',
+        exampleCode: 'print("Teaching example!")',
+      },
+      exampleExercise: createMockExercise({
+        slug: 'print-string',
+        expectedAnswer: 'print("Hello, World!")', // Different!
+      }),
+    };
+
+    render(<TeachingCard card={card} onContinue={() => {}} />);
+
+    // Should show exampleCode, NOT expectedAnswer
+    expect(screen.getByText('print("Teaching example!")')).toBeInTheDocument();
+    expect(screen.queryByText('print("Hello, World!")')).not.toBeInTheDocument();
+  });
+
+  it('falls back to expectedAnswer when exampleCode not provided', () => {
+    const card: TeachingSessionCard = {
+      type: 'teaching',
+      subconcept: 'io',
+      teaching: {
+        explanation: 'Use print() to display output.',
+        exampleSlug: 'print-string',
+        // No exampleCode
+      },
+      exampleExercise: createMockExercise({
+        slug: 'print-string',
+        expectedAnswer: 'print("Hello, World!")',
+      }),
+    };
+
+    render(<TeachingCard card={card} onContinue={() => {}} />);
+
+    expect(screen.getByText('print("Hello, World!")')).toBeInTheDocument();
+  });
 });
