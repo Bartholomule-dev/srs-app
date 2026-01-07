@@ -186,10 +186,24 @@ if (dottedPrereqIssues.length > 0 && dottedPrereqIssues.length <= 20) {
 }
 console.log('');
 
-// === Check 7: Teaching exampleSlugs ===
-console.log('=== Check 7: Teaching Example Slugs ===');
+// === Check 7: Teaching Example Content ===
+console.log('=== Check 7: Teaching Example Content ===');
 for (const [subSlug, subDef] of Object.entries(curriculum.subconcepts)) {
-  if (subDef.teaching?.exampleSlug) {
+  const hasExampleCode = !!subDef.teaching?.exampleCode;
+  const hasExampleSlug = !!subDef.teaching?.exampleSlug;
+
+  // Must have either exampleCode or valid exampleSlug
+  if (!hasExampleCode && !hasExampleSlug) {
+    issues.push({
+      type: 'MISSING_EXAMPLE',
+      file: 'python.json',
+      slug: subSlug,
+      message: `Teaching needs either exampleCode or exampleSlug`
+    });
+  }
+
+  // If using exampleSlug, validate it exists
+  if (hasExampleSlug && !hasExampleCode) {
     if (!allExercises.has(subDef.teaching.exampleSlug)) {
       issues.push({
         type: 'MISSING_EXAMPLE',
@@ -198,6 +212,11 @@ for (const [subSlug, subDef] of Object.entries(curriculum.subconcepts)) {
         message: `Teaching exampleSlug "${subDef.teaching.exampleSlug}" not found in exercises`
       });
     }
+  }
+
+  // Warn if still using exampleSlug without exampleCode
+  if (hasExampleSlug && !hasExampleCode) {
+    console.log(`  ⚠ ${subSlug}: using deprecated exampleSlug, consider adding exampleCode`);
   }
 }
 const exampleIssues = issues.filter(i => i.type === 'MISSING_EXAMPLE');
