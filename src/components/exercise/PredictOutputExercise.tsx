@@ -43,7 +43,7 @@ export function PredictOutputExercise({
   );
 
   return (
-    <div className="space-y-4">
+    <div data-testid="predict-output-exercise" className="space-y-4">
       {/* Code display */}
       <div className="rounded-lg bg-bg-surface-2 border border-border-subtle overflow-hidden">
         <div className="px-4 py-2 bg-bg-surface-3 border-b border-border-subtle">

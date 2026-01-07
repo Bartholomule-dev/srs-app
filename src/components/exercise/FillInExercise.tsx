@@ -114,6 +114,7 @@ export function FillInExercise({
 
   return (
     <div
+      data-testid="fill-in-exercise"
       className={cn(
         'relative rounded-lg overflow-hidden',
         'bg-bg-surface-2 border border-transparent',

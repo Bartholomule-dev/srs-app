@@ -19,16 +19,18 @@ interface CodeInputProps {
  */
 export function CodeInput({ value, onChange, onSubmit, disabled = false }: CodeInputProps) {
   return (
-    <CodeEditor
-      value={value}
-      onChange={onChange}
-      onSubmit={onSubmit}
-      disabled={disabled}
-      showLineNumbers={true}
-      autoFocus={true}
-      minLines={3}
-      placeholder="Type your answer... (Enter to submit, Shift+Enter for newline)"
-      aria-label="Code answer input"
-    />
+    <div data-testid="code-input">
+      <CodeEditor
+        value={value}
+        onChange={onChange}
+        onSubmit={onSubmit}
+        disabled={disabled}
+        showLineNumbers={true}
+        autoFocus={true}
+        minLines={3}
+        placeholder="Type your answer... (Enter to submit, Shift+Enter for newline)"
+        aria-label="Code answer input"
+      />
+    </div>
   );
 }

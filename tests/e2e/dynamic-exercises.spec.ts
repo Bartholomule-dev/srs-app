@@ -292,4 +292,129 @@ test.describe('Dynamic Exercise E2E Tests', () => {
       }
     });
   });
+
+  test.describe('Exercise Type Routing', () => {
+    const adminClient = getAdminClient();
+
+    test('write exercise renders CodeInput component', async ({ page }) => {
+      test.setTimeout(60000);
+
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-type-write-${Date.now()}`,
+        prompt: 'Write code to print hello',
+        expectedAnswer: 'print("hello")',
+        acceptedSolutions: ['print("hello")', 'print(\'hello\')'],
+        exerciseType: 'write',
+        generator: null,
+        targetConstruct: null,
+      });
+
+      try {
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise to load
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+
+        // Verify CodeInput component renders (not FillIn or Predict)
+        const codeInput = page.locator('[data-testid="code-input"]');
+        await expect(codeInput).toBeVisible({ timeout: 5000 });
+
+        // Verify other components do NOT render
+        const fillInExercise = page.locator('[data-testid="fill-in-exercise"]');
+        const predictExercise = page.locator('[data-testid="predict-output-exercise"]');
+        await expect(fillInExercise).not.toBeVisible();
+        await expect(predictExercise).not.toBeVisible();
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+
+    test('fill-in exercise renders FillInExercise component', async ({ page }) => {
+      test.setTimeout(60000);
+
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-type-fillin-${Date.now()}`,
+        prompt: 'Complete the list comprehension',
+        expectedAnswer: 'x * 2',
+        acceptedSolutions: ['x * 2', 'x*2', '2 * x', '2*x'],
+        exerciseType: 'fill-in',
+        template: '[___ for x in range(5)]',
+        generator: null,
+        targetConstruct: null,
+      });
+
+      try {
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise to load
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+
+        // Verify FillInExercise component renders
+        const fillInExercise = page.locator('[data-testid="fill-in-exercise"]');
+        await expect(fillInExercise).toBeVisible({ timeout: 5000 });
+
+        // Verify template with blank is visible (the ___ placeholder should be in the template)
+        const templateContent = await fillInExercise.textContent();
+        expect(templateContent).toContain('for x in range(5)');
+
+        // Verify other components do NOT render
+        const codeInput = page.locator('[data-testid="code-input"]');
+        const predictExercise = page.locator('[data-testid="predict-output-exercise"]');
+        await expect(codeInput).not.toBeVisible();
+        await expect(predictExercise).not.toBeVisible();
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+
+    test('predict exercise renders PredictOutputExercise component', async ({ page }) => {
+      test.setTimeout(60000);
+
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-type-predict-${Date.now()}`,
+        prompt: 'What will this code print?',
+        expectedAnswer: '15',
+        acceptedSolutions: ['15'],
+        exerciseType: 'predict',
+        code: 'print(5 + 10)',
+        generator: null,
+        targetConstruct: null,
+      });
+
+      try {
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise to load
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+
+        // Verify PredictOutputExercise component renders
+        const predictExercise = page.locator('[data-testid="predict-output-exercise"]');
+        await expect(predictExercise).toBeVisible({ timeout: 5000 });
+
+        // Verify code block is displayed
+        const codeBlock = predictExercise.locator('pre code');
+        await expect(codeBlock).toBeVisible();
+        const codeContent = await codeBlock.textContent();
+        expect(codeContent).toContain('print(5 + 10)');
+
+        // Verify the "What will print?" label is visible
+        const label = predictExercise.locator('label');
+        await expect(label).toHaveText('What will print?');
+
+        // Verify other components do NOT render
+        const codeInput = page.locator('[data-testid="code-input"]');
+        const fillInExercise = page.locator('[data-testid="fill-in-exercise"]');
+        await expect(codeInput).not.toBeVisible();
+        await expect(fillInExercise).not.toBeVisible();
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+  });
 });
