@@ -1,3 +1,4 @@
+Connecting to db 5432
 export type Json =
   | string
   | number
@@ -206,12 +207,16 @@ export type Database = {
         Row: {
           concept_slug: string
           created_at: string
-          ease_factor: number
+          difficulty: number | null
+          elapsed_days: number | null
+          fsrs_state: number | null
           id: string
-          interval: number
+          lapses: number | null
           last_reviewed: string | null
           next_review: string
-          phase: string
+          reps: number | null
+          scheduled_days: number | null
+          stability: number | null
           subconcept_slug: string
           updated_at: string
           user_id: string
@@ -219,12 +224,16 @@ export type Database = {
         Insert: {
           concept_slug: string
           created_at?: string
-          ease_factor?: number
+          difficulty?: number | null
+          elapsed_days?: number | null
+          fsrs_state?: number | null
           id?: string
-          interval?: number
+          lapses?: number | null
           last_reviewed?: string | null
           next_review?: string
-          phase?: string
+          reps?: number | null
+          scheduled_days?: number | null
+          stability?: number | null
           subconcept_slug: string
           updated_at?: string
           user_id: string
@@ -232,12 +241,16 @@ export type Database = {
         Update: {
           concept_slug?: string
           created_at?: string
-          ease_factor?: number
+          difficulty?: number | null
+          elapsed_days?: number | null
+          fsrs_state?: number | null
           id?: string
-          interval?: number
+          lapses?: number | null
           last_reviewed?: string | null
           next_review?: string
-          phase?: string
+          reps?: number | null
+          scheduled_days?: number | null
+          stability?: number | null
           subconcept_slug?: string
           updated_at?: string
           user_id?: string
