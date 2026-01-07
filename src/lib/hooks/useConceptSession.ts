@@ -8,6 +8,7 @@ import { useToast } from '@/lib/context/ToastContext';
 import { usePyodide } from '@/lib/context/PyodideContext';
 import { supabase } from '@/lib/supabase/client';
 import { mapExercise } from '@/lib/supabase/mappers';
+import { renderExercises } from '@/lib/generators/render';
 import { handleSupabaseError, AppError } from '@/lib/errors';
 import { updateProfileStats } from '@/lib/stats';
 import { logExerciseAttempt } from '@/lib/exercise';
@@ -136,6 +137,8 @@ export function useConceptSession(): UseConceptSessionReturn {
       return;
     }
 
+    // Capture user.id for TypeScript narrowing inside async function
+    const userId = user.id;
     let cancelled = false;
 
     async function fetchExercises() {
@@ -151,7 +154,10 @@ export function useConceptSession(): UseConceptSessionReturn {
         }
 
         const mappedExercises = (data ?? []).map(mapExercise);
-        setExercises(mappedExercises);
+        // Render dynamic exercises (interpolate {{param}} templates)
+        // Static exercises pass through unchanged
+        const renderedExercises = renderExercises(mappedExercises, userId, new Date());
+        setExercises(renderedExercises);
       } catch (err) {
         if (cancelled) return;
         setError(err instanceof Error ? handleSupabaseError(err) : null);
