@@ -22,7 +22,7 @@ interface ExerciseCardProps {
 }
 
 export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
-  const { pyodide, loading: pyodideLoading } = usePyodide();
+  const { pyodide, loading: pyodideLoading, loadPyodide } = usePyodide();
 
   const [phase, setPhase] = useState<Phase>('answering');
   const [userAnswer, setUserAnswer] = useState('');
@@ -58,6 +58,19 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
       prevIdForRef.current = exercise.id;
     }
   }, [exercise.id]);
+
+  // Trigger Pyodide loading for predict exercises (or exercises with verifyByExecution)
+  useEffect(() => {
+    if (
+      (exercise.exerciseType === 'predict' || exercise.verifyByExecution) &&
+      !pyodide &&
+      !pyodideLoading
+    ) {
+      loadPyodide().catch((err) => {
+        console.warn('Failed to preload Pyodide:', err);
+      });
+    }
+  }, [exercise.exerciseType, exercise.verifyByExecution, pyodide, pyodideLoading, loadPyodide]);
 
   // Track page visibility for pausing timer
   useEffect(() => {
@@ -177,7 +190,10 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
 
               {/* Pyodide loading indicator for predict exercises */}
               {exercise.exerciseType === 'predict' && pyodideLoading && (
-                <div className="text-sm text-text-secondary flex items-center gap-2 mb-4">
+                <div
+                  data-testid="pyodide-loading"
+                  className="text-sm text-text-secondary flex items-center gap-2 mb-4"
+                >
                   <span className="animate-spin">&#8635;</span>
                   Loading Python runtime...
                 </div>

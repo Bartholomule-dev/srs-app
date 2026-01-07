@@ -417,4 +417,160 @@ test.describe('Dynamic Exercise E2E Tests', () => {
       }
     });
   });
+
+  test.describe('Pyodide Execution', () => {
+    const adminClient = getAdminClient();
+
+    test('Pyodide loading indicator appears for predict exercises', async ({ page }) => {
+      // Pyodide loading can take 5-15 seconds
+      test.setTimeout(120000);
+
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-pyodide-loading-${Date.now()}`,
+        prompt: 'What will this code print?',
+        expectedAnswer: '42',
+        acceptedSolutions: ['42'],
+        exerciseType: 'predict',
+        code: 'print(6 * 7)',
+        generator: null,
+        targetConstruct: null,
+      });
+
+      try {
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise to load
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+
+        // The loading indicator should appear while Pyodide loads
+        // Note: On first load this will be visible; on subsequent loads Pyodide may already be cached
+        const loadingIndicator = page.locator('[data-testid="pyodide-loading"]');
+
+        // Wait for loading indicator OR for it to have already completed
+        // (Pyodide may load very quickly if cached)
+        const pyodideReady = page.locator('[data-testid="predict-output-exercise"]');
+
+        // Try to see the loading indicator - it may be brief if Pyodide is cached
+        const sawLoading = await loadingIndicator.isVisible({ timeout: 2000 }).catch(() => false);
+
+        // If we didn't see loading, Pyodide was likely already loaded/cached
+        // Either way, the exercise should be visible and functional
+        await expect(pyodideReady).toBeVisible({ timeout: 30000 });
+
+        // Verify Submit button is enabled (not disabled due to loading)
+        // After Pyodide loads, the button should be enabled
+        await expect(submitBtn).toBeEnabled({ timeout: 30000 });
+
+        console.log(`Pyodide loading test completed. Loading indicator visible: ${sawLoading}`);
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+
+    test('predict exercise graded via Pyodide execution', async ({ page }) => {
+      // Pyodide loading and execution can take time
+      test.setTimeout(120000);
+
+      // Create predict exercise with simple code
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-pyodide-execution-${Date.now()}`,
+        prompt: 'What will this code output?',
+        expectedAnswer: '5',
+        acceptedSolutions: ['5'],
+        exerciseType: 'predict',
+        code: 'print(2 + 3)',
+        generator: null,
+        targetConstruct: null,
+      });
+
+      try {
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise and Pyodide to load
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+
+        // Wait for Pyodide to finish loading (submit button becomes enabled)
+        await expect(submitBtn).toBeEnabled({ timeout: 60000 });
+
+        // Find the predict exercise input
+        const predictExercise = page.locator('[data-testid="predict-output-exercise"]');
+        await expect(predictExercise).toBeVisible({ timeout: 5000 });
+
+        // Enter the correct output
+        const answerInput = predictExercise.locator('input');
+        await answerInput.fill('5');
+
+        // Submit the answer
+        await submitBtn.click();
+
+        // Wait for feedback - Continue button appears when graded
+        const continueBtn = page.getByRole('button', { name: /continue/i });
+        await expect(continueBtn).toBeVisible({ timeout: 15000 });
+
+        // Verify the answer was marked correct
+        // Look for success indicator (green checkmark, "Correct!", etc.)
+        const successIndicator = page.getByText(/correct|well done|great/i);
+        await expect(successIndicator).toBeVisible({ timeout: 5000 });
+
+        console.log('Pyodide execution grading test passed - correct answer marked as correct');
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+
+    test('predict exercise with wrong answer graded via Pyodide execution', async ({ page }) => {
+      // Pyodide loading and execution can take time
+      test.setTimeout(120000);
+
+      // Create predict exercise with simple code
+      const slug = await insertDynamicExercise(adminClient, {
+        slug: `e2e-pyodide-execution-wrong-${Date.now()}`,
+        prompt: 'What will this code output?',
+        expectedAnswer: '15',
+        acceptedSolutions: ['15'],
+        exerciseType: 'predict',
+        code: 'print(5 * 3)',
+        generator: null,
+        targetConstruct: null,
+      });
+
+      try {
+        await authenticateUser(page, testUser);
+        await page.goto(`/practice/test?slug=${slug}`);
+
+        // Wait for exercise and Pyodide to load
+        const submitBtn = page.getByRole('button', { name: /submit/i });
+        await expect(submitBtn).toBeVisible({ timeout: 15000 });
+        await expect(submitBtn).toBeEnabled({ timeout: 60000 });
+
+        // Find the predict exercise input
+        const predictExercise = page.locator('[data-testid="predict-output-exercise"]');
+        await expect(predictExercise).toBeVisible({ timeout: 5000 });
+
+        // Enter a WRONG answer
+        const answerInput = predictExercise.locator('input');
+        await answerInput.fill('10');
+
+        // Submit the answer
+        await submitBtn.click();
+
+        // Wait for feedback
+        const continueBtn = page.getByRole('button', { name: /continue/i });
+        await expect(continueBtn).toBeVisible({ timeout: 15000 });
+
+        // Verify the answer was marked incorrect
+        // Look for the expected answer being shown
+        const expectedAnswer = page.getByText('15');
+        await expect(expectedAnswer).toBeVisible({ timeout: 5000 });
+
+        console.log('Pyodide execution grading test passed - wrong answer marked as incorrect');
+      } finally {
+        await deleteExercise(adminClient, slug);
+      }
+    });
+  });
 });

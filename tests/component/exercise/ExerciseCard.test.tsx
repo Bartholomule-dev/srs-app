@@ -7,10 +7,11 @@ import { createMockExercise } from '@tests/fixtures/exercise';
 // Mock PyodideContext (Phase 3)
 vi.mock('@/lib/context/PyodideContext', () => ({
   usePyodide: () => ({
-    ready: true,
+    pyodide: null, // No actual Pyodide instance in tests
     loading: false,
     error: null,
-    execute: vi.fn().mockResolvedValue({ output: '', error: null }),
+    loadPyodide: vi.fn().mockResolvedValue(null),
+    isReady: false,
   }),
 }));
 
