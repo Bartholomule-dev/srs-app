@@ -5,11 +5,13 @@ import {
   useRef,
   useEffect,
   useImperativeHandle,
+  useCallback,
   type KeyboardEvent,
   type ChangeEvent,
   type TextareaHTMLAttributes,
 } from 'react';
 import { cn } from '@/lib/utils';
+import { insertNewlineWithIndent } from '@/lib/editor/auto-indent';
 
 export interface CodeEditorProps
   extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onChange'> {
@@ -34,7 +36,8 @@ export interface CodeEditorProps
  * - Dark editor surface with focus glow effect
  * - Monospace font (JetBrains Mono)
  * - Optional line numbers
- * - Enter to submit, Shift+Enter for newline
+ * - Enter to submit, Shift+Enter for newline with auto-indent
+ * - Python-aware indentation (preserves indent, adds after colon)
  * - Accessible with aria-label support
  */
 export const CodeEditor = forwardRef<HTMLTextAreaElement, CodeEditorProps>(
@@ -68,13 +71,36 @@ export const CodeEditor = forwardRef<HTMLTextAreaElement, CodeEditorProps>(
       onChange(e.target.value);
     };
 
-    const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-      // Enter to submit (without Shift), Shift+Enter for newline
-      if (e.key === 'Enter' && !e.shiftKey && !disabled && onSubmit) {
-        e.preventDefault();
-        onSubmit();
-      }
-    };
+    const handleKeyDown = useCallback(
+      (e: KeyboardEvent<HTMLTextAreaElement>) => {
+        // Enter to submit (without Shift), Shift+Enter for newline with indent
+        if (e.key === 'Enter') {
+          if (e.shiftKey) {
+            // Shift+Enter: insert newline with auto-indent
+            if (disabled) return;
+
+            e.preventDefault();
+            const textarea = e.currentTarget;
+            const { selectionStart } = textarea;
+
+            const result = insertNewlineWithIndent(value, selectionStart);
+            onChange(result.value);
+
+            // Set cursor position after React re-renders
+            requestAnimationFrame(() => {
+              textarea.setSelectionRange(result.cursorPosition, result.cursorPosition);
+            });
+          } else {
+            // Enter without Shift: submit
+            if (!disabled && onSubmit) {
+              e.preventDefault();
+              onSubmit();
+            }
+          }
+        }
+      },
+      [value, onChange, onSubmit, disabled]
+    );
 
     // Calculate line count for line numbers display
     const lines = value.split('\n');

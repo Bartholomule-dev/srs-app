@@ -257,4 +257,74 @@ describe('CodeEditor', () => {
       ).toBeInTheDocument();
     });
   });
+
+  describe('auto-indent on Shift+Enter', () => {
+    it('preserves indentation when pressing Shift+Enter', async () => {
+      const user = userEvent.setup();
+      const onChange = vi.fn();
+      render(<CodeEditor value="    print('hi')" onChange={onChange} />);
+
+      const textarea = screen.getByRole('textbox');
+      // Move cursor to end of line
+      await user.click(textarea);
+      await user.keyboard('{End}');
+      await user.keyboard('{Shift>}{Enter}{/Shift}');
+
+      // Should have called onChange with newline + preserved indent
+      expect(onChange).toHaveBeenCalledWith("    print('hi')\n    ");
+    });
+
+    it('adds extra indent after colon', async () => {
+      const user = userEvent.setup();
+      const onChange = vi.fn();
+      render(<CodeEditor value="def foo():" onChange={onChange} />);
+
+      const textarea = screen.getByRole('textbox');
+      await user.click(textarea);
+      await user.keyboard('{End}');
+      await user.keyboard('{Shift>}{Enter}{/Shift}');
+
+      expect(onChange).toHaveBeenCalledWith('def foo():\n    ');
+    });
+
+    it('handles nested indentation', async () => {
+      const user = userEvent.setup();
+      const onChange = vi.fn();
+      render(<CodeEditor value="    if x:" onChange={onChange} />);
+
+      const textarea = screen.getByRole('textbox');
+      await user.click(textarea);
+      await user.keyboard('{End}');
+      await user.keyboard('{Shift>}{Enter}{/Shift}');
+
+      expect(onChange).toHaveBeenCalledWith('    if x:\n        ');
+    });
+
+    it('works when inserting in middle of text', async () => {
+      const user = userEvent.setup();
+      const onChange = vi.fn();
+      render(<CodeEditor value="def foo():pass" onChange={onChange} />);
+
+      const textarea = screen.getByRole('textbox') as HTMLTextAreaElement;
+      await user.click(textarea);
+      // Position cursor after the colon (position 10)
+      textarea.setSelectionRange(10, 10);
+      await user.keyboard('{Shift>}{Enter}{/Shift}');
+
+      expect(onChange).toHaveBeenCalledWith('def foo():\n    pass');
+    });
+
+    it('does not auto-indent when disabled', async () => {
+      const user = userEvent.setup();
+      const onChange = vi.fn();
+      render(<CodeEditor value="def foo():" onChange={onChange} disabled />);
+
+      const textarea = screen.getByRole('textbox');
+      await user.click(textarea);
+      await user.keyboard('{Shift>}{Enter}{/Shift}');
+
+      // onChange should not be called when disabled
+      expect(onChange).not.toHaveBeenCalled();
+    });
+  });
 });
