@@ -1,7 +1,6 @@
 // tests/unit/skill-tree/types.test.ts
 import { describe, it, expect } from 'vitest';
 import {
-  SubconceptState,
   SUBCONCEPT_STATES,
   isValidSubconceptState,
 } from '@/lib/skill-tree/types';
