@@ -90,36 +90,26 @@ describe('useStats', () => {
       updated_at: '2026-01-02T00:00:00Z',
     };
 
-    // Create progress with today's date for cardsReviewedToday
+    // Create attempts with today's date for cardsReviewedToday
     const todayISO = new Date().toISOString();
-    const mockProgress = [
+    const mockAttempts = [
       {
-        id: 'progress-1',
+        id: 'attempt-1',
         user_id: 'test-user-id',
-        exercise_id: 'ex-1',
-        ease_factor: 2.5,
-        interval: 1,
-        repetitions: 1,
-        next_review: '2026-01-04T00:00:00Z',
-        last_reviewed: todayISO, // reviewed today
+        exercise_slug: 'ex-1',
+        last_seen_at: todayISO, // seen today
         times_seen: 10,
         times_correct: 8,
         created_at: '2026-01-01T00:00:00Z',
-        updated_at: '2026-01-01T00:00:00Z',
       },
       {
-        id: 'progress-2',
+        id: 'attempt-2',
         user_id: 'test-user-id',
-        exercise_id: 'ex-2',
-        ease_factor: 2.5,
-        interval: 1,
-        repetitions: 1,
-        next_review: '2026-01-04T00:00:00Z',
-        last_reviewed: todayISO, // reviewed today
+        exercise_slug: 'ex-2',
+        last_seen_at: todayISO, // seen today
         times_seen: 10,
         times_correct: 6,
         created_at: '2026-01-01T00:00:00Z',
-        updated_at: '2026-01-01T00:00:00Z',
       },
     ];
 
@@ -129,13 +119,13 @@ describe('useStats', () => {
       error: null,
     } as never);
 
-    // Set up fetch mocks for both user_progress and profiles
+    // Set up fetch mocks for both exercise_attempts and profiles
     const mockFrom = vi.mocked(supabase.from);
     mockFrom.mockImplementation((table: string) => {
-      if (table === 'user_progress') {
+      if (table === 'exercise_attempts') {
         return {
           select: vi.fn().mockReturnValue({
-            eq: vi.fn().mockResolvedValue({ data: mockProgress, error: null }),
+            eq: vi.fn().mockResolvedValue({ data: mockAttempts, error: null }),
           }),
         } as never;
       }
@@ -227,7 +217,7 @@ describe('useStats', () => {
       let fetchCount = 0;
       const mockFrom = vi.mocked(supabase.from);
       mockFrom.mockImplementation((table: string) => {
-        if (table === 'user_progress') {
+        if (table === 'exercise_attempts') {
           return {
             select: vi.fn().mockReturnValue({
               eq: vi.fn().mockResolvedValue({ data: [], error: null }),

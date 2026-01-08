@@ -1,35 +1,35 @@
 // src/lib/stats/queries.ts
-import type { UserProgress } from '@/lib/types';
+import type { ExerciseAttempt } from '@/lib/curriculum/types';
 import { toUTCDateString } from '@/lib/utils/date';
 
 /**
- * Counts how many cards were reviewed today (UTC).
- * @param progress - Array of user progress records
+ * Counts how many exercises were practiced today (UTC).
+ * @param attempts - Array of exercise attempt records
  * @param now - Current date/time (for testability)
  */
 export function getCardsReviewedToday(
-  progress: UserProgress[],
+  attempts: ExerciseAttempt[],
   now: Date = new Date()
 ): number {
   const todayStr = toUTCDateString(now);
 
-  return progress.filter((p) => {
-    if (!p.lastReviewed) return false;
-    const reviewDateStr = toUTCDateString(new Date(p.lastReviewed));
-    return reviewDateStr === todayStr;
+  return attempts.filter((a) => {
+    if (!a.lastSeenAt) return false;
+    const attemptDateStr = toUTCDateString(new Date(a.lastSeenAt));
+    return attemptDateStr === todayStr;
   }).length;
 }
 
 /**
- * Calculates overall accuracy percentage across all progress records.
- * @param progress - Array of user progress records
+ * Calculates overall accuracy percentage across all attempt records.
+ * @param attempts - Array of exercise attempt records
  * @returns Accuracy as integer percentage (0-100)
  */
-export function getTotalAccuracy(progress: UserProgress[]): number {
-  const totals = progress.reduce(
-    (acc, p) => ({
-      seen: acc.seen + p.timesSeen,
-      correct: acc.correct + p.timesCorrect,
+export function getTotalAccuracy(attempts: ExerciseAttempt[]): number {
+  const totals = attempts.reduce(
+    (acc, a) => ({
+      seen: acc.seen + a.timesSeen,
+      correct: acc.correct + a.timesCorrect,
     }),
     { seen: 0, correct: 0 }
   );

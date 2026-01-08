@@ -32,11 +32,15 @@ test.describe('Dashboard Stats Display', () => {
       page.getByRole('heading', { name: /Good (morning|afternoon|evening|night)/i })
     ).toBeVisible({ timeout: 15000 });
 
-    // Verify all four stat cards are present
-    await expect(page.getByText('Streak')).toBeVisible();
-    await expect(page.getByText('Accuracy')).toBeVisible();
-    await expect(page.getByText('Total')).toBeVisible();
-    await expect(page.getByText('Today')).toBeVisible();
+    // Find the stats grid container
+    const statsGrid = page.locator('.grid.grid-cols-2').first();
+    await expect(statsGrid).toBeVisible();
+
+    // Verify all four stat cards are present (using exact match to avoid "Start your streak!" etc.)
+    await expect(statsGrid.getByText('Streak', { exact: true })).toBeVisible();
+    await expect(statsGrid.getByText('Accuracy', { exact: true })).toBeVisible();
+    await expect(statsGrid.getByText('Total', { exact: true })).toBeVisible();
+    await expect(statsGrid.getByText('Today', { exact: true })).toBeVisible();
   });
 
   test('fresh user shows zero stats', async ({ page }) => {
@@ -114,12 +118,15 @@ test.describe('Dashboard Stats Display', () => {
       page.getByRole('heading', { name: /Good (morning|afternoon|evening|night)/i })
     ).toBeVisible({ timeout: 15000 });
 
-    // Find the Streak stat card
-    const streakLabel = page.getByText('Streak');
+    // Find the stats grid and then the Streak label within it
+    const statsGrid = page.locator('.grid.grid-cols-2').first();
+    await expect(statsGrid).toBeVisible();
+
+    const streakLabel = statsGrid.getByText('Streak', { exact: true });
     await expect(streakLabel).toBeVisible();
 
-    // The fire emoji should be near the streak card (SVG or emoji)
-    // StatsCard uses icon="fire" which renders a flame SVG or emoji
+    // The fire icon should be in the same card (SVG with flame path)
+    // StatsCard uses icon="fire" which renders a FlameIcon SVG
   });
 
   test('accuracy displays with percentage ring', async ({ page }) => {
@@ -131,12 +138,15 @@ test.describe('Dashboard Stats Display', () => {
       page.getByRole('heading', { name: /Good (morning|afternoon|evening|night)/i })
     ).toBeVisible({ timeout: 15000 });
 
-    // Find the Accuracy stat card
-    const accuracyLabel = page.getByText('Accuracy');
+    // Find the stats grid and then the Accuracy label within it
+    const statsGrid = page.locator('.grid.grid-cols-2').first();
+    await expect(statsGrid).toBeVisible();
+
+    const accuracyLabel = statsGrid.getByText('Accuracy', { exact: true });
     await expect(accuracyLabel).toBeVisible();
 
-    // The percentage sign should be visible
-    const percentSymbol = page.getByText('%');
+    // The percentage sign should be visible in the stats grid
+    const percentSymbol = statsGrid.getByText('%');
     await expect(percentSymbol).toBeVisible();
   });
 

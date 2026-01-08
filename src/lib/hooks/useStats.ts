@@ -3,12 +3,33 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from './useAuth';
 import { supabase } from '@/lib/supabase/client';
-import { mapUserProgress, mapProfile } from '@/lib/supabase/mappers';
+import { mapProfile } from '@/lib/supabase/mappers';
 import { handleSupabaseError } from '@/lib/errors';
 import { getCardsReviewedToday, getTotalAccuracy } from '@/lib/stats';
 import type { UserStats } from '@/lib/stats';
 import type { AppError } from '@/lib/errors';
-import type { UserProgress, Profile, DbProfile, DbUserProgress } from '@/lib/types';
+import type { Profile, DbProfile } from '@/lib/types';
+import type { ExerciseAttempt } from '@/lib/curriculum/types';
+
+interface DbExerciseAttempt {
+  id: string;
+  user_id: string;
+  exercise_slug: string;
+  times_seen: number;
+  times_correct: number;
+  last_seen_at: string | null;
+}
+
+function mapDbToExerciseAttempt(row: DbExerciseAttempt): ExerciseAttempt {
+  return {
+    id: row.id,
+    userId: row.user_id,
+    exerciseSlug: row.exercise_slug,
+    timesSeen: row.times_seen,
+    timesCorrect: row.times_correct,
+    lastSeenAt: row.last_seen_at ? new Date(row.last_seen_at) : new Date(),
+  };
+}
 
 export interface UseStatsReturn {
   stats: UserStats | null;
@@ -40,14 +61,14 @@ export function useStats(): UseStatsReturn {
       setError(null);
 
       try {
-        // Fetch user progress
-        const { data: progressData, error: progressError } = await supabase
-          .from('user_progress')
+        // Fetch exercise attempts for accuracy and cards reviewed today
+        const { data: attemptsData, error: attemptsError } = await supabase
+          .from('exercise_attempts')
           .select('*')
           .eq('user_id', user.id);
 
-        if (progressError) {
-          throw handleSupabaseError(progressError);
+        if (attemptsError) {
+          throw handleSupabaseError(attemptsError);
         }
 
         if (cancelled) return;
@@ -65,14 +86,14 @@ export function useStats(): UseStatsReturn {
 
         if (cancelled) return;
 
-        const progress: UserProgress[] = (progressData ?? []).map((p) =>
-          mapUserProgress(p as DbUserProgress)
+        const attempts: ExerciseAttempt[] = (attemptsData ?? []).map((a) =>
+          mapDbToExerciseAttempt(a as DbExerciseAttempt)
         );
         const profile: Profile = mapProfile(profileData as DbProfile);
 
         const userStats: UserStats = {
-          cardsReviewedToday: getCardsReviewedToday(progress),
-          accuracyPercent: getTotalAccuracy(progress),
+          cardsReviewedToday: getCardsReviewedToday(attempts),
+          accuracyPercent: getTotalAccuracy(attempts),
           currentStreak: profile.currentStreak,
           longestStreak: profile.longestStreak,
           totalExercisesCompleted: profile.totalExercisesCompleted,
