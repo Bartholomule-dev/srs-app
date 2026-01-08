@@ -10,15 +10,29 @@ export interface StatsGridProps {
   loading?: boolean;
 }
 
-function StatsSkeleton() {
+function HeroSkeleton() {
   return (
-    <Card elevation={2} data-testid="stats-skeleton">
-      <CardContent className="p-5">
+    <Card elevation={2} data-testid="stats-skeleton-hero">
+      <CardContent className="p-6">
         <div className="flex items-center justify-between mb-3">
-          <Skeleton className="h-8 w-8 rounded-full" />
-          <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-10 w-10 rounded-full" />
+          <Skeleton className="h-5 w-20" />
         </div>
-        <Skeleton className="h-9 w-16" />
+        <Skeleton className="h-10 w-20" />
+      </CardContent>
+    </Card>
+  );
+}
+
+function SupportingSkeleton() {
+  return (
+    <Card elevation={2} data-testid="stats-skeleton-supporting">
+      <CardContent className="p-4">
+        <div className="flex items-center justify-between mb-3">
+          <Skeleton className="h-6 w-6 rounded-full" />
+          <Skeleton className="h-4 w-14" />
+        </div>
+        <Skeleton className="h-8 w-14" />
       </CardContent>
     </Card>
   );
@@ -27,45 +41,55 @@ function StatsSkeleton() {
 export function StatsGrid({ stats, loading = false }: StatsGridProps) {
   if (loading || !stats) {
     return (
-      <div className="grid grid-cols-2 gap-4">
-        <StatsSkeleton />
-        <StatsSkeleton />
-        <StatsSkeleton />
-        <StatsSkeleton />
+      <div className="space-y-4">
+        {/* Hero skeleton */}
+        <HeroSkeleton />
+        {/* Supporting row skeleton */}
+        <div className="grid grid-cols-3 gap-4">
+          <SupportingSkeleton />
+          <SupportingSkeleton />
+          <SupportingSkeleton />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-      {/* Row 1 */}
+    <div className="space-y-4">
+      {/* Hero stat: Current Streak */}
       <StatsCard
         label="Streak"
         value={stats.currentStreak}
         icon="fire"
+        variant="hero"
         delay={0}
       />
-      <StatsCard
-        label="Accuracy"
-        value={stats.accuracyPercent}
-        suffix="%"
-        showRing
-        delay={0.1}
-      />
 
-      {/* Row 2 */}
-      <StatsCard
-        label="Total"
-        value={stats.totalExercisesCompleted}
-        icon="chart"
-        delay={0.2}
-      />
-      <StatsCard
-        label="Today"
-        value={stats.cardsReviewedToday}
-        icon="check"
-        delay={0.3}
-      />
+      {/* Supporting stats row */}
+      <div className="grid grid-cols-3 gap-4">
+        <StatsCard
+          label="Today"
+          value={stats.cardsReviewedToday}
+          icon="check"
+          variant="supporting"
+          delay={0.05}
+        />
+        <StatsCard
+          label="Accuracy"
+          value={stats.accuracyPercent}
+          suffix="%"
+          icon="target"
+          variant="supporting"
+          delay={0.1}
+        />
+        <StatsCard
+          label="Total"
+          value={stats.totalExercisesCompleted}
+          icon="chart"
+          variant="supporting"
+          delay={0.15}
+        />
+      </div>
     </div>
   );
 }

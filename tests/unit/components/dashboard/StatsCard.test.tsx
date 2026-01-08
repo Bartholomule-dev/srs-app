@@ -1,7 +1,7 @@
 // tests/unit/components/dashboard/StatsCard.test.tsx
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { StatsCard, ProgressRing } from '@/components/dashboard/StatsCard';
+import { StatsCard } from '@/components/dashboard/StatsCard';
 
 describe('StatsCard', () => {
   it('renders label and value', () => {
@@ -68,20 +68,6 @@ describe('StatsCard', () => {
     expect(screen.getByText('100')).toBeInTheDocument();
   });
 
-  it('renders progress ring when showRing is true', () => {
-    const { container } = render(
-      <StatsCard label="Accuracy" value={75} showRing />
-    );
-
-    // Should have SVG for the progress ring
-    const svg = container.querySelector('svg');
-    expect(svg).toBeInTheDocument();
-
-    // Progress ring has circles for background and progress
-    const circles = container.querySelectorAll('circle');
-    expect(circles.length).toBe(2);
-  });
-
   it('uses different icons for different icon types', () => {
     const { rerender, container } = render(<StatsCard label="Test" value={1} icon="fire" />);
     const fireSvg = container.querySelector('svg');
@@ -103,52 +89,44 @@ describe('StatsCard', () => {
     const chartSvg = container.querySelector('svg');
     expect(chartSvg).toBeInTheDocument();
   });
-});
 
-describe('ProgressRing', () => {
-  it('renders with default props', () => {
-    const { container } = render(<ProgressRing value={50} />);
+  describe('variant prop', () => {
+    it('renders hero variant with larger styling', () => {
+      const { container } = render(
+        <StatsCard label="Streak" value={7} icon="fire" variant="hero" />
+      );
 
-    const svg = container.querySelector('svg');
-    expect(svg).toBeInTheDocument();
-    expect(svg).toHaveAttribute('width', '48');
-    expect(svg).toHaveAttribute('height', '48');
-  });
+      // Hero should have min-h-[140px]
+      const card = container.querySelector('[class*="min-h-[140px]"]');
+      expect(card).toBeInTheDocument();
 
-  it('renders with custom size', () => {
-    const { container } = render(<ProgressRing value={50} size={64} />);
+      // Hero should have p-6 padding
+      const content = container.querySelector('[class*="p-6"]');
+      expect(content).toBeInTheDocument();
+    });
 
-    const svg = container.querySelector('svg');
-    expect(svg).toHaveAttribute('width', '64');
-    expect(svg).toHaveAttribute('height', '64');
-  });
+    it('renders supporting variant with smaller styling', () => {
+      const { container } = render(
+        <StatsCard label="Today" value={15} icon="check" variant="supporting" />
+      );
 
-  it('renders background and progress circles', () => {
-    const { container } = render(<ProgressRing value={75} />);
+      // Supporting should have min-h-[100px]
+      const card = container.querySelector('[class*="min-h-[100px]"]');
+      expect(card).toBeInTheDocument();
 
-    const circles = container.querySelectorAll('circle');
-    expect(circles.length).toBe(2);
-  });
+      // Supporting should have p-4 padding
+      const content = container.querySelector('[class*="p-4"]');
+      expect(content).toBeInTheDocument();
+    });
 
-  it('clamps value at 100', () => {
-    const { container } = render(<ProgressRing value={150} />);
+    it('defaults to supporting variant', () => {
+      const { container } = render(
+        <StatsCard label="Total" value={100} icon="chart" />
+      );
 
-    // Should still render without errors
-    const svg = container.querySelector('svg');
-    expect(svg).toBeInTheDocument();
-  });
-
-  it('handles 0 value', () => {
-    const { container } = render(<ProgressRing value={0} />);
-
-    const svg = container.querySelector('svg');
-    expect(svg).toBeInTheDocument();
-  });
-
-  it('applies custom className', () => {
-    const { container } = render(<ProgressRing value={50} className="custom-ring" />);
-
-    const svg = container.querySelector('svg');
-    expect(svg).toHaveClass('custom-ring');
+      // Should default to supporting variant with min-h-[100px]
+      const card = container.querySelector('[class*="min-h-[100px]"]');
+      expect(card).toBeInTheDocument();
+    });
   });
 });

@@ -13,7 +13,7 @@ describe('StatsGrid', () => {
     totalExercisesCompleted: 150,
   };
 
-  it('renders all four stat cards in 2x2 bento layout', () => {
+  it('renders all four stat cards with hero + supporting layout', () => {
     render(<StatsGrid stats={mockStats} />);
 
     // Labels should be visible
@@ -30,11 +30,15 @@ describe('StatsGrid', () => {
     expect(screen.getByText('15')).toBeInTheDocument();
   });
 
-  it('renders loading skeleton when loading', () => {
+  it('renders loading skeleton with hero + 3 supporting layout', () => {
     render(<StatsGrid stats={null} loading />);
 
-    const skeletons = screen.getAllByTestId('stats-skeleton');
-    expect(skeletons).toHaveLength(4);
+    // Should have 1 hero skeleton + 3 supporting skeletons = 4 total
+    const heroSkeleton = screen.getByTestId('stats-skeleton-hero');
+    expect(heroSkeleton).toBeInTheDocument();
+
+    const supportingSkeletons = screen.getAllByTestId('stats-skeleton-supporting');
+    expect(supportingSkeletons).toHaveLength(3);
   });
 
   it('renders zero values correctly', () => {
@@ -57,34 +61,45 @@ describe('StatsGrid', () => {
   it('renders skeleton when stats is null', () => {
     render(<StatsGrid stats={null} />);
 
-    const skeletons = screen.getAllByTestId('stats-skeleton');
-    expect(skeletons).toHaveLength(4);
+    const heroSkeleton = screen.getByTestId('stats-skeleton-hero');
+    expect(heroSkeleton).toBeInTheDocument();
+
+    const supportingSkeletons = screen.getAllByTestId('stats-skeleton-supporting');
+    expect(supportingSkeletons).toHaveLength(3);
   });
 
-  it('has 2x2 grid layout', () => {
+  it('has hero + 3-column supporting layout', () => {
     const { container } = render(<StatsGrid stats={mockStats} />);
 
+    // Supporting row should have 3-column grid
     const grid = container.querySelector('.grid');
-    expect(grid).toHaveClass('grid-cols-2');
-    // Should NOT have 4 columns on medium screens anymore (bento style)
-    expect(grid).not.toHaveClass('md:grid-cols-4');
+    expect(grid).toHaveClass('grid-cols-3');
   });
 
-  it('renders accuracy card with progress ring', () => {
+  it('renders SVG icons for all cards', () => {
     const { container } = render(<StatsGrid stats={mockStats} />);
 
-    // The accuracy card has a progress ring with 2 circles
-    const circles = container.querySelectorAll('circle');
-    // At least 2 circles for the progress ring, plus additional from check icon
-    expect(circles.length).toBeGreaterThanOrEqual(2);
-  });
-
-  it('renders SVG icons for non-accuracy cards', () => {
-    const { container } = render(<StatsGrid stats={mockStats} />);
-
-    // Should have multiple SVG elements (icons + progress ring)
+    // Should have 4 SVG icons (fire for Streak, check for Today, target for Accuracy, chart for Total)
     const svgs = container.querySelectorAll('svg');
-    // 3 icon SVGs (fire, chart, check) + 1 progress ring SVG
-    expect(svgs.length).toBeGreaterThanOrEqual(4);
+    expect(svgs.length).toBe(4);
+  });
+
+  it('renders streak as hero card with fire icon', () => {
+    const { container } = render(<StatsGrid stats={mockStats} />);
+
+    // Hero card should have min-h-[140px] class
+    const heroCard = container.querySelector('[class*="min-h-[140px]"]');
+    expect(heroCard).toBeInTheDocument();
+
+    // Streak label should be present
+    expect(screen.getByText('Streak')).toBeInTheDocument();
+  });
+
+  it('renders supporting cards with smaller styling', () => {
+    const { container } = render(<StatsGrid stats={mockStats} />);
+
+    // Should have 3 supporting cards with min-h-[100px] class
+    const supportingCards = container.querySelectorAll('[class*="min-h-[100px]"]');
+    expect(supportingCards.length).toBe(3);
   });
 });
