@@ -66,6 +66,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (error) throw error;
   }, []);
 
+  const signInWithGoogle = useCallback(async () => {
+    setState((prev) => ({ ...prev, loading: true, error: null }));
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : undefined,
+      },
+    });
+
+    setState((prev) => ({
+      ...prev,
+      loading: false,
+      error: error,
+    }));
+
+    if (error) throw error;
+  }, []);
+
   const signOut = useCallback(async () => {
     setState((prev) => ({ ...prev, loading: true, error: null }));
 
@@ -83,6 +102,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const value: AuthContextValue = {
     ...state,
     signIn,
+    signInWithGoogle,
     signOut,
   };
 

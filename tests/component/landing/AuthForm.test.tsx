@@ -4,9 +4,11 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { AuthForm } from '@/components/landing';
 
 const mockSignIn = vi.fn();
+const mockSignInWithGoogle = vi.fn();
 vi.mock('@/lib/hooks/useAuth', () => ({
   useAuth: () => ({
     signIn: mockSignIn,
+    signInWithGoogle: mockSignInWithGoogle,
     loading: false,
     user: null,
   }),
@@ -78,7 +80,34 @@ describe('AuthForm', () => {
     fireEvent.click(screen.getByRole('button', { name: /send magic link/i }));
 
     await waitFor(() => {
-      expect(screen.getByRole('button')).toBeDisabled();
+      expect(screen.getByRole('button', { name: /sending/i })).toBeDisabled();
+    });
+  });
+
+  it('renders Google sign-in button', () => {
+    render(<AuthForm />);
+    expect(screen.getByRole('button', { name: /continue with google/i })).toBeInTheDocument();
+  });
+
+  it('calls signInWithGoogle on Google button click', async () => {
+    mockSignInWithGoogle.mockResolvedValueOnce(undefined);
+    render(<AuthForm />);
+
+    fireEvent.click(screen.getByRole('button', { name: /continue with google/i }));
+
+    await waitFor(() => {
+      expect(mockSignInWithGoogle).toHaveBeenCalled();
+    });
+  });
+
+  it('shows error message on Google sign-in failure', async () => {
+    mockSignInWithGoogle.mockRejectedValueOnce(new Error('Google auth failed'));
+    render(<AuthForm />);
+
+    fireEvent.click(screen.getByRole('button', { name: /continue with google/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/google auth failed/i)).toBeInTheDocument();
     });
   });
 });

@@ -11,6 +11,7 @@ vi.mock('@/lib/supabase/client', () => ({
     auth: {
       getUser: vi.fn(),
       signInWithOtp: vi.fn(),
+      signInWithOAuth: vi.fn(),
       signOut: vi.fn(),
       onAuthStateChange: vi.fn(() => ({
         data: { subscription: { unsubscribe: vi.fn() } },
@@ -142,6 +143,66 @@ describe('useAuth', () => {
       await act(async () => {
         try {
           await result.current.signIn('invalid@example.com');
+        } catch (e) {
+          thrownError = e as AuthError;
+        }
+      });
+
+      expect(thrownError).toEqual(mockError);
+      expect(result.current.error).toEqual(mockError);
+    });
+  });
+
+  describe('signInWithGoogle', () => {
+    it('calls supabase.auth.signInWithOAuth with google provider', async () => {
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
+        data: { user: null },
+        error: null,
+      } as any);
+      vi.mocked(supabase.auth.signInWithOAuth).mockResolvedValue({
+        data: { provider: 'google', url: 'https://accounts.google.com/...' },
+        error: null,
+      } as any);
+
+      const { result } = renderHook(() => useAuth(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      await act(async () => {
+        await result.current.signInWithGoogle();
+      });
+
+      expect(supabase.auth.signInWithOAuth).toHaveBeenCalledWith({
+        provider: 'google',
+        options: {
+          redirectTo: expect.any(String),
+        },
+      });
+    });
+
+    it('throws error when signInWithOAuth fails', async () => {
+      const mockError = { message: 'OAuth error' } as AuthError;
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
+        data: { user: null },
+        error: null,
+      } as any);
+      vi.mocked(supabase.auth.signInWithOAuth).mockResolvedValue({
+        data: {},
+        error: mockError,
+      } as any);
+
+      const { result } = renderHook(() => useAuth(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      let thrownError: AuthError | null = null;
+      await act(async () => {
+        try {
+          await result.current.signInWithGoogle();
         } catch (e) {
           thrownError = e as AuthError;
         }

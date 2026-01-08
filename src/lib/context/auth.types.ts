@@ -8,5 +8,6 @@ export interface AuthState {
 
 export interface AuthContextValue extends AuthState {
   signIn: (email: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
 }
