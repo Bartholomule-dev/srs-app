@@ -1,0 +1,1 @@
+export { SubconceptNode } from './SubconceptNode';
