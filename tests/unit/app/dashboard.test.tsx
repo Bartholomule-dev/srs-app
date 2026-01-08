@@ -44,7 +44,6 @@ vi.mock('@/lib/supabase/client', () => ({
 
 vi.mock('@/lib/supabase/mappers', () => ({
   mapExercise: vi.fn((e) => e),
-  mapUserProgress: vi.fn((p) => p),
 }));
 
 vi.mock('@/lib/srs', () => ({

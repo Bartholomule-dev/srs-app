@@ -14,7 +14,6 @@ import type {
 // Extract row types from generated types
 export type DbProfile = Database['public']['Tables']['profiles']['Row'];
 export type DbExercise = Database['public']['Tables']['exercises']['Row'];
-export type DbUserProgress = Database['public']['Tables']['user_progress']['Row'];
 
 /**
  * User profile (camelCase)
@@ -89,24 +88,6 @@ export interface Exercise {
 
   /** Verify answer by execution (for write exercises) */
   verifyByExecution?: boolean;
-}
-
-/**
- * User progress (camelCase)
- */
-export interface UserProgress {
-  id: string;
-  userId: string;
-  exerciseId: string;
-  easeFactor: number;
-  interval: number;
-  repetitions: number;
-  nextReview: string;
-  lastReviewed: string | null;
-  timesSeen: number;
-  timesCorrect: number;
-  createdAt: string;
-  updatedAt: string;
 }
 
 /**

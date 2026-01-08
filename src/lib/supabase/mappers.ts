@@ -2,7 +2,7 @@
  * Mappers between database (snake_case) and app (camelCase) types
  */
 
-import type { DbProfile, DbExercise, DbUserProgress, Profile, Exercise, UserProgress, ExperienceLevel } from '../types/app.types';
+import type { DbProfile, DbExercise, Profile, Exercise, ExperienceLevel } from '../types/app.types';
 
 /**
  * Map database profile to app profile
@@ -87,26 +87,6 @@ export function mapExercise(db: DbExercise): Exercise {
 }
 
 /**
- * Map database progress to app progress
- */
-export function mapUserProgress(db: DbUserProgress): UserProgress {
-  return {
-    id: db.id,
-    userId: db.user_id,
-    exerciseId: db.exercise_id,
-    easeFactor: Number(db.ease_factor),
-    interval: db.interval ?? 0,
-    repetitions: db.repetitions ?? 0,
-    nextReview: db.next_review ?? new Date().toISOString(),
-    lastReviewed: db.last_reviewed,
-    timesSeen: db.times_seen ?? 0,
-    timesCorrect: db.times_correct ?? 0,
-    createdAt: db.created_at ?? new Date().toISOString(),
-    updatedAt: db.updated_at ?? new Date().toISOString(),
-  };
-}
-
-/**
  * Map app profile updates to database format
  */
 export function toDbProfileUpdate(app: Partial<Omit<Profile, 'id' | 'createdAt'>>) {
@@ -124,18 +104,4 @@ export function toDbProfileUpdate(app: Partial<Omit<Profile, 'id' | 'createdAt'>
   return db;
 }
 
-/**
- * Map app user progress updates to database format
- */
-export function toDbUserProgressUpdate(app: Partial<Omit<UserProgress, 'id' | 'userId' | 'exerciseId' | 'createdAt'>>) {
-  const db: Record<string, unknown> = {};
-  if (app.easeFactor !== undefined) db.ease_factor = app.easeFactor;
-  if (app.interval !== undefined) db.interval = app.interval;
-  if (app.repetitions !== undefined) db.repetitions = app.repetitions;
-  if (app.nextReview !== undefined) db.next_review = new Date(app.nextReview).toISOString();
-  if (app.lastReviewed !== undefined) db.last_reviewed = app.lastReviewed ? new Date(app.lastReviewed).toISOString() : null;
-  if (app.timesSeen !== undefined) db.times_seen = app.timesSeen;
-  if (app.timesCorrect !== undefined) db.times_correct = app.timesCorrect;
-  return db;
-}
 
