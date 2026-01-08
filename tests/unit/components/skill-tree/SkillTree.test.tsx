@@ -135,7 +135,7 @@ describe('SkillTree', () => {
     expect(treeContainer).toHaveClass('bg-[var(--bg-surface-1)]');
   });
 
-  it('uses vertical layout with visible overflow', () => {
+  it('uses vertical layout without horizontal scroll', () => {
     vi.mocked(useSkillTree).mockReturnValue({
       data: {
         clusters: [],
@@ -150,7 +150,37 @@ describe('SkillTree', () => {
 
     const { container } = render(<SkillTree />, { wrapper });
 
+    // Should NOT have horizontal scroll
     const scrollContainer = container.querySelector('[data-testid="skill-tree-scroll"]');
-    expect(scrollContainer).toHaveClass('overflow-visible');
+    expect(scrollContainer).not.toHaveClass('overflow-x-auto');
+
+    // Should have vertical flex layout
+    const treeContainer = container.querySelector('[data-testid="skill-tree-container"]');
+    expect(treeContainer).toBeInTheDocument();
+  });
+
+  it('renders tiers vertically with horizontal clusters', () => {
+    vi.mocked(useSkillTree).mockReturnValue({
+      data: {
+        clusters: [
+          { slug: 'foundations', name: 'Foundations', description: '', tier: 1, subconcepts: [], masteredCount: 0, totalCount: 4 },
+          { slug: 'strings', name: 'Strings', description: '', tier: 2, subconcepts: [], masteredCount: 0, totalCount: 5 },
+          { slug: 'numbers', name: 'Numbers', description: '', tier: 2, subconcepts: [], masteredCount: 0, totalCount: 6 },
+        ],
+        totalMastered: 0,
+        totalSubconcepts: 15,
+      },
+      loading: false,
+      error: null,
+      getState: () => 'available',
+      refetch: vi.fn(),
+    });
+
+    render(<SkillTree />, { wrapper });
+
+    // All three concept names should be visible
+    expect(screen.getByText('Foundations')).toBeInTheDocument();
+    expect(screen.getByText('Strings')).toBeInTheDocument();
+    expect(screen.getByText('Numbers')).toBeInTheDocument();
   });
 });
