@@ -1,3 +1,5 @@
+import type { SubconceptProgress } from '@/lib/curriculum/types';
+
 /**
  * Visual states for subconcept nodes in the skill tree
  */
@@ -49,4 +51,40 @@ export interface SkillTreeData {
   clusters: SkillTreeCluster[];
   totalMastered: number;
   totalSubconcepts: number;
+}
+
+/**
+ * Determine the visual state of a subconcept node
+ *
+ * @param slug - The subconcept slug
+ * @param progressMap - Map of slug -> SubconceptProgress
+ * @param prereqs - Array of prerequisite subconcept slugs
+ * @returns The computed SubconceptState
+ */
+export function getSubconceptState(
+  slug: string,
+  progressMap: Map<string, SubconceptProgress>,
+  prereqs: string[]
+): SubconceptState {
+  // Check if all prerequisites are mastered
+  const prereqsMastered = prereqs.every((prereqSlug) => {
+    const prereqProgress = progressMap.get(prereqSlug);
+    return prereqProgress && prereqProgress.stability >= MASTERY_THRESHOLD_DAYS;
+  });
+
+  if (!prereqsMastered) {
+    return 'locked';
+  }
+
+  const myProgress = progressMap.get(slug);
+
+  if (!myProgress) {
+    return 'available';
+  }
+
+  if (myProgress.stability >= MASTERY_THRESHOLD_DAYS) {
+    return 'mastered';
+  }
+
+  return 'in-progress';
 }
