@@ -115,18 +115,22 @@ export function SkillTree({ className }: SkillTreeProps) {
           className
         )}
       >
-        <div className="animate-pulse flex gap-8">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="flex flex-col items-center gap-2">
-              <div className="h-4 w-20 bg-[var(--bg-surface-3)] rounded" />
-              <div className="flex flex-col gap-2">
-                {[1, 2, 3].map((j) => (
-                  <div
-                    key={j}
-                    className="w-12 h-12 rounded-full bg-[var(--bg-surface-3)]"
-                  />
-                ))}
-              </div>
+        <div className="animate-pulse flex flex-col gap-8 max-w-4xl mx-auto">
+          {[1, 2, 3].map((tier) => (
+            <div key={tier} className="flex flex-wrap justify-center gap-6">
+              {[1, 2].map((cluster) => (
+                <div key={cluster} className="flex flex-col items-center gap-3 p-4 rounded-xl bg-[var(--bg-surface-2)]/30">
+                  <div className="h-4 w-24 bg-[var(--bg-surface-3)] rounded" />
+                  <div className="grid grid-cols-4 gap-2">
+                    {[1, 2, 3, 4].map((node) => (
+                      <div
+                        key={node}
+                        className="w-10 h-10 rounded-full bg-[var(--bg-surface-3)]"
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           ))}
         </div>
@@ -226,7 +230,7 @@ function ClusterWithNodeRefs({
   prereqNames,
 }: ClusterWithNodeRefsProps) {
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-3 p-4 rounded-xl bg-[var(--bg-surface-1)]/30 border border-[var(--border)]/50 backdrop-blur-sm">
       {/* Label and progress badge */}
       <div className="flex items-center gap-2 mb-1">
         <span className="font-display text-sm font-semibold text-[var(--text-primary)]">
@@ -238,7 +242,7 @@ function ClusterWithNodeRefs({
       </div>
 
       {/* Subconcept nodes with refs for line positioning */}
-      <div className="flex flex-col gap-2">
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 justify-items-center">
         {cluster.subconcepts.map((subconcept) => (
           <div
             key={subconcept.slug}
