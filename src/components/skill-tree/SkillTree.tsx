@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useLayoutEffect, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useSkillTree } from '@/lib/hooks/useSkillTree';
@@ -57,12 +57,31 @@ export function SkillTree({ className }: SkillTreeProps) {
     setNodePositions(positions);
   }, []);
 
-  useLayoutEffect(() => {
-    if (data) {
-      // Delay to ensure DOM is fully painted
-      const timer = setTimeout(updatePositions, 100);
-      return () => clearTimeout(timer);
-    }
+  // Use ResizeObserver for reliable position updates on resize/layout changes
+  useEffect(() => {
+    if (!data || !containerRef.current) return;
+
+    // Initial position calculation after a frame to ensure paint
+    const initialTimer = requestAnimationFrame(() => {
+      requestAnimationFrame(updatePositions);
+    });
+
+    // Watch for container resize
+    const resizeObserver = new ResizeObserver(() => {
+      updatePositions();
+    });
+
+    resizeObserver.observe(containerRef.current);
+
+    // Also handle window resize for edge cases
+    const handleResize = () => updatePositions();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      cancelAnimationFrame(initialTimer);
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', handleResize);
+    };
   }, [data, updatePositions]);
 
   // Register node ref callback
@@ -73,6 +92,19 @@ export function SkillTree({ className }: SkillTreeProps) {
       nodeRefs.current.delete(slug);
     }
   }, []);
+
+  // Build global prereqNames map from ALL clusters for cross-concept tooltips
+  // Must be called before any early returns to follow React hooks rules
+  const globalPrereqNames = useMemo(() => {
+    if (!data) return {};
+    const map: Record<string, string> = {};
+    for (const cluster of data.clusters) {
+      for (const subconcept of cluster.subconcepts) {
+        map[subconcept.slug] = subconcept.name;
+      }
+    }
+    return map;
+  }, [data]);
 
   if (loading) {
     return (
@@ -164,6 +196,7 @@ export function SkillTree({ className }: SkillTreeProps) {
                         <ClusterWithNodeRefs
                           cluster={cluster}
                           registerNode={registerNode}
+                          prereqNames={globalPrereqNames}
                         />
                       </motion.div>
                     );
@@ -181,18 +214,14 @@ export function SkillTree({ className }: SkillTreeProps) {
 interface ClusterWithNodeRefsProps {
   cluster: SkillTreeCluster;
   registerNode: (slug: string, element: HTMLElement | null) => void;
+  prereqNames: Record<string, string>;
 }
 
 function ClusterWithNodeRefs({
   cluster,
   registerNode,
+  prereqNames,
 }: ClusterWithNodeRefsProps) {
-  // Build prereqNames map for tooltips
-  const prereqNames: Record<string, string> = {};
-  for (const subconcept of cluster.subconcepts) {
-    prereqNames[subconcept.slug] = subconcept.name;
-  }
-
   return (
     <div className="flex flex-col items-center gap-2">
       {/* Label and progress badge */}

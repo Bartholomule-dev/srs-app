@@ -128,6 +128,18 @@ class MockIntersectionObserver implements IntersectionObserver {
 
 vi.stubGlobal('IntersectionObserver', MockIntersectionObserver);
 
+// Mock ResizeObserver for components that use it (e.g., SkillTree dependency lines)
+class MockResizeObserver implements ResizeObserver {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  constructor(callback: ResizeObserverCallback) {}
+
+  observe(): void {}
+  unobserve(): void {}
+  disconnect(): void {}
+}
+
+vi.stubGlobal('ResizeObserver', MockResizeObserver);
+
 // Warn if tests might be running against a real Supabase project
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 if (supabaseUrl && !supabaseUrl.includes('127.0.0.1') && !supabaseUrl.includes('localhost')) {
