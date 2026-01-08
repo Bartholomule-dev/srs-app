@@ -13,10 +13,18 @@ interface SubconceptNodeProps {
 }
 
 const stateStyles: Record<SubconceptState, string> = {
-  locked: 'opacity-30 border-[var(--text-tertiary)] bg-transparent cursor-not-allowed',
-  available: 'border-[var(--accent-primary)] bg-transparent hover:scale-110',
-  'in-progress': 'border-[var(--accent-primary)] bg-[var(--accent-primary)]/50 hover:scale-110',
-  mastered: 'border-[var(--accent-primary)] bg-[var(--accent-primary)] shadow-[0_0_20px_rgba(245,158,11,0.4)] hover:scale-110',
+  locked:
+    'opacity-40 border-[var(--text-tertiary)]/30 bg-[var(--bg-surface-2)]/30 cursor-not-allowed grayscale',
+  available:
+    'border-[var(--accent-primary)]/60 bg-[var(--bg-surface-1)]/50 backdrop-blur-sm ' +
+    'shadow-[0_0_15px_rgba(245,158,11,0.15)] hover:shadow-[0_0_20px_rgba(245,158,11,0.25)] ' +
+    'hover:border-[var(--accent-primary)]',
+  'in-progress':
+    'border-[var(--accent-primary)] bg-gradient-to-br from-[var(--accent-primary)]/30 to-[var(--accent-secondary)]/20 ' +
+    'backdrop-blur-sm shadow-[0_0_20px_rgba(245,158,11,0.25)]',
+  mastered:
+    'border-transparent bg-gradient-to-br from-amber-400 to-orange-500 ' +
+    'shadow-[0_0_25px_rgba(245,158,11,0.5),inset_0_1px_0_rgba(255,255,255,0.2)]',
 };
 
 function getTooltipContent(
@@ -67,11 +75,31 @@ export function SubconceptNode({
       <motion.button
         ref={nodeRef}
         className={cn(
-          'w-12 h-12 rounded-full border-2 transition-all duration-200',
+          'w-12 h-12 rounded-full border-2 transition-all duration-300',
           'focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:ring-offset-2 focus:ring-offset-[var(--bg-surface-1)]',
           stateStyles[node.state],
           className
         )}
+        animate={
+          node.state === 'available'
+            ? {
+                boxShadow: [
+                  '0 0 15px rgba(245,158,11,0.15)',
+                  '0 0 20px rgba(245,158,11,0.3)',
+                  '0 0 15px rgba(245,158,11,0.15)',
+                ],
+              }
+            : undefined
+        }
+        transition={
+          node.state === 'available'
+            ? {
+                duration: 2,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }
+            : undefined
+        }
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onFocus={handleFocus}
