@@ -71,8 +71,8 @@ describe('useSkillTree', () => {
     });
 
     expect(result.current.data).not.toBeNull();
-    expect(result.current.data?.clusters).toHaveLength(10);
-    expect(result.current.data?.totalSubconcepts).toBe(54);
+    expect(result.current.data?.clusters).toHaveLength(11);
+    expect(result.current.data?.totalSubconcepts).toBe(65);
   });
 
   it('computes states from fetched progress (fast-track mastery)', async () => {

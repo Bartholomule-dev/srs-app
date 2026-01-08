@@ -16,7 +16,7 @@ const mockDueSubconcepts: SubconceptProgress[] = [
     id: 'sp-1',
     userId: 'user-123',
     subconceptSlug: 'for',
-    conceptSlug: 'control-flow',
+    conceptSlug: 'loops',
     stability: 0,
     difficulty: 0,
     fsrsState: 0 as 0 | 1 | 2 | 3,
@@ -88,7 +88,7 @@ vi.mock('@/lib/supabase/client', () => {
       avg_success_rate: null,
       created_at: '2026-01-01T00:00:00Z',
       updated_at: '2026-01-01T00:00:00Z',
-      concept: 'control-flow',
+      concept: 'loops',
       subconcept: 'for',
       level: 'intro',
       prereqs: [],
@@ -143,7 +143,7 @@ describe('useConceptSession', () => {
       id: 'ex-1',
       slug: 'for-intro-1',
       subconcept: 'for',
-      concept: 'control-flow',
+      concept: 'loops',
       level: 'intro',
     }));
   });

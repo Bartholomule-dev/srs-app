@@ -28,16 +28,17 @@ describe('buildSkillTreeData', () => {
     updatedAt: new Date(),
   });
 
-  it('builds tree with all 10 concept clusters', () => {
+  it('builds tree with all 11 concept clusters', () => {
     const result = buildSkillTreeData([]);
 
-    expect(result.clusters).toHaveLength(10);
+    expect(result.clusters).toHaveLength(11);
     expect(result.clusters.map((c) => c.slug)).toEqual([
       'foundations',
       'strings',
       'numbers-booleans',
+      'conditionals',
       'collections',
-      'control-flow',
+      'loops',
       'functions',
       'comprehensions',
       'error-handling',
@@ -53,9 +54,10 @@ describe('buildSkillTreeData', () => {
     expect(tierMap.get('foundations')).toBe(1);
     expect(tierMap.get('strings')).toBe(2);
     expect(tierMap.get('numbers-booleans')).toBe(2);
+    expect(tierMap.get('conditionals')).toBe(3);
     expect(tierMap.get('collections')).toBe(3);
-    expect(tierMap.get('control-flow')).toBe(4);
-    expect(tierMap.get('functions')).toBe(4);
+    expect(tierMap.get('loops')).toBe(4);
+    expect(tierMap.get('functions')).toBe(5);
     expect(tierMap.get('comprehensions')).toBe(5);
     expect(tierMap.get('error-handling')).toBe(6);
     expect(tierMap.get('oop')).toBe(6);
@@ -65,7 +67,7 @@ describe('buildSkillTreeData', () => {
   it('counts total subconcepts correctly', () => {
     const result = buildSkillTreeData([]);
 
-    expect(result.totalSubconcepts).toBe(54);
+    expect(result.totalSubconcepts).toBe(65); // 62 original + decorators + dataclasses + generators
   });
 
   it('computes mastered count from progress (fast-track)', () => {
@@ -102,7 +104,7 @@ describe('buildSkillTreeData', () => {
     const foundations = result.clusters.find((c) => c.slug === 'foundations');
 
     expect(foundations?.masteredCount).toBe(2);
-    expect(foundations?.totalCount).toBe(4); // foundations has 4 subconcepts
+    expect(foundations?.totalCount).toBe(5); // foundations has 5 subconcepts (added imports-basic)
   });
 
   it('sets correct states for subconcepts', () => {

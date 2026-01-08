@@ -29,7 +29,7 @@ describe('Curriculum Loader', () => {
 
       expect(definition).not.toBeNull();
       expect(definition?.name).toBe('For Loops');
-      expect(definition?.concept).toBe('control-flow');
+      expect(definition?.concept).toBe('loops');
       expect(definition?.prereqs).toContain('lists');
       expect(definition?.teaching).toBeDefined();
     });

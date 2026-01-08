@@ -282,7 +282,7 @@ describe('Edge Cases - Exercise Selection', () => {
     ].map(e => ({
       ...e,
       language: 'python',
-      category: 'control-flow',
+      category: 'loops',
       difficulty: 1,
       title: 'Test',
       prompt: 'Test',
@@ -295,7 +295,7 @@ describe('Edge Cases - Exercise Selection', () => {
       avgSuccessRate: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      concept: 'control-flow' as ConceptSlug,
+      concept: 'loops' as ConceptSlug,
       prereqs: [],
       objective: 'Test',
       targets: null,

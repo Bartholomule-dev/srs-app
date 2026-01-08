@@ -16,6 +16,14 @@
 
 ---
 
+## Project Overview
+
+A gamified web platform for practicing code syntax through spaced repetition. Target users are AI-assisted developers who want to maintain their programming fundamentals.
+
+**Current Status:** Skill Tree Visualization Complete - Dashboard shows visual skill tree with 54 subconcept nodes across 10 concepts. Four node states (locked, available, in-progress, mastered) based on FSRS stability (>=7 days = mastered). Interactive tooltips, SVG dependency lines, staggered animations. Next: Gamification (achievements, points, leaderboards).
+
+---
+
 ## Tech Stack
 
 | Layer | Technology |
@@ -24,8 +32,8 @@
 | Language | TypeScript 5 (Strict Mode) |
 | UI | React 19, Tailwind CSS 4, framer-motion |
 | Backend | Supabase (PostgreSQL, Auth, Realtime) |
-| Testing | Vitest (Unit/Integration) + Playwright (E2E) |
-| Deployment | Vercel |
+| Testing | Vitest (1125+ unit/integration) + Playwright (E2E) |
+| Deployment | Vercel + GitHub Actions CI/E2E |
 | Package Manager | pnpm |
 
 ---
@@ -37,28 +45,62 @@ pnpm dev              # Start development server
 pnpm build            # Production build
 pnpm lint             # ESLint check
 pnpm typecheck        # TypeScript type checking
-pnpm test             # Run Vitest tests
+pnpm test             # Run Vitest tests (1125+ tests)
 pnpm test:e2e         # Run Playwright E2E tests
 pnpm db:start         # Start local Supabase
 pnpm db:reset         # Reset database with migrations
 pnpm db:import-exercises  # Import exercises from YAML
-pnpm validate:exercises    # Validate exercise YAML schema
+
+# Exercise Management
+pnpm validate:exercises    # Validate YAML against schema
+pnpm validate:dynamic      # Validate dynamic exercises
+pnpm validate:curriculum   # Validate against curriculum definition
+pnpm validate:all          # Run all validations
+pnpm generate:exercise-list           # Generate docs/EXERCISES.md from YAML
+pnpm generate:exercise-list:obsidian  # Also generate to Obsidian vault
 ```
 
 ---
 
 ## Project Structure
 
-- `src/app/`: Next.js App Router pages and layouts.
-- `src/components/`: React components.
-  - `ui/`: Custom UI components.
-  - `exercise/`, `session/`, `dashboard/`: Feature-specific components.
-- `src/lib/`: Core logic, hooks, and utilities.
-  - `srs/`: SM-2 algorithm implementation.
-  - `curriculum/`: Exercise content and hierarchy.
-  - `supabase/`: Database clients and mappers.
-- `tests/`: Vitest (unit/integration) and Playwright (e2e) tests.
-- `supabase/`: Migrations, seed data, and configuration.
+```
+src/
+├── app/
+│   ├── layout.tsx        # Root layout (AuthProvider, ToastProvider)
+│   ├── page.tsx          # Home/auth page
+│   ├── auth/callback/route.ts  # Magic link PKCE code exchange
+│   ├── dashboard/page.tsx # Dashboard with stats + skill tree
+│   └── practice/page.tsx  # Practice session flow
+├── middleware.ts         # Supabase session refresh
+├── components/
+│   ├── ui/               # Custom UI components (Button, Card, Input, etc.)
+│   ├── layout/           # Header, LandingHeader
+│   ├── landing/          # Hero, Features, HowItWorks, AuthForm
+│   ├── exercise/         # ExerciseCard, CodeInput, FillInExercise, TeachingCard, CoachingFeedback
+│   ├── session/          # SessionProgress, SessionSummary (immersive mode)
+│   ├── dashboard/        # Greeting, PracticeCTA, DueCardsBanner, SkillTree
+│   └── stats/            # StatsCard, StatsGrid
+└── lib/
+    ├── hooks/            # useAuth, useProfile, useConceptSRS, useConceptSession, useStats, useSkillTree
+    ├── srs/              # FSRS algorithm (ts-fsrs adapter)
+    ├── exercise/         # Answer matching, quality inference, two-pass grading, construct detection
+    ├── session/          # Session types, interleaving, teaching cards, anti-repeat
+    ├── curriculum/       # python.json curriculum graph, types, loader
+    ├── generators/       # Dynamic exercise generation (13 generators)
+    ├── context/          # PyodideContext for Python execution
+    ├── stats/            # Stats queries, streak calculation, dynamic metrics
+    ├── errors/           # AppError, handleSupabaseError
+    ├── supabase/         # Client (browser), server, helpers, mappers
+    └── utils.ts          # cn() class utility
+
+tests/
+├── unit/                 # Vitest unit tests
+├── integration/          # Vitest integration tests
+└── e2e/                  # Playwright E2E tests
+
+exercises/python/         # 352 exercises across 10 YAML files (source of truth)
+```
 
 ---
 
@@ -66,9 +108,10 @@ pnpm validate:exercises    # Validate exercise YAML schema
 
 ### 1. UI & Components
 - Use custom UI components via `@/components/ui/`.
-- Use the `cn()` utility from `@/lib/utils` for tailwind class merging.
+- Use the `cn()` utility from `@/lib/utils` for Tailwind class merging.
 - **Theme:** Dark mode is the default. Use CSS variables from `globals.css` (e.g., `--bg-base`, `--accent-primary`).
 - **Elevation:** Use the `elevation` prop (1, 2, 3) on `Card` components.
+- **Fonts:** `font-display` (Space Grotesk), `font-body` (DM Sans), `font-mono` (JetBrains Mono)
 
 ### 2. TypeScript & Data
 - **Strict mode is non-negotiable.** No `any`.
@@ -81,14 +124,43 @@ pnpm validate:exercises    # Validate exercise YAML schema
 - State managed via `useAuth` hook.
 
 ### 4. Spaced Repetition (SRS)
+- **Algorithm: FSRS** (Free Spaced Repetition Scheduler) via ts-fsrs library.
 - Concept-based SRS: Tracking subconcept mastery rather than individual exercises.
-- Algorithm: SM-2 (modified).
 - Multi-target support: Integrated exercises credit multiple subconcepts on success.
+- Stability threshold: >=7 days = mastered (used for skill tree visualization).
 
-### 5. Coding Style
+### 5. Exercise System
+**Types:**
+- `write` (221): Write code from scratch
+- `fill-in` (58): Complete blanks in template
+- `predict` (73): Predict code output
+
+**Dynamic Exercises (37):** Values change per user/day via generators:
+- slice-bounds, list-values, variable-names, index-values, arithmetic-values
+- loop-simulation, comparison-logic, string-ops, dict-values
+- comp-mapping, comp-filter, try-except-flow, oop-instance
+
+**Taxonomy Fields:**
+- `concept`, `subconcept`, `level` (intro→practice→edge→integrated)
+- `prereqs`, `type`, `pattern`, `objective`, `targets`
+
+### 6. Coding Style
 - **Files:** `kebab-case`
 - **Components:** `PascalCase`
 - **Commits:** Conventional Commits (`feat:`, `fix:`, `docs:`, etc.)
+- **Path alias:** `@/*` maps to `src/*`
+
+---
+
+## Database Schema
+
+Key tables:
+- `profiles` - User data with auto-generated username, stats
+- `exercises` - Exercise content with slug-based identity (352 Python exercises)
+- `subconcept_progress` - FSRS state per subconcept (stability, difficulty, fsrs_state, reps, lapses)
+- `exercise_attempts` - Exercise usage tracking for selection algorithm
+
+RLS enabled on all user tables.
 
 ---
 
@@ -96,12 +168,41 @@ pnpm validate:exercises    # Validate exercise YAML schema
 
 - **Parallelism:** Use parallel tool calls for searching and reading files to speed up context gathering.
 - **Verification:** Always run `pnpm typecheck` and `pnpm test` after modifications.
-- **Knowledge Retrieval:** Use `grep` or `search_file_content` to find existing patterns before implementing new ones.
-- **Context:** If architectural decisions are needed, check `debates/` or use the Debate Hall MCP (if available).
+- **Knowledge Retrieval:** Use `grep` or search to find existing patterns before implementing new ones.
+- **Exercise Workflow:** Edit YAML in `exercises/python/`, run `pnpm validate:all`, then `pnpm generate:exercise-list:obsidian`.
+- **Context:** Check `docs/plans/` for design documents on major features.
 
 ---
 
-## Current Status & Roadmap
+## Completed Milestones
 
-**Status:** Phase 2.5 Complete (Curriculum Overhaul, Learning Mode). 218 Python exercises across 54 subconcepts.
-**Next:** Phase 3 - Content expansion (fill-in exercises), Gamification (achievements, points), and Mastery criteria.
+1. Database & Types - Migrations, RLS, auto-generated types
+2. Auth & Hooks - Magic Link, useAuth, useProfile
+3. SRS Engine - SM-2 algorithm (later migrated to FSRS)
+4. Exercise Engine - CodeInput, ExerciseCard, answer matching
+5. Practice Session - useSession, /dashboard, /practice pages
+6. Exercise Library - 50 Python exercises (expanded to 352)
+7. Basic Stats - StatsGrid, useStats, streak/accuracy
+8. MVP Deployment - Vercel, GitHub Actions CI/E2E, Playwright
+9. UI/UX Redesign - "IDE-Inspired Premium" aesthetic
+10. Custom UI Components - Premium Tailwind components with framer-motion
+11. Theme System - CSS variables, cn() utility, CodeEditor, Card elevation
+12. Phase 2 Curriculum System - Concept-based SRS, taxonomy fields
+13. Phase 2.5 Curriculum Enhancement - objective/targets fields, anti-repeat pattern
+14. Learning Mode - Teaching cards with dedicated exampleCode
+15. Phase 2.7 Exercise Variety - Three exercise types, experience levels
+16. Curriculum Restructure - 10 files matching curriculum graph
+17. SM-2 to FSRS Migration - ts-fsrs adapter, validateFsrsState guard
+18. Dedicated Teaching Examples - exampleCode field for all 54 subconcepts
+19. Dynamic Exercises Phase 1-6 - Generator infrastructure, 13 generators, 37 dynamic exercises
+20. Exercise-List.md Auto-Generation - YAML source of truth, generated docs
+21. Skill Tree Visualization - 54 subconcept nodes, 4 states, dependency lines
+
+---
+
+## Next Steps
+
+1. **Onboarding:** Integrate ExperienceLevelSelector into user flow
+2. **Gamification:** Achievements system, points, leaderboards
+3. **Languages:** JavaScript/TypeScript exercises
+4. **More Dynamic Exercises:** Continue migrating static exercises to use generators

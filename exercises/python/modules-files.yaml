@@ -484,7 +484,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: import
-    prompt: Complete to import the os module
+    prompt: Fill in the keyword that imports a module
     template: "___ os"
     expected_answer: "import"
     hints:
@@ -503,7 +503,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: import
-    prompt: Complete to import sqrt from math
+    prompt: Fill in the keyword for selective imports
     template: "___ math import sqrt"
     expected_answer: "from"
     hints:
@@ -522,7 +522,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: context
-    prompt: Complete to open file safely
+    prompt: Fill in the keyword that starts a context manager
     template: '___ open("file.txt") as f:'
     expected_answer: "with"
     hints:

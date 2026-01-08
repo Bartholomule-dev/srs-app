@@ -5,8 +5,8 @@ category: foundations
 exercises:
   # --- Variables Subconcept ---
   - slug: assign-variable
-    objective: Assign a string value to a variable using proper syntax
-    title: Assign Variable
+    objective: Initialize a configuration variable with proper string assignment
+    title: Config Variable
     difficulty: 1
     concept: foundations
     subconcept: variables
@@ -14,19 +14,19 @@ exercises:
     prereqs: []
     type: write
     pattern: assignment
-    prompt: Create a variable called name and assign the string "Alice"
-    expected_answer: name = "Alice"
+    prompt: Initialize a configuration variable called environment and set it to "production"
+    expected_answer: environment = "production"
     accepted_solutions:
-      - 'name = "Alice"'
-      - "name = 'Alice'"
+      - 'environment = "production"'
+      - "environment = 'production'"
     hints:
       - Use the = operator to assign
       - Put strings in quotes
-    tags: [variables, assignment, strings]
+    tags: [variables, assignment, config]
 
   - slug: assign-number
-    objective: Assign an integer value to a variable
-    title: Assign Number
+    objective: Store a numeric configuration value in a variable
+    title: Port Assignment
     difficulty: 1
     concept: foundations
     subconcept: variables
@@ -34,16 +34,16 @@ exercises:
     prereqs: []
     type: write
     pattern: assignment
-    prompt: Create a variable called age and assign it the value 25
-    expected_answer: age = 25
+    prompt: Create a variable called port and assign it the value 8080
+    expected_answer: port = 8080
     hints:
       - Numbers don't need quotes
       - Use = for assignment
-    tags: [variables, assignment, numbers]
+    tags: [variables, assignment, config]
 
   - slug: multiple-assignment
-    objective: Use tuple unpacking to assign multiple variables in one line
-    title: Multiple Assignment
+    objective: Use tuple unpacking to initialize multiple config values at once
+    title: Multiple Config Values
     difficulty: 2
     concept: foundations
     subconcept: variables
@@ -51,16 +51,19 @@ exercises:
     prereqs: [variables]
     type: write
     pattern: assignment
-    prompt: Assign 1, 2, 3 to variables a, b, c in one line
-    expected_answer: a, b, c = 1, 2, 3
+    prompt: Assign "localhost", 5432, "mydb" to variables host, port, database in one line
+    expected_answer: host, port, database = "localhost", 5432, "mydb"
+    accepted_solutions:
+      - 'host, port, database = "localhost", 5432, "mydb"'
+      - "host, port, database = 'localhost', 5432, 'mydb'"
     hints:
       - Separate variables with commas
       - Match the number of values
-    tags: [variables, assignment, unpacking]
+    tags: [variables, assignment, unpacking, config]
 
   - slug: swap-variables
-    objective: Swap two variable values using Pythonic tuple unpacking
-    title: Swap Variables
+    objective: Swap two variable values using Pythonic tuple unpacking (e.g., rotating API keys)
+    title: Key Rotation
     difficulty: 2
     concept: foundations
     subconcept: variables
@@ -68,12 +71,12 @@ exercises:
     prereqs: [variables]
     type: write
     pattern: swap
-    prompt: Swap the values of x and y in one line
-    expected_answer: x, y = y, x
+    prompt: Swap the values of primary_key and backup_key in one line
+    expected_answer: primary_key, backup_key = backup_key, primary_key
     hints:
       - Python allows simultaneous assignment
       - No temp variable needed
-    tags: [variables, swap, intermediate]
+    tags: [variables, swap, security]
 
   # --- Operators Subconcept ---
   # Static add-numbers removed - covered by int-addition-dynamic
@@ -168,7 +171,7 @@ exercises:
     prereqs: []
     type: write
     pattern: logical
-    prompt: Combine two conditions with AND - a > 0 and b > 0
+    prompt: Write a boolean expression that is True only when both a > 0 and b > 0
     expected_answer: a > 0 and b > 0
     hints:
       - Use the 'and' keyword
@@ -185,7 +188,7 @@ exercises:
     prereqs: []
     type: write
     pattern: logical
-    prompt: Combine two conditions with OR - x == 0 or y == 0
+    prompt: Write a boolean expression that is True when either x equals 0 or y equals 0
     expected_answer: x == 0 or y == 0
     hints:
       - Use the 'or' keyword
@@ -202,7 +205,7 @@ exercises:
     prereqs: []
     type: write
     pattern: logical
-    prompt: Negate the condition (check if x is NOT equal to 5)
+    prompt: Write an expression that checks if x is not equal to 5
     expected_answer: x != 5
     accepted_solutions:
       - x != 5
@@ -300,7 +303,7 @@ exercises:
     prereqs: [io]
     type: write
     pattern: output
-    prompt: Print "Hello, {name}!" using an f-string where name is a variable
+    prompt: Use an f-string to print a greeting that includes the variable name, like "Hello, Alice!"
     expected_answer: print(f"Hello, {name}!")
     accepted_solutions:
       - 'print(f"Hello, {name}!")'
@@ -341,7 +344,7 @@ exercises:
     type: write
     pattern: input
     targets: [io, conversion]
-    prompt: Get a number from user (any prompt is fine) and convert to integer, storing in variable age
+    prompt: Get a number from the user and store it as an integer in a variable called age
     expected_answer: 'age = int(input("Enter age: "))'
     accepted_solutions:
       - 'age = int(input("Enter age: "))'
@@ -365,7 +368,7 @@ exercises:
     prereqs: []
     pattern: assignment
     objective: Complete variable assignment syntax
-    prompt: Complete the code to assign the value 42 to a variable named answer
+    prompt: Fill in the assignment operator
     template: "answer ___ 42"
     blank_position: 0
     expected_answer: "="
@@ -385,14 +388,14 @@ exercises:
     prereqs: []
     pattern: assignment
     objective: Use valid Python variable naming
-    prompt: Complete the variable name using snake_case (e.g., user_count, item_count)
+    prompt: Fill in one of these common snake_case prefixes for the variable name (user_, item_, total_)
     template: "___count = 10"
     blank_position: 0
     expected_answer: "user_"
-    accepted_solutions: ["user_", "item_", "total_", "word_", "page_", "row_"]
+    accepted_solutions: ["user_", "item_", "total_"]
     hints:
       - Python convention uses lowercase with underscores (snake_case)
-      - Any descriptive prefix followed by underscore works (e.g., user_, item_)
+      - Use user_, item_, or total_ as the prefix
     tags: [variables, naming]
 
   - slug: operator-addition-fill
@@ -405,7 +408,7 @@ exercises:
     prereqs: [variables]
     pattern: arithmetic
     objective: Use the addition operator
-    prompt: Complete the expression to add x and y
+    prompt: Fill in the operator to add x and y
     template: "result = x ___ y"
     blank_position: 0
     expected_answer: "+"
@@ -425,7 +428,7 @@ exercises:
     prereqs: [variables]
     pattern: arithmetic
     objective: Use floor division operator
-    prompt: Complete the expression for integer division (discard remainder)
+    prompt: Fill in the operator for integer division (discards remainder)
     template: "result = 17 ___ 5  # result is 3"
     blank_position: 0
     expected_answer: "//"
@@ -445,7 +448,7 @@ exercises:
     prereqs: [operators]
     pattern: logical
     objective: Use the logical AND operator
-    prompt: Complete the boolean expression
+    prompt: Fill in the logical operator that requires both conditions to be true
     template: "is_valid = has_name ___ has_email"
     blank_position: 0
     expected_answer: "and"
@@ -465,7 +468,7 @@ exercises:
     prereqs: [operators]
     pattern: logical
     objective: Use the logical NOT operator
-    prompt: Complete the expression to invert the boolean
+    prompt: Fill in the operator that inverts a boolean value
     template: "is_invalid = ___ is_valid"
     blank_position: 0
     expected_answer: "not"
@@ -485,7 +488,7 @@ exercises:
     prereqs: [variables]
     pattern: output
     objective: Use the print function
-    prompt: Complete the code to display the message
+    prompt: Fill in the function that outputs text to the console
     template: "___(\"Hello, World!\")"
     blank_position: 0
     expected_answer: "print"
@@ -505,7 +508,7 @@ exercises:
     prereqs: [variables]
     pattern: input
     objective: Use the input function
-    prompt: Complete the code to get user input
+    prompt: Fill in the function that reads text from the user
     template: "name = ___(\"Enter your name: \")"
     blank_position: 0
     expected_answer: "input"
@@ -762,3 +765,204 @@ exercises:
       - "Parentheses are always evaluated first"
       - "{{description}}"
     tags: [operators, parentheses, dynamic, predict]
+
+  # --- Basic Imports Subconcept ---
+  - slug: import-math
+    objective: Import the math module to use mathematical functions
+    title: Import Math Module
+    difficulty: 1
+    concept: foundations
+    subconcept: imports-basic
+    level: intro
+    prereqs: [variables]
+    type: write
+    pattern: import
+    prompt: Import the math module
+    expected_answer: import math
+    hints:
+      - Use the import keyword
+      - math is a built-in module
+    tags: [imports, math, module]
+
+  - slug: import-math-sqrt
+    objective: Use a function from an imported module
+    title: Use Math Function
+    difficulty: 1
+    concept: foundations
+    subconcept: imports-basic
+    level: intro
+    prereqs: [imports-basic]
+    type: write
+    pattern: import
+    prompt: Calculate the square root of 16 using math.sqrt
+    expected_answer: math.sqrt(16)
+    hints:
+      - Access module functions with dot notation
+      - module.function(arguments)
+    tags: [imports, math, sqrt]
+
+  - slug: import-from-math
+    objective: Import a specific function from a module
+    title: From Import
+    difficulty: 1
+    concept: foundations
+    subconcept: imports-basic
+    level: intro
+    prereqs: [imports-basic]
+    type: write
+    pattern: import
+    prompt: Import only the sqrt function from the math module
+    expected_answer: from math import sqrt
+    hints:
+      - Use from ... import syntax
+      - Then you can use sqrt() directly
+    tags: [imports, from, math]
+
+  - slug: import-random-choice
+    objective: Use the random module for random selection
+    title: Random Choice
+    difficulty: 2
+    concept: foundations
+    subconcept: imports-basic
+    level: practice
+    prereqs: [imports-basic]
+    type: write
+    pattern: invocation
+    prompt: Given that random is already imported, select a random item from a list called colors
+    expected_answer: random.choice(colors)
+    hints:
+      - random.choice() picks one item from a sequence
+      - Pass the list as the argument
+    tags: [imports, random, choice]
+
+  - slug: import-datetime
+    objective: Get the current date using the datetime module
+    title: Today's Date
+    difficulty: 2
+    concept: foundations
+    subconcept: imports-basic
+    level: practice
+    prereqs: [imports-basic]
+    type: write
+    pattern: invocation
+    prompt: Given that datetime is already imported, get today's date
+    expected_answer: datetime.date.today()
+    hints:
+      - datetime module has a date class
+      - date.today() returns current date
+    tags: [imports, datetime, date]
+
+  - slug: import-fill-from
+    objective: Complete the from import syntax
+    title: From Import Fill
+    difficulty: 1
+    concept: foundations
+    subconcept: imports-basic
+    level: intro
+    prereqs: [variables]
+    type: fill-in
+    blank_position: 0
+    pattern: import
+    prompt: Fill in the keyword for selective imports
+    template: "___ math import pi"
+    expected_answer: "from"
+    hints:
+      - What keyword starts a selective import?
+      - Syntax is ___ module import name
+    tags: [imports, from, fill-in]
+
+  - slug: import-fill-import
+    objective: Complete the import statement
+    title: Import Keyword Fill
+    difficulty: 1
+    concept: foundations
+    subconcept: imports-basic
+    level: intro
+    prereqs: [variables]
+    type: fill-in
+    blank_position: 0
+    pattern: import
+    prompt: Fill in the keyword that imports a module
+    template: "___ json"
+    expected_answer: "import"
+    hints:
+      - Which keyword loads a module?
+      - Brings in external functionality
+    tags: [imports, import, fill-in]
+
+  - slug: import-predict-pi
+    objective: Predict the value of math.pi
+    title: Math Pi Value
+    difficulty: 1
+    concept: foundations
+    subconcept: imports-basic
+    level: intro
+    prereqs: [imports-basic]
+    type: predict
+    pattern: import
+    prompt: What does this code print? (to 2 decimal places)
+    code: |
+      import math
+      print(round(math.pi, 2))
+    expected_answer: "3.14"
+    hints:
+      - math.pi is the mathematical constant π
+      - round(x, 2) rounds to 2 decimal places
+    tags: [imports, math, pi, predict]
+
+  - slug: import-predict-ceil
+    objective: Predict the result of math.ceil
+    title: Math Ceil Predict
+    difficulty: 2
+    concept: foundations
+    subconcept: imports-basic
+    level: practice
+    prereqs: [imports-basic]
+    type: predict
+    pattern: import
+    prompt: What does this code print?
+    code: |
+      import math
+      print(math.ceil(4.2))
+    expected_answer: "5"
+    hints:
+      - ceil() rounds UP to the nearest integer
+      - Always rounds toward positive infinity
+    tags: [imports, math, ceil, predict]
+
+  - slug: import-multiple-basic
+    objective: Import multiple items from a module in one statement
+    title: Multiple Imports Basic
+    difficulty: 2
+    concept: foundations
+    subconcept: imports-basic
+    level: practice
+    prereqs: [imports-basic]
+    type: write
+    pattern: import
+    prompt: Import both sqrt and pi from the math module in one line
+    expected_answer: from math import sqrt, pi
+    accepted_solutions:
+      - from math import sqrt, pi
+      - from math import pi, sqrt
+    hints:
+      - Separate multiple imports with commas
+      - from module import a, b
+    tags: [imports, from, multiple]
+
+  - slug: import-as-alias
+    objective: Import a module with an alias for convenience
+    title: Import with Alias
+    difficulty: 2
+    concept: foundations
+    subconcept: imports-basic
+    level: edge
+    prereqs: [imports-basic]
+    type: write
+    pattern: import
+    prompt: Import the datetime module as dt
+    expected_answer: import datetime as dt
+    hints:
+      - Use 'as' to create an alias
+      - Common for modules with long names
+    tags: [imports, alias, as]

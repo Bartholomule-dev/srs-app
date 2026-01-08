@@ -92,7 +92,7 @@ describe('useConceptSRS', () => {
           id: 'progress-1',
           user_id: 'user-123',
           subconcept_slug: 'for-loops',
-          concept_slug: 'control-flow',
+          concept_slug: 'loops',
           phase: 'learning',
           ease_factor: 2.5,
           interval: 1,
@@ -149,7 +149,7 @@ describe('useConceptSRS', () => {
           id: 'progress-1',
           user_id: 'user-123',
           subconcept_slug: 'for-loops',
-          concept_slug: 'control-flow',
+          concept_slug: 'loops',
           phase: 'learning',
           ease_factor: 2.5,
           interval: 1,
@@ -189,7 +189,7 @@ describe('useConceptSRS', () => {
       });
 
       await act(async () => {
-        await result.current.recordSubconceptResult('for-loops', 'control-flow', 4, 'ex-1', true);
+        await result.current.recordSubconceptResult('for-loops', 'loops', 4, 'ex-1', true);
       });
 
       expect(mockFrom).toHaveBeenCalledWith('subconcept_progress');
@@ -269,7 +269,7 @@ describe('useConceptSRS', () => {
           id: 'p1',
           user_id: 'user-123',
           subconcept_slug: 'for-loops',
-          concept_slug: 'control-flow',
+          concept_slug: 'loops',
           phase: 'learning',
           ease_factor: 2.5,
           interval: 1,
@@ -282,7 +282,7 @@ describe('useConceptSRS', () => {
           id: 'p2',
           user_id: 'user-123',
           subconcept_slug: 'while-loops',
-          concept_slug: 'control-flow',
+          concept_slug: 'loops',
           phase: 'learning',
           ease_factor: 2.5,
           interval: 1,

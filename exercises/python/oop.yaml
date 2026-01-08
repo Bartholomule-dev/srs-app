@@ -185,12 +185,17 @@ exercises:
     prereqs: [oop.methods]
     type: write
     pattern: definition
-    prompt: Define a class method called create using @classmethod decorator
+    prompt: Write the decorator and signature for a class method called create (just the header, no body)
     expected_answer: |
       @classmethod
       def create(cls):
+    accepted_solutions:
+      - |
+        @classmethod
+        def create(cls):
+      - "@classmethod\ndef create(cls):"
     hints:
-      - Use @classmethod decorator
+      - Use @classmethod decorator on the line before def
       - First parameter is cls, not self
     tags: [oop, classmethod, decorator]
 
@@ -426,7 +431,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Complete the class definition
+    prompt: Fill in the keyword that defines a class
     template: "___ Person:"
     expected_answer: "class"
     hints:
@@ -445,7 +450,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Complete the constructor's first parameter
+    prompt: Fill in the first parameter that refers to the instance
     template: "def __init__(___, name):"
     expected_answer: "self"
     hints:
@@ -464,7 +469,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: invocation
-    prompt: Complete to call parent's __init__
+    prompt: Fill in the function that accesses the parent class
     template: "___().__init__(name)"
     expected_answer: "super"
     hints:
@@ -628,3 +633,72 @@ exercises:
       - "Check if the child class overrides the method"
       - "If no override, the parent's method is used"
     tags: [oop, inheritance, dynamic, predict]
+
+  # --- Integrated Exercises (Premium - Combining Multiple Subconcepts) ---
+  - slug: api-response-model-integrated
+    objective: Build an API response dataclass with safe mutable defaults
+    title: API Response Model
+    difficulty: 3
+    concept: oop
+    subconcept: dataclasses
+    level: integrated
+    prereqs: [dataclasses, typehints, mutability, defaults]
+    targets: [dataclasses, typehints, mutability, defaults]
+    type: write
+    pattern: definition
+    domains: [web]
+    prompt: |
+      Define a @dataclass named APIResponse with:
+      - status: int defaulting to 200
+      - errors: list[str] using field(default_factory=list) to avoid shared state
+      Import field from dataclasses.
+    expected_answer: |
+      @dataclass
+      class APIResponse:
+          status: int = 200
+          errors: list[str] = field(default_factory=list)
+    accepted_solutions:
+      - |
+        @dataclass
+        class APIResponse:
+            status: int = 200
+            errors: list[str] = field(default_factory=list)
+    hints:
+      - Use @dataclass decorator
+      - Mutable defaults need field(default_factory=...)
+      - This prevents shared state bugs
+    tags: [dataclass, api, mutable-default, integrated]
+
+  - slug: health-check-dataclass-integrated
+    objective: Create a health check dataclass with f-string log method
+    title: Health Check with Logging
+    difficulty: 3
+    concept: oop
+    subconcept: dataclasses
+    level: integrated
+    prereqs: [dataclasses, fstrings, methods, defaults]
+    targets: [dataclasses, fstrings, methods, defaults]
+    type: write
+    pattern: definition
+    prompt: |
+      Define a @dataclass HealthCheck with:
+      - name: str
+      - status: str = "ok"
+      - duration_ms: int = 0
+      Add method to_log_line() returning f"{self.name}:{self.status} ({self.duration_ms}ms)"
+    expected_answer: |
+      @dataclass
+      class HealthCheck:
+          name: str
+          status: str = "ok"
+          duration_ms: int = 0
+
+          def to_log_line(self) -> str:
+              return f"{self.name}:{self.status} ({self.duration_ms}ms)"
+    hints:
+      - Methods work normally in dataclasses
+      - Use f-string for formatted output
+      - Access fields with self.fieldname
+    tags: [dataclass, logging, fstring, integrated]
+
+  # --- Debug Exercises (Pitfall Subconcepts) ---

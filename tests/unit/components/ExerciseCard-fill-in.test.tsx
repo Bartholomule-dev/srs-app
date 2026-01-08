@@ -32,7 +32,7 @@ describe('ExerciseCard fill-in support', () => {
     avgSuccessRate: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    concept: 'control-flow',
+    concept: 'loops',
     subconcept: 'for',
     level: 'intro',
     prereqs: [],

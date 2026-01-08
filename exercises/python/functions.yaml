@@ -621,7 +621,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Complete the function definition
+    prompt: Fill in the keyword that defines a function
     template: "___ greet(name):"
     expected_answer: "def"
     hints:
@@ -640,7 +640,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Complete to return the result
+    prompt: Fill in the keyword that returns a value from a function
     template: |
       def add(a, b):
           ___ a + b
@@ -661,7 +661,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Complete the anonymous function
+    prompt: Fill in the keyword for an anonymous function
     template: "double = ___ x: x * 2"
     expected_answer: "lambda"
     hints:
@@ -680,7 +680,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Complete to make greeting default to "Hello"
+    prompt: Fill in the operator that assigns a default value
     template: 'def greet(name, greeting___"Hello"):'
     expected_answer: "="
     hints:
@@ -699,7 +699,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Complete to accept any number of arguments
+    prompt: Fill in the prefix for variable positional arguments
     template: "def sum_all(___args):"
     expected_answer: "*"
     hints:
@@ -718,7 +718,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Complete to accept any keyword arguments
+    prompt: Fill in the prefix for variable keyword arguments
     template: "def config(___kwargs):"
     expected_answer: "**"
     hints:
@@ -1018,3 +1018,85 @@ exercises:
       - "Default parameters can be omitted"
       - "Explicit args override defaults"
     tags: [functions, defaults, dynamic, write]
+
+  # --- Integrated Exercises (Premium - Combining Multiple Subconcepts) ---
+  - slug: retry-decorator-integrated
+    objective: Build a retry decorator combining decorators, while loops, and exception handling
+    title: Retry Connection Decorator
+    difficulty: 3
+    concept: functions
+    subconcept: decorators
+    level: integrated
+    prereqs: [decorators, while, try-except, args-kwargs]
+    targets: [decorators, while, try-except, args-kwargs]
+    type: write
+    pattern: definition
+    domains: [web, devops]
+    prompt: |
+      Create a decorator @retry that wraps a function and retries it up to 3 times
+      if ConnectionError is raised. Use *args, **kwargs to pass arguments through.
+    expected_answer: |
+      def retry(func):
+          def wrapper(*args, **kwargs):
+              attempts = 0
+              while attempts < 3:
+                  try:
+                      return func(*args, **kwargs)
+                  except ConnectionError:
+                      attempts += 1
+              return func(*args, **kwargs)
+          return wrapper
+    accepted_solutions:
+      - |
+        def retry(func):
+            def wrapper(*args, **kwargs):
+                for _ in range(3):
+                    try:
+                        return func(*args, **kwargs)
+                    except ConnectionError:
+                        pass
+                return func(*args, **kwargs)
+            return wrapper
+    hints:
+      - Decorator returns a wrapper function
+      - Use while or for loop for attempts
+      - Catch ConnectionError inside the loop
+    tags: [decorators, retry, integrated, production]
+
+  - slug: config-loader-integrated
+    objective: Build a safe config loader combining context managers, try-except, and dict handling
+    title: Safe JSON Config Loader
+    difficulty: 3
+    concept: functions
+    subconcept: fn-basics
+    level: integrated
+    prereqs: [context, try-except, imports-basic, dicts]
+    targets: [context, try-except, imports-basic, dicts]
+    type: write
+    pattern: definition
+    domains: [devops, web]
+    prompt: |
+      Write load_config(path) that safely loads a JSON file using a context manager.
+      If FileNotFoundError or json.JSONDecodeError occurs, return empty dict {}.
+      Assume json is already imported.
+    expected_answer: |
+      def load_config(path):
+          try:
+              with open(path) as f:
+                  return json.load(f)
+          except (FileNotFoundError, json.JSONDecodeError):
+              return {}
+    accepted_solutions:
+      - |
+        def load_config(path):
+            try:
+                with open(path, 'r') as f:
+                    return json.load(f)
+            except (FileNotFoundError, json.JSONDecodeError):
+                return {}
+    hints:
+      - Use with statement for file handling
+      - Catch multiple exceptions with tuple
+      - Return empty dict on any error
+    tags: [context-manager, json, error-handling, integrated]
+  # --- Debug Exercises (Pitfall Subconcepts) ---

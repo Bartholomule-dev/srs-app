@@ -6,7 +6,7 @@ import type { SubconceptDefinition } from '@/lib/curriculum/types';
 describe('Teaching Cards', () => {
   const mockSubconcept: SubconceptDefinition = {
     name: 'For Loops',
-    concept: 'control-flow',
+    concept: 'loops',
     prereqs: ['lists'],
     teaching: {
       explanation: 'For loops iterate over sequences.',
@@ -121,7 +121,7 @@ describe('Teaching Cards', () => {
     it('still works with exampleSlug when exampleCode not provided', () => {
       const subconceptWithSlug: SubconceptDefinition = {
         name: 'For Loops',
-        concept: 'control-flow',
+        concept: 'loops',
         prereqs: [],
         teaching: {
           explanation: 'For loops iterate.',

@@ -45,9 +45,17 @@
           "type": "array",
           "items": { "type": "string" }
         },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["general", "web", "data", "devops", "testing", "ml"]
+          },
+          "description": "Job-role domains this exercise is relevant to (default: general)"
+        },
         "concept": {
           "type": "string",
-          "enum": ["foundations", "strings", "numbers-booleans", "collections", "control-flow", "functions", "comprehensions", "error-handling", "oop", "modules-files"],
+          "enum": ["foundations", "strings", "numbers-booleans", "conditionals", "collections", "loops", "functions", "comprehensions", "error-handling", "oop", "modules-files"],
           "description": "Primary milestone/concept"
         },
         "subconcept": {
@@ -66,24 +74,26 @@
         },
         "type": {
           "type": "string",
-          "enum": ["write", "fill-in", "predict", "debug"],
+          "enum": ["write", "fill-in", "predict"],
           "description": "Exercise format"
         },
         "pattern": {
           "type": "string",
           "enum": [
             "accumulator", "aggregation", "arithmetic", "assignment", "attribute",
+            "branching",
             "comparison", "conditional", "construction", "context", "control", "conversion",
             "declaration", "definition",
+            "error-first", "expression",
             "file", "filtering", "function",
             "gotcha",
             "handling",
-            "import", "indexing", "input", "invocation", "io", "iteration",
+            "idiomatic", "import", "indexing", "input", "invocation", "io", "iteration",
             "logic", "logical", "lookup",
             "mapping", "mutation",
             "output",
             "query",
-            "scope", "slicing", "swap",
+            "scope", "search", "slicing", "structural", "swap",
             "transformation"
           ],
           "description": "Programming pattern being practiced"

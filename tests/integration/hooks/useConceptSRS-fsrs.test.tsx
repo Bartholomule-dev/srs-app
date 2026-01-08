@@ -203,7 +203,7 @@ describe('useConceptSRS FSRS Integration', () => {
         id: 'sp-1',
         user_id: mockUser.id,
         subconcept_slug: 'for',
-        concept_slug: 'control-flow',
+        concept_slug: 'loops',
         stability: 5,
         difficulty: 0.3,
         fsrs_state: 2, // Review
@@ -220,7 +220,7 @@ describe('useConceptSRS FSRS Integration', () => {
         id: 'sp-2',
         user_id: mockUser.id,
         subconcept_slug: 'while',
-        concept_slug: 'control-flow',
+        concept_slug: 'loops',
         stability: 3,
         difficulty: 0.4,
         fsrs_state: 2,
@@ -255,7 +255,7 @@ describe('useConceptSRS FSRS Integration', () => {
         id: 'sp-1',
         user_id: mockUser.id,
         subconcept_slug: 'for',
-        concept_slug: 'control-flow',
+        concept_slug: 'loops',
         stability: 0,
         difficulty: 0,
         fsrs_state: 0, // New
@@ -280,7 +280,7 @@ describe('useConceptSRS FSRS Integration', () => {
     await act(async () => {
       await result.current.recordSubconceptResult(
         'for',
-        'control-flow',
+        'loops',
         4, // Good quality
         'for-loop-basic',
         true
@@ -303,7 +303,7 @@ describe('useConceptSRS FSRS Integration', () => {
         id: 'sp-1',
         user_id: mockUser.id,
         subconcept_slug: 'for',
-        concept_slug: 'control-flow',
+        concept_slug: 'loops',
         stability: 5,
         difficulty: 0.3,
         fsrs_state: 2, // Review state
@@ -328,7 +328,7 @@ describe('useConceptSRS FSRS Integration', () => {
     await act(async () => {
       await result.current.recordSubconceptResult(
         'for',
-        'control-flow',
+        'loops',
         5, // Easy quality
         'for-loop-basic',
         true
@@ -348,7 +348,7 @@ describe('useConceptSRS FSRS Integration', () => {
         id: 'sp-1',
         user_id: mockUser.id,
         subconcept_slug: 'for',
-        concept_slug: 'control-flow',
+        concept_slug: 'loops',
         stability: 10,
         difficulty: 0.3,
         fsrs_state: 2, // Review state
@@ -373,7 +373,7 @@ describe('useConceptSRS FSRS Integration', () => {
     await act(async () => {
       await result.current.recordSubconceptResult(
         'for',
-        'control-flow',
+        'loops',
         1, // Failed
         'for-loop-basic',
         false
@@ -393,7 +393,7 @@ describe('useConceptSRS FSRS Integration', () => {
         id: 'sp-1',
         user_id: mockUser.id,
         subconcept_slug: 'for',
-        concept_slug: 'control-flow',
+        concept_slug: 'loops',
         stability: 0,
         difficulty: 0,
         fsrs_state: 0,
@@ -410,7 +410,7 @@ describe('useConceptSRS FSRS Integration', () => {
         id: 'sp-2',
         user_id: mockUser.id,
         subconcept_slug: 'while',
-        concept_slug: 'control-flow',
+        concept_slug: 'loops',
         stability: 0,
         difficulty: 0,
         fsrs_state: 0,
@@ -437,7 +437,7 @@ describe('useConceptSRS FSRS Integration', () => {
     await act(async () => {
       await result.current.recordSubconceptResult(
         'for',
-        'control-flow',
+        'loops',
         4,
         'for-loop-basic',
         true

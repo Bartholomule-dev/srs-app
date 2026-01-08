@@ -1,13 +1,13 @@
 {
   "language": "python",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "concepts": [
     {
       "slug": "foundations",
       "name": "Foundations",
-      "description": "Variables, operators, expressions, and basic I/O",
+      "description": "Variables, operators, expressions, basic I/O, and imports",
       "prereqs": [],
-      "subconcepts": ["variables", "operators", "expressions", "io"]
+      "subconcepts": ["variables", "operators", "expressions", "io", "imports-basic"]
     },
     {
       "slug": "strings",
@@ -19,56 +19,63 @@
     {
       "slug": "numbers-booleans",
       "name": "Numbers & Booleans",
-      "description": "Numeric types, boolean logic, and type conversion",
+      "description": "Numeric types, boolean logic, comparisons, and type conversion",
       "prereqs": ["foundations"],
-      "subconcepts": ["integers", "floats", "booleans", "conversion", "truthiness", "comparisons"]
+      "subconcepts": ["integers", "floats", "booleans", "conversion", "truthiness", "comparisons", "identity"]
+    },
+    {
+      "slug": "conditionals",
+      "name": "Conditionals",
+      "description": "Branching logic with if, elif, else, and ternary expressions",
+      "prereqs": ["numbers-booleans"],
+      "subconcepts": ["if-else", "elif-chains", "ternary", "match-case"]
     },
     {
       "slug": "collections",
       "name": "Collections",
       "description": "Lists, tuples, dictionaries, and sets",
       "prereqs": ["strings", "numbers-booleans"],
-      "subconcepts": ["lists", "tuples", "dicts", "sets", "unpacking", "mutability"]
+      "subconcepts": ["lists", "tuples", "dicts", "sets", "unpacking", "mutability", "dict-iteration"]
     },
     {
-      "slug": "control-flow",
-      "name": "Control Flow",
-      "description": "Conditionals, loops, and iteration",
-      "prereqs": ["collections"],
-      "subconcepts": ["conditionals", "for", "while", "iteration", "zip", "reversed", "sorted", "any-all"]
+      "slug": "loops",
+      "name": "Loops",
+      "description": "For loops, while loops, and iteration patterns",
+      "prereqs": ["conditionals", "collections"],
+      "subconcepts": ["for", "while", "range", "iteration", "zip", "reversed", "sorted", "any-all", "break-continue"]
     },
     {
       "slug": "functions",
       "name": "Functions",
       "description": "Function definitions, parameters, and scope",
-      "prereqs": ["collections"],
-      "subconcepts": ["fn-basics", "arguments", "defaults", "args-kwargs", "scope", "lambda", "typehints"]
+      "prereqs": ["loops"],
+      "subconcepts": ["fn-basics", "arguments", "defaults", "args-kwargs", "scope", "lambda", "typehints", "decorators"]
     },
     {
       "slug": "comprehensions",
-      "name": "Comprehensions",
-      "description": "List, dict, and set comprehensions",
-      "prereqs": ["control-flow", "functions"],
-      "subconcepts": ["list-comp", "dict-comp", "set-comp", "generator-exp"]
+      "name": "Comprehensions & Generators",
+      "description": "List, dict, set comprehensions, generator expressions, and generator functions",
+      "prereqs": ["loops"],
+      "subconcepts": ["list-comp", "dict-comp", "set-comp", "generator-exp", "generators"]
     },
     {
       "slug": "error-handling",
       "name": "Error Handling",
       "description": "Exception handling and error management",
-      "prereqs": ["comprehensions"],
+      "prereqs": ["conditionals", "functions"],
       "subconcepts": ["try-except", "finally", "raising"]
     },
     {
       "slug": "oop",
       "name": "OOP",
       "description": "Classes, objects, and inheritance",
-      "prereqs": ["comprehensions"],
-      "subconcepts": ["classes", "methods", "inheritance", "classmethod", "properties"]
+      "prereqs": ["functions"],
+      "subconcepts": ["classes", "methods", "inheritance", "classmethod", "properties", "dataclasses"]
     },
     {
       "slug": "modules-files",
       "name": "Modules & Files",
-      "description": "Imports, file I/O, and context managers",
+      "description": "Advanced imports, file I/O, and context managers",
       "prereqs": ["error-handling", "oop"],
       "subconcepts": ["imports", "reading", "writing", "context", "pathlib", "main-guard"]
     }
@@ -91,7 +98,7 @@
       "teaching": {
         "explanation": "Python supports arithmetic (+, -, *, /), comparison (==, <, >), and logical (and, or, not) operators.",
         "exampleCode": "result = 10 + 7",
-        "exampleSlug": "add-numbers"
+        "exampleSlug": "operator-addition-fill"
       }
     },
     "expressions": {
@@ -114,6 +121,16 @@
         "exampleSlug": "print-string"
       }
     },
+    "imports-basic": {
+      "name": "Basic Imports",
+      "concept": "foundations",
+      "prereqs": ["variables"],
+      "teaching": {
+        "explanation": "Use `import module` to access built-in modules like math, random, datetime. Use `from module import name` for specific items.",
+        "exampleCode": "import math\nradius = 5\narea = math.pi * radius ** 2",
+        "exampleSlug": "import-math"
+      }
+    },
     "basics": {
       "name": "String Basics",
       "concept": "strings",
@@ -131,7 +148,7 @@
       "teaching": {
         "explanation": "Access characters by position with `s[i]`. Index 0 is first, -1 is last. Raises IndexError if out of range.",
         "exampleCode": "last_char = word[-1]",
-        "exampleSlug": "string-indexing"
+        "exampleSlug": "string-index-dynamic"
       }
     },
     "slicing": {
@@ -141,7 +158,12 @@
       "teaching": {
         "explanation": "Extract substrings with `s[start:end:step]`. Omit start/end for beginning/end. Use [::-1] to reverse.",
         "exampleCode": "middle = text[2:5]",
-        "exampleSlug": "string-slice-start"
+        "exampleSlug": "string-slice-start",
+        "pitfall": {
+          "mistake": "Expecting s[2:5] to include index 5",
+          "why": "Python slices are half-open: [start, end). Index 5 is excluded. Think of it as 'up to but not including'.",
+          "fix": "Use s[2:6] to include index 5, or remember end = desired_last_index + 1"
+        }
       }
     },
     "string-methods": {
@@ -161,7 +183,12 @@
       "teaching": {
         "explanation": "F-strings embed expressions in strings: `f\"Hello, {name}!\"`. Use format specs like `{x:.2f}` for precision.",
         "exampleCode": "message = f\"{user} has {points} points\"",
-        "exampleSlug": "f-string-basic"
+        "exampleSlug": "f-string-basic",
+        "pitfall": {
+          "mistake": "Using + for string concatenation: 'Hello ' + name + '!'",
+          "why": "Concatenation is slower, harder to read, and error-prone with mixed types.",
+          "fix": "Use f-strings for any string with variables: f'Hello {name}!'"
+        }
       }
     },
     "integers": {
@@ -171,7 +198,7 @@
       "teaching": {
         "explanation": "Integers are whole numbers with unlimited precision. Use //, %, ** for floor division, modulo, exponentiation.",
         "exampleCode": "remainder = 17 % 5  # Result: 2",
-        "exampleSlug": "floor-division-intro"
+        "exampleSlug": "int-floor-div-fill"
       }
     },
     "floats": {
@@ -181,7 +208,7 @@
       "teaching": {
         "explanation": "Floats represent decimal numbers. Use round() for precision. Be aware of floating-point inaccuracy.",
         "exampleCode": "price = round(19.995, 2)  # Result: 20.0",
-        "exampleSlug": "exponentiation-intro"
+        "exampleSlug": "float-round-fill"
       }
     },
     "booleans": {
@@ -211,7 +238,12 @@
       "teaching": {
         "explanation": "Falsy values: False, None, 0, \"\", [], {}, set(). Everything else is truthy. Use `if items:` not `if len(items) > 0:`.",
         "exampleCode": "if items:  # True if items is non-empty",
-        "exampleSlug": "truthiness-predict-empty"
+        "exampleSlug": "truthiness-predict-empty",
+        "pitfall": {
+          "mistake": "Writing `if len(items) > 0:` or `if items == []:`",
+          "why": "Python's truthiness makes this verbose and slower. Empty collections are already falsy.",
+          "fix": "Use `if items:` for non-empty, `if not items:` for empty"
+        }
       }
     },
     "comparisons": {
@@ -219,9 +251,65 @@
       "concept": "numbers-booleans",
       "prereqs": ["booleans"],
       "teaching": {
-        "explanation": "Use `is` for identity (None), `==` for equality. Chain comparisons: `0 < x < 10`. Use `in` for membership.",
-        "exampleCode": "is_none = value is None",
-        "exampleSlug": "comparison-is-fill"
+        "explanation": "Compare values with ==, !=, <, >, <=, >=. Chain comparisons: `0 < x < 10`. Use `in` for membership tests.",
+        "exampleCode": "is_valid = 0 <= score <= 100",
+        "exampleSlug": "comparison-chain"
+      }
+    },
+    "identity": {
+      "name": "Identity",
+      "concept": "numbers-booleans",
+      "prereqs": ["comparisons"],
+      "teaching": {
+        "explanation": "Use `is` for identity (same object), `==` for equality (same value). Always use `is None`, never `== None`.",
+        "exampleCode": "if result is None:\n    print(\"No result found\")",
+        "exampleSlug": "identity-is-none",
+        "pitfall": {
+          "mistake": "Using == to compare with None",
+          "why": "== checks value equality and can be overridden by __eq__. None is a singleton, so identity (is) is faster and more correct.",
+          "fix": "Always use `x is None` or `x is not None`",
+          "productionImpact": "Objects with custom __eq__ return unexpected results. A NaN-like object where x == None returns True causes silent bugs."
+        }
+      }
+    },
+    "if-else": {
+      "name": "If-Else",
+      "concept": "conditionals",
+      "prereqs": ["comparisons"],
+      "teaching": {
+        "explanation": "Use `if condition:` to branch. Add `else:` for the alternative path. Indent the code block 4 spaces.",
+        "exampleCode": "if temperature > 30:\n    print(\"Hot day!\")\nelse:\n    print(\"Nice weather\")",
+        "exampleSlug": "if-else-basic"
+      }
+    },
+    "elif-chains": {
+      "name": "Elif Chains",
+      "concept": "conditionals",
+      "prereqs": ["if-else"],
+      "teaching": {
+        "explanation": "Use `elif` for multiple conditions. Python checks top-to-bottom, stops at first True. End with `else` as fallback.",
+        "exampleCode": "if score >= 90:\n    grade = 'A'\nelif score >= 80:\n    grade = 'B'\nelse:\n    grade = 'C'",
+        "exampleSlug": "elif-grade"
+      }
+    },
+    "ternary": {
+      "name": "Ternary Expressions",
+      "concept": "conditionals",
+      "prereqs": ["if-else"],
+      "teaching": {
+        "explanation": "Use `value_if_true if condition else value_if_false` for inline conditionals. Keep it simple - one line only.",
+        "exampleCode": "status = \"adult\" if age >= 18 else \"minor\"",
+        "exampleSlug": "ternary-basic"
+      }
+    },
+    "match-case": {
+      "name": "Match-Case",
+      "concept": "conditionals",
+      "prereqs": ["elif-chains"],
+      "teaching": {
+        "explanation": "Python 3.10+ structural pattern matching. Use `match value:` with `case pattern:` blocks. `case _:` is the wildcard.",
+        "exampleCode": "match command:\n    case \"quit\":\n        exit()\n    case \"help\":\n        show_help()\n    case _:\n        print(\"Unknown\")",
+        "exampleSlug": "match-case-basic"
       }
     },
     "lists": {
@@ -281,87 +369,118 @@
       "teaching": {
         "explanation": "Lists, dicts, sets are mutable (can change). Tuples, strings are immutable. Use copy() to avoid aliasing bugs.",
         "exampleCode": "copy = original[:]  # Shallow copy to avoid aliasing",
-        "exampleSlug": "list-aliasing"
+        "exampleSlug": "list-aliasing",
+        "pitfall": {
+          "mistake": "Using mutable default arguments like `def f(items=[])`",
+          "why": "Default arguments are evaluated once at function definition. All calls share the same list object.",
+          "fix": "Use `def f(items=None):` then `items = items or []` inside the function",
+          "productionImpact": "In web servers, causes request data to leak between users. One user's cart items appear in another's session."
+        }
       }
     },
-    "conditionals": {
-      "name": "Conditionals",
-      "concept": "control-flow",
-      "prereqs": ["expressions"],
+    "dict-iteration": {
+      "name": "Dict Iteration",
+      "concept": "collections",
+      "prereqs": ["dicts"],
       "teaching": {
-        "explanation": "Use `if`, `elif`, `else` for branching. Combine conditions with `and`, `or`. Use `in` for membership tests.",
-        "exampleCode": "if score >= 90:\\n    grade = \"A\"",
-        "exampleSlug": "if-statement"
+        "explanation": "Iterate dicts with .keys(), .values(), .items(). Default iteration gives keys. Use items() for key-value pairs.",
+        "exampleCode": "for key, value in user.items():\n    print(f\"{key}: {value}\")",
+        "exampleSlug": "dict-items-loop"
       }
     },
     "for": {
       "name": "For Loops",
-      "concept": "control-flow",
+      "concept": "loops",
       "prereqs": ["lists"],
       "teaching": {
         "explanation": "For loops iterate over sequences. Use `for item in sequence:` to process each element. Use range() for numbers.",
-        "exampleCode": "for name in names:\\n    print(name)",
-        "exampleSlug": "for-loop-range"
+        "exampleCode": "for product in cart:\n    print(product.name)",
+        "exampleSlug": "for-loop-list"
       }
     },
     "while": {
       "name": "While Loops",
-      "concept": "control-flow",
-      "prereqs": ["conditionals"],
+      "concept": "loops",
+      "prereqs": ["if-else"],
       "teaching": {
-        "explanation": "While loops run until condition is False. Use break to exit early, continue to skip iteration. Watch for infinite loops!",
-        "exampleCode": "while attempts < 3:\\n    try_again()",
+        "explanation": "While loops run until condition is False. Use for unknown iteration counts. Watch for infinite loops!",
+        "exampleCode": "while retry_count < max_retries:\n    result = try_connect()\n    retry_count += 1",
         "exampleSlug": "while-loop"
+      }
+    },
+    "range": {
+      "name": "Range",
+      "concept": "loops",
+      "prereqs": ["for"],
+      "teaching": {
+        "explanation": "range(stop), range(start, stop), range(start, stop, step). Returns iterator, not list. Use list(range()) if needed.",
+        "exampleCode": "for page_num in range(1, total_pages + 1):\n    fetch_page(page_num)",
+        "exampleSlug": "range-start-stop"
       }
     },
     "iteration": {
       "name": "Iteration Patterns",
-      "concept": "control-flow",
+      "concept": "loops",
       "prereqs": ["for"],
       "teaching": {
-        "explanation": "Use enumerate() for index+value, zip() for parallel iteration, range() for number sequences.",
-        "exampleCode": "for i, item in enumerate(items):\\n    print(f\"{i}: {item}\")",
-        "exampleSlug": "enumerate-loop"
+        "explanation": "Use enumerate() for index+value. Prefer iteration over index access. Avoid range(len(x)) - use enumerate instead.",
+        "exampleCode": "for index, user in enumerate(users):\n    print(f\"{index + 1}. {user.name}\")",
+        "exampleSlug": "enumerate-loop",
+        "pitfall": {
+          "mistake": "Using `for i in range(len(items)):` to access items[i]",
+          "why": "This is verbose, error-prone, and unpythonic. Direct iteration is clearer and faster.",
+          "fix": "Use `for item in items:` or `for i, item in enumerate(items):`"
+        }
       }
     },
     "zip": {
       "name": "Zip",
-      "concept": "control-flow",
+      "concept": "loops",
       "prereqs": ["for"],
       "teaching": {
         "explanation": "zip() pairs elements from multiple iterables: `for a, b in zip(list1, list2):`. Stops at shortest iterable.",
-        "exampleCode": "for name, score in zip(names, scores):\\n    results[name] = score",
+        "exampleCode": "for name, email in zip(names, emails):\n    send_invite(name, email)",
         "exampleSlug": "zip-two-lists"
       }
     },
     "reversed": {
       "name": "Reversed",
-      "concept": "control-flow",
+      "concept": "loops",
       "prereqs": ["for"],
       "teaching": {
         "explanation": "reversed() iterates backwards without modifying the original. Use `for item in reversed(items):` for reverse order.",
-        "exampleCode": "for item in reversed(history):\\n    process(item)",
+        "exampleCode": "for transaction in reversed(history):\n    print(transaction)",
         "exampleSlug": "reversed-list"
       }
     },
     "sorted": {
       "name": "Sorted",
-      "concept": "control-flow",
+      "concept": "loops",
       "prereqs": ["for"],
       "teaching": {
         "explanation": "sorted() returns a new sorted list. Use key= for custom sorting, reverse=True for descending order.",
-        "exampleCode": "for user in sorted(users, key=lambda u: u.name):\\n    print(user)",
+        "exampleCode": "for product in sorted(products, key=lambda p: p.price):\n    display(product)",
         "exampleSlug": "sorted-list"
       }
     },
     "any-all": {
       "name": "Any/All",
-      "concept": "control-flow",
-      "prereqs": ["conditionals", "for"],
+      "concept": "loops",
+      "prereqs": ["if-else", "for"],
       "teaching": {
         "explanation": "any() returns True if any element is truthy. all() returns True if all are truthy. Use with generator expressions.",
-        "exampleCode": "has_errors = any(item.error for item in results)",
+        "exampleCode": "all_valid = all(item.is_valid for item in cart_items)",
         "exampleSlug": "any-basic"
+      }
+    },
+    "break-continue": {
+      "name": "Break & Continue",
+      "concept": "loops",
+      "prereqs": ["for", "while"],
+      "teaching": {
+        "explanation": "break exits the loop immediately. continue skips to next iteration. Use sparingly - prefer conditions in loop header.",
+        "exampleCode": "for user in users:\n    if user.is_banned:\n        continue\n    send_notification(user)",
+        "exampleSlug": "break-loop"
       }
     },
     "fn-basics": {
@@ -381,7 +500,7 @@
       "teaching": {
         "explanation": "Functions take positional and keyword arguments. Use name=value for keyword args. Order: positional, *args, keyword, **kwargs.",
         "exampleCode": "def greet(name, greeting=\"Hello\"):\\n    return f\"{greeting}, {name}!\"",
-        "exampleSlug": "default-parameter"
+        "exampleSlug": "kwargs-function"
       }
     },
     "defaults": {
@@ -411,7 +530,13 @@
       "teaching": {
         "explanation": "Variables have local, enclosing, global, built-in scope (LEGB). Use `global` or `nonlocal` to modify outer variables.",
         "exampleCode": "def increment():\\n    global counter\\n    counter += 1",
-        "exampleSlug": "global-keyword"
+        "exampleSlug": "global-keyword",
+        "pitfall": {
+          "mistake": "Creating closures in loops: `[lambda: i for i in range(3)]` all return 2",
+          "why": "Closures capture the variable reference, not the value. By loop end, i equals 2 for all lambdas.",
+          "fix": "Capture the value with a default argument: `lambda i=i: i`",
+          "productionImpact": "Event handlers all fire with wrong data. UI buttons all trigger the last item's action instead of their own."
+        }
       }
     },
     "lambda": {
@@ -432,6 +557,22 @@
         "explanation": "Add type hints: `def greet(name: str) -> str:`. Use list[int], Optional[str], Callable. Checked by mypy, not at runtime.",
         "exampleCode": "def add(a: int, b: int) -> int:\\n    return a + b",
         "exampleSlug": "typehint-param"
+      }
+    },
+    "decorators": {
+      "name": "Decorators",
+      "concept": "functions",
+      "prereqs": ["lambda", "scope"],
+      "teaching": {
+        "explanation": "Decorators wrap functions to add behavior. Use @decorator syntax. Common: @property, @staticmethod, @functools.cache.",
+        "exampleCode": "from functools import cache\\n\\n@cache\\ndef fib(n):\\n    return n if n < 2 else fib(n-1) + fib(n-2)",
+        "exampleSlug": "decorator-cache",
+        "pitfall": {
+          "mistake": "Forgetting @functools.wraps when writing custom decorators",
+          "why": "Without @wraps, the decorated function loses its __name__, __doc__, and signature.",
+          "fix": "Always use @functools.wraps(func) in your wrapper function",
+          "productionImpact": "Tracebacks show 'wrapper' instead of real function names. Debugging production errors becomes a nightmare."
+        }
       }
     },
     "list-comp": {
@@ -474,13 +615,27 @@
         "exampleSlug": "generator-exp-basic"
       }
     },
+    "generators": {
+      "name": "Generator Functions",
+      "concept": "comprehensions",
+      "prereqs": ["generator-exp", "fn-basics"],
+      "teaching": {
+        "explanation": "Use `yield` to create generators that produce values one at a time. Each call to next() resumes execution until the next yield.",
+        "exampleCode": "def countdown(n):\n    while n > 0:\n        yield n\n        n -= 1\n\nfor num in countdown(3):\n    print(num)  # 3, 2, 1",
+        "pitfall": {
+          "mistake": "Calling a generator function returns a generator object, not the values directly",
+          "why": "Generator functions don't execute until iterated. countdown(3) returns a generator, not [3, 2, 1].",
+          "fix": "Iterate with for loop, or use list(countdown(3)) to collect all values"
+        }
+      }
+    },
     "try-except": {
       "name": "Try-Except",
       "concept": "error-handling",
-      "prereqs": ["conditionals"],
+      "prereqs": ["if-else"],
       "teaching": {
         "explanation": "Wrap risky code in try/except. Catch specific exceptions like ValueError. Use `as e` to access exception details.",
-        "exampleCode": "try:\\n    result = int(user_input)\\nexcept ValueError:\\n    print(\"Invalid number\")",
+        "exampleCode": "try:\n    price = float(user_input)\nexcept ValueError:\n    print(\"Please enter a valid price\")",
         "exampleSlug": "try-except-basic"
       }
     },
@@ -491,7 +646,7 @@
       "teaching": {
         "explanation": "finally: always runs, even if exception occurs or return is called. Use for cleanup like closing files.",
         "exampleCode": "try:\\n    f = open(path)\\n    data = f.read()\\nfinally:\\n    f.close()",
-        "exampleSlug": "try-finally"
+        "exampleSlug": "finally-basic"
       }
     },
     "raising": {
@@ -507,10 +662,10 @@
     "classes": {
       "name": "Classes",
       "concept": "oop",
-      "prereqs": ["basics"],
+      "prereqs": ["fn-basics"],
       "teaching": {
         "explanation": "Classes define object blueprints. Use __init__ for setup, self for instance access. Create instances with ClassName().",
-        "exampleCode": "class Dog:\\n    def __init__(self, name):\\n        self.name = name",
+        "exampleCode": "class Product:\n    def __init__(self, name, price):\n        self.name = name\n        self.price = price",
         "exampleSlug": "define-class"
       }
     },
@@ -531,7 +686,7 @@
       "teaching": {
         "explanation": "Subclass with `class Child(Parent):`. Use super().__init__() to call parent constructor. Override methods to specialize.",
         "exampleCode": "class Cat(Animal):\\n    def speak(self):\\n        return \"meow\"",
-        "exampleSlug": "class-inheritance"
+        "exampleSlug": "inheritance-basic"
       }
     },
     "classmethod": {
@@ -554,12 +709,27 @@
         "exampleSlug": "property-getter"
       }
     },
-    "imports": {
-      "name": "Imports",
-      "concept": "modules-files",
-      "prereqs": [],
+    "dataclasses": {
+      "name": "Dataclasses",
+      "concept": "oop",
+      "prereqs": ["classes", "typehints"],
       "teaching": {
-        "explanation": "Use `import module` or `from module import name`. Alias with `as`. Organize imports: stdlib, third-party, local.",
+        "explanation": "Use @dataclass to auto-generate __init__, __repr__, __eq__. Add field() for defaults. Use frozen=True for immutability.",
+        "exampleCode": "from dataclasses import dataclass\\n\\n@dataclass\\nclass User:\\n    name: str\\n    email: str\\n    active: bool = True",
+        "exampleSlug": "dataclass-basic",
+        "pitfall": {
+          "mistake": "Using mutable default values directly in dataclass fields",
+          "why": "Same as function defaults - the mutable object is shared across all instances.",
+          "fix": "Use field(default_factory=list) for mutable defaults"
+        }
+      }
+    },
+    "imports": {
+      "name": "Advanced Imports",
+      "concept": "modules-files",
+      "prereqs": ["imports-basic"],
+      "teaching": {
+        "explanation": "Organize imports: stdlib, third-party, local. Use `as` for aliases. Understand relative imports in packages.",
         "exampleCode": "from pathlib import Path\\nimport json",
         "exampleSlug": "import-module"
       }

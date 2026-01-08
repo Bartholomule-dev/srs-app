@@ -15,7 +15,7 @@ exercises:
     prereqs: [variables]
     pattern: arithmetic
     objective: Use floor division operator
-    prompt: Complete the expression for integer division
+    prompt: Fill in the operator for integer division (discards remainder)
     template: "result = 10 ___ 3  # result is 3"
     blank_position: 0
     expected_answer: "//"
@@ -35,7 +35,7 @@ exercises:
     prereqs: [variables]
     pattern: arithmetic
     objective: Use exponentiation operator
-    prompt: Complete the expression to calculate 2 to the power of 8
+    prompt: Fill in the exponentiation operator
     template: "result = 2 ___ 8"
     blank_position: 0
     expected_answer: "**"
@@ -55,7 +55,7 @@ exercises:
     prereqs: [integers]
     pattern: invocation
     objective: Use round() function
-    prompt: Complete the code to round to 2 decimal places
+    prompt: Fill in the function that rounds numbers
     template: "result = ___(3.14159, 2)"
     blank_position: 0
     expected_answer: "round"
@@ -75,7 +75,7 @@ exercises:
     prereqs: [integers]
     pattern: invocation
     objective: Get absolute value
-    prompt: Complete the code to get the absolute value
+    prompt: Fill in the function that returns absolute value
     template: "positive = ___(-5.5)"
     blank_position: 0
     expected_answer: "abs"
@@ -95,7 +95,7 @@ exercises:
     prereqs: [variables]
     pattern: logical
     objective: Use logical AND
-    prompt: Complete the boolean expression
+    prompt: Fill in the operator that requires both conditions to be true
     template: "valid = is_admin ___ is_active"
     blank_position: 0
     expected_answer: "and"
@@ -115,7 +115,7 @@ exercises:
     prereqs: [variables]
     pattern: logical
     objective: Use logical OR
-    prompt: Complete the boolean expression
+    prompt: Fill in the operator that is true if either condition is true
     template: "allowed = is_admin ___ has_permission"
     blank_position: 0
     expected_answer: "or"
@@ -135,7 +135,7 @@ exercises:
     prereqs: [integers, floats]
     pattern: conversion
     objective: Convert string to integer
-    prompt: Complete the code to convert string to integer
+    prompt: Fill in the function that converts to integer
     template: 'number = ___("42")'
     blank_position: 0
     expected_answer: "int"
@@ -155,7 +155,7 @@ exercises:
     prereqs: [integers]
     pattern: conversion
     objective: Convert number to string
-    prompt: Complete the code to convert number to string
+    prompt: Fill in the function that converts to string
     template: "text = ___(123)"
     blank_position: 0
     expected_answer: "str"
@@ -175,11 +175,10 @@ exercises:
     prereqs: [booleans]
     pattern: logical
     objective: Use truthiness in condition
-    prompt: Complete the Pythonic way to check if list has items
+    prompt: "Given a list called items, fill in the Pythonic empty-check (use: items)"
     template: "if ___:"
     blank_position: 0
     expected_answer: "items"
-    accepted_solutions: ["items", "my_list", "data"]
     hints:
       - Non-empty lists are truthy
       - More Pythonic than if len(items) > 0
@@ -195,7 +194,7 @@ exercises:
     prereqs: [booleans]
     pattern: logical
     objective: Check for empty/falsy value
-    prompt: Complete the Pythonic way to check if list is empty
+    prompt: Fill in the operator to check if items is empty (falsy)
     template: "if ___ items:"
     blank_position: 0
     expected_answer: "not"
@@ -215,7 +214,7 @@ exercises:
     prereqs: [booleans]
     pattern: comparison
     objective: Check for None identity
-    prompt: Complete the Pythonic way to check for None
+    prompt: Fill in the identity operator for None checks
     template: "if value ___ None:"
     blank_position: 0
     expected_answer: "is"
@@ -235,7 +234,7 @@ exercises:
     prereqs: [booleans]
     pattern: comparison
     objective: Check membership in collection
-    prompt: Complete the code to check if item is in list
+    prompt: Fill in the membership operator
     template: "if item ___ items:"
     blank_position: 0
     expected_answer: "in"
@@ -817,3 +816,175 @@ exercises:
       - "Use the {{targetType}}() function"
       - "Pass the value as an argument"
     tags: [conversion, type, dynamic, write]
+
+  # --- Identity Subconcept (is vs ==) ---
+  - slug: identity-is-none
+    objective: Use 'is' operator to check for None
+    title: Is None Check
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: identity
+    level: intro
+    prereqs: [comparisons]
+    type: write
+    pattern: comparison
+    prompt: Check if result is None using the identity operator
+    expected_answer: result is None
+    accepted_solutions:
+      - result is None
+    hints:
+      - Use 'is' for None checks, not ==
+      - is checks identity (same object)
+    tags: [identity, is, none]
+
+  - slug: identity-is-not-none
+    objective: Check that a value is not None
+    title: Is Not None Check
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: identity
+    level: intro
+    prereqs: [identity]
+    type: write
+    pattern: comparison
+    prompt: Check if config is not None using identity operator
+    expected_answer: config is not None
+    accepted_solutions:
+      - config is not None
+    hints:
+      - Use 'is not' (two words) for negation
+      - More readable than 'not config is None'
+    tags: [identity, is, not, none]
+
+  - slug: identity-vs-equality
+    objective: Understand when to use is vs ==
+    title: Identity vs Equality
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: identity
+    level: practice
+    prereqs: [identity]
+    type: predict
+    pattern: comparison
+    prompt: What does this code print?
+    code: |
+      a = [1, 2, 3]
+      b = [1, 2, 3]
+      c = a
+      print(a == b, a is b, a is c)
+    expected_answer: "True False True"
+    hints:
+      - == compares values (equality)
+      - is compares object identity
+      - c points to the same list as a
+    tags: [identity, equality, predict]
+
+  - slug: identity-fill-is
+    objective: Complete the identity check syntax
+    title: Is Keyword Fill
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: identity
+    level: intro
+    prereqs: [comparisons]
+    type: fill-in
+    blank_position: 0
+    pattern: comparison
+    prompt: Fill in the keyword that checks identity with None
+    template: "if value ___ None:"
+    expected_answer: "is"
+    hints:
+      - What keyword checks identity?
+      - Use for None, True, False checks
+    tags: [identity, is, fill-in]
+
+  - slug: identity-fill-is-not
+    objective: Complete the negated identity check
+    title: Is Not Fill
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: identity
+    level: practice
+    prereqs: [identity]
+    type: fill-in
+    blank_position: 0
+    pattern: comparison
+    prompt: Fill in the keywords that check identity is NOT None
+    template: "if user ___ None:"
+    expected_answer: "is not"
+    hints:
+      - Two words for negated identity
+      - Not the same as != for None
+    tags: [identity, is-not, fill-in]
+
+  - slug: identity-predict-small-ints
+    objective: Understand Python's integer caching (edge case)
+    title: Small Integer Caching
+    difficulty: 3
+    concept: numbers-booleans
+    subconcept: identity
+    level: edge
+    prereqs: [identity]
+    type: predict
+    pattern: comparison
+    prompt: What does this code print? (Python caches small integers -5 to 256)
+    code: |
+      a = 100
+      b = 100
+      print(a is b)
+    expected_answer: "True"
+    hints:
+      - Python caches small integers (-5 to 256)
+      - Same integer literals may share identity
+      - Don't rely on this - use == for numbers
+    tags: [identity, caching, edge]
+
+  - slug: identity-trap-predict
+    objective: Avoid the common trap of using is with mutable objects
+    title: Identity Trap
+    difficulty: 3
+    concept: numbers-booleans
+    subconcept: identity
+    level: edge
+    prereqs: [identity]
+    type: predict
+    pattern: error-first
+    prompt: Why might this comparison fail for large numbers?
+    code: |
+      a = 1000
+      b = 1000
+      print(a == b, a is b)
+    expected_answer: "True False"
+    hints:
+      - Large integers may not be cached
+      - Always use == for value comparison
+      - Reserve 'is' for None, True, False
+    tags: [identity, trap, error-first]
+
+  - slug: identity-pythonic-none
+    objective: Write idiomatic None check in conditional
+    title: Pythonic None Guard
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: identity
+    level: practice
+    prereqs: [identity]
+    type: write
+    pattern: idiomatic
+    prompt: Write an if statement that prints "Missing" if data is None
+    expected_answer: |
+      if data is None:
+          print("Missing")
+    accepted_solutions:
+      - |
+        if data is None:
+            print("Missing")
+      - |
+        if data is None:
+            print('Missing')
+    hints:
+      - Use 'is None', not '== None'
+      - Pythonic and handles edge cases better
+    tags: [identity, pythonic, none]
+
+  # --- Debug Exercises (Pitfall Subconcepts) ---

@@ -237,7 +237,7 @@ function main() {
   console.log(`\n📊 Statistics:`);
   console.log(`   Total exercises: ${stats.total}`);
   console.log(`   Dynamic: ${stats.dynamic}`);
-  console.log(`   By type: write=${stats.byType.write || 0}, fill-in=${stats.byType['fill-in'] || 0}, predict=${stats.byType.predict || 0}`);
+  console.log(`   By type: write=${stats.byType.write || 0}, fill-in=${stats.byType['fill-in'] || 0}, predict=${stats.byType.predict || 0}, debug=${stats.byType.debug || 0}, refactor=${stats.byType.refactor || 0}, explain=${stats.byType.explain || 0}`);
   console.log(`   By level: intro=${stats.byLevel.intro || 0}, practice=${stats.byLevel.practice || 0}, edge=${stats.byLevel.edge || 0}, integrated=${stats.byLevel.integrated || 0}`);
 
   if (stats.duplicates.length > 0) {

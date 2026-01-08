@@ -6,8 +6,9 @@ export type ConceptSlug =
   | 'foundations'
   | 'strings'
   | 'numbers-booleans'
+  | 'conditionals'
   | 'collections'
-  | 'control-flow'
+  | 'loops'
   | 'functions'
   | 'comprehensions'
   | 'error-handling'
@@ -18,7 +19,7 @@ export type ConceptSlug =
 export type ExerciseLevel = 'intro' | 'practice' | 'edge' | 'integrated';
 
 /** Exercise format/type */
-export type ExerciseType = 'write' | 'fill-in' | 'predict' | 'debug';
+export type ExerciseType = 'write' | 'fill-in' | 'predict';
 
 /** Programming pattern being practiced */
 export type ExercisePattern =
@@ -27,17 +28,23 @@ export type ExercisePattern =
   | 'arithmetic'
   | 'assignment'
   | 'attribute'
+  | 'branching'
   | 'comparison'
   | 'conditional'
   | 'construction'
   | 'context'
+  | 'control'
   | 'conversion'
   | 'declaration'
   | 'definition'
+  | 'error-first'
+  | 'expression'
   | 'file'
   | 'filtering'
   | 'function'
+  | 'gotcha'
   | 'handling'
+  | 'idiomatic'
   | 'import'
   | 'indexing'
   | 'input'
@@ -51,6 +58,10 @@ export type ExercisePattern =
   | 'mutation'
   | 'output'
   | 'query'
+  | 'scope'
+  | 'search'
+  | 'slicing'
+  | 'structural'
   | 'swap'
   | 'transformation';
 
@@ -102,6 +113,18 @@ export interface CurriculumGraph {
   concepts: Concept[];
 }
 
+/** Common pitfall for a subconcept */
+export interface SubconceptPitfall {
+  /** The mistake developers commonly make */
+  mistake: string;
+  /** Why this is problematic */
+  why: string;
+  /** The correct approach */
+  fix: string;
+  /** Real-world production impact - "when this bites you" */
+  productionImpact?: string;
+}
+
 /** Teaching content for introducing a subconcept */
 export interface SubconceptTeaching {
   /** 2-3 sentence explanation of the concept (max 200 chars) */
@@ -110,6 +133,8 @@ export interface SubconceptTeaching {
   exampleCode?: string;
   /** @deprecated Slug of exercise to use as example - use exampleCode instead */
   exampleSlug?: string;
+  /** Common pitfall to avoid (shown after intro exercises) */
+  pitfall?: SubconceptPitfall;
 }
 
 /** Subconcept definition in curriculum graph */

@@ -73,15 +73,15 @@ exercises:
       - "s[{{idx}}::2]"
 
   - slug: fstring-variable-dynamic
-    objective: Create an f-string embedding a variable name
-    title: Dynamic F-String Variable
+    objective: Construct a log message using f-string interpolation
+    title: Dynamic Log Message
     difficulty: 2
-    prompt: Create an f-string that says "Value is " followed by the variable {{name}}
-    expected_answer: 'f"Value is {{{name}}}"'
+    prompt: Create an f-string that outputs "Processing " followed by the value of {{name}}
+    expected_answer: 'f"Processing {{{name}}}"'
     hints:
       - Start string with f prefix
       - Use curly braces for variable interpolation
-    tags: [strings, fstrings, dynamic]
+    tags: [strings, fstrings, logging, dynamic]
     concept: strings
     subconcept: fstrings
     level: practice
@@ -93,8 +93,8 @@ exercises:
       type: f-string
       feedback: "Try using an f-string f\"...{var}...\" for cleaner formatting"
     accepted_solutions:
-      - 'f"Value is {{{name}}}"'
-      - "f'Value is {{{name}}}'"
+      - 'f"Processing {{{name}}}"'
+      - "f'Processing {{{name}}}'"
 
   - slug: string-slice-from-end-dynamic
     objective: Use slice notation to get last N characters
@@ -137,14 +137,16 @@ exercises:
     pattern: mutation
 
   - slug: f-string-basic
-    objective: "Create f-strings to embed variables in string output"
-    title: F-String Basic
+    objective: "Construct a structured log message using f-string formatting"
+    title: Log Message F-String
     difficulty: 2
-    prompt: Create an f-string that says "Hello, " followed by the variable name
-    expected_answer: f"Hello, {name}"
+    prompt: Create an f-string that outputs "[INFO] User connected" followed by the value of user_id
+    expected_answer: f"[INFO] User connected {user_id}"
     accepted_solutions:
-      - 'f"Hello, {name}"'
-      - "f'Hello, {name}'"
+      - 'f"[INFO] User connected {user_id}"'
+      - "f'[INFO] User connected {user_id}'"
+      - 'f"[INFO] User connected: {user_id}"'
+      - "f'[INFO] User connected: {user_id}'"
     hints:
       - Start string with f prefix before the quote
       - Put variable names in curly braces {variable}
@@ -397,7 +399,7 @@ exercises:
     prereqs: [string-methods]
     type: write
     pattern: construction
-    prompt: Join a list of strings called words with a comma separator
+    prompt: Join the list words using a comma as the separator
     expected_answer: '",".join(words)'
     accepted_solutions:
       - '",".join(words)'
@@ -458,7 +460,7 @@ exercises:
     prereqs: [strings.fstrings]
     type: write
     pattern: construction
-    prompt: Create an f-string showing "Sum is X" where X is a + b
+    prompt: Create an f-string that displays "Sum is " followed by the result of a + b
     expected_answer: f"Sum is {a + b}"
     accepted_solutions:
       - 'f"Sum is {a + b}"'
@@ -520,7 +522,7 @@ exercises:
     prereqs: [variables]
     pattern: invocation
     objective: Use len() to get string length
-    prompt: Complete the code to get the length of the string
+    prompt: Fill in the function that returns the length of a sequence
     template: "length = ___(text)"
     blank_position: 0
     expected_answer: "len"
@@ -540,7 +542,7 @@ exercises:
     prereqs: [variables]
     pattern: construction
     objective: Concatenate strings
-    prompt: Complete the code to join two strings
+    prompt: Fill in the operator that joins two strings
     template: "full = first ___ last"
     blank_position: 0
     expected_answer: "+"
@@ -560,7 +562,7 @@ exercises:
     prereqs: [basics]
     pattern: indexing
     objective: Access first character
-    prompt: Complete the code to get the first character
+    prompt: Fill in the index for the first character
     template: "first = text[___]"
     blank_position: 0
     expected_answer: "0"
@@ -580,7 +582,7 @@ exercises:
     prereqs: [basics]
     pattern: indexing
     objective: Access last character with negative index
-    prompt: Complete the code to get the last character
+    prompt: Fill in the index for the last character (use negative indexing)
     template: "last = text[___]"
     blank_position: 0
     expected_answer: "-1"
@@ -600,7 +602,7 @@ exercises:
     prereqs: [indexing]
     pattern: indexing
     objective: Slice first N characters
-    prompt: Complete the slice to get first 3 characters
+    prompt: Fill in the slice notation for the first 3 characters
     template: "first_three = text[___]"
     blank_position: 0
     expected_answer: ":3"
@@ -620,7 +622,7 @@ exercises:
     prereqs: [indexing]
     pattern: indexing
     objective: Slice last N characters
-    prompt: Complete the slice to get last 3 characters
+    prompt: Fill in the slice notation for the last 3 characters
     template: "last_three = text[___]"
     blank_position: 0
     expected_answer: "-3:"
@@ -640,7 +642,7 @@ exercises:
     prereqs: [basics]
     pattern: invocation
     objective: Convert to uppercase
-    prompt: Complete the code to convert to uppercase
+    prompt: Fill in the method that converts text to uppercase
     template: "loud = text.___()"
     blank_position: 0
     expected_answer: "upper"
@@ -660,7 +662,7 @@ exercises:
     prereqs: [basics]
     pattern: invocation
     objective: Remove surrounding whitespace
-    prompt: Complete the code to remove whitespace from both ends
+    prompt: Fill in the method that removes whitespace from both ends
     template: "clean = text.___()"
     blank_position: 0
     expected_answer: "strip"
@@ -680,11 +682,10 @@ exercises:
     prereqs: [basics]
     pattern: construction
     objective: Use f-string for variable interpolation
-    prompt: Complete the f-string to include the name variable
+    prompt: "Given name = \"Alice\", fill in the variable to interpolate"
     template: "greeting = f\"Hello, {___}!\""
     blank_position: 0
     expected_answer: "name"
-    accepted_solutions: ["name"]
     hints:
       - Put the variable name inside the curly braces
       - The variable's value will replace the placeholder
@@ -700,7 +701,7 @@ exercises:
     prereqs: [basics]
     pattern: construction
     objective: Use expression in f-string
-    prompt: Complete the f-string to show the doubled value
+    prompt: Fill in the operator to double the value of x
     template: "result = f\"Double is {x ___ 2}\""
     blank_position: 0
     expected_answer: "*"
@@ -1036,3 +1037,5 @@ exercises:
     target_construct:
       type: slice
       feedback: "[::-1] is the Pythonic way to reverse a string"
+
+  # --- Debug Exercises (Pitfall Subconcepts) ---

@@ -1,96 +1,97 @@
-# exercises/python/control-flow.yaml
+# exercises/python/loops.yaml
 language: python
-category: control-flow
+category: loops
 
 exercises:
-  - slug: for-loop-range
-    objective: "Write a for loop using range() to iterate over a sequence of numbers"
-    title: For Loop Range
-    difficulty: 1
-    concept: control-flow
-    subconcept: for
-    level: intro
-    prereqs: [foundations]
-    type: write
-    pattern: iteration
-    prompt: Write a for loop that prints numbers 0 through 4
-    expected_answer: |
-      for i in range(5):
-          print(i)
-    hints:
-      - Use range() to generate numbers
-      - range(5) gives 0-4
-    tags: [loops, range, for]
-
+  # --- For Loop Subconcept ---
   - slug: for-loop-list
     objective: "Use a for loop to iterate over items in a list"
     title: For Loop List
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: intro
-    prereqs: [foundations]
+    prereqs: [lists]
     type: write
     pattern: iteration
-    prompt: Iterate over a list called items and print each item
+    prompt: Iterate over a list called products and print each item
     expected_answer: |
-      for item in items:
-          print(item)
+      for product in products:
+          print(product)
     hints:
       - Use for x in list syntax
-      - Variable name (item) can be anything descriptive
+      - Variable name should describe what you're iterating
     tags: [loops, lists, for]
 
-  # --- while Subconcept Intro Exercises ---
+  - slug: for-loop-string
+    objective: "Iterate over characters in a string"
+    title: For Loop String
+    difficulty: 1
+    concept: loops
+    subconcept: for
+    level: intro
+    prereqs: [for]
+    type: write
+    pattern: iteration
+    prompt: Iterate over characters in a string called message and print each character
+    expected_answer: |
+      for char in message:
+          print(char)
+    hints:
+      - Strings are iterable
+      - Each iteration gives one character
+    tags: [loops, strings, for]
+
+  # --- While Loop Subconcept ---
   - slug: while-keyword
     objective: Write the while keyword that starts a conditional loop
     title: While Keyword
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: while
     level: intro
-    prereqs: [conditionals]
+    prereqs: [if-else]
     type: write
     pattern: iteration
     prompt: Write just the keyword that starts a conditional loop (not for)
     expected_answer: "while"
     hints:
       - This keyword repeats code as long as condition is True
-      - Rhymes with "smile"
+      - Use when you don't know how many iterations needed
     tags: [loops, while, keyword]
 
   - slug: while-header-intro
     objective: Write a complete while loop header with a simple condition
     title: While Loop Header
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: while
     level: intro
-    prereqs: [conditionals]
+    prereqs: [if-else]
     type: write
     pattern: iteration
-    prompt: Write a while loop that runs while x is True
-    expected_answer: "while x:"
+    prompt: Write a while loop that runs while is_running is True
+    expected_answer: "while is_running:"
     accepted_solutions:
-      - "while x:"
-      - "while x == True:"
+      - "while is_running:"
+      - "while is_running == True:"
     hints:
       - While keyword followed by condition, then colon
-      - x is already a boolean, no comparison needed
+      - Boolean variables don't need == True
     tags: [loops, while, header]
 
   - slug: while-counter-intro
     objective: Write a while loop header that checks a counter variable
     title: While Counter Loop
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: while
     level: intro
-    prereqs: [conditionals]
+    prereqs: [if-else]
     type: write
     pattern: iteration
-    prompt: Write a while loop that runs while i is less than 10
-    expected_answer: "while i < 10:"
+    prompt: Write a while loop that runs while retry_count is less than max_retries
+    expected_answer: "while retry_count < max_retries:"
     hints:
       - Use the less-than operator
       - End with a colon
@@ -100,7 +101,7 @@ exercises:
     objective: "Write a while loop with a conditional expression"
     title: While Loop
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: while
     level: practice
     prereqs: [foundations, for]
@@ -118,7 +119,7 @@ exercises:
     objective: Identify the function that provides index with each element
     title: Enumerate Function
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: iteration
     level: intro
     prereqs: [for]
@@ -135,7 +136,7 @@ exercises:
     objective: Use enumerate to loop with index and value
     title: Basic Enumerate Loop
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: iteration
     level: intro
     prereqs: [for]
@@ -156,7 +157,7 @@ exercises:
     objective: Use range() to generate a sequence of numbers
     title: Range Function Intro
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: iteration
     level: intro
     prereqs: [for]
@@ -173,7 +174,7 @@ exercises:
     objective: "Apply enumerate() to access both index and value in a loop"
     title: Enumerate Loop
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: iteration
     level: practice
     prereqs: [foundations, for]
@@ -190,7 +191,7 @@ exercises:
     objective: "Use break to exit a loop early based on a condition"
     title: Break Statement
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: edge
     prereqs: [foundations, for, while]
@@ -208,7 +209,7 @@ exercises:
     objective: "Use continue to skip the current iteration and proceed to the next"
     title: Continue Statement
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: edge
     prereqs: [control-flow.for]
@@ -225,7 +226,7 @@ exercises:
     objective: "Use range() with start, stop, and step parameters for custom iteration"
     title: Dynamic Range Step Loop
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: practice
     prereqs: [control-flow.for]
@@ -246,7 +247,7 @@ exercises:
     objective: "Use zip() to iterate over multiple sequences in parallel"
     title: For Loop with Zip
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: iteration
     level: practice
     prereqs: [control-flow.for]
@@ -263,7 +264,7 @@ exercises:
     objective: "Create an infinite loop pattern with controlled exit using break"
     title: While True with Break
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: while
     level: edge
     prereqs: [control-flow.while]
@@ -280,7 +281,7 @@ exercises:
     objective: "Apply the else clause on a for loop for post-iteration logic"
     title: For-Else Clause
     difficulty: 3
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: integrated
     prereqs: [control-flow.for]
@@ -294,169 +295,12 @@ exercises:
       - Runs if no break occurred
     tags: [loops, else, advanced]
 
-  # --- Conditionals Subconcept ---
-  - slug: if-statement
-    objective: "Write a basic if statement with a comparison condition"
-    title: If Statement
-    difficulty: 1
-    concept: control-flow
-    subconcept: conditionals
-    level: intro
-    prereqs: [foundations]
-    type: write
-    pattern: conditional
-    prompt: Write an if statement that checks if x > 0
-    expected_answer: "if x > 0:"
-    hints:
-      - Use if keyword
-      - End with colon
-    tags: [conditionals, if, beginner]
-
-  - slug: if-else
-    objective: "Use else to provide an alternative branch when the if condition is false"
-    title: If-Else Statement
-    difficulty: 1
-    concept: control-flow
-    subconcept: conditionals
-    level: intro
-    prereqs: [control-flow.conditionals]
-    type: write
-    pattern: conditional
-    prompt: Write the else clause for an if statement
-    expected_answer: "else:"
-    hints:
-      - else keyword followed by colon
-      - else runs when all conditions above are False
-    tags: [conditionals, else, beginner]
-
-  - slug: if-elif
-    objective: "Use elif to add additional conditional branches"
-    title: If-Elif Statement
-    difficulty: 2
-    concept: control-flow
-    subconcept: conditionals
-    level: practice
-    prereqs: [control-flow.conditionals]
-    type: write
-    pattern: conditional
-    prompt: Write an elif clause that checks if x < 0
-    expected_answer: "elif x < 0:"
-    hints:
-      - elif is else-if combined
-      - Only checked if previous conditions were False
-    tags: [conditionals, elif, intermediate]
-
-  - slug: if-and
-    objective: "Combine multiple conditions using the and logical operator"
-    title: If with AND
-    difficulty: 2
-    concept: control-flow
-    subconcept: conditionals
-    level: practice
-    prereqs: [control-flow.conditionals]
-    type: write
-    pattern: conditional
-    prompt: Write if statement checking if x > 0 AND y > 0
-    expected_answer: "if x > 0 and y > 0:"
-    hints:
-      - Use 'and' keyword
-      - Both conditions must be True for the block to run
-    tags: [conditionals, and, logic]
-
-  - slug: if-or
-    objective: "Combine conditions using the or logical operator for alternative checks"
-    title: If with OR
-    difficulty: 2
-    concept: control-flow
-    subconcept: conditionals
-    level: practice
-    prereqs: [control-flow.conditionals]
-    type: write
-    pattern: conditional
-    prompt: Write if statement checking if x == 0 OR y == 0
-    expected_answer: "if x == 0 or y == 0:"
-    hints:
-      - Use 'or' keyword
-      - Either condition being True will run the block
-    tags: [conditionals, or, logic]
-
-  - slug: if-not
-    objective: "Use the not operator to negate a boolean condition"
-    title: If with NOT
-    difficulty: 2
-    concept: control-flow
-    subconcept: conditionals
-    level: practice
-    prereqs: [control-flow.conditionals]
-    type: write
-    pattern: conditional
-    prompt: Write if statement checking if NOT done
-    expected_answer: "if not done:"
-    hints:
-      - Use 'not' keyword
-      - Inverts True to False and vice versa
-    tags: [conditionals, not, logic]
-
-  - slug: if-in
-    objective: "Use the in operator to check membership in a collection"
-    title: If with IN
-    difficulty: 2
-    concept: control-flow
-    subconcept: conditionals
-    level: practice
-    prereqs: [control-flow.conditionals]
-    type: write
-    pattern: conditional
-    prompt: Write if statement checking if x is in list items
-    expected_answer: "if x in items:"
-    hints:
-      - Use 'in' keyword
-      - Returns True if x is found in items
-    tags: [conditionals, in, membership]
-
-  - slug: match-basic
-    objective: "Write a match statement for structural pattern matching"
-    title: Match Statement
-    difficulty: 2
-    concept: control-flow
-    subconcept: conditionals
-    level: edge
-    prereqs: [control-flow.conditionals]
-    type: write
-    pattern: conditional
-    prompt: Write a match statement for variable command
-    expected_answer: "match command:"
-    hints:
-      - Python 3.10+ feature
-      - Similar to switch in other languages
-    tags: [conditionals, match, pattern-matching]
-
-  - slug: match-case
-    objective: "Use case clauses to define patterns in a match statement"
-    title: Match Case
-    difficulty: 2
-    concept: control-flow
-    subconcept: conditionals
-    level: edge
-    prereqs: [control-flow.conditionals]
-    type: write
-    pattern: conditional
-    prompt: Write a case clause for value "start"
-    expected_answer: 'case "start":'
-    accepted_solutions:
-      - 'case "start":'
-      - "case 'start':"
-    hints:
-      - Use case keyword
-      - Inside match block
-    tags: [conditionals, match, case]
-
   # --- zip Subconcept ---
   - slug: zip-two-lists
     objective: "Use zip() to iterate over two lists simultaneously"
     title: Zip Two Lists
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: zip
     level: intro
     prereqs: [control-flow.for]
@@ -472,7 +316,7 @@ exercises:
     objective: Use zip to combine two lists for parallel iteration
     title: Zip Function Intro
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: zip
     level: intro
     prereqs: [for]
@@ -489,7 +333,7 @@ exercises:
     objective: "Apply zip() to iterate over three lists in parallel"
     title: Zip Three Lists
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: zip
     level: practice
     prereqs: [control-flow.zip]
@@ -506,7 +350,7 @@ exercises:
     objective: "Handle zip() behavior with iterables of unequal length using zip_longest"
     title: Zip Unequal Lists
     difficulty: 3
-    concept: control-flow
+    concept: loops
     subconcept: zip
     level: edge
     prereqs: [control-flow.zip]
@@ -524,7 +368,7 @@ exercises:
     objective: "Use reversed() to iterate over a list in reverse order"
     title: Reversed List Iteration
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: reversed
     level: intro
     prereqs: [control-flow.for]
@@ -541,7 +385,7 @@ exercises:
     objective: Use reversed() to iterate backwards through a sequence
     title: Reversed Function Intro
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: reversed
     level: intro
     prereqs: [for]
@@ -561,7 +405,7 @@ exercises:
     objective: "Combine reversed() with range() to count down"
     title: Reversed Range
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: reversed
     level: practice
     prereqs: [control-flow.reversed, control-flow.for]
@@ -578,7 +422,7 @@ exercises:
     objective: "Combine reversed() with enumerate() while maintaining original indices"
     title: Reversed with Enumerate
     difficulty: 3
-    concept: control-flow
+    concept: loops
     subconcept: reversed
     level: edge
     prereqs: [reversed, iteration]
@@ -596,7 +440,7 @@ exercises:
     objective: "Use sorted() to iterate over a list in sorted order"
     title: Sorted List Iteration
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: sorted
     level: intro
     prereqs: [control-flow.for]
@@ -613,7 +457,7 @@ exercises:
     objective: Use sorted() to iterate through items in sorted order
     title: Sorted Function Intro
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: sorted
     level: intro
     prereqs: [for]
@@ -634,7 +478,7 @@ exercises:
     objective: "Use sorted() with reverse=True for descending order"
     title: Sorted Descending
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: sorted
     level: practice
     prereqs: [control-flow.sorted]
@@ -651,7 +495,7 @@ exercises:
     objective: "Use sorted() with key parameter to sort by string length"
     title: Sorted by Length
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: sorted
     level: practice
     prereqs: [control-flow.sorted]
@@ -668,7 +512,7 @@ exercises:
     objective: "Use sorted() with a lambda key function for custom sorting"
     title: Sorted with Lambda Key
     difficulty: 3
-    concept: control-flow
+    concept: loops
     subconcept: sorted
     level: edge
     prereqs: [control-flow.sorted, functions.lambda]
@@ -686,7 +530,7 @@ exercises:
     objective: "Use any() to check if any element in an iterable is truthy"
     title: Any Check
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: any-all
     level: intro
     prereqs: [control-flow.conditionals]
@@ -703,7 +547,7 @@ exercises:
     objective: "Use all() to check if all elements in an iterable are truthy"
     title: All Check
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: any-all
     level: intro
     prereqs: [control-flow.conditionals]
@@ -720,7 +564,7 @@ exercises:
     objective: "Apply any() with a complex condition to search an iterable"
     title: Any with String Check
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: any-all
     level: practice
     prereqs: [control-flow.any-all]
@@ -742,7 +586,7 @@ exercises:
     objective: "Combine any() and all() in a conditional expression"
     title: Any and All Combined
     difficulty: 3
-    concept: control-flow
+    concept: loops
     subconcept: any-all
     level: edge
     prereqs: [control-flow.any-all, control-flow.conditionals]
@@ -763,14 +607,14 @@ exercises:
     objective: Complete the for loop syntax
     title: For Loop Fill-in
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: intro
     prereqs: []
     type: fill-in
     blank_position: 0
     pattern: iteration
-    prompt: Complete the for loop to iterate over items
+    prompt: Fill in the keyword that starts a for loop
     template: "___ item in items:"
     expected_answer: "for"
     hints:
@@ -782,14 +626,14 @@ exercises:
     objective: Complete the range function call
     title: Range Fill-in
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: intro
     prereqs: [control-flow.for]
     type: fill-in
     blank_position: 0
     pattern: iteration
-    prompt: Complete to loop 5 times (0 to 4)
+    prompt: Fill in the function that generates a sequence of numbers
     template: "for i in ___(5):"
     expected_answer: "range"
     hints:
@@ -801,14 +645,14 @@ exercises:
     objective: Complete the enumerate function call
     title: Enumerate Fill-in
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: iteration
     level: practice
     prereqs: [control-flow.for]
     type: fill-in
     blank_position: 0
     pattern: iteration
-    prompt: Complete to get both index and value
+    prompt: Fill in the function that provides index and value pairs
     template: "for i, item in ___(items):"
     expected_answer: "enumerate"
     hints:
@@ -820,14 +664,14 @@ exercises:
     objective: Complete the loop exit keyword
     title: Break Fill-in
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: intro
     prereqs: [control-flow.for]
     type: fill-in
     blank_position: 0
     pattern: control
-    prompt: Complete to exit the loop immediately
+    prompt: Fill in the keyword that exits the loop immediately
     template: |
       for item in items:
           if item == target:
@@ -842,14 +686,14 @@ exercises:
     objective: Complete the skip iteration keyword
     title: Continue Fill-in
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: intro
     prereqs: [control-flow.for]
     type: fill-in
     blank_position: 0
     pattern: control
-    prompt: Complete to skip to next iteration
+    prompt: Fill in the keyword that skips to the next iteration
     template: |
       for item in items:
           if item < 0:
@@ -864,14 +708,14 @@ exercises:
     objective: Complete the while loop condition
     title: While Condition Fill-in
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: while
     level: practice
     prereqs: [control-flow.while]
     type: fill-in
     blank_position: 0
     pattern: iteration
-    prompt: Complete to loop while count is less than 10
+    prompt: Fill in the comparison operator for "less than"
     template: "while count ___ 10:"
     expected_answer: "<"
     hints:
@@ -884,7 +728,7 @@ exercises:
     objective: Predict the output of a for loop with range
     title: Range Output Predict
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: intro
     prereqs: [control-flow.for]
@@ -907,7 +751,7 @@ exercises:
     objective: Predict the output of enumerate
     title: Enumerate Output Predict
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: iteration
     level: practice
     prereqs: [control-flow.for]
@@ -930,7 +774,7 @@ exercises:
     objective: Predict loop behavior with break
     title: Break Predict
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: practice
     prereqs: [control-flow.for]
@@ -955,7 +799,7 @@ exercises:
     objective: Predict loop behavior with continue
     title: Continue Predict
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: practice
     prereqs: [control-flow.for]
@@ -981,7 +825,7 @@ exercises:
     objective: Predict the output of zip iteration
     title: Zip Output Predict
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: zip
     level: practice
     prereqs: [control-flow.for]
@@ -1003,7 +847,7 @@ exercises:
     objective: Predict nested loop output
     title: Nested Loop Predict
     difficulty: 3
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: edge
     prereqs: [control-flow.for]
@@ -1029,7 +873,7 @@ exercises:
     objective: Write a for loop to iterate over a list with specific values
     title: Dynamic For Loop List
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: intro
     prereqs: [foundations]
@@ -1062,7 +906,7 @@ exercises:
     objective: Write an if statement comparing two dynamic values
     title: Dynamic If Greater
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: conditionals
     level: intro
     prereqs: [foundations]
@@ -1082,7 +926,7 @@ exercises:
     objective: Use enumerate with a custom starting index
     title: Dynamic Enumerate Start
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: iteration
     level: practice
     prereqs: [control-flow.for]
@@ -1108,7 +952,7 @@ exercises:
     objective: Predict the sum accumulated in a for loop
     title: Dynamic For Sum Predict
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: practice
     prereqs: [control-flow.for]
@@ -1131,7 +975,7 @@ exercises:
     objective: Predict the output of a while loop countdown
     title: Dynamic While Countdown Predict
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: while
     level: practice
     prereqs: [control-flow.while]
@@ -1158,7 +1002,7 @@ exercises:
     objective: Predict the output of range() with dynamic parameters
     title: Dynamic Range Output
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: practice
     prereqs: [control-flow.for]
@@ -1179,7 +1023,7 @@ exercises:
     objective: Predict the result of a comparison expression
     title: Dynamic Comparison Result
     difficulty: 1
-    concept: control-flow
+    concept: loops
     subconcept: conditionals
     level: intro
     prereqs: [foundations]
@@ -1199,7 +1043,7 @@ exercises:
     objective: Predict the result of a compound boolean expression
     title: Dynamic Compound Boolean
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: conditionals
     level: practice
     prereqs: [foundations, numbers-booleans.comparisons]
@@ -1219,7 +1063,7 @@ exercises:
     objective: Write an if statement with a compound boolean condition
     title: Dynamic Boolean If Statement
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: conditionals
     level: practice
     prereqs: [control-flow.conditionals, numbers-booleans.comparisons]
@@ -1237,7 +1081,7 @@ exercises:
     objective: Predict the final value after loop accumulation
     title: Dynamic For List Total
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: for
     level: practice
     prereqs: [control-flow.for]
@@ -1261,7 +1105,7 @@ exercises:
     objective: Predict which branch is taken in an if/elif/else chain
     title: Dynamic If/Elif/Else Chain
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: conditionals
     level: practice
     prereqs: [control-flow.conditionals]
@@ -1281,7 +1125,7 @@ exercises:
     objective: Identify which branch executes for a given input value
     title: Dynamic Branch Trace
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: conditionals
     level: edge
     prereqs: [control-flow.conditionals]
@@ -1301,7 +1145,7 @@ exercises:
     objective: Predict the output of sorted() or reversed()
     title: Dynamic Sorted/Reversed
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: sorted
     level: practice
     prereqs: [control-flow.for]
@@ -1320,7 +1164,7 @@ exercises:
     objective: Write the correct sorted/reversed call
     title: Write Sorted Call
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: sorted
     level: practice
     prereqs: [control-flow.sorted]
@@ -1339,7 +1183,7 @@ exercises:
     objective: Predict the result of any() or all()
     title: Dynamic Any/All
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: any-all
     level: practice
     prereqs: [numbers-booleans.truthiness]
@@ -1358,7 +1202,7 @@ exercises:
     objective: Write the any/all expression for a list
     title: Write Any/All
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: any-all
     level: practice
     prereqs: [control-flow.any-all]
@@ -1377,7 +1221,7 @@ exercises:
     objective: Predict the output of zip() on two lists
     title: Dynamic Zip Output
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: zip
     level: practice
     prereqs: [control-flow.for]
@@ -1396,7 +1240,7 @@ exercises:
     objective: Predict the result of a zip comprehension for pairwise operations
     title: Dynamic Zip Sum
     difficulty: 2
-    concept: control-flow
+    concept: loops
     subconcept: zip
     level: practice
     prereqs: [control-flow.zip, comprehensions.list-comp]
@@ -1410,3 +1254,290 @@ exercises:
       - zip pairs elements for the comprehension
       - a + b adds each pair
     tags: [zip, comprehension, dynamic]
+
+  # --- Range Subconcept ---
+  - slug: range-start-stop
+    objective: Use range with start and stop arguments
+    title: Range Start Stop
+    difficulty: 1
+    concept: loops
+    subconcept: range
+    level: intro
+    prereqs: [for]
+    type: write
+    pattern: iteration
+    prompt: Use range to generate numbers 1 through 5 (inclusive)
+    expected_answer: range(1, 6)
+    hints:
+      - range(start, stop) - stop is exclusive
+      - To include 5, stop must be 6
+    tags: [range, start, stop]
+
+  - slug: range-step
+    objective: Use range with a step argument
+    title: Range with Step
+    difficulty: 2
+    concept: loops
+    subconcept: range
+    level: practice
+    prereqs: [range]
+    type: write
+    pattern: iteration
+    prompt: Use range to generate even numbers 0, 2, 4, 6, 8
+    expected_answer: range(0, 10, 2)
+    accepted_solutions:
+      - range(0, 10, 2)
+      - range(0, 9, 2)
+    hints:
+      - Third argument is step
+      - range(start, stop, step)
+    tags: [range, step]
+
+  - slug: range-negative-step
+    objective: Use range to count backwards
+    title: Range Backwards
+    difficulty: 2
+    concept: loops
+    subconcept: range
+    level: practice
+    prereqs: [range]
+    type: write
+    pattern: iteration
+    prompt: Use range to count down from 5 to 1 (inclusive)
+    expected_answer: range(5, 0, -1)
+    hints:
+      - Use negative step
+      - Start > stop when going backwards
+    tags: [range, backwards, step]
+
+  - slug: range-function-fill
+    objective: Complete the range function call
+    title: Range Function Fill
+    difficulty: 1
+    concept: loops
+    subconcept: range
+    level: intro
+    prereqs: [for]
+    type: fill-in
+    blank_position: 0
+    pattern: iteration
+    prompt: Fill in the function that generates 0 through n-1
+    template: "for i in ___(10):"
+    expected_answer: "range"
+    hints:
+      - Which function generates a sequence of numbers?
+      - Built-in Python function
+    tags: [range, fill-in]
+
+  - slug: range-predict
+    objective: Predict the output of range
+    title: Range Predict
+    difficulty: 2
+    concept: loops
+    subconcept: range
+    level: practice
+    prereqs: [range]
+    type: predict
+    pattern: iteration
+    prompt: What does this code print?
+    code: |
+      print(list(range(2, 8, 2)))
+    expected_answer: "[2, 4, 6]"
+    accepted_solutions:
+      - "[2, 4, 6]"
+      - "[2,4,6]"
+    hints:
+      - Start at 2, stop before 8
+      - Step by 2 each time
+    tags: [range, predict]
+
+  - slug: range-len-anti-pattern
+    objective: Recognize the anti-pattern of range(len())
+    title: Range Len Anti-Pattern
+    difficulty: 2
+    concept: loops
+    subconcept: range
+    level: edge
+    prereqs: [range, iteration]
+    type: predict
+    pattern: idiomatic
+    prompt: Which version is more Pythonic?
+    code: |
+      items = ['a', 'b', 'c']
+
+      # Version A
+      for i in range(len(items)):
+          print(items[i])
+
+      # Version B
+      for item in items:
+          print(item)
+    expected_answer: "Version B"
+    hints:
+      - Direct iteration is more readable
+      - Avoid range(len()) when you don't need the index
+    tags: [range, pythonic, anti-pattern]
+
+  # --- Break & Continue Subconcept ---
+  - slug: break-loop
+    objective: Use break to exit a loop early
+    title: Break Statement
+    difficulty: 2
+    concept: loops
+    subconcept: break-continue
+    level: intro
+    prereqs: [for, while]
+    type: write
+    pattern: control
+    prompt: Write a for loop that finds the first negative number in numbers and breaks
+    expected_answer: |
+      for num in numbers:
+          if num < 0:
+              break
+    hints:
+      - break exits the entire loop
+      - Useful for early exit when found
+    tags: [break, control]
+
+  - slug: continue-loop
+    objective: Use continue to skip an iteration
+    title: Continue Statement
+    difficulty: 2
+    concept: loops
+    subconcept: break-continue
+    level: intro
+    prereqs: [for, while]
+    type: write
+    pattern: control
+    prompt: Write a for loop that prints all users except those who are banned (skip banned users)
+    expected_answer: |
+      for user in users:
+          if user.is_banned:
+              continue
+          print(user)
+    hints:
+      - continue skips to next iteration
+      - Avoids deep nesting with else
+    tags: [continue, control]
+
+  - slug: break-keyword-fill
+    objective: Complete the break statement
+    title: Break Keyword Fill
+    difficulty: 1
+    concept: loops
+    subconcept: break-continue
+    level: intro
+    prereqs: [for]
+    type: fill-in
+    blank_position: 0
+    pattern: control
+    prompt: Fill in the keyword that terminates the loop
+    template: |
+      for item in items:
+          if item == target:
+              ___
+    expected_answer: "break"
+    hints:
+      - Which keyword exits a loop?
+      - Stops iteration immediately
+    tags: [break, fill-in]
+
+  - slug: continue-keyword-fill
+    objective: Complete the continue statement
+    title: Continue Keyword Fill
+    difficulty: 1
+    concept: loops
+    subconcept: break-continue
+    level: intro
+    prereqs: [for]
+    type: fill-in
+    blank_position: 0
+    pattern: control
+    prompt: Fill in the keyword that skips this iteration
+    template: |
+      for item in items:
+          if not item.is_valid:
+              ___
+          process(item)
+    expected_answer: "continue"
+    hints:
+      - Which keyword skips to next iteration?
+      - Doesn't exit the loop, just this iteration
+    tags: [continue, fill-in]
+
+  - slug: break-output-predict
+    objective: Predict loop behavior with break
+    title: Break Output Predict
+    difficulty: 2
+    concept: loops
+    subconcept: break-continue
+    level: practice
+    prereqs: [break-continue]
+    type: predict
+    pattern: control
+    prompt: What does this code print?
+    code: |
+      for i in range(5):
+          if i == 3:
+              break
+          print(i)
+    expected_answer: |
+      0
+      1
+      2
+    hints:
+      - break stops at i == 3
+      - 3 is never printed
+    tags: [break, predict]
+
+  - slug: continue-output-predict
+    objective: Predict loop behavior with continue
+    title: Continue Output Predict
+    difficulty: 2
+    concept: loops
+    subconcept: break-continue
+    level: practice
+    prereqs: [break-continue]
+    type: predict
+    pattern: control
+    prompt: What does this code print?
+    code: |
+      for i in range(5):
+          if i == 2:
+              continue
+          print(i)
+    expected_answer: |
+      0
+      1
+      3
+      4
+    hints:
+      - continue skips only i == 2
+      - Loop continues with i == 3
+    tags: [continue, predict]
+
+  - slug: break-else
+    objective: Understand for-else with break
+    title: For-Else Break
+    difficulty: 3
+    concept: loops
+    subconcept: break-continue
+    level: edge
+    prereqs: [break-continue]
+    type: predict
+    pattern: control
+    prompt: What does this code print?
+    code: |
+      for n in [2, 4, 6]:
+          if n % 2 != 0:
+              print("Found odd")
+              break
+      else:
+          print("All even")
+    expected_answer: "All even"
+    hints:
+      - else runs if loop completes without break
+      - No odd numbers found, so no break
+    tags: [break, else, edge]
+
+  # --- Refactor Exercises (Anti-patterns → Idiomatic Python) ---

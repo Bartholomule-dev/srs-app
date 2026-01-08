@@ -832,7 +832,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: construction
-    prompt: Complete to create a list
+    prompt: Fill in the opening bracket for a list
     template: "items = ___1, 2, 3]"
     expected_answer: "["
     hints:
@@ -851,7 +851,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: construction
-    prompt: Complete to create a dict
+    prompt: Fill in the opening brace for a dict
     template: 'data = ___"name": "Alice"}'
     expected_answer: "{"
     hints:
@@ -870,7 +870,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: query
-    prompt: Complete to check if 5 is in items
+    prompt: Fill in the membership operator
     template: "5 ___ items"
     expected_answer: "in"
     hints:
@@ -895,6 +895,9 @@ exercises:
       items.append(3)
       print(items)
     expected_answer: "[1, 2, 3]"
+    accepted_solutions:
+      - "[1, 2, 3]"
+      - "[1,2,3]"
     hints:
       - append adds to the end
       - Modifies the list in place
@@ -936,6 +939,19 @@ exercises:
       b = {2, 3}
       print(a | b)
     expected_answer: "{1, 2, 3}"
+    accepted_solutions:
+      - "{1, 2, 3}"
+      - "{1,2,3}"
+      - "{1, 3, 2}"
+      - "{1,3,2}"
+      - "{2, 1, 3}"
+      - "{2,1,3}"
+      - "{2, 3, 1}"
+      - "{2,3,1}"
+      - "{3, 1, 2}"
+      - "{3,1,2}"
+      - "{3, 2, 1}"
+      - "{3,2,1}"
     hints:
       - Union combines unique elements
       - Duplicates (like 2) appear only once
@@ -1288,3 +1304,204 @@ exercises:
       - "{{operationName}} uses the {{operation}} operator"
       - "Place the operator between the two sets"
     tags: [sets, operations, dynamic, write]
+
+  # --- Dict Iteration Subconcept ---
+  - slug: dict-items-loop
+    objective: Iterate over key-value pairs using .items()
+    title: Dict Items Loop
+    difficulty: 2
+    concept: collections
+    subconcept: dict-iteration
+    level: intro
+    prereqs: [dicts]
+    type: write
+    pattern: iteration
+    prompt: Write a for loop that prints each key-value pair from a dict called user
+    expected_answer: |
+      for key, value in user.items():
+          print(key, value)
+    accepted_solutions:
+      - |
+        for key, value in user.items():
+            print(key, value)
+      - |
+        for k, v in user.items():
+            print(k, v)
+    hints:
+      - .items() returns key-value tuples
+      - Unpack with two variables in the for
+    tags: [dicts, iteration, items]
+
+  - slug: dict-keys-loop
+    objective: Iterate over dictionary keys
+    title: Dict Keys Loop
+    difficulty: 2
+    concept: collections
+    subconcept: dict-iteration
+    level: intro
+    prereqs: [dicts]
+    type: write
+    pattern: iteration
+    prompt: Write a for loop that prints each key from a dict called config
+    expected_answer: |
+      for key in config:
+          print(key)
+    accepted_solutions:
+      - |
+        for key in config:
+            print(key)
+      - |
+        for key in config.keys():
+            print(key)
+    hints:
+      - Iterating a dict directly gives keys
+      - .keys() is optional but explicit
+    tags: [dicts, iteration, keys]
+
+  - slug: dict-values-loop
+    objective: Iterate over dictionary values
+    title: Dict Values Loop
+    difficulty: 2
+    concept: collections
+    subconcept: dict-iteration
+    level: intro
+    prereqs: [dicts]
+    type: write
+    pattern: iteration
+    prompt: Write a for loop that prints each value from a dict called scores
+    expected_answer: |
+      for score in scores.values():
+          print(score)
+    hints:
+      - .values() returns only the values
+      - Use when you don't need the keys
+    tags: [dicts, iteration, values]
+
+  - slug: dict-items-fill
+    objective: Complete the dict iteration syntax
+    title: Dict Items Fill
+    difficulty: 1
+    concept: collections
+    subconcept: dict-iteration
+    level: intro
+    prereqs: [dicts]
+    type: fill-in
+    blank_position: 0
+    pattern: iteration
+    prompt: Fill in the method that returns key-value pairs
+    template: "for key, value in data.___():"
+    expected_answer: "items"
+    hints:
+      - Which method returns key-value pairs?
+      - Returns tuples of (key, value)
+    tags: [dicts, items, fill-in]
+
+  - slug: dict-values-fill
+    objective: Complete the values iteration
+    title: Dict Values Fill
+    difficulty: 1
+    concept: collections
+    subconcept: dict-iteration
+    level: intro
+    prereqs: [dicts]
+    type: fill-in
+    blank_position: 0
+    pattern: iteration
+    prompt: Fill in the method that returns only values
+    template: "for val in data.___():"
+    expected_answer: "values"
+    hints:
+      - Which method returns just the values?
+      - Ignores the keys
+    tags: [dicts, values, fill-in]
+
+  - slug: dict-iteration-predict
+    objective: Predict dict iteration output
+    title: Dict Iteration Predict
+    difficulty: 2
+    concept: collections
+    subconcept: dict-iteration
+    level: practice
+    prereqs: [dict-iteration]
+    type: predict
+    pattern: iteration
+    prompt: What does this code print?
+    code: |
+      d = {"a": 1, "b": 2}
+      for k in d:
+          print(k)
+    expected_answer: |
+      a
+      b
+    hints:
+      - Direct iteration gives keys
+      - Dictionary maintains insertion order (Python 3.7+)
+    tags: [dicts, iteration, predict]
+
+  - slug: dict-items-predict
+    objective: Predict items() iteration output
+    title: Dict Items Predict
+    difficulty: 2
+    concept: collections
+    subconcept: dict-iteration
+    level: practice
+    prereqs: [dict-iteration]
+    type: predict
+    pattern: iteration
+    prompt: What does this code print?
+    code: |
+      prices = {"apple": 1.50, "banana": 0.75}
+      for item, price in prices.items():
+          print(f"{item}: ${price}")
+    expected_answer: |
+      apple: $1.5
+      banana: $0.75
+    hints:
+      - items() gives (key, value) tuples
+      - f-string formats the output
+    tags: [dicts, items, predict]
+
+  - slug: dict-sum-values
+    objective: Sum all values in a dictionary
+    title: Sum Dict Values
+    difficulty: 2
+    concept: collections
+    subconcept: dict-iteration
+    level: practice
+    prereqs: [dict-iteration]
+    type: write
+    pattern: accumulator
+    prompt: Calculate the sum of all values in a dict called totals
+    expected_answer: sum(totals.values())
+    hints:
+      - .values() gives an iterable of values
+      - sum() works on any iterable of numbers
+    tags: [dicts, values, sum]
+
+  - slug: dict-find-key
+    objective: Find a key by its value
+    title: Find Key by Value
+    difficulty: 3
+    concept: collections
+    subconcept: dict-iteration
+    level: edge
+    prereqs: [dict-iteration]
+    type: write
+    pattern: search
+    prompt: Find the key with value "admin" in a dict called roles (return None if not found)
+    expected_answer: |
+      for key, value in roles.items():
+          if value == "admin":
+              break
+    accepted_solutions:
+      - |
+        for key, value in roles.items():
+            if value == "admin":
+                break
+      - next((k for k, v in roles.items() if v == "admin"), None)
+    hints:
+      - Need to check each value
+      - Use items() to access both key and value
+    tags: [dicts, search, edge]
+
+  # --- Debug Exercises (Pitfall Subconcepts) ---

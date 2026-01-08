@@ -1,0 +1,717 @@
+# exercises/python/conditionals.yaml
+language: python
+category: conditionals
+
+exercises:
+  # --- If-Else Subconcept ---
+  - slug: if-else-basic
+    objective: Implement a service health check with pass/fail status
+    title: Health Check Status
+    difficulty: 1
+    concept: conditionals
+    subconcept: if-else
+    level: intro
+    prereqs: [comparisons]
+    type: write
+    pattern: branching
+    prompt: Write an if-else that prints "healthy" if response_time < 200, otherwise "degraded"
+    expected_answer: |
+      if response_time < 200:
+          print("healthy")
+      else:
+          print("degraded")
+    accepted_solutions:
+      - |
+        if response_time < 200:
+            print("healthy")
+        else:
+            print("degraded")
+      - |
+        if response_time < 200:
+            print('healthy')
+        else:
+            print('degraded')
+    hints:
+      - if condition followed by colon
+      - else also needs a colon
+    tags: [if, else, monitoring]
+
+  - slug: if-statement
+    objective: Write a feature flag guard clause
+    title: Feature Flag Check
+    difficulty: 1
+    concept: conditionals
+    subconcept: if-else
+    level: intro
+    prereqs: [comparisons]
+    type: write
+    pattern: branching
+    prompt: Write an if statement that prints "Feature enabled" if feature_enabled is True
+    expected_answer: |
+      if feature_enabled:
+          print("Feature enabled")
+    accepted_solutions:
+      - |
+        if feature_enabled:
+            print("Feature enabled")
+      - |
+        if feature_enabled:
+            print('Feature enabled')
+      - |
+        if feature_enabled == True:
+            print("Feature enabled")
+    hints:
+      - Booleans can be checked directly
+      - Don't forget the colon
+    tags: [if, feature-flag]
+
+  - slug: if-membership
+    objective: Implement role-based access control with membership check
+    title: RBAC Permission Check
+    difficulty: 2
+    concept: conditionals
+    subconcept: if-else
+    level: practice
+    prereqs: [if-else]
+    type: write
+    pattern: branching
+    prompt: Check if "admin" is in the user_roles list and print "Access granted"
+    expected_answer: |
+      if "admin" in user_roles:
+          print("Access granted")
+    accepted_solutions:
+      - |
+        if "admin" in user_roles:
+            print("Access granted")
+      - |
+        if 'admin' in user_roles:
+            print('Access granted')
+    hints:
+      - Use 'in' operator for membership
+      - Common pattern for RBAC checks
+    tags: [if, membership, rbac, security]
+
+  - slug: if-not-condition
+    objective: Use negation in conditional logic
+    title: Negated Condition
+    difficulty: 2
+    concept: conditionals
+    subconcept: if-else
+    level: practice
+    prereqs: [if-else]
+    type: write
+    pattern: branching
+    prompt: Print "Empty cart" if the cart list is empty
+    expected_answer: |
+      if not cart:
+          print("Empty cart")
+    accepted_solutions:
+      - |
+        if not cart:
+            print("Empty cart")
+      - |
+        if not cart:
+            print('Empty cart')
+      - |
+        if len(cart) == 0:
+            print("Empty cart")
+    hints:
+      - Empty lists are falsy in Python
+      - Use 'not' for negation
+    tags: [if, not, truthiness]
+
+  - slug: if-fill-colon
+    objective: Complete the if statement syntax with proper colon
+    title: If Colon Fill
+    difficulty: 1
+    concept: conditionals
+    subconcept: if-else
+    level: intro
+    prereqs: [comparisons]
+    type: fill-in
+    blank_position: 0
+    pattern: branching
+    prompt: Fill in the character that ends the if condition
+    template: |
+      if temperature > 30___
+          print("Hot day!")
+    expected_answer: ":"
+    hints:
+      - What ends the if condition line?
+      - Same as other block statements in Python
+    tags: [if, syntax, fill-in]
+
+  - slug: if-fill-else
+    objective: Complete the else clause
+    title: Else Keyword Fill
+    difficulty: 1
+    concept: conditionals
+    subconcept: if-else
+    level: intro
+    prereqs: [if-else]
+    type: fill-in
+    blank_position: 0
+    pattern: branching
+    prompt: Fill in the keyword for the alternative case
+    template: |
+      if logged_in:
+          show_dashboard()
+      ___:
+          show_login()
+    expected_answer: "else"
+    hints:
+      - What keyword handles the alternative case?
+      - No condition needed after this keyword
+    tags: [else, branching, fill-in]
+
+  - slug: if-predict-basic
+    objective: Predict which branch executes
+    title: If-Else Predict
+    difficulty: 1
+    concept: conditionals
+    subconcept: if-else
+    level: intro
+    prereqs: [if-else]
+    type: predict
+    pattern: branching
+    prompt: What does this code print?
+    code: |
+      price = 150
+      if price > 100:
+          print("Expensive")
+      else:
+          print("Affordable")
+    expected_answer: "Expensive"
+    hints:
+      - 150 > 100 is True
+      - True condition executes first block
+    tags: [if, else, predict]
+
+  - slug: if-predict-falsy
+    objective: Understand truthiness in conditionals
+    title: Truthiness Predict
+    difficulty: 2
+    concept: conditionals
+    subconcept: if-else
+    level: practice
+    prereqs: [if-else]
+    type: predict
+    pattern: branching
+    prompt: What does this code print?
+    code: |
+      items = []
+      if items:
+          print("Has items")
+      else:
+          print("Empty")
+    expected_answer: "Empty"
+    hints:
+      - Empty list is falsy
+      - if [] is equivalent to if False
+    tags: [if, truthiness, predict]
+
+  # --- Elif Chains Subconcept ---
+  - slug: elif-grade
+    objective: Use elif for multiple conditional branches
+    title: Grade Classification
+    difficulty: 2
+    concept: conditionals
+    subconcept: elif-chains
+    level: intro
+    prereqs: [if-else]
+    type: write
+    pattern: branching
+    prompt: |
+      Assign grade based on score:
+      90+ = "A", 80+ = "B", 70+ = "C", else "F"
+    expected_answer: |
+      if score >= 90:
+          grade = "A"
+      elif score >= 80:
+          grade = "B"
+      elif score >= 70:
+          grade = "C"
+      else:
+          grade = "F"
+    hints:
+      - Check highest threshold first
+      - Each elif checks progressively lower scores
+    tags: [elif, branching, grading]
+
+  - slug: elif-http-status
+    objective: Handle multiple specific cases with elif
+    title: HTTP Status Handler
+    difficulty: 2
+    concept: conditionals
+    subconcept: elif-chains
+    level: practice
+    prereqs: [elif-chains]
+    type: write
+    pattern: branching
+    prompt: |
+      Print message based on status_code:
+      200 = "OK", 404 = "Not Found", 500 = "Server Error", else "Unknown"
+    expected_answer: |
+      if status_code == 200:
+          print("OK")
+      elif status_code == 404:
+          print("Not Found")
+      elif status_code == 500:
+          print("Server Error")
+      else:
+          print("Unknown")
+    accepted_solutions:
+      - |
+        if status_code == 200:
+            print("OK")
+        elif status_code == 404:
+            print("Not Found")
+        elif status_code == 500:
+            print("Server Error")
+        else:
+            print("Unknown")
+      - |
+        if status_code == 200:
+            print('OK')
+        elif status_code == 404:
+            print('Not Found')
+        elif status_code == 500:
+            print('Server Error')
+        else:
+            print('Unknown')
+    hints:
+      - Check each specific code
+      - else handles unexpected codes
+    tags: [elif, http, status]
+
+  - slug: elif-fill
+    objective: Complete the elif syntax
+    title: Elif Keyword Fill
+    difficulty: 2
+    concept: conditionals
+    subconcept: elif-chains
+    level: intro
+    prereqs: [if-else]
+    type: fill-in
+    blank_position: 0
+    pattern: branching
+    prompt: Fill in the keyword for an additional condition branch
+    template: |
+      if x > 10:
+          print("Large")
+      ___ x > 5:
+          print("Medium")
+    expected_answer: "elif"
+    hints:
+      - Combines else and if
+      - Python's way of saying "else if"
+    tags: [elif, fill-in]
+
+  - slug: elif-predict-order
+    objective: Understand elif evaluation order
+    title: Elif Order Predict
+    difficulty: 2
+    concept: conditionals
+    subconcept: elif-chains
+    level: practice
+    prereqs: [elif-chains]
+    type: predict
+    pattern: branching
+    prompt: What does this code print?
+    code: |
+      score = 85
+      if score >= 70:
+          grade = "C"
+      elif score >= 80:
+          grade = "B"
+      elif score >= 90:
+          grade = "A"
+      print(grade)
+    expected_answer: "C"
+    hints:
+      - Conditions checked top to bottom
+      - First True condition executes
+    tags: [elif, order, predict]
+
+  - slug: elif-predict-fall-through
+    objective: Predict elif behavior with multiple true conditions
+    title: First Match Wins
+    difficulty: 2
+    concept: conditionals
+    subconcept: elif-chains
+    level: practice
+    prereqs: [elif-chains]
+    type: predict
+    pattern: branching
+    prompt: What does this code print?
+    code: |
+      value = 100
+      if value > 50:
+          print("A")
+      elif value > 75:
+          print("B")
+      elif value > 90:
+          print("C")
+    expected_answer: "A"
+    hints:
+      - Only first matching condition runs
+      - Even though 100 > 75 and 100 > 90, we stop at first match
+    tags: [elif, predict, first-match]
+
+  # --- Ternary Subconcept ---
+  - slug: ternary-basic
+    objective: Set a status indicator color using ternary expression
+    title: Status Color Indicator
+    difficulty: 2
+    concept: conditionals
+    subconcept: ternary
+    level: intro
+    prereqs: [if-else]
+    type: write
+    pattern: expression
+    prompt: Set status_color to "green" if is_healthy else "red" using ternary
+    expected_answer: status_color = "green" if is_healthy else "red"
+    accepted_solutions:
+      - status_color = "green" if is_healthy else "red"
+      - status_color = 'green' if is_healthy else 'red'
+    hints:
+      - Format is value_if_true if condition else value_if_false
+      - Common pattern for dashboard indicators
+    tags: [ternary, expression, ui-state]
+
+  - slug: ternary-max
+    objective: Use ternary to find maximum of two values
+    title: Ternary Max
+    difficulty: 2
+    concept: conditionals
+    subconcept: ternary
+    level: practice
+    prereqs: [ternary]
+    type: write
+    pattern: expression
+    prompt: Find maximum of a and b using ternary expression
+    expected_answer: max_val = a if a > b else b
+    accepted_solutions:
+      - max_val = a if a > b else b
+      - maximum = a if a > b else b
+      - result = a if a > b else b
+    hints:
+      - Return a if a is larger, else return b
+      - Same logic as max() function
+    tags: [ternary, max, expression]
+
+  - slug: ternary-default
+    objective: Provide a fallback display name when user hasn't set one
+    title: Fallback Display Name
+    difficulty: 2
+    concept: conditionals
+    subconcept: ternary
+    level: practice
+    prereqs: [ternary]
+    type: write
+    pattern: expression
+    prompt: Set display_name to username if username exists, else "Anonymous"
+    expected_answer: display_name = username if username else "Anonymous"
+    accepted_solutions:
+      - display_name = username if username else "Anonymous"
+      - display_name = username if username else 'Anonymous'
+    hints:
+      - Truthy check on username
+      - Empty string or None would use fallback
+    tags: [ternary, default, user-profile]
+
+  - slug: ternary-fill
+    objective: Complete the ternary syntax
+    title: Ternary Else Fill
+    difficulty: 2
+    concept: conditionals
+    subconcept: ternary
+    level: intro
+    prereqs: [if-else]
+    type: fill-in
+    blank_position: 0
+    pattern: expression
+    prompt: Fill in the keyword that provides the alternative value
+    template: 'status = "online" if connected ___ "offline"'
+    expected_answer: "else"
+    hints:
+      - What separates the two possible values?
+      - Keyword that provides the alternative
+    tags: [ternary, fill-in]
+
+  - slug: ternary-predict
+    objective: Predict ternary expression result
+    title: Ternary Predict
+    difficulty: 2
+    concept: conditionals
+    subconcept: ternary
+    level: practice
+    prereqs: [ternary]
+    type: predict
+    pattern: expression
+    prompt: What does this code print?
+    code: |
+      balance = 50
+      status = "low" if balance < 100 else "ok"
+      print(status)
+    expected_answer: "low"
+    hints:
+      - 50 < 100 is True
+      - True returns the first value
+    tags: [ternary, predict]
+
+  - slug: ternary-nested-predict
+    objective: Understand nested ternary expressions
+    title: Nested Ternary Predict
+    difficulty: 3
+    concept: conditionals
+    subconcept: ternary
+    level: edge
+    prereqs: [ternary]
+    type: predict
+    pattern: expression
+    prompt: What does this code print?
+    code: |
+      score = 85
+      grade = "A" if score >= 90 else "B" if score >= 80 else "C"
+      print(grade)
+    expected_answer: "B"
+    hints:
+      - 85 >= 90 is False
+      - 85 >= 80 is True
+    tags: [ternary, nested, predict]
+
+  # --- Match-Case Subconcept (Python 3.10+) ---
+  - slug: match-case-basic
+    objective: Write a basic match-case statement
+    title: Basic Match-Case
+    difficulty: 2
+    concept: conditionals
+    subconcept: match-case
+    level: intro
+    prereqs: [elif-chains]
+    type: write
+    pattern: branching
+    prompt: |
+      Use match-case to handle command:
+      "start" prints "Starting", "stop" prints "Stopping", default prints "Unknown"
+    expected_answer: |
+      match command:
+          case "start":
+              print("Starting")
+          case "stop":
+              print("Stopping")
+          case _:
+              print("Unknown")
+    accepted_solutions:
+      - |
+        match command:
+            case "start":
+                print("Starting")
+            case "stop":
+                print("Stopping")
+            case _:
+                print("Unknown")
+      - |
+        match command:
+            case 'start':
+                print('Starting')
+            case 'stop':
+                print('Stopping')
+            case _:
+                print('Unknown')
+    hints:
+      - Use match value followed by colon
+      - case _ is the wildcard (default)
+    tags: [match, case, structural]
+
+  - slug: match-case-or
+    objective: Match multiple values in a single case
+    title: Match-Case OR Pattern
+    difficulty: 2
+    concept: conditionals
+    subconcept: match-case
+    level: practice
+    prereqs: [match-case]
+    type: write
+    pattern: branching
+    prompt: Match command for "quit" or "exit" to print "Goodbye"
+    expected_answer: |
+      match command:
+          case "quit" | "exit":
+              print("Goodbye")
+    accepted_solutions:
+      - |
+        match command:
+            case "quit" | "exit":
+                print("Goodbye")
+      - |
+        match command:
+            case 'quit' | 'exit':
+                print('Goodbye')
+    hints:
+      - Use | to match either pattern
+      - Like OR in other match systems
+    tags: [match, case, or-pattern]
+
+  - slug: match-case-fill
+    objective: Complete the wildcard pattern
+    title: Match Wildcard Fill
+    difficulty: 2
+    concept: conditionals
+    subconcept: match-case
+    level: intro
+    prereqs: [elif-chains]
+    type: fill-in
+    blank_position: 0
+    pattern: branching
+    prompt: Fill in the wildcard pattern that matches anything
+    template: |
+      match status:
+          case 200:
+              print("OK")
+          case ___:
+              print("Error")
+    expected_answer: "_"
+    hints:
+      - Single underscore is the wildcard
+      - Matches anything not matched above
+    tags: [match, wildcard, fill-in]
+
+  - slug: match-case-predict
+    objective: Predict match-case output
+    title: Match-Case Predict
+    difficulty: 2
+    concept: conditionals
+    subconcept: match-case
+    level: practice
+    prereqs: [match-case]
+    type: predict
+    pattern: branching
+    prompt: What does this code print?
+    code: |
+      day = "Saturday"
+      match day:
+          case "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday":
+              print("Weekday")
+          case "Saturday" | "Sunday":
+              print("Weekend")
+          case _:
+              print("Invalid")
+    expected_answer: "Weekend"
+    hints:
+      - Saturday matches the second case
+      - The | operator allows matching multiple values
+    tags: [match, case, predict]
+
+  - slug: match-case-tuple
+    objective: Match tuple patterns with structural matching
+    title: Match Tuple Pattern
+    difficulty: 3
+    concept: conditionals
+    subconcept: match-case
+    level: edge
+    prereqs: [match-case]
+    type: write
+    pattern: branching
+    prompt: |
+      Match point tuple for origin (0, 0) to print "Origin",
+      x-axis (x, 0) to print "X-axis", default to print "Other"
+    expected_answer: |
+      match point:
+          case (0, 0):
+              print("Origin")
+          case (x, 0):
+              print("X-axis")
+          case _:
+              print("Other")
+    hints:
+      - Literal values must match exactly
+      - Variables capture any value
+    tags: [match, case, tuple, structural]
+
+  # --- Premium Idiomatic Exercises ---
+  - slug: pythonic-if-empty-check
+    objective: Recognize the Pythonic way to check for empty collections
+    title: Pythonic Empty Check
+    difficulty: 2
+    concept: conditionals
+    subconcept: if-else
+    level: edge
+    prereqs: [if-else]
+    type: predict
+    pattern: idiomatic
+    prompt: Which is more Pythonic? What does Option B print?
+    code: |
+      items = []
+
+      # Option A (verbose)
+      if len(items) > 0:
+          print("Has items")
+
+      # Option B (Pythonic)
+      if items:
+          print("Has items")
+      else:
+          print("Empty")
+    expected_answer: "Empty"
+    hints:
+      - Option B is Pythonic - empty collections are falsy
+      - Avoid explicit len() > 0 checks
+    tags: [pythonic, idiomatic, truthiness]
+
+  - slug: pythonic-none-check
+    objective: Use is None rather than == None
+    title: Pythonic None Check
+    difficulty: 2
+    concept: conditionals
+    subconcept: if-else
+    level: edge
+    prereqs: [if-else, identity]
+    type: write
+    pattern: idiomatic
+    prompt: Check if result is None the Pythonic way
+    expected_answer: |
+      if result is None:
+          print("No result")
+    accepted_solutions:
+      - |
+        if result is None:
+            print("No result")
+      - |
+        if result is None:
+            print('No result')
+    hints:
+      - Use 'is' for None checks, not ==
+      - is checks identity, == checks equality
+    tags: [pythonic, is, none]
+
+  # --- Error-First Learning Exercise ---
+  - slug: if-else-order-trap
+    objective: Understand the importance of condition ordering
+    title: Condition Order Trap
+    difficulty: 3
+    concept: conditionals
+    subconcept: elif-chains
+    level: edge
+    prereqs: [elif-chains]
+    type: predict
+    pattern: error-first
+    prompt: Why does this grading code give everyone a C?
+    code: |
+      def get_grade(score):
+          if score >= 70:
+              return "C"
+          elif score >= 80:
+              return "B"
+          elif score >= 90:
+              return "A"
+          return "F"
+
+      print(get_grade(95))
+    expected_answer: "C"
+    hints:
+      - First True condition wins
+      - 95 >= 70 is True, so "C" returns immediately
+      - Order from highest to lowest threshold
+    tags: [elif, order, trap, error-first]

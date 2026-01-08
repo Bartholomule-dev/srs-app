@@ -30,7 +30,7 @@ A gamified web platform for practicing code syntax through spaced repetition. Ta
 | Language | TypeScript 5 (strict mode) |
 | UI | React 19, Tailwind CSS 4, framer-motion |
 | Backend | Supabase (PostgreSQL + Auth + Realtime) |
-| Testing | Vitest (1088 unit/integration) + Playwright (E2E) |
+| Testing | Vitest (1472 unit/integration) + Playwright (E2E) |
 | Deployment | Vercel + GitHub Actions CI/E2E |
 | Package Manager | pnpm |
 
@@ -43,7 +43,7 @@ pnpm dev              # Start dev server (localhost:3000)
 pnpm build            # Production build
 pnpm lint             # ESLint check
 pnpm typecheck        # TypeScript type checking
-pnpm test             # Run Vitest tests (1125+ tests)
+pnpm test             # Run Vitest tests (1472 tests)
 pnpm test:e2e         # Run Playwright E2E tests
 pnpm test:e2e:headed  # Run E2E with browser visible
 pnpm db:start         # Start local Supabase
@@ -295,11 +295,110 @@ remember({ category: "decision", content: "...", rationale: "..." })
 
 To disable (not recommended): `export DAEM0NMCP_DISABLE_COVENANT=1` in `~/.bashrc`
 
+### Daem0n MCP Tools Reference (v2.10.0)
+
+**Core Memory:**
+| Tool | When to Use |
+|------|-------------|
+| `remember` | Store decision/pattern/warning/learning after context_check |
+| `remember_batch` | Bulk import multiple memories atomically |
+| `recall` | Semantic search - find relevant past decisions |
+| `search_memories` | Full-text search with TF-IDF ranking |
+| `recall_for_file` | Get all memories for a specific file |
+| `find_related` | Find semantically similar memories |
+
+**Session & Context:**
+| Tool | When to Use |
+|------|-------------|
+| `get_briefing` | **FIRST CALL** - stats, warnings, recent decisions, git changes |
+| `context_check` | **BEFORE remember/add_rule** - preflight check for conflicts |
+| `set_active_context` | Pin memory to always-hot working context |
+| `get_active_context` | List all hot memories |
+| `clear_active_context` | Clear when switching focus areas |
+
+**Rules Engine:**
+| Tool | When to Use |
+|------|-------------|
+| `add_rule` | Create decision tree rule (semantic trigger matching) |
+| `check_rules` | Before significant changes - check if rules apply |
+| `list_rules` | See all configured project rules |
+| `update_rule` | Modify existing rule |
+
+**Memory Lifecycle:**
+| Tool | When to Use |
+|------|-------------|
+| `record_outcome` | After decision plays out - track if it worked |
+| `pin_memory` | Protect critical memory from pruning |
+| `archive_memory` | Hide but preserve (soft delete) |
+| `prune_memories` | Clean old low-value memories (dry_run first!) |
+| `cleanup_memories` | Merge duplicates |
+| `compact_memories` | Consolidate episodic memories into summary |
+
+**Memory Graph:**
+| Tool | When to Use |
+|------|-------------|
+| `link_memories` | Connect related memories (led_to, supersedes, depends_on, conflicts_with) |
+| `unlink_memories` | Remove relationship |
+| `trace_chain` | Follow causal chains forward/backward |
+| `get_graph` | Export as JSON or Mermaid diagram |
+
+**Time Travel:**
+| Tool | When to Use |
+|------|-------------|
+| `get_memory_versions` | See how a memory evolved |
+| `get_memory_at_time` | Point-in-time memory state |
+
+**Communities (GraphRAG):**
+| Tool | When to Use |
+|------|-------------|
+| `rebuild_communities` | Detect clusters via tag co-occurrence |
+| `list_communities` | See all memory clusters |
+| `get_community_details` | Expand community with all members |
+| `recall_hierarchical` | Layered recall (summaries first, then details) |
+
+**Entity Extraction:**
+| Tool | When to Use |
+|------|-------------|
+| `recall_by_entity` | Find memories mentioning a class/function/file |
+| `list_entities` | Most frequently mentioned entities |
+| `backfill_entities` | Extract entities from existing memories |
+
+**Code Intelligence:**
+| Tool | When to Use |
+|------|-------------|
+| `index_project` | Index codebase with tree-sitter (run when stale) |
+| `find_code` | Semantic search across indexed code |
+| `analyze_impact` | Blast radius analysis before changes |
+
+**Cross-Project:**
+| Tool | When to Use |
+|------|-------------|
+| `link_projects` | Enable cross-project memory reading |
+| `list_linked_projects` | See linked projects |
+| `consolidate_linked_databases` | Merge for monorepo transitions |
+
+**Automation:**
+| Tool | When to Use |
+|------|-------------|
+| `add_context_trigger` | Auto-recall when file/tag/entity matches pattern |
+| `list_context_triggers` | See configured triggers |
+| `check_context_triggers` | Evaluate triggers for current context |
+
+**Utilities:**
+| Tool | When to Use |
+|------|-------------|
+| `scan_todos` | Find TODO/FIXME/HACK/BUG comments |
+| `ingest_doc` | Import external docs from URL |
+| `propose_refactor` | Generate refactor suggestions for a file |
+| `rebuild_index` | Force rebuild TF-IDF/vector indexes |
+| `export_data` / `import_data` | Backup/restore memories |
+| `health` | Check server status and stats |
+
 ---
 
 ## Exercise Content Management
 
-**Source of Truth:** `exercises/python/*.yaml` files (352 exercises across 10 files)
+**Source of Truth:** `exercises/python/*.yaml` files (510 exercises across 11 files)
 
 **Workflow for adding/modifying exercises:**
 1. Edit the appropriate YAML file in `exercises/python/`
@@ -327,7 +426,7 @@ To disable (not recommended): `export DAEM0NMCP_DISABLE_COVENANT=1` in `~/.bashr
 See `Database-Schema.md` in Obsidian for full schema. Key tables:
 
 - `profiles` - User data with auto-generated username, stats (streak, accuracy, total)
-- `exercises` - Exercise content with slug-based identity (352 Python exercises)
+- `exercises` - Exercise content with slug-based identity (510 Python exercises)
 - `user_progress` - SRS state per user/exercise (SM-2 algorithm)
 - `subconcept_progress` - **(Phase 2)** Concept-based SRS state per subconcept
 - `exercise_attempts` - **(Phase 2)** Exercise usage tracking for selection algorithm
@@ -430,6 +529,7 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 23. ✅ Dynamic Exercise Expansion (Phase 6) - Variant support architecture (one slug, multiple prompts via generator's `variant` param). 4 new generators: loop-simulation (range output), comparison-logic (boolean expressions), string-ops (method calls), dict-values (dictionary access). 6 new dynamic exercises using new and existing generators. Removed duplicate exercises. Totals: 9 generators, 33 dynamic exercises, 353 total exercises, 143 generator tests. Design doc: `docs/plans/2026-01-07-dynamic-exercise-expansion.md`.
 24. ✅ Exercise-List.md Auto-Generation - Created `scripts/generate-exercise-list.ts` to generate Exercise-List.md from YAML source of truth. Audit found documentation claimed 383 exercises but YAML only had 353. Script parses all YAML, computes counts, detects duplicates, generates Obsidian-formatted markdown with "AUTO-GENERATED: DO NOT EDIT" header. Commands: `pnpm generate:exercise-list`, `pnpm generate:exercise-list:obsidian`. Created `docs/plans/exercise-backlog.md` for future exercise ideas.
 25. ✅ Skill Tree Progress Visualization - Visual skill tree on dashboard showing all 54 subconcepts as connected nodes organized by 10 concepts. Four node states (locked, available, in-progress, mastered) based on FSRS stability threshold (>=7 days). useSkillTree hook for data fetching, buildSkillTreeData for transformation. Components: SkillTree (main), ConceptCluster, SubconceptNode, DependencyLines (SVG bezier curves). Horizontal scroll, Framer Motion animations, tooltips with state info. Design doc: `docs/plans/2026-01-07-skill-tree-progress-design.md`.
+26. ✅ Premium Curriculum Restructure - Multi-AI analysis (Claude, Gemini, Codex) restructured curriculum for optimal learning flow. Split control-flow into `conditionals` and `loops` concepts. 11 concepts, 65 subconcepts (was 10/54). Reordered concept dependencies: conditionals before collections, imports earlier, relaxed error-handling prereqs. Added 157 new exercises (510 total). New subconcepts: if-elif-else, match-case, == vs is, while-loops, nested-loops. All exercises reviewed for pedagogical quality. Design docs: `docs/plans/2026-01-08-premium-curriculum-restructure.md`, `docs/plans/2026-01-08-premium-curriculum-enhancements.md`.
 
 ## Phase 2.7: Exercise Variety (Complete)
 

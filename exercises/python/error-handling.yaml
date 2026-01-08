@@ -25,15 +25,15 @@ exercises:
     pattern: handling
 
   - slug: except-specific
-    objective: Catch a specific exception type using the except clause
-    title: Except Specific Error
+    objective: Handle database connection failures with specific exception
+    title: Database Connection Error
     difficulty: 2
-    prompt: Catch a ValueError exception
-    expected_answer: "except ValueError:"
+    prompt: Catch a ConnectionError exception (common for database/network failures)
+    expected_answer: "except ConnectionError:"
     hints:
       - Put exception type after the except keyword
-      - Better than bare except - catches only what you expect
-    tags: [exceptions, specific, intermediate]
+      - Specific exceptions prevent catching unrelated errors
+    tags: [exceptions, database, network]
     concept: error-handling
     subconcept: try-except
     level: intro
@@ -42,18 +42,19 @@ exercises:
     pattern: handling
 
   - slug: raise-exception
-    objective: Raise an exception with a custom error message using raise
-    title: Raise Exception
+    domains: [web, general]
+    objective: Raise a validation error when user input fails business rules
+    title: Validation Error
     difficulty: 2
-    prompt: Raise a ValueError with message "Invalid value"
-    expected_answer: raise ValueError("Invalid value")
+    prompt: Raise a ValueError with message "Invalid email format"
+    expected_answer: raise ValueError("Invalid email format")
     accepted_solutions:
-      - raise ValueError("Invalid value")
-      - raise ValueError('Invalid value')
+      - raise ValueError("Invalid email format")
+      - raise ValueError('Invalid email format')
     hints:
       - Use the raise keyword
-      - Pass message to exception constructor
-    tags: [exceptions, raise, intermediate]
+      - Descriptive messages help debugging
+    tags: [exceptions, validation, api]
     concept: error-handling
     subconcept: raising
     level: practice
@@ -316,7 +317,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: handling
-    prompt: Complete to start a try block
+    prompt: Fill in the keyword that starts error handling
     template: |
       ___:
           risky_operation()
@@ -337,7 +338,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: handling
-    prompt: Complete to catch ValueError
+    prompt: Fill in the keyword that catches an exception
     template: "___ ValueError:"
     expected_answer: "except"
     hints:
@@ -356,7 +357,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: handling
-    prompt: Complete to raise an error
+    prompt: Fill in the keyword that throws an exception
     template: '___ ValueError("Invalid")'
     expected_answer: "raise"
     hints:
@@ -511,3 +512,5 @@ exercises:
       - "Count: try block lines + except block lines (if exception) + finally block lines"
       - "{{description}}"
     tags: [exceptions, finally, trace, dynamic]
+
+  # --- Trade-off Exercises (Senior-Level Decision Making) ---

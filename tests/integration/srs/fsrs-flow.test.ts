@@ -51,7 +51,7 @@ describe('FSRS Flow Integration', () => {
         .insert({
           user_id: testUserId,
           subconcept_slug: 'for',
-          concept_slug: 'control-flow',
+          concept_slug: 'loops',
           stability: card.stability,
           difficulty: card.difficulty,
           fsrs_state: STATE_MAP[card.state],
@@ -84,7 +84,7 @@ describe('FSRS Flow Integration', () => {
         .insert({
           user_id: testUserId,
           subconcept_slug: 'for',
-          concept_slug: 'control-flow',
+          concept_slug: 'loops',
           stability: card.stability,
           difficulty: card.difficulty,
           fsrs_state: STATE_MAP[card.state],
@@ -136,7 +136,7 @@ describe('FSRS Flow Integration', () => {
         {
           user_id: testUserId,
           subconcept_slug: 'for',
-          concept_slug: 'control-flow',
+          concept_slug: 'loops',
           stability: 5,
           difficulty: 0.3,
           fsrs_state: 2, // Review
@@ -150,7 +150,7 @@ describe('FSRS Flow Integration', () => {
         {
           user_id: testUserId,
           subconcept_slug: 'while',
-          concept_slug: 'control-flow',
+          concept_slug: 'loops',
           stability: 10,
           difficulty: 0.3,
           fsrs_state: 2, // Review
@@ -306,7 +306,7 @@ describe('FSRS Flow Integration', () => {
         .insert({
           user_id: testUserId,
           subconcept_slug: 'for',
-          concept_slug: 'control-flow',
+          concept_slug: 'loops',
           stability: card.stability,
           difficulty: card.difficulty,
           fsrs_state: STATE_MAP[card.state],
@@ -354,7 +354,7 @@ describe('FSRS Flow Integration', () => {
         .insert({
           user_id: testUserId,
           subconcept_slug: 'for',
-          concept_slug: 'control-flow',
+          concept_slug: 'loops',
           stability: lapseResult.cardState.stability,
           difficulty: lapseResult.cardState.difficulty,
           fsrs_state: STATE_MAP[lapseResult.cardState.state],
@@ -430,7 +430,7 @@ describe('FSRS Flow Integration', () => {
         await serviceClient.from('subconcept_progress').insert({
           user_id: testUserId,
           subconcept_slug: slug,
-          concept_slug: 'control-flow',
+          concept_slug: 'loops',
           stability: card.stability,
           difficulty: card.difficulty,
           fsrs_state: STATE_MAP[card.state],

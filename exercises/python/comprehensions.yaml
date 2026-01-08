@@ -73,6 +73,11 @@ exercises:
     prompt: What does this create?
     code: "{x: x*2 for x in [1, 2, 3]}"
     expected_answer: "{1: 2, 2: 4, 3: 6}"
+    accepted_solutions:
+      - "{1: 2, 2: 4, 3: 6}"
+      - "{1:2, 2:4, 3:6}"
+      - "{1: 2,2: 4,3: 6}"
+      - "{1:2,2:4,3:6}"
     hints:
       - "Each x becomes a key"
       - "x*2 becomes its value"
@@ -132,7 +137,10 @@ exercises:
     expected_answer: "{0, 1, 2}"
     accepted_solutions:
       - "{0, 1, 2}"
+      - "{0, 2, 1}"
+      - "{1, 0, 2}"
       - "{1, 2, 0}"
+      - "{2, 0, 1}"
       - "{2, 1, 0}"
     hints:
       - "Sets remove duplicates"
@@ -277,7 +285,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: mapping
-    prompt: Complete the list comprehension
+    prompt: Fill in the keyword that starts the iteration
     template: "[x * 2 ___ x in range(5)]"
     expected_answer: "for"
     hints:
@@ -296,7 +304,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: filtering
-    prompt: Complete the filter condition
+    prompt: Fill in the keyword that adds a filter condition
     template: "[x for x in range(10) ___ x % 2 == 0]"
     expected_answer: "if"
     hints:
@@ -315,7 +323,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: mapping
-    prompt: Complete the key-value separator
+    prompt: Fill in the separator between key and value
     template: "{x ___ x**2 for x in range(3)}"
     expected_answer: ":"
     hints:
@@ -334,7 +342,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: mapping
-    prompt: Complete to create a set (unique values)
+    prompt: Fill in the opening brace for a set comprehension
     template: "___x for x in [1, 1, 2, 2, 3]}"
     expected_answer: "{"
     hints:
@@ -400,6 +408,11 @@ exercises:
       result = {x: x**2 for x in range(3)}
       print(result)
     expected_answer: "{0: 0, 1: 1, 2: 4}"
+    accepted_solutions:
+      - "{0: 0, 1: 1, 2: 4}"
+      - "{0:0, 1:1, 2:4}"
+      - "{0: 0,1: 1,2: 4}"
+      - "{0:0,1:1,2:4}"
     hints:
       - Maps each number to its square
       - Keys are 0, 1, 2 and values are 0, 1, 4
@@ -421,6 +434,9 @@ exercises:
       result = [x for row in matrix for x in row]
       print(result)
     expected_answer: "[1, 2, 3, 4]"
+    accepted_solutions:
+      - "[1, 2, 3, 4]"
+      - "[1,2,3,4]"
     hints:
       - Flattens the nested list
       - Outer loop iterates rows, inner loop iterates elements
@@ -531,3 +547,200 @@ exercises:
     target_construct:
       type: comprehension
       feedback: "List comprehensions are more Pythonic than explicit loops"
+  - slug: active-users-integrated
+    objective: Filter and format user data combining enumerate, list comp, and set membership
+    title: Active Users with Index
+    difficulty: 3
+    concept: comprehensions
+    subconcept: list-comp
+    level: integrated
+    prereqs: [list-comp, iteration, sets]
+    targets: [list-comp, iteration, sets, fstrings]
+    type: write
+    pattern: transformation
+    domains: [data, web]
+    prompt: |
+      Given users = ["alice", "bob", "carlos"] and active = {"alice", "carlos"},
+      create a list of strings like "0:alice" for active users only using enumerate.
+    expected_answer: '[f"{i}:{u}" for i, u in enumerate(users) if u in active]'
+    accepted_solutions:
+      - '[f"{i}:{u}" for i, u in enumerate(users) if u in active]'
+      - "[f'{i}:{u}' for i, u in enumerate(users) if u in active]"
+    hints:
+      - Use enumerate() for index and value
+      - Filter with if condition at end
+      - F-string for formatting output
+    tags: [comprehension, enumerate, filter, integrated]
+
+  - slug: error-code-extractor-integrated
+    objective: Build a log analysis pipeline with generator expression and string parsing
+    title: Error Code Extractor
+    difficulty: 3
+    concept: comprehensions
+    subconcept: generator-exp
+    level: integrated
+    prereqs: [generator-exp, string-methods, conversion]
+    targets: [generator-exp, string-methods, conversion, conditionals]
+    type: write
+    pattern: transformation
+    prompt: |
+      Given logs like ["ERROR: 500 - Fail", "INFO: OK", "ERROR: 404 - Not found"],
+      create a generator expression that extracts integer error codes (500, 404)
+      only from lines starting with "ERROR".
+    expected_answer: (int(line.split()[1]) for line in logs if line.startswith("ERROR"))
+    accepted_solutions:
+      - (int(line.split()[1]) for line in logs if line.startswith("ERROR"))
+      - '(int(line.split()[1]) for line in logs if line.startswith("ERROR"))'
+    hints:
+      - Use generator expression syntax (parentheses)
+      - split() to get parts, index [1] for code
+      - startswith() for filtering
+    tags: [generator, string-parsing, logs, integrated]
+
+  # --- Generator Functions (yield) ---
+  - slug: generator-countdown
+    objective: Create a simple generator function using yield
+    title: Countdown Generator
+    difficulty: 2
+    concept: comprehensions
+    subconcept: generators
+    level: intro
+    prereqs: [generator-exp]
+    type: write
+    pattern: function
+    prompt: |
+      Write a generator function `countdown(n)` that yields numbers from n down to 1.
+
+      countdown(3) should yield 3, 2, 1.
+    expected_answer: |
+      def countdown(n):
+          while n > 0:
+              yield n
+              n -= 1
+    accepted_solutions:
+      - |
+        def countdown(n):
+            while n > 0:
+                yield n
+                n -= 1
+      - |
+        def countdown(n):
+            for i in range(n, 0, -1):
+                yield i
+    hints:
+      - Use yield instead of return
+      - yield pauses the function and produces a value
+      - The function resumes when next() is called
+    tags: [generators, yield, intro]
+
+  - slug: generator-evens
+    objective: Create a generator that yields even numbers up to a limit
+    title: Even Numbers Generator
+    difficulty: 2
+    concept: comprehensions
+    subconcept: generators
+    level: practice
+    prereqs: [generators]
+    type: write
+    pattern: filtering
+    prompt: |
+      Write a generator function `evens(n)` that yields even numbers from 2 up to n (inclusive if n is even).
+
+      evens(6) should yield 2, 4, 6.
+    expected_answer: |
+      def evens(n):
+          for i in range(2, n + 1, 2):
+              yield i
+    accepted_solutions:
+      - |
+        def evens(n):
+            for i in range(2, n + 1, 2):
+                yield i
+      - |
+        def evens(n):
+            i = 2
+            while i <= n:
+                yield i
+                i += 2
+    hints:
+      - Use range with step of 2
+      - Start from 2 (first even positive integer)
+      - yield each even number
+    tags: [generators, yield, filtering]
+
+  - slug: generator-predict-lazy
+    objective: Understand that generators are lazily evaluated
+    title: Predict Generator Behavior
+    difficulty: 2
+    concept: comprehensions
+    subconcept: generators
+    level: practice
+    prereqs: [generators]
+    type: predict
+    pattern: output
+    prompt: "What prints?"
+    code: |
+      def numbers():
+          print("Starting")
+          yield 1
+          print("After 1")
+          yield 2
+          print("After 2")
+
+      gen = numbers()
+      print("Created")
+      print(next(gen))
+    expected_answer: |
+      Created
+      Starting
+      1
+    accepted_solutions:
+      - "Created\nStarting\n1"
+      - |
+        Created
+        Starting
+        1
+    hints:
+      - Generators are lazy - they don't run until iterated
+      - next() runs until the first yield
+      - Creating the generator doesn't execute the function body
+    tags: [generators, lazy-evaluation, predict]
+
+  - slug: generator-fibonacci
+    objective: Create an infinite generator using yield
+    title: Fibonacci Generator
+    difficulty: 3
+    concept: comprehensions
+    subconcept: generators
+    level: edge
+    prereqs: [generators]
+    type: write
+    pattern: iteration
+    prompt: |
+      Write a generator function `fibonacci()` that yields the infinite Fibonacci sequence.
+
+      The first yields should be: 0, 1, 1, 2, 3, 5, 8...
+    expected_answer: |
+      def fibonacci():
+          a, b = 0, 1
+          while True:
+              yield a
+              a, b = b, a + b
+    accepted_solutions:
+      - |
+        def fibonacci():
+            a, b = 0, 1
+            while True:
+                yield a
+                a, b = b, a + b
+      - |
+        def fibonacci():
+            prev, curr = 0, 1
+            while True:
+                yield prev
+                prev, curr = curr, prev + curr
+    hints:
+      - Use while True for infinite sequence
+      - yield pauses between values
+      - Update a, b with tuple unpacking
+    tags: [generators, fibonacci, infinite, edge]

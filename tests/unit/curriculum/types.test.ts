@@ -35,7 +35,7 @@ describe('Curriculum Types', () => {
     it('includes teaching field with explanation and exampleSlug', () => {
       const subconcept: SubconceptDefinition = {
         name: 'For Loops',
-        concept: 'control-flow',
+        concept: 'loops',
         prereqs: ['foundations'],
         teaching: {
           explanation: 'For loops iterate over sequences.',

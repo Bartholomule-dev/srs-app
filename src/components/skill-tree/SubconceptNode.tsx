@@ -5,11 +5,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { ANIMATION_BUDGET } from '@/lib/motion';
 import type { SkillTreeNode, SubconceptState } from '@/lib/skill-tree/types';
-import {
-  MASTERY_STABILITY_STANDARD,
-  MASTERY_REPS,
-  PROFICIENT_STABILITY,
-} from '@/lib/skill-tree/types';
+import { MASTERY_REPS } from '@/lib/skill-tree/types';
 
 interface SubconceptNodeProps {
   node: SkillTreeNode;

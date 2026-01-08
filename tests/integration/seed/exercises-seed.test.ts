@@ -65,8 +65,8 @@ describe('Exercise Seed Data', () => {
 
     const categories = new Set(data!.map(e => e.category));
     const expectedCategories = [
-      'foundations', 'strings', 'numbers-booleans', 'collections',
-      'control-flow', 'functions', 'comprehensions', 'error-handling',
+      'foundations', 'strings', 'numbers-booleans', 'conditionals', 'collections',
+      'loops', 'functions', 'comprehensions', 'error-handling',
       'oop', 'modules-files'
     ];
 
