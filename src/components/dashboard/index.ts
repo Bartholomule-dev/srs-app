@@ -1,4 +1,5 @@
 export { DueCardsBanner } from './DueCardsBanner';
+export { DueNowBand } from './DueNowBand';
 export { EmptyState } from './EmptyState';
 export { Greeting } from './Greeting';
 export { PracticeCTA } from './PracticeCTA';

@@ -17,6 +17,7 @@ export { SessionProgress, SessionSummary } from './session';
 // Dashboard components
 export {
   DueCardsBanner,
+  DueNowBand,
   EmptyState,
   Greeting,
   PracticeCTA,
