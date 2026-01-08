@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/Card';
 import { cn } from '@/lib/utils';
 import { ANIMATION_BUDGET } from '@/lib/motion';
@@ -115,10 +115,11 @@ const isTestEnv = typeof process !== 'undefined' && process.env.NODE_ENV === 'te
 
 function AnimatedCounter({ value, suffix = '', variant = 'supporting' }: AnimatedCounterProps) {
   const [displayValue, setDisplayValue] = useState(0);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
-    // In test environment, skip animation entirely
-    if (isTestEnv) {
+    // Skip animation in test environment or when user prefers reduced motion
+    if (isTestEnv || reduceMotion) {
       setDisplayValue(value);
       return;
     }

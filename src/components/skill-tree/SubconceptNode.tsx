@@ -92,7 +92,7 @@ export function SubconceptNode({
         ref={nodeRef}
         type="button"
         className={cn(
-          'w-12 h-12 rounded-full',
+          'w-12 h-12 rounded-full transition-all',
           'focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:ring-offset-2 focus:ring-offset-[var(--bg-surface-1)]',
           stateStyles[node.state],
           className
