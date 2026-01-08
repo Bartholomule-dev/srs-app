@@ -1,6 +1,6 @@
 // tests/unit/lib/editor/auto-indent.test.ts
 import { describe, it, expect } from 'vitest';
-import { getAutoIndent } from '@/lib/editor/auto-indent';
+import { getAutoIndent, insertNewlineWithIndent } from '@/lib/editor/auto-indent';
 
 describe('getAutoIndent', () => {
   describe('preserving current indentation', () => {
@@ -102,6 +102,79 @@ describe('getAutoIndent', () => {
 
     it('handles colon with comment', () => {
       expect(getAutoIndent('def foo(): # comment')).toBe('');
+    });
+  });
+});
+
+describe('insertNewlineWithIndent', () => {
+  describe('basic insertion', () => {
+    it('inserts newline at cursor position', () => {
+      const result = insertNewlineWithIndent('hello', 5);
+      expect(result.value).toBe('hello\n');
+      expect(result.cursorPosition).toBe(6);
+    });
+
+    it('inserts newline in middle of text', () => {
+      const result = insertNewlineWithIndent('helloworld', 5);
+      expect(result.value).toBe('hello\nworld');
+      expect(result.cursorPosition).toBe(6);
+    });
+
+    it('inserts newline at start', () => {
+      const result = insertNewlineWithIndent('hello', 0);
+      expect(result.value).toBe('\nhello');
+      expect(result.cursorPosition).toBe(1);
+    });
+  });
+
+  describe('with indentation', () => {
+    it('adds indent after colon', () => {
+      const result = insertNewlineWithIndent('def foo():', 10);
+      expect(result.value).toBe('def foo():\n    ');
+      expect(result.cursorPosition).toBe(15); // after newline + 4 spaces
+    });
+
+    it('preserves existing indent', () => {
+      const result = insertNewlineWithIndent('    print("hi")', 15);
+      expect(result.value).toBe('    print("hi")\n    ');
+      expect(result.cursorPosition).toBe(20);
+    });
+
+    it('preserves indent and adds more after colon', () => {
+      const result = insertNewlineWithIndent('    if x > 0:', 13);
+      expect(result.value).toBe('    if x > 0:\n        ');
+      expect(result.cursorPosition).toBe(22); // 13 + 1 (newline) + 8 (spaces)
+    });
+  });
+
+  describe('multiline text', () => {
+    it('handles cursor on second line', () => {
+      const text = 'line1\nline2';
+      const result = insertNewlineWithIndent(text, 11); // end of line2
+      expect(result.value).toBe('line1\nline2\n');
+      expect(result.cursorPosition).toBe(12);
+    });
+
+    it('uses current line for indent calculation', () => {
+      const text = 'def foo():\n    pass';
+      const result = insertNewlineWithIndent(text, 19); // end of "    pass"
+      expect(result.value).toBe('def foo():\n    pass\n    ');
+      expect(result.cursorPosition).toBe(24);
+    });
+
+    it('handles insertion in middle of multiline', () => {
+      const text = 'line1\nline2\nline3';
+      const result = insertNewlineWithIndent(text, 11); // end of line2
+      expect(result.value).toBe('line1\nline2\n\nline3');
+      expect(result.cursorPosition).toBe(12);
+    });
+
+    it('uses correct line when cursor is mid-line', () => {
+      const text = 'def foo():\n    x = 1';
+      // Cursor at position 15, which is after "    " on line 2
+      const result = insertNewlineWithIndent(text, 15);
+      expect(result.value).toBe('def foo():\n    \n    x = 1');
+      expect(result.cursorPosition).toBe(20); // after newline + 4 spaces
     });
   });
 });

@@ -21,3 +21,45 @@ export function getAutoIndent(currentLine: string): string {
 
   return leadingWhitespace + extraIndent;
 }
+
+export interface InsertResult {
+  /** The new text value after insertion */
+  value: string;
+  /** Where to place the cursor after insertion */
+  cursorPosition: number;
+}
+
+/**
+ * Inserts a newline with appropriate indentation at the cursor position.
+ *
+ * @param text - The current text content
+ * @param cursorPosition - The current cursor position (selectionStart)
+ * @returns The new text and cursor position
+ */
+export function insertNewlineWithIndent(
+  text: string,
+  cursorPosition: number
+): InsertResult {
+  const beforeCursor = text.slice(0, cursorPosition);
+  const afterCursor = text.slice(cursorPosition);
+
+  // Find the current line (from last newline to cursor)
+  const lastNewline = beforeCursor.lastIndexOf('\n');
+  const currentLine = lastNewline === -1
+    ? beforeCursor
+    : beforeCursor.slice(lastNewline + 1);
+
+  // Get the indent for the new line
+  const indent = getAutoIndent(currentLine);
+
+  // Construct new value
+  const newValue = beforeCursor + '\n' + indent + afterCursor;
+
+  // New cursor position is after newline and indent
+  const newCursorPosition = cursorPosition + 1 + indent.length;
+
+  return {
+    value: newValue,
+    cursorPosition: newCursorPosition,
+  };
+}
