@@ -18,6 +18,7 @@ exercises:
     expected_answer: import math
     hints:
       - Use import keyword
+      - No quotes around module name
     tags: [imports, module, beginner]
 
   - slug: import-from
@@ -34,6 +35,7 @@ exercises:
     expected_answer: from math import sqrt
     hints:
       - Use from...import syntax
+      - You can then use sqrt() directly without math prefix
     tags: [imports, from, specific]
 
   - slug: import-alias
@@ -50,6 +52,7 @@ exercises:
     expected_answer: import numpy as np
     hints:
       - Use 'as' for alias
+      - Common convention in data science community
     tags: [imports, alias, convention]
 
   - slug: import-multiple
@@ -66,6 +69,7 @@ exercises:
     expected_answer: from math import sin, cos
     hints:
       - Comma-separate imports
+      - All come after a single 'import' keyword
     tags: [imports, multiple, from]
 
   # --- Reading Subconcept ---
@@ -105,6 +109,7 @@ exercises:
     expected_answer: f.read()
     hints:
       - Use read() method
+      - Returns all content as a single string
     tags: [files, read, content]
 
   - slug: file-read-lines
@@ -121,6 +126,7 @@ exercises:
     expected_answer: f.readlines()
     hints:
       - Use readlines() method
+      - Each line becomes a list item with newline included
     tags: [files, read, lines]
 
   - slug: file-read-line
@@ -137,6 +143,7 @@ exercises:
     expected_answer: f.readline()
     hints:
       - Use readline() method
+      - Call again to get the next line
     tags: [files, read, line]
 
   # --- Writing Subconcept ---
@@ -157,6 +164,7 @@ exercises:
       - "open('output.txt', 'w')"
     hints:
       - Use "w" mode for write
+      - "Warning: 'w' mode overwrites existing content"
     tags: [files, open, write]
 
   - slug: file-write-text
@@ -176,6 +184,7 @@ exercises:
       - "f.write('Hello')"
     hints:
       - Use write() method
+      - Returns number of characters written
     tags: [files, write, content]
 
   - slug: file-open-append
@@ -195,6 +204,7 @@ exercises:
       - "open('log.txt', 'a')"
     hints:
       - Use "a" mode for append
+      - Preserves existing content, adds to end
     tags: [files, open, append]
 
   - slug: file-writelines
@@ -237,6 +247,28 @@ exercises:
       - Use 'as' for variable
     tags: [files, context, with]
 
+  - slug: context-intro
+    objective: Use the with statement for automatic resource management
+    title: Context Manager Intro
+    difficulty: 1
+    concept: modules-files
+    subconcept: context
+    level: intro
+    prereqs: [reading]
+    type: write
+    pattern: context
+    prompt: Open file "data.txt" for reading using a context manager
+    expected_answer: 'with open("data.txt") as f:'
+    accepted_solutions:
+      - 'with open("data.txt") as f:'
+      - "with open('data.txt') as f:"
+      - 'with open("data.txt", "r") as f:'
+      - "with open('data.txt', 'r') as f:"
+    hints:
+      - Use with statement for automatic cleanup
+      - File closes automatically when block exits
+    tags: [files, context, intro]
+
   - slug: context-manager-multiple
     objective: Use multiple context managers in a single with statement
     title: Multiple Context Managers
@@ -254,6 +286,7 @@ exercises:
       - "with open('input.txt') as inp, open('output.txt', 'w') as out:"
     hints:
       - Comma-separate context managers
+      - Both files close automatically when done
     tags: [files, context, multiple]
 
   # --- Pathlib Subconcept ---
@@ -277,6 +310,26 @@ exercises:
       - Import Path from pathlib
       - Use '.' for current directory
     tags: [pathlib, files]
+
+  - slug: pathlib-intro
+    objective: Create a Path object from a string
+    title: Pathlib Intro
+    difficulty: 1
+    concept: modules-files
+    subconcept: pathlib
+    level: intro
+    prereqs: [imports]
+    type: write
+    pattern: construction
+    prompt: Create a Path object from string "data/file.txt"
+    expected_answer: 'Path("data/file.txt")'
+    accepted_solutions:
+      - 'Path("data/file.txt")'
+      - "Path('data/file.txt')"
+    hints:
+      - Path is imported from pathlib
+      - Pass the string path to the constructor
+    tags: [pathlib, path, intro]
 
   - slug: pathlib-join-paths
     objective: Join multiple path components using the / operator
@@ -312,6 +365,7 @@ exercises:
     expected_answer: p.parent
     hints:
       - Use the parent attribute
+      - Returns a Path object representing the directory
     tags: [pathlib, parent, navigation]
 
   - slug: pathlib-check-exists
@@ -435,6 +489,7 @@ exercises:
     expected_answer: "import"
     hints:
       - Keyword to bring in a module
+      - Goes at the start of the statement
     tags: [imports, fill-in]
 
   - slug: from-import-fill
@@ -453,6 +508,7 @@ exercises:
     expected_answer: "from"
     hints:
       - Keyword for selective imports
+      - Specifies which module to import from
     tags: [imports, from, fill-in]
 
   - slug: with-keyword-fill
@@ -471,6 +527,7 @@ exercises:
     expected_answer: "with"
     hints:
       - Keyword for context managers
+      - Ensures file closes even if error occurs
     tags: [files, with, fill-in]
 
   # --- Predict Exercises ---
@@ -491,6 +548,7 @@ exercises:
     expected_answer: "__main__"
     hints:
       - __name__ is "__main__" when run directly
+      - Different when imported as a module
     tags: [modules, main, predict]
 
   - slug: file-read-predict
@@ -511,6 +569,7 @@ exercises:
     expected_answer: "5"
     hints:
       - '"hello" has 5 characters'
+      - len() counts all characters read
     tags: [files, read, predict]
 
   - slug: path-join-predict
@@ -531,6 +590,7 @@ exercises:
     expected_answer: "home/user/file.txt"
     hints:
       - / operator joins path components
+      - Creates OS-appropriate path separators
     tags: [pathlib, join, predict]
 
   # --- Dynamic Exercises (using generators) ---
@@ -575,6 +635,7 @@ exercises:
     expected_answer: "{{parent}}"
     hints:
       - .parent gives the directory containing the file
+      - Returns a Path object, not a string
     tags: [pathlib, parent, dynamic]
 
   - slug: path-stem-dynamic
@@ -596,6 +657,7 @@ exercises:
     expected_answer: "{{stem}}"
     hints:
       - .stem is the filename without extension
+      - "Example: 'file' from 'file.txt'"
     tags: [pathlib, stem, dynamic]
 
   - slug: path-suffix-dynamic
@@ -617,6 +679,7 @@ exercises:
     expected_answer: "{{suffix}}"
     hints:
       - .suffix is the file extension including the dot
+      - "Example: '.txt' from 'file.txt'"
     tags: [pathlib, suffix, dynamic]
 
   # --- File I/O Exercises (using file-io generator) ---
@@ -629,7 +692,7 @@ exercises:
     level: practice
     prereqs: [reading]
     type: predict
-    pattern: io
+    pattern: file
     generator: file-io
     prompt: "What does this code print? (Assume {{filename}} contains '{{content}}')"
     code: "{{code}}"
@@ -667,7 +730,7 @@ exercises:
     level: practice
     prereqs: [reading]
     type: write
-    pattern: io
+    pattern: file
     generator: file-io
     prompt: "Write code to open '{{filename}}' in '{{mode}}' mode using a context manager"
     expected_answer: 'with open("{{filename}}", "{{mode}}") as f:'

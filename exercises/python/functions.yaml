@@ -11,6 +11,7 @@ exercises:
     expected_answer: "def greet(name):"
     hints:
       - Start with the def keyword
+      - End the line with a colon like if statements
     tags: [functions, def, beginner]
     concept: functions
     subconcept: fn-basics
@@ -29,6 +30,7 @@ exercises:
           return a + b
     hints:
       - Use return to send back a value
+      - The body is indented under the def line
     tags: [functions, return, parameters]
     concept: functions
     subconcept: fn-basics
@@ -37,6 +39,64 @@ exercises:
     type: write
     pattern: definition
 
+  # --- Arguments Subconcept Intro ---
+  - slug: positional-arg-intro
+    objective: Call a function with positional arguments
+    title: Positional Arguments
+    difficulty: 1
+    concept: functions
+    subconcept: arguments
+    level: intro
+    prereqs: [fn-basics]
+    type: write
+    pattern: invocation
+    prompt: Call function add with arguments 5 and 3 (positional)
+    expected_answer: "add(5, 3)"
+    hints:
+      - Arguments are separated by commas
+      - Order matters for positional args
+    tags: [functions, arguments, positional]
+
+  - slug: keyword-arg-intro
+    objective: Call a function using keyword argument syntax
+    title: Keyword Arguments Intro
+    difficulty: 1
+    concept: functions
+    subconcept: arguments
+    level: intro
+    prereqs: [fn-basics]
+    type: write
+    pattern: invocation
+    prompt: Call greet with name="Alice" as a keyword argument
+    expected_answer: 'greet(name="Alice")'
+    accepted_solutions:
+      - 'greet(name="Alice")'
+      - "greet(name='Alice')"
+    hints:
+      - Use name=value syntax
+      - The parameter name goes before the equals sign
+    tags: [functions, arguments, keyword]
+
+  - slug: mixed-args-intro
+    objective: Combine positional and keyword arguments in a function call
+    title: Mixed Arguments
+    difficulty: 2
+    concept: functions
+    subconcept: arguments
+    level: intro
+    prereqs: [fn-basics]
+    type: write
+    pattern: invocation
+    prompt: Call connect with "localhost" positional, port=8080 keyword
+    expected_answer: 'connect("localhost", port=8080)'
+    accepted_solutions:
+      - 'connect("localhost", port=8080)'
+      - "connect('localhost', port=8080)"
+    hints:
+      - Positional arguments come first
+      - Keyword arguments follow positional ones
+    tags: [functions, arguments, mixed]
+
   - slug: kwargs-function
     objective: "Use **kwargs to accept variable keyword arguments"
     title: Keyword Arguments
@@ -44,7 +104,8 @@ exercises:
     prompt: Define a function config that accepts any keyword arguments
     expected_answer: "def config(**kwargs):"
     hints:
-      - Use **kwargs for keyword arguments
+      - Use **kwargs (double asterisk) for keyword arguments
+      - kwargs becomes a dictionary of name=value pairs
     tags: [functions, kwargs, advanced]
     concept: functions
     subconcept: arguments
@@ -67,7 +128,8 @@ exercises:
     prompt: Define a function called say_hello with no parameters
     expected_answer: "def say_hello():"
     hints:
-      - Empty parentheses for no parameters
+      - Empty parentheses () for no parameters
+      - Still need the parentheses even with no args
     tags: [functions, definition, beginner]
 
   - slug: function-call
@@ -77,7 +139,7 @@ exercises:
     concept: functions
     subconcept: fn-basics
     level: intro
-    prereqs: [functions.basics]
+    prereqs: [functions.fn-basics]
     type: write
     pattern: invocation
     prompt: Call function greet with argument "Alice"
@@ -86,7 +148,8 @@ exercises:
       - 'greet("Alice")'
       - "greet('Alice')"
     hints:
-      - Pass arguments in parentheses
+      - Function name followed by parentheses
+      - Arguments go inside the parentheses
     tags: [functions, call, beginner]
 
   - slug: function-multiple-return
@@ -96,13 +159,14 @@ exercises:
     concept: functions
     subconcept: fn-basics
     level: practice
-    prereqs: [functions.basics]
+    prereqs: [functions.fn-basics]
     type: write
     pattern: definition
     prompt: Return both x and y from a function (tuple return)
     expected_answer: return x, y
     hints:
-      - Comma-separated values become tuple
+      - Comma-separated values become a tuple
+      - Caller can unpack with a, b = func()
     tags: [functions, return, tuple]
 
   # --- Additional Arguments Subconcept ---
@@ -119,7 +183,8 @@ exercises:
     prompt: Define func(a, *, b) where b must be passed as keyword
     expected_answer: "def func(a, *, b):"
     hints:
-      - "'*' separates positional from keyword-only"
+      - "Bare '*' separates positional from keyword-only params"
+      - "Call with func(1, b=2), not func(1, 2)"
     tags: [functions, arguments, keyword-only]
 
   - slug: positional-only-args
@@ -147,13 +212,14 @@ exercises:
     concept: functions
     subconcept: lambda
     level: intro
-    prereqs: [functions.basics]
+    prereqs: [functions.fn-basics]
     type: write
     pattern: definition
     prompt: Create a lambda that doubles its input x
     expected_answer: "lambda x: x * 2"
     hints:
-      - "Format is lambda args: expression"
+      - "Format is: lambda args: expression"
+      - No def keyword, no return keyword needed
     tags: [functions, lambda, beginner]
 
   - slug: lambda-two-args
@@ -169,13 +235,14 @@ exercises:
     prompt: Create a lambda that adds two numbers x and y
     expected_answer: "lambda x, y: x + y"
     hints:
-      - Multiple args separated by comma
+      - Multiple args separated by comma before the colon
+      - Expression after colon is the return value
     tags: [functions, lambda, arguments]
 
   - slug: lambda-conditional
     objective: "Use a ternary expression inside a lambda function"
     title: Lambda with Conditional
-    difficulty: 2
+    difficulty: 3
     concept: functions
     subconcept: lambda
     level: edge
@@ -188,7 +255,8 @@ exercises:
       - 'lambda x: "even" if x % 2 == 0 else "odd"'
       - "lambda x: 'even' if x % 2 == 0 else 'odd'"
     hints:
-      - Use ternary expression
+      - "Use ternary: value_if_true if condition else value_if_false"
+      - Use modulo (%) to check even/odd
     tags: [functions, lambda, conditional]
 
   - slug: sorted-key-lambda
@@ -262,13 +330,14 @@ exercises:
     concept: functions
     subconcept: scope
     level: practice
-    prereqs: [functions.basics]
+    prereqs: [fn-basics]
     type: write
     pattern: declaration
     prompt: Declare counter as a global variable inside a function
     expected_answer: global counter
     hints:
       - Use global keyword
+      - Declares that variable refers to module-level scope
     tags: [functions, scope, global]
 
   - slug: nonlocal-keyword
@@ -296,13 +365,14 @@ exercises:
     concept: functions
     subconcept: typehints
     level: intro
-    prereqs: [functions.basics]
+    prereqs: [fn-basics]
     type: write
     pattern: definition
     prompt: Define greet(name) with name typed as str
     expected_answer: "def greet(name: str):"
     hints:
       - "Use : type after parameter"
+      - Type hints are optional but improve IDE support
     tags: [functions, typehints, annotation]
 
   - slug: typehint-return
@@ -319,6 +389,7 @@ exercises:
     expected_answer: "def add(a, b) -> int:"
     hints:
       - Use -> type before colon
+      - Return type annotation comes after parameters
     tags: [functions, typehints, return]
 
   - slug: typehint-list
@@ -335,6 +406,7 @@ exercises:
     expected_answer: "def process(items: list[int]):"
     hints:
       - Generic types use []
+      - Python 3.9+ allows list[int] directly
     tags: [functions, typehints, generic]
 
   - slug: typehint-optional
@@ -376,6 +448,26 @@ exercises:
     tags: [functions, typehints, callable]
 
   # --- Defaults Subconcept ---
+  - slug: default-param-intro
+    objective: Define a function parameter with a default value
+    title: Default Parameter Intro
+    difficulty: 1
+    concept: functions
+    subconcept: defaults
+    level: intro
+    prereqs: [fn-basics]
+    type: write
+    pattern: definition
+    prompt: Define function greet with name parameter defaulting to "World"
+    expected_answer: 'def greet(name="World"):'
+    accepted_solutions:
+      - 'def greet(name="World"):'
+      - "def greet(name='World'):"
+    hints:
+      - Use = to set the default value
+      - Default goes after the parameter name
+    tags: [functions, defaults, intro]
+
   - slug: default-param-simple
     objective: "Define a function with a single default parameter value"
     title: Default Parameter Simple
@@ -383,7 +475,7 @@ exercises:
     concept: functions
     subconcept: defaults
     level: intro
-    prereqs: [functions.basics]
+    prereqs: [fn-basics]
     type: write
     pattern: definition
     prompt: Define greet(name, greeting="Hello") with a default greeting
@@ -456,7 +548,7 @@ exercises:
     concept: functions
     subconcept: args-kwargs
     level: intro
-    prereqs: [functions.basics]
+    prereqs: [fn-basics]
     type: write
     pattern: definition
     prompt: Define a function sum_all that accepts any number of positional arguments
@@ -473,7 +565,7 @@ exercises:
     concept: functions
     subconcept: args-kwargs
     level: intro
-    prereqs: [functions.basics]
+    prereqs: [fn-basics]
     type: write
     pattern: definition
     prompt: Define a function build_config that accepts any keyword arguments
@@ -534,6 +626,7 @@ exercises:
     expected_answer: "def"
     hints:
       - Keyword that starts function definition
+      - Short for "define"
     tags: [functions, def, fill-in]
 
   - slug: return-keyword-fill
@@ -543,7 +636,7 @@ exercises:
     concept: functions
     subconcept: fn-basics
     level: intro
-    prereqs: [functions.basics]
+    prereqs: [fn-basics]
     type: fill-in
     blank_position: 0
     pattern: definition
@@ -554,6 +647,7 @@ exercises:
     expected_answer: "return"
     hints:
       - Keyword to send value back to caller
+      - Exits the function immediately
     tags: [functions, return, fill-in]
 
   - slug: lambda-keyword-fill
@@ -563,7 +657,7 @@ exercises:
     concept: functions
     subconcept: lambda
     level: intro
-    prereqs: [functions.basics]
+    prereqs: [fn-basics]
     type: fill-in
     blank_position: 0
     pattern: definition
@@ -572,6 +666,7 @@ exercises:
     expected_answer: "lambda"
     hints:
       - Keyword for anonymous functions
+      - Single expression, no return keyword needed
     tags: [functions, lambda, fill-in]
 
   - slug: default-value-fill
@@ -581,7 +676,7 @@ exercises:
     concept: functions
     subconcept: defaults
     level: practice
-    prereqs: [functions.basics]
+    prereqs: [fn-basics]
     type: fill-in
     blank_position: 0
     pattern: definition
@@ -590,6 +685,7 @@ exercises:
     expected_answer: "="
     hints:
       - Assignment operator for defaults
+      - Same symbol used in regular assignment
     tags: [functions, defaults, fill-in]
 
   - slug: args-syntax-fill
@@ -599,7 +695,7 @@ exercises:
     concept: functions
     subconcept: args-kwargs
     level: practice
-    prereqs: [functions.basics]
+    prereqs: [fn-basics]
     type: fill-in
     blank_position: 0
     pattern: definition
@@ -608,6 +704,7 @@ exercises:
     expected_answer: "*"
     hints:
       - Single asterisk for positional args
+      - Collects all remaining positional arguments
     tags: [functions, args, fill-in]
 
   - slug: kwargs-syntax-fill
@@ -626,6 +723,7 @@ exercises:
     expected_answer: "**"
     hints:
       - Double asterisk for keyword args
+      - Collects all remaining keyword arguments as a dict
     tags: [functions, kwargs, fill-in]
 
   # --- Predict Exercises ---
@@ -636,7 +734,7 @@ exercises:
     concept: functions
     subconcept: fn-basics
     level: intro
-    prereqs: [functions.basics]
+    prereqs: [fn-basics]
     type: predict
     pattern: invocation
     prompt: What does this code print?
@@ -647,6 +745,7 @@ exercises:
     expected_answer: "7"
     hints:
       - Function returns sum of arguments
+      - add(3, 4) computes 3 + 4
     tags: [functions, return, predict]
 
   - slug: default-param-predict
@@ -667,6 +766,7 @@ exercises:
     expected_answer: "Hello, Alice!"
     hints:
       - Default value is used when not provided
+      - Only name is passed, so greeting uses its default
     tags: [functions, defaults, predict]
 
   - slug: lambda-predict
@@ -686,6 +786,7 @@ exercises:
     expected_answer: "10"
     hints:
       - Lambda multiplies input by 2
+      - double(5) evaluates 5 * 2
     tags: [functions, lambda, predict]
 
   - slug: scope-predict
@@ -711,6 +812,7 @@ exercises:
       10
     hints:
       - Local x shadows global x inside function
+      - Global x is unchanged after function returns
     tags: [functions, scope, predict]
 
   - slug: args-predict
@@ -731,6 +833,7 @@ exercises:
     expected_answer: "4"
     hints:
       - args is a tuple of all positional arguments
+      - 4 arguments were passed to show()
     tags: [functions, args, predict]
 
   - slug: mutable-default-predict
@@ -766,7 +869,7 @@ exercises:
     concept: functions
     subconcept: fn-basics
     level: practice
-    prereqs: [functions.basics]
+    prereqs: [fn-basics]
     type: predict
     pattern: invocation
     generator: function-call
@@ -785,7 +888,7 @@ exercises:
     concept: functions
     subconcept: fn-basics
     level: practice
-    prereqs: [functions.basics]
+    prereqs: [fn-basics]
     type: write
     pattern: invocation
     generator: function-call
@@ -803,7 +906,7 @@ exercises:
     concept: functions
     subconcept: fn-basics
     level: practice
-    prereqs: [functions.basics]
+    prereqs: [fn-basics]
     type: predict
     pattern: invocation
     generator: function-call
@@ -875,6 +978,7 @@ exercises:
     expected_answer: "{{opName}}({{argList}})"
     hints:
       - Call lambdas just like regular functions
+      - Use parentheses with arguments inside
     tags: [functions, lambda, call, dynamic]
 
   # --- Default Arguments Dynamic Exercises ---

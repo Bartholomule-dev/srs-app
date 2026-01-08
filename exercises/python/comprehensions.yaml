@@ -10,7 +10,8 @@ exercises:
     prompt: Create a list of squares from 1 to 5 using comprehension
     expected_answer: "[x**2 for x in range(1, 6)]"
     hints:
-      - Use [expression for item in iterable]
+      - "Use [expression for item in iterable] syntax"
+      - range(1, 6) gives numbers 1 through 5
     tags: [comprehensions, lists, intermediate]
     concept: comprehensions
     subconcept: list-comp
@@ -26,7 +27,8 @@ exercises:
     prompt: Create a list of even numbers from 1 to 10 using comprehension
     expected_answer: "[x for x in range(1, 11) if x % 2 == 0]"
     hints:
-      - Add if condition at the end
+      - Add 'if condition' after the for clause
+      - Even numbers have remainder 0 when divided by 2
     tags: [comprehensions, conditionals, intermediate]
     concept: comprehensions
     subconcept: list-comp
@@ -84,6 +86,7 @@ exercises:
     expected_answer: "{x: x**2 for x in range(1, 4)}"
     hints:
       - "Use {key: value for item in iterable}"
+      - Colon separates key from value (unlike set comp)
     tags: [comprehensions, dicts, advanced]
     concept: comprehensions
     subconcept: dict-comp
@@ -144,6 +147,7 @@ exercises:
     expected_answer: "{word[0] for word in words}"
     hints:
       - Use curly braces like dict but without colon
+      - word[0] gets the first character of each word
     tags: [comprehensions, sets, advanced]
     concept: comprehensions
     subconcept: set-comp
@@ -187,6 +191,27 @@ exercises:
       - Creates iterator, not list
     tags: [comprehensions, generator, memory]
 
+  - slug: generator-exp-intro
+    objective: Write a generator expression for lazy evaluation
+    title: Generator Expression Intro
+    difficulty: 2
+    concept: comprehensions
+    subconcept: generator-exp
+    level: intro
+    prereqs: [list-comp]
+    type: write
+    pattern: transformation
+    prompt: Create a generator that yields squares of numbers 1-5
+    expected_answer: "(x**2 for x in range(1, 6))"
+    accepted_solutions:
+      - "(x**2 for x in range(1, 6))"
+      - "(x ** 2 for x in range(1, 6))"
+      - "(n**2 for n in range(1, 6))"
+    hints:
+      - Use parentheses instead of square brackets
+      - Same syntax as list comprehension otherwise
+    tags: [comprehensions, generator, intro]
+
   - slug: generator-exp-sum
     objective: "Use a generator expression with an aggregate function"
     title: Sum with Generator
@@ -201,13 +226,14 @@ exercises:
     expected_answer: sum(x**2 for x in range(1, 101))
     hints:
       - No extra parentheses needed inside sum()
+      - More memory efficient than sum([...]) with list
     tags: [comprehensions, generator, sum]
 
   # --- Additional List Comp ---
   - slug: list-comp-ternary
     objective: "Apply a ternary expression inside a list comprehension"
     title: List Comp with Ternary
-    difficulty: 2
+    difficulty: 3
     concept: comprehensions
     subconcept: list-comp
     level: edge
@@ -235,7 +261,8 @@ exercises:
     prompt: Create dict from keys list and values list using comprehension
     expected_answer: "{k: v for k, v in zip(keys, values)}"
     hints:
-      - Use zip to pair them
+      - Use zip() to pair corresponding elements
+      - Unpack each pair into k, v in the for clause
     tags: [comprehensions, dict, zip]
 
   # --- Fill-in Exercises ---
@@ -254,7 +281,8 @@ exercises:
     template: "[x * 2 ___ x in range(5)]"
     expected_answer: "for"
     hints:
-      - Keyword for iteration in comprehension
+      - Same keyword used in regular loops
+      - Connects expression to iterable
     tags: [comprehensions, list-comp, fill-in]
 
   - slug: list-comp-if-fill
@@ -273,6 +301,7 @@ exercises:
     expected_answer: "if"
     hints:
       - Keyword for filtering in comprehension
+      - Only includes elements where condition is True
     tags: [comprehensions, list-comp, fill-in]
 
   - slug: dict-comp-colon-fill
@@ -290,7 +319,8 @@ exercises:
     template: "{x ___ x**2 for x in range(3)}"
     expected_answer: ":"
     hints:
-      - Separator between key and value
+      - Separator between key and value in dicts
+      - Same as regular dict literal syntax
     tags: [comprehensions, dict-comp, fill-in]
 
   - slug: set-comp-brace-fill
@@ -331,6 +361,7 @@ exercises:
     expected_answer: "{{result}}"
     hints:
       - Multiplies each number 0-{{n}} by {{m}}
+      - range({{n}}) gives 0 through {{n}}-1
     tags: [comprehensions, list-comp, predict, dynamic]
 
   - slug: list-comp-filter-predict
@@ -351,6 +382,7 @@ exercises:
     expected_answer: "{{result}}"
     hints:
       - Only includes numbers divisible by {{mod}}
+      - Check x % {{mod}} == 0 for each number
     tags: [comprehensions, list-comp, predict, dynamic]
 
   - slug: dict-comp-predict
@@ -370,6 +402,7 @@ exercises:
     expected_answer: "{0: 0, 1: 1, 2: 4}"
     hints:
       - Maps each number to its square
+      - Keys are 0, 1, 2 and values are 0, 1, 4
     tags: [comprehensions, dict-comp, predict]
 
   - slug: nested-comp-predict
@@ -390,6 +423,7 @@ exercises:
     expected_answer: "[1, 2, 3, 4]"
     hints:
       - Flattens the nested list
+      - Outer loop iterates rows, inner loop iterates elements
     tags: [comprehensions, nested, predict]
 
   # --- Dynamic Dict Comprehension Exercises ---
@@ -411,6 +445,7 @@ exercises:
     expected_answer: "{{result}}"
     hints:
       - "This comprehension {{description}}"
+      - "Dict comprehensions use {key: value for ...} syntax"
     tags: [comprehensions, dict-comp, predict, dynamic]
 
   - slug: dict-comp-write-dynamic
@@ -428,6 +463,7 @@ exercises:
     expected_answer: "{{code}}"
     hints:
       - "Use {key: value for x in range({{n}})}"
+      - "The colon separates key from value"
     tags: [comprehensions, dict-comp, write, dynamic]
 
   # --- List Transform Exercises (using list-transform generator) ---

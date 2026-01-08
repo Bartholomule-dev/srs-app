@@ -1,4 +1,4 @@
-# exercises/python/loops.yaml
+# exercises/python/control-flow.yaml
 language: python
 category: control-flow
 
@@ -38,7 +38,63 @@ exercises:
           print(item)
     hints:
       - Use for x in list syntax
+      - Variable name (item) can be anything descriptive
     tags: [loops, lists, for]
+
+  # --- while Subconcept Intro Exercises ---
+  - slug: while-keyword
+    objective: Write the while keyword that starts a conditional loop
+    title: While Keyword
+    difficulty: 1
+    concept: control-flow
+    subconcept: while
+    level: intro
+    prereqs: [conditionals]
+    type: write
+    pattern: iteration
+    prompt: Write just the keyword that starts a conditional loop (not for)
+    expected_answer: "while"
+    hints:
+      - This keyword repeats code as long as condition is True
+      - Rhymes with "smile"
+    tags: [loops, while, keyword]
+
+  - slug: while-header-intro
+    objective: Write a complete while loop header with a simple condition
+    title: While Loop Header
+    difficulty: 1
+    concept: control-flow
+    subconcept: while
+    level: intro
+    prereqs: [conditionals]
+    type: write
+    pattern: iteration
+    prompt: Write a while loop that runs while x is True
+    expected_answer: "while x:"
+    accepted_solutions:
+      - "while x:"
+      - "while x == True:"
+    hints:
+      - While keyword followed by condition, then colon
+      - x is already a boolean, no comparison needed
+    tags: [loops, while, header]
+
+  - slug: while-counter-intro
+    objective: Write a while loop header that checks a counter variable
+    title: While Counter Loop
+    difficulty: 1
+    concept: control-flow
+    subconcept: while
+    level: intro
+    prereqs: [conditionals]
+    type: write
+    pattern: iteration
+    prompt: Write a while loop that runs while i is less than 10
+    expected_answer: "while i < 10:"
+    hints:
+      - Use the less-than operator
+      - End with a colon
+    tags: [loops, while, counter]
 
   - slug: while-loop
     objective: "Write a while loop with a conditional expression"
@@ -50,12 +106,68 @@ exercises:
     prereqs: [foundations, for]
     type: write
     pattern: iteration
-    prompt: Write a while loop that runs while count < 5
+    prompt: Write the while loop header (first line only) that runs while count < 5
     expected_answer: "while count < 5:"
     hints:
-      - Use the while keyword
-      - Condition comes after while
+      - Use the while keyword followed by the condition
+      - End with a colon (just like if statements)
     tags: [loops, while, conditions]
+
+  # --- iteration Subconcept Intro Exercises ---
+  - slug: enumerate-keyword
+    objective: Identify the function that provides index with each element
+    title: Enumerate Function
+    difficulty: 1
+    concept: control-flow
+    subconcept: iteration
+    level: intro
+    prereqs: [for]
+    type: write
+    pattern: iteration
+    prompt: What function gives you both index and value when looping?
+    expected_answer: "enumerate"
+    hints:
+      - This function counts elements while iterating
+      - Starts with 'e', relates to counting
+    tags: [loops, enumerate, intro]
+
+  - slug: enumerate-basic
+    objective: Use enumerate to loop with index and value
+    title: Basic Enumerate Loop
+    difficulty: 1
+    concept: control-flow
+    subconcept: iteration
+    level: intro
+    prereqs: [for]
+    type: write
+    pattern: iteration
+    prompt: Write a for loop using enumerate over a list called names
+    expected_answer: "for i, name in enumerate(names):"
+    accepted_solutions:
+      - "for i, name in enumerate(names):"
+      - "for idx, name in enumerate(names):"
+      - "for index, name in enumerate(names):"
+    hints:
+      - enumerate() wraps the iterable
+      - Unpack into two variables for index and value
+    tags: [loops, enumerate, basic]
+
+  - slug: range-intro
+    objective: Use range() to generate a sequence of numbers
+    title: Range Function Intro
+    difficulty: 1
+    concept: control-flow
+    subconcept: iteration
+    level: intro
+    prereqs: [for]
+    type: write
+    pattern: iteration
+    prompt: Generate numbers 0 through 4 using range
+    expected_answer: "range(5)"
+    hints:
+      - range(n) gives 0 to n-1
+      - For 0-4, you need 5 numbers total
+    tags: [loops, range, intro]
 
   - slug: enumerate-loop
     objective: "Apply enumerate() to access both index and value in a loop"
@@ -84,10 +196,11 @@ exercises:
     prereqs: [foundations, for, while]
     type: write
     pattern: iteration
-    prompt: Exit a loop early using a statement
+    prompt: Write the statement that immediately exits a loop
     expected_answer: break
     hints:
-      - Use the break keyword
+      - This keyword stops the loop and moves to the code after it
+      - It's a single keyword, no parentheses needed
     tags: [loops, control, intermediate]
 
   # --- Additional Control Flow ---
@@ -101,10 +214,11 @@ exercises:
     prereqs: [control-flow.for]
     type: write
     pattern: iteration
-    prompt: Skip to next iteration using a statement
+    prompt: Write the statement that skips the rest of the current iteration and moves to the next
     expected_answer: continue
     hints:
-      - Use the continue keyword
+      - This keyword skips to the next loop iteration
+      - It doesn't exit the loop entirely (that's break)
     tags: [loops, control, intermediate]
 
   - slug: for-range-step-dynamic
@@ -125,6 +239,7 @@ exercises:
       - "for i in range({{start}},{{stop}},{{step}}):"
     hints:
       - range(start, stop, step)
+      - Stop value is exclusive
     tags: [loops, range, step, dynamic]
 
   - slug: for-zip
@@ -141,6 +256,7 @@ exercises:
     expected_answer: "for x, y in zip(a, b):"
     hints:
       - Use zip() to pair elements
+      - Unpack with two variables
     tags: [loops, zip, iteration]
 
   - slug: while-true-break
@@ -210,6 +326,7 @@ exercises:
     expected_answer: "else:"
     hints:
       - else keyword followed by colon
+      - else runs when all conditions above are False
     tags: [conditionals, else, beginner]
 
   - slug: if-elif
@@ -226,6 +343,7 @@ exercises:
     expected_answer: "elif x < 0:"
     hints:
       - elif is else-if combined
+      - Only checked if previous conditions were False
     tags: [conditionals, elif, intermediate]
 
   - slug: if-and
@@ -242,6 +360,7 @@ exercises:
     expected_answer: "if x > 0 and y > 0:"
     hints:
       - Use 'and' keyword
+      - Both conditions must be True for the block to run
     tags: [conditionals, and, logic]
 
   - slug: if-or
@@ -258,6 +377,7 @@ exercises:
     expected_answer: "if x == 0 or y == 0:"
     hints:
       - Use 'or' keyword
+      - Either condition being True will run the block
     tags: [conditionals, or, logic]
 
   - slug: if-not
@@ -274,6 +394,7 @@ exercises:
     expected_answer: "if not done:"
     hints:
       - Use 'not' keyword
+      - Inverts True to False and vice versa
     tags: [conditionals, not, logic]
 
   - slug: if-in
@@ -290,6 +411,7 @@ exercises:
     expected_answer: "if x in items:"
     hints:
       - Use 'in' keyword
+      - Returns True if x is found in items
     tags: [conditionals, in, membership]
 
   - slug: match-basic
@@ -345,7 +467,23 @@ exercises:
     hints:
       - zip() combines iterables
       - Use tuple unpacking
-    tags: [zip, iteration]
+
+  - slug: zip-intro
+    objective: Use zip to combine two lists for parallel iteration
+    title: Zip Function Intro
+    difficulty: 1
+    concept: control-flow
+    subconcept: zip
+    level: intro
+    prereqs: [for]
+    type: write
+    pattern: iteration
+    prompt: Combine lists names and scores for parallel iteration
+    expected_answer: "zip(names, scores)"
+    hints:
+      - zip pairs elements at same positions
+      - Pass both lists as arguments
+    tags: [loops, zip, intro]
 
   - slug: zip-three-lists
     objective: "Apply zip() to iterate over three lists in parallel"
@@ -399,6 +537,26 @@ exercises:
       - Works on sequences
     tags: [reversed, iteration]
 
+  - slug: reversed-intro
+    objective: Use reversed() to iterate backwards through a sequence
+    title: Reversed Function Intro
+    difficulty: 1
+    concept: control-flow
+    subconcept: reversed
+    level: intro
+    prereqs: [for]
+    type: write
+    pattern: iteration
+    prompt: Iterate through items list in reverse order
+    expected_answer: "for item in reversed(items):"
+    accepted_solutions:
+      - "for item in reversed(items):"
+      - "for x in reversed(items):"
+    hints:
+      - reversed() wraps the iterable
+      - Original list is not modified
+    tags: [loops, reversed, intro]
+
   - slug: reversed-range
     objective: "Combine reversed() with range() to count down"
     title: Reversed Range
@@ -450,6 +608,27 @@ exercises:
       - sorted() returns a new sorted list
       - Original list unchanged
     tags: [sorted, iteration]
+
+  - slug: sorted-intro
+    objective: Use sorted() to iterate through items in sorted order
+    title: Sorted Function Intro
+    difficulty: 1
+    concept: control-flow
+    subconcept: sorted
+    level: intro
+    prereqs: [for]
+    type: write
+    pattern: iteration
+    prompt: Iterate through numbers list in sorted order
+    expected_answer: "for n in sorted(numbers):"
+    accepted_solutions:
+      - "for n in sorted(numbers):"
+      - "for num in sorted(numbers):"
+      - "for x in sorted(numbers):"
+    hints:
+      - sorted() returns a new sorted list
+      - Original list is not modified
+    tags: [loops, sorted, intro]
 
   - slug: sorted-reverse
     objective: "Use sorted() with reverse=True for descending order"
@@ -596,6 +775,7 @@ exercises:
     expected_answer: "for"
     hints:
       - Keyword that starts iteration
+      - Always followed by 'in'
     tags: [control-flow, for, fill-in]
 
   - slug: range-fill
@@ -614,6 +794,7 @@ exercises:
     expected_answer: "range"
     hints:
       - Built-in function for number sequences
+      - range(n) gives 0 through n-1
     tags: [control-flow, range, fill-in]
 
   - slug: enumerate-fill
@@ -632,6 +813,7 @@ exercises:
     expected_answer: "enumerate"
     hints:
       - Function that provides index with each element
+      - Avoids manual counter tracking
     tags: [control-flow, enumerate, fill-in]
 
   - slug: break-fill
@@ -653,6 +835,7 @@ exercises:
     expected_answer: "break"
     hints:
       - Keyword to exit loop early
+      - Loop body after break is skipped
     tags: [control-flow, break, fill-in]
 
   - slug: continue-fill
@@ -674,6 +857,7 @@ exercises:
     expected_answer: "continue"
     hints:
       - Keyword to skip rest of current iteration
+      - Loop continues with next item
     tags: [control-flow, continue, fill-in]
 
   - slug: while-condition-fill
@@ -692,6 +876,7 @@ exercises:
     expected_answer: "<"
     hints:
       - Comparison operator
+      - Less than symbol
     tags: [control-flow, while, fill-in]
 
   # --- Predict Exercises ---
@@ -715,6 +900,7 @@ exercises:
       2
     hints:
       - range(3) produces 0, 1, 2
+      - One number per line
     tags: [control-flow, range, predict]
 
   - slug: enumerate-predict
@@ -737,6 +923,7 @@ exercises:
       2 c
     hints:
       - enumerate provides index and value
+      - Index starts at 0 by default
     tags: [control-flow, enumerate, predict]
 
   - slug: break-predict
@@ -761,6 +948,7 @@ exercises:
       2
     hints:
       - break exits immediately when condition met
+      - i==3 happens before printing 3
     tags: [control-flow, break, predict]
 
   - slug: continue-predict
@@ -786,6 +974,7 @@ exercises:
       4
     hints:
       - continue skips current iteration only
+      - Loop resumes with next value
     tags: [control-flow, continue, predict]
 
   - slug: zip-predict
@@ -807,6 +996,7 @@ exercises:
       2 y
     hints:
       - zip pairs elements from both lists
+      - First pair is (1, "x"), second is (2, "y")
     tags: [control-flow, zip, predict]
 
   - slug: nested-loop-predict
@@ -831,6 +1021,7 @@ exercises:
       1 1
     hints:
       - Inner loop completes for each outer iteration
+      - 2 x 2 = 4 total print statements
     tags: [control-flow, nested, predict]
 
   # --- Dynamic Exercises ---
@@ -1001,6 +1192,7 @@ exercises:
     expected_answer: "{{result}}"
     hints:
       - Compare the two values using the operator
+      - Result is always True or False
     tags: [control-flow, comparison, dynamic]
 
   - slug: bool-compound-dynamic
@@ -1177,6 +1369,7 @@ exercises:
     expected_answer: "{{func}}({{list}})"
     hints:
       - "{{func}}() takes an iterable"
+      - "Returns True or False based on element truthiness"
     tags: [any, all, dynamic, write]
 
   # --- Dynamic Zip Exercises ---

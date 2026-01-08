@@ -117,6 +117,7 @@ exercises:
       - "{{x}}%{{y}}"
     hints:
       - Use the % operator
+      - Returns remainder after division
     tags: [operators, modulo, remainder, dynamic]
 
   # Static exponentiation-intro removed - covered by exponentiation-dynamic
@@ -166,7 +167,7 @@ exercises:
     level: intro
     prereqs: []
     type: write
-    pattern: logic
+    pattern: logical
     prompt: Combine two conditions with AND - a > 0 and b > 0
     expected_answer: a > 0 and b > 0
     hints:
@@ -183,7 +184,7 @@ exercises:
     level: intro
     prereqs: []
     type: write
-    pattern: logic
+    pattern: logical
     prompt: Combine two conditions with OR - x == 0 or y == 0
     expected_answer: x == 0 or y == 0
     hints:
@@ -200,7 +201,7 @@ exercises:
     level: intro
     prereqs: []
     type: write
-    pattern: logic
+    pattern: logical
     prompt: Negate the condition (check if x is NOT equal to 5)
     expected_answer: x != 5
     accepted_solutions:
@@ -340,15 +341,17 @@ exercises:
     type: write
     pattern: input
     targets: [io, conversion]
-    prompt: Get a number from user and convert to integer, storing in variable age
-    expected_answer: age = int(input())
+    prompt: Get a number from user (any prompt is fine) and convert to integer, storing in variable age
+    expected_answer: 'age = int(input("Enter age: "))'
     accepted_solutions:
-      - age = int(input())
       - 'age = int(input("Enter age: "))'
       - "age = int(input('Enter age: '))"
+      - 'age = int(input("Age: "))'
+      - "age = int(input('Age: '))"
+      - age = int(input())
     hints:
-      - Wrap input() in int()
-      - input() always returns string
+      - Wrap input() in int() to convert the string to a number
+      - input() always returns a string, so conversion is needed for math
     tags: [io, input, conversion, integer]
 
   # --- Fill-in Exercises for Foundations ---
@@ -369,25 +372,27 @@ exercises:
     accepted_solutions: ["="]
     hints:
       - What operator assigns a value to a variable?
+      - Not == which is for comparison
     tags: [variables, assignment]
 
   - slug: variable-naming-fill
     title: Variable Naming
     type: fill-in
-    difficulty: 1
+    difficulty: 2
     concept: foundations
     subconcept: variables
     level: practice
     prereqs: []
     pattern: assignment
     objective: Use valid Python variable naming
-    prompt: Complete the variable name following Python conventions
+    prompt: Complete the variable name using snake_case (e.g., user_count, item_count)
     template: "___count = 10"
     blank_position: 0
     expected_answer: "user_"
-    accepted_solutions: ["user_", "item_", "total_"]
+    accepted_solutions: ["user_", "item_", "total_", "word_", "page_", "row_"]
     hints:
-      - Python uses snake_case for variable names
+      - Python convention uses lowercase with underscores (snake_case)
+      - Any descriptive prefix followed by underscore works (e.g., user_, item_)
     tags: [variables, naming]
 
   - slug: operator-addition-fill
@@ -407,6 +412,7 @@ exercises:
     accepted_solutions: ["+"]
     hints:
       - Which operator adds two numbers?
+      - Same as in mathematics
     tags: [operators, arithmetic]
 
   - slug: operator-floor-division-fill
@@ -426,6 +432,7 @@ exercises:
     accepted_solutions: ["//"]
     hints:
       - Floor division uses two forward slashes
+      - 17 // 5 = 3 (17 = 5*3 + 2)
     tags: [operators, arithmetic]
 
   - slug: expression-and-fill
@@ -436,7 +443,7 @@ exercises:
     subconcept: expressions
     level: intro
     prereqs: [operators]
-    pattern: logic
+    pattern: logical
     objective: Use the logical AND operator
     prompt: Complete the boolean expression
     template: "is_valid = has_name ___ has_email"
@@ -445,17 +452,18 @@ exercises:
     accepted_solutions: ["and"]
     hints:
       - Python uses the word 'and' for logical AND
+      - True only if both sides are True
     tags: [expressions, boolean]
 
   - slug: expression-not-fill
     title: Boolean NOT
     type: fill-in
-    difficulty: 1
+    difficulty: 2
     concept: foundations
     subconcept: expressions
     level: practice
     prereqs: [operators]
-    pattern: logic
+    pattern: logical
     objective: Use the logical NOT operator
     prompt: Complete the expression to invert the boolean
     template: "is_invalid = ___ is_valid"
@@ -464,6 +472,7 @@ exercises:
     accepted_solutions: ["not"]
     hints:
       - Python uses 'not' to negate a boolean
+      - not True = False, not False = True
     tags: [expressions, boolean]
 
   - slug: io-print-fill
@@ -483,6 +492,7 @@ exercises:
     accepted_solutions: ["print"]
     hints:
       - Which function outputs text to the console?
+      - Standard way to display information in Python
     tags: [io, print]
 
   - slug: io-input-fill
@@ -502,6 +512,7 @@ exercises:
     accepted_solutions: ["input"]
     hints:
       - Which function reads text from the user?
+      - Returns whatever the user types (as a string)
     tags: [io, input]
 
   # --- Predict-output Exercises for Foundations ---
@@ -523,12 +534,13 @@ exercises:
     accepted_solutions: []
     hints:
       - Variables store the value assigned to them
+      - print() displays the stored value
     tags: [variables, assignment]
 
   - slug: variable-predict-reassign
     title: Variable Reassignment
     type: predict
-    difficulty: 1
+    difficulty: 2
     concept: foundations
     subconcept: variables
     level: practice
@@ -544,6 +556,7 @@ exercises:
     accepted_solutions: []
     hints:
       - Variables can be reassigned to new values
+      - The most recent assignment is what matters
     tags: [variables, assignment]
 
   - slug: operator-predict-modulo
@@ -564,6 +577,7 @@ exercises:
     accepted_solutions: []
     hints:
       - Modulo returns the remainder of division
+      - 17 = 5*3 + 2, so 17 % 5 = 2
     tags: [operators, arithmetic]
 
   - slug: operator-predict-floor
@@ -584,6 +598,7 @@ exercises:
     accepted_solutions: []
     hints:
       - Floor division discards the remainder
+      - 17 // 5 = 3 (not 3.4)
     tags: [operators, arithmetic]
 
   - slug: expression-predict-and
@@ -594,7 +609,7 @@ exercises:
     subconcept: expressions
     level: intro
     prereqs: [operators]
-    pattern: logic
+    pattern: logical
     objective: Predict boolean AND result
     prompt: What does this code print?
     code: |
@@ -604,17 +619,18 @@ exercises:
     accepted_solutions: []
     hints:
       - AND requires both values to be True
+      - True AND False = False
     tags: [expressions, boolean]
 
   - slug: expression-predict-or
     title: Boolean OR Result
     type: predict
-    difficulty: 1
+    difficulty: 2
     concept: foundations
     subconcept: expressions
     level: practice
     prereqs: [operators]
-    pattern: logic
+    pattern: logical
     objective: Predict boolean OR result
     prompt: What does this code print?
     code: |
@@ -624,12 +640,13 @@ exercises:
     accepted_solutions: []
     hints:
       - OR returns True if either value is True
+      - True OR False = True
     tags: [expressions, boolean]
 
   - slug: io-predict-print-concat
     title: Print Concatenation
     type: predict
-    difficulty: 1
+    difficulty: 2
     concept: foundations
     subconcept: io
     level: practice
@@ -644,6 +661,7 @@ exercises:
     accepted_solutions: []
     hints:
       - print() separates arguments with spaces
+      - The comma between arguments adds the space
     tags: [io, print]
 
   - slug: io-predict-print-sep
@@ -663,12 +681,13 @@ exercises:
     accepted_solutions: []
     hints:
       - The sep parameter changes what goes between arguments
+      - Default sep is a single space
     tags: [io, print]
 
   - slug: exponentiation-dynamic
     objective: Calculate powers using the exponentiation operator
     title: Dynamic Exponentiation
-    difficulty: 1
+    difficulty: 2
     concept: foundations
     subconcept: operators
     level: practice
@@ -683,6 +702,7 @@ exercises:
       - "{{x}}**{{y}}"
     hints:
       - Use ** for exponentiation
+      - Not ^ like some other languages
     tags: [operators, power, exponent, dynamic]
 
   # --- Operator Precedence Dynamic Exercises ---

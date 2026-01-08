@@ -8,50 +8,22 @@ describe('Integers Teaching Pair', () => {
     const def = getSubconceptDefinition('integers');
     expect(def).toBeDefined();
     expect(def?.teaching).toBeDefined();
-    expect(def?.teaching?.exampleSlug).toBe('floor-division-intro');
+    expect(def?.teaching?.exampleSlug).toBe('int-floor-div-fill');
   });
 
   it('should build teaching pair for integers with mock exercises', () => {
     const def = getSubconceptDefinition('integers');
     expect(def).toBeDefined();
 
-    // Mock exercises - one for example, one for practice
+    // Mock exercises - one for example (matching exampleSlug), one for practice
     const mockExercises: Exercise[] = [
       {
         id: '1',
-        slug: 'floor-division-intro',
-        language: 'python',
-        category: 'foundations',
-        title: 'Floor Division',
-        prompt: 'Test',
-        expectedAnswer: '17 // 5',
-        acceptedSolutions: [],
-        hints: ['Use //'],
-        explanation: null,
-        tags: [],
-        timesPracticed: 0,
-        avgSuccessRate: null,
-        difficulty: 1,
-        concept: 'foundations',
-        subconcept: 'operators', // Example can be from different subconcept
-        level: 'intro',
-        prereqs: [],
-        exerciseType: 'write',
-        pattern: 'arithmetic',
-        objective: 'Learn floor division',
-        targets: null,
-        template: null,
-        blankPosition: null,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-      {
-        id: '2',
         slug: 'int-floor-div-fill',
         language: 'python',
         category: 'numbers-booleans',
         title: 'Integer Floor Division',
-        prompt: 'Test',
+        prompt: 'Complete the floor division operator',
         expectedAnswer: '//',
         acceptedSolutions: [],
         hints: ['Use //'],
@@ -61,12 +33,40 @@ describe('Integers Teaching Pair', () => {
         avgSuccessRate: null,
         difficulty: 1,
         concept: 'numbers-booleans',
-        subconcept: 'integers', // Practice must match subconcept
+        subconcept: 'integers',
         level: 'intro',
         prereqs: [],
         exerciseType: 'fill-in',
         pattern: 'arithmetic',
-        objective: 'Practice integer floor division',
+        objective: 'Learn floor division',
+        targets: null,
+        template: 'result = 10 ___ 3',
+        blankPosition: 13,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: '2',
+        slug: 'int-modulo-intro',
+        language: 'python',
+        category: 'numbers-booleans',
+        title: 'Integer Modulo',
+        prompt: 'Test',
+        expectedAnswer: '%',
+        acceptedSolutions: [],
+        hints: ['Use %'],
+        explanation: null,
+        tags: [],
+        timesPracticed: 0,
+        avgSuccessRate: null,
+        difficulty: 1,
+        concept: 'numbers-booleans',
+        subconcept: 'integers',
+        level: 'intro',
+        prereqs: [],
+        exerciseType: 'fill-in',
+        pattern: 'arithmetic',
+        objective: 'Practice integer modulo',
         targets: null,
         template: 'result = 10 ___ 3',
         blankPosition: 13,
@@ -78,8 +78,8 @@ describe('Integers Teaching Pair', () => {
     const pair = buildTeachingPair('integers', def!, mockExercises);
 
     expect(pair).not.toBeNull();
-    expect(pair?.teachingCard.exampleExercise.slug).toBe('floor-division-intro');
-    expect(pair?.practiceCard.exercise.slug).toBe('int-floor-div-fill');
+    expect(pair?.teachingCard.exampleExercise.slug).toBe('int-floor-div-fill');
+    expect(pair?.practiceCard.exercise.slug).toBe('int-modulo-intro');
     expect(pair?.practiceCard.exercise.subconcept).toBe('integers');
   });
 

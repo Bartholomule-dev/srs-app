@@ -1,4 +1,4 @@
-# exercises/python/classes.yaml
+# exercises/python/oop.yaml
 language: python
 category: oop
 
@@ -11,6 +11,7 @@ exercises:
     expected_answer: "class Person:"
     hints:
       - Use the class keyword
+      - Class names conventionally use PascalCase
     tags: [classes, oop, intermediate]
     concept: oop
     subconcept: classes
@@ -44,6 +45,7 @@ exercises:
     expected_answer: self.name = name
     hints:
       - Use self.attribute = value
+      - This makes the attribute accessible on the object
     tags: [classes, attributes, intermediate]
     concept: oop
     subconcept: classes
@@ -60,6 +62,7 @@ exercises:
     expected_answer: "def greet(self):"
     hints:
       - Methods always take self as first parameter
+      - self gives access to the instance's attributes
     tags: [classes, methods, intermediate]
     concept: oop
     subconcept: methods
@@ -83,6 +86,7 @@ exercises:
     expected_answer: "class Student(Person):"
     hints:
       - Put parent class in parentheses
+      - Student will inherit all methods from Person
     tags: [oop, inheritance, beginner]
 
   - slug: inheritance-super-init
@@ -116,7 +120,7 @@ exercises:
     expected_answer: "def greet(self):"
     hints:
       - Same method name overrides parent
-      - No special syntax needed
+      - The subclass version is called instead
     tags: [oop, inheritance, override]
 
   - slug: inheritance-super-method
@@ -133,6 +137,7 @@ exercises:
     expected_answer: "super().greet()"
     hints:
       - Use super() to access parent method
+      - This lets you extend the parent's behavior rather than replace it
     tags: [oop, inheritance, super]
 
   - slug: inheritance-isinstance
@@ -149,6 +154,7 @@ exercises:
     expected_answer: "isinstance(student, Person)"
     hints:
       - isinstance checks inheritance chain
+      - Returns True if object is Person or any subclass of Person
     tags: [oop, inheritance, isinstance]
 
   - slug: inheritance-issubclass
@@ -165,6 +171,7 @@ exercises:
     expected_answer: "issubclass(Student, Person)"
     hints:
       - issubclass checks class hierarchy
+      - Takes class names, not instances
     tags: [oop, inheritance, issubclass]
 
   # --- Classmethod Subconcept ---
@@ -201,6 +208,7 @@ exercises:
     expected_answer: "return cls.count"
     hints:
       - cls refers to the class itself
+      - Access class attributes with cls.attribute_name
     tags: [oop, classmethod, cls]
 
   - slug: classmethod-factory
@@ -240,6 +248,7 @@ exercises:
       - "Person.from_string('Alice')"
     hints:
       - Call on the class, not an instance
+      - Classmethods can also be called on instances, but calling on the class is clearer
     tags: [oop, classmethod, call]
 
   - slug: staticmethod-basic
@@ -314,9 +323,11 @@ exercises:
     expected_answer: return f"{self.first_name} {self.last_name}"
     accepted_solutions:
       - 'return f"{self.first_name} {self.last_name}"'
+      - "return f'{self.first_name} {self.last_name}'"
       - "return self.first_name + ' ' + self.last_name"
     hints:
       - Combine the two attributes
+      - Use f-string or string concatenation with a space
     tags: [oop, property, computed]
 
   - slug: property-setter
@@ -352,6 +363,13 @@ exercises:
     expected_answer: |
       if value < 0:
           raise ValueError("Value cannot be negative")
+    accepted_solutions:
+      - |
+        if value < 0:
+            raise ValueError("Value cannot be negative")
+      - |
+        if value < 0:
+            raise ValueError('Value cannot be negative')
     hints:
       - Check condition before setting
       - Raise appropriate exception
@@ -413,6 +431,7 @@ exercises:
     expected_answer: "class"
     hints:
       - Keyword that starts class definition
+      - Similar to how 'def' starts a function
     tags: [oop, class, fill-in]
 
   - slug: init-self-fill
@@ -431,6 +450,7 @@ exercises:
     expected_answer: "self"
     hints:
       - Always the first parameter in instance methods
+      - Refers to the object being created
     tags: [oop, init, fill-in]
 
   - slug: super-fill
@@ -449,6 +469,7 @@ exercises:
     expected_answer: "super"
     hints:
       - Built-in to access parent class
+      - Returns a proxy object for accessing parent methods
     tags: [oop, super, fill-in]
 
   # --- Predict Exercises ---
@@ -473,6 +494,7 @@ exercises:
     expected_answer: "{{personName}}"
     hints:
       - self.name stores the passed value
+      - Accessing p.name retrieves what was set in __init__
     tags: [oop, attribute, predict, dynamic]
 
   - slug: method-call-predict
@@ -501,6 +523,7 @@ exercises:
       2
     hints:
       - Each call increments and returns count
+      - The object remembers its state between method calls
     tags: [oop, method, predict]
 
   - slug: inheritance-predict
@@ -526,6 +549,7 @@ exercises:
     expected_answer: "bark"
     hints:
       - Child method overrides parent
+      - Python uses the most specific (child) implementation
     tags: [oop, inheritance, predict]
 
   # --- Dynamic OOP Exercises ---
@@ -563,6 +587,7 @@ exercises:
     expected_answer: "{{methodCall}}"
     hints:
       - "Call methods using dot notation: obj.method()"
+      - "Don't forget the parentheses at the end"
     tags: [oop, methods, dynamic, write]
 
   # --- Inheritance Dynamic Exercises ---

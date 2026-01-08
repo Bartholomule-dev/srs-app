@@ -17,7 +17,8 @@ exercises:
     prompt: Create an empty list called items
     expected_answer: items = []
     hints:
-      - Use empty square brackets
+      - Use empty square brackets []
+      - Assign to the variable name items
     tags: [lists, creation, beginner]
 
   - slug: list-create-values
@@ -50,7 +51,8 @@ exercises:
     prompt: Check if value 5 is in list items
     expected_answer: 5 in items
     hints:
-      - Use the 'in' keyword
+      - Use the 'in' keyword between value and list
+      - Returns True if found, False otherwise
     tags: [lists, membership, check]
 
   - slug: list-extend-method
@@ -85,7 +87,8 @@ exercises:
     prompt: Remove and return the element at index 2 from list items
     expected_answer: items.pop(2)
     hints:
-      - Use pop() with index
+      - Use pop() with the index as argument
+      - pop() both removes and returns the element
     tags: [lists, pop, mutation]
 
   - slug: list-index
@@ -104,7 +107,8 @@ exercises:
       - 'items.index("apple")'
       - "items.index('apple')"
     hints:
-      - Use the index() method
+      - Use the index() method with the value to find
+      - Returns the first position where the value is found
     tags: [lists, index, query]
 
   - slug: list-count
@@ -120,7 +124,8 @@ exercises:
     prompt: Count occurrences of value 5 in list items
     expected_answer: items.count(5)
     hints:
-      - Use the count() method
+      - Use the count() method with the value to count
+      - Returns 0 if not found, otherwise the count
     tags: [lists, count, query]
 
   - slug: list-sort
@@ -170,7 +175,8 @@ exercises:
     prompt: Reverse list items in place
     expected_answer: items.reverse()
     hints:
-      - Use the reverse() method
+      - Use the reverse() method on the list
+      - Modifies the list in place (returns None)
     tags: [lists, reverse, mutation]
 
   # --- Tuples Subconcept ---
@@ -221,7 +227,8 @@ exercises:
     prompt: Unpack tuple point = (3, 4) into variables x and y
     expected_answer: x, y = point
     hints:
-      - Match number of variables to tuple length
+      - Variables go on left, tuple on right of =
+      - Number of variables must match tuple length
     tags: [tuples, unpacking, assignment]
 
   - slug: tuple-index
@@ -237,7 +244,8 @@ exercises:
     prompt: Get the second element of tuple t
     expected_answer: t[1]
     hints:
-      - Indices start at 0
+      - Indices start at 0, so second element is index 1
+      - Use square brackets like lists
     tags: [tuples, indexing, access]
 
   # --- Dicts Subconcept ---
@@ -254,7 +262,8 @@ exercises:
     prompt: Create an empty dictionary called data
     expected_answer: data = {}
     hints:
-      - Use empty curly braces
+      - Use empty curly braces {}
+      - Not the same as empty set (use set() for empty set)
     tags: [dicts, creation, beginner]
 
   - slug: dict-create-values
@@ -293,7 +302,8 @@ exercises:
       - 'd["name"]'
       - "d['name']"
     hints:
-      - Use square bracket notation
+      - Use square brackets with the key inside
+      - Raises KeyError if key doesn't exist
     tags: [dicts, access, beginner]
 
   - slug: dict-get-default
@@ -333,6 +343,7 @@ exercises:
       - "d['age'] = 25"
     hints:
       - Assignment with square brackets
+      - Creates key if it doesn't exist
     tags: [dicts, update, mutation]
 
   - slug: dict-keys-method
@@ -349,6 +360,7 @@ exercises:
     expected_answer: d.keys()
     hints:
       - Use the keys() method
+      - Returns a view object of all keys
     tags: [dicts, keys, query]
 
   - slug: dict-values
@@ -365,6 +377,7 @@ exercises:
     expected_answer: d.values()
     hints:
       - Use the values() method
+      - Returns a view object of all values
     tags: [dicts, values, query]
 
   - slug: dict-items
@@ -401,6 +414,7 @@ exercises:
       - "d.pop('name')"
     hints:
       - Use the pop() method
+      - Pop removes the key and returns its value
     tags: [dicts, pop, mutation]
 
   - slug: dict-in-check
@@ -455,6 +469,7 @@ exercises:
     expected_answer: s.add(5)
     hints:
       - Use the add() method
+      - Sets only store unique values
     tags: [sets, add, mutation]
 
   - slug: set-remove
@@ -471,6 +486,7 @@ exercises:
     expected_answer: s.remove(5)
     hints:
       - Use the remove() method
+      - Use discard() if you want to avoid KeyError
     tags: [sets, remove, mutation]
 
   - slug: set-discard
@@ -547,6 +563,7 @@ exercises:
       - a.difference(b)
     hints:
       - Use - operator
+      - Or use difference() method
     tags: [sets, difference, operation]
 
   # --- Unpacking Subconcept ---
@@ -635,6 +652,7 @@ exercises:
     expected_answer: func(*args)
     hints:
       - Use * to unpack list
+      - Turns [1, 2, 3] into func(1, 2, 3)
     tags: [unpacking, function, splat]
 
   - slug: unpack-dict-kwargs
@@ -651,6 +669,7 @@ exercises:
     expected_answer: func(**kwargs)
     hints:
       - Use ** to unpack dict
+      - 'Turns {"a": 1} into func(a=1)'
     tags: [unpacking, function, kwargs]
 
   # --- Mutability Subconcept ---
@@ -661,7 +680,7 @@ exercises:
     concept: collections
     subconcept: mutability
     level: intro
-    prereqs: [collections.lists, functions.basics]
+    prereqs: [collections.lists, fn-basics]
     type: write
     pattern: definition
     prompt: Define append_to(item, target=None) avoiding mutable default
@@ -818,6 +837,7 @@ exercises:
     expected_answer: "["
     hints:
       - Opening bracket for lists
+      - Lists use square brackets []
     tags: [lists, syntax, fill-in]
 
   - slug: dict-brace-fill
@@ -836,6 +856,7 @@ exercises:
     expected_answer: "{"
     hints:
       - Opening brace for dicts
+      - Dicts use curly braces {}
     tags: [dicts, syntax, fill-in]
 
   - slug: in-operator-fill
@@ -854,6 +875,7 @@ exercises:
     expected_answer: "in"
     hints:
       - Membership test operator
+      - Returns True or False
     tags: [collections, in, fill-in]
 
   # --- Predict Exercises ---
@@ -875,6 +897,7 @@ exercises:
     expected_answer: "[1, 2, 3]"
     hints:
       - append adds to the end
+      - Modifies the list in place
     tags: [lists, append, predict]
 
   - slug: dict-get-predict
@@ -894,6 +917,7 @@ exercises:
     expected_answer: "0"
     hints:
       - get returns default if key missing
+      - Key "b" is not in the dict
     tags: [dicts, get, predict]
 
   - slug: set-union-predict
@@ -914,6 +938,7 @@ exercises:
     expected_answer: "{1, 2, 3}"
     hints:
       - Union combines unique elements
+      - Duplicates (like 2) appear only once
     tags: [sets, union, predict]
 
   # --- Dynamic Exercises ---
@@ -941,11 +966,12 @@ exercises:
   - slug: list-sum-dynamic
     objective: Predict the output of adding two numbers
     title: Dynamic Addition
-    difficulty: 1
+    difficulty: 2
     prompt: "Given x = {{x}} and y = {{y}}, what does x + y print?"
     expected_answer: "{{sum}}"
     hints:
       - Addition is straightforward arithmetic
+      - Just add {{x}} + {{y}}
     tags: [arithmetic, dynamic]
     concept: numbers-booleans
     subconcept: integers
@@ -1009,6 +1035,7 @@ exercises:
     expected_answer: "3"
     hints:
       - len() returns the number of elements
+      - Count how many items are in the list
     tags: [lists, len, dynamic]
     concept: collections
     subconcept: lists
@@ -1051,6 +1078,7 @@ exercises:
     expected_answer: "{{c}}"
     hints:
       - pop() removes and returns the last element
+      - The last element is {{c}}
     tags: [lists, pop, mutation, dynamic]
     concept: collections
     subconcept: lists
@@ -1120,6 +1148,7 @@ exercises:
       - "items.insert({{idx}}, 'x')"
     hints:
       - insert(index, value)
+      - Elements at or after index shift right
     tags: [lists, insert, mutation, dynamic]
 
   - slug: list-method-predict-dynamic
@@ -1138,6 +1167,7 @@ exercises:
     expected_answer: "{{result}}"
     hints:
       - "The {{method}}() {{description}}"
+      - "Apply the method to understand what it returns"
     tags: [lists, methods, dynamic]
 
   - slug: nested-access-predict-dynamic
@@ -1181,7 +1211,7 @@ exercises:
   - slug: tuple-index-dynamic
     objective: Access a tuple element by index
     title: Dynamic Tuple Index
-    difficulty: 1
+    difficulty: 2
     concept: collections
     subconcept: tuples
     level: practice
@@ -1256,4 +1286,5 @@ exercises:
     expected_answer: "{{set1}} {{operation}} {{set2}}"
     hints:
       - "{{operationName}} uses the {{operation}} operator"
+      - "Place the operator between the two sets"
     tags: [sets, operations, dynamic, write]

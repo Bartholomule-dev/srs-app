@@ -37,3 +37,5 @@ export { anyAllGenerator } from './any-all';
 export { sortedListGenerator } from './sorted-list';
 export { zipListsGenerator } from './zip-lists';
 export { setOpsGenerator } from './set-ops';
+export { typeConversionGenerator } from './type-conversion';
+export { truthinessGenerator } from './truthiness';

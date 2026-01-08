@@ -127,6 +127,7 @@ exercises:
     expected_answer: s.upper()
     hints:
       - Use the upper() method
+      - Returns a new string (doesn't modify the original)
     tags: [strings, methods, beginner]
     concept: strings
     subconcept: string-methods
@@ -139,13 +140,14 @@ exercises:
     objective: "Create f-strings to embed variables in string output"
     title: F-String Basic
     difficulty: 2
-    prompt: Create an f-string that includes the variable name
+    prompt: Create an f-string that says "Hello, " followed by the variable name
     expected_answer: f"Hello, {name}"
     accepted_solutions:
+      - 'f"Hello, {name}"'
       - "f'Hello, {name}'"
     hints:
-      - Start string with f
-      - Use curly braces for variables
+      - Start string with f prefix before the quote
+      - Put variable names in curly braces {variable}
     tags: [strings, f-strings, intermediate]
     concept: strings
     subconcept: fstrings
@@ -161,6 +163,7 @@ exercises:
     prompt: Split string s by comma
     expected_answer: s.split(",")
     accepted_solutions:
+      - 's.split(",")'
       - "s.split(',')"
     hints:
       - Use the split() method
@@ -188,6 +191,7 @@ exercises:
     expected_answer: a + b
     hints:
       - Use the + operator
+      - Creates a new string from both inputs
     tags: [strings, concatenation, beginner]
 
   - slug: string-repeat
@@ -204,6 +208,7 @@ exercises:
     expected_answer: s * 3
     hints:
       - Use the * operator with a number
+      - "Order doesn't matter: s * 3 or 3 * s both work"
     tags: [strings, repeat, beginner]
 
   - slug: string-length
@@ -220,6 +225,7 @@ exercises:
     expected_answer: len(s)
     hints:
       - Use the len() function
+      - len() works on any sequence type
     tags: [strings, length, beginner]
 
   # --- Additional Indexing Subconcept ---
@@ -289,6 +295,7 @@ exercises:
     expected_answer: s[3:]
     hints:
       - Omit end for going to the end
+      - s[3:] means from index 3 to the last character
     tags: [strings, slicing, beginner]
 
   - slug: string-reverse
@@ -340,6 +347,7 @@ exercises:
     expected_answer: s.lower()
     hints:
       - Use the lower() method
+      - Returns a new string (strings are immutable)
     tags: [strings, methods, beginner]
 
   - slug: string-strip
@@ -356,6 +364,7 @@ exercises:
     expected_answer: s.strip()
     hints:
       - Use the strip() method
+      - lstrip() and rstrip() remove from one side only
     tags: [strings, methods, whitespace]
 
   - slug: string-replace
@@ -365,7 +374,7 @@ exercises:
     concept: strings
     subconcept: string-methods
     level: practice
-    prereqs: [strings.methods]
+    prereqs: [string-methods]
     type: write
     pattern: mutation
     prompt: Replace all occurrences of "old" with "new" in string s
@@ -385,7 +394,7 @@ exercises:
     concept: strings
     subconcept: string-methods
     level: practice
-    prereqs: [strings.methods]
+    prereqs: [string-methods]
     type: write
     pattern: construction
     prompt: Join a list of strings called words with a comma separator
@@ -405,7 +414,7 @@ exercises:
     concept: strings
     subconcept: string-methods
     level: practice
-    prereqs: [strings.methods]
+    prereqs: [string-methods]
     type: write
     pattern: query
     prompt: Find the index of substring "cat" in string s
@@ -425,7 +434,7 @@ exercises:
     concept: strings
     subconcept: string-methods
     level: practice
-    prereqs: [strings.methods]
+    prereqs: [string-methods]
     type: write
     pattern: query
     prompt: Check if string s starts with "Hello"
@@ -456,6 +465,7 @@ exercises:
       - "f'Sum is {a + b}'"
     hints:
       - Expressions work inside {}
+      - The expression is evaluated before string interpolation
     tags: [strings, fstrings, expression]
 
   - slug: fstring-format-number
@@ -517,6 +527,7 @@ exercises:
     accepted_solutions: ["len"]
     hints:
       - Which built-in function returns the length?
+      - Works on strings, lists, and other sequences
     tags: [strings, len]
 
   - slug: string-concat-fill
@@ -536,6 +547,7 @@ exercises:
     accepted_solutions: ["+"]
     hints:
       - Use the addition operator to join strings
+      - This is called string concatenation
     tags: [strings, concatenation]
 
   - slug: string-index-first-fill
@@ -555,12 +567,13 @@ exercises:
     accepted_solutions: ["0"]
     hints:
       - Python uses zero-based indexing
+      - First element is always index 0
     tags: [strings, indexing]
 
   - slug: string-index-last-fill
     title: Last Character
     type: fill-in
-    difficulty: 1
+    difficulty: 2
     concept: strings
     subconcept: indexing
     level: practice
@@ -574,6 +587,7 @@ exercises:
     accepted_solutions: ["-1"]
     hints:
       - Negative indices count from the end
+      - -1 is always the last element
     tags: [strings, indexing]
 
   - slug: string-slice-start-fill
@@ -593,6 +607,7 @@ exercises:
     accepted_solutions: [":3", "0:3"]
     hints:
       - Omitting start defaults to 0
+      - End index is exclusive (stops before it)
     tags: [strings, slicing]
 
   - slug: string-slice-end-fill
@@ -612,6 +627,7 @@ exercises:
     accepted_solutions: ["-3:"]
     hints:
       - Negative indices work in slices too
+      - Omitting end goes to the end of the string
     tags: [strings, slicing]
 
   - slug: string-upper-fill
@@ -631,12 +647,13 @@ exercises:
     accepted_solutions: ["upper"]
     hints:
       - Which string method converts to uppercase?
+      - lower() does the opposite
     tags: [strings, methods]
 
   - slug: string-strip-fill
     title: Strip Whitespace
     type: fill-in
-    difficulty: 1
+    difficulty: 2
     concept: strings
     subconcept: string-methods
     level: practice
@@ -650,6 +667,7 @@ exercises:
     accepted_solutions: ["strip"]
     hints:
       - This method removes whitespace from both ends
+      - Commonly used when processing user input
     tags: [strings, methods]
 
   - slug: fstring-basic-fill
@@ -669,6 +687,7 @@ exercises:
     accepted_solutions: ["name"]
     hints:
       - Put the variable name inside the curly braces
+      - The variable's value will replace the placeholder
     tags: [strings, fstrings]
 
   - slug: fstring-expression-fill
@@ -688,6 +707,7 @@ exercises:
     accepted_solutions: ["*"]
     hints:
       - F-strings can contain expressions
+      - Which operator multiplies two numbers?
     tags: [strings, fstrings]
 
   # --- Predict-output Exercises ---
@@ -710,12 +730,13 @@ exercises:
     accepted_solutions: []
     hints:
       - len() counts all characters
+      - Including spaces if there were any
     tags: [strings, len]
 
   - slug: string-predict-concat
     title: String Concatenation
     type: predict
-    difficulty: 1
+    difficulty: 2
     concept: strings
     subconcept: basics
     level: practice
@@ -731,6 +752,7 @@ exercises:
     accepted_solutions: []
     hints:
       - + joins strings exactly as they are
+      - The middle " " adds a space between them
     tags: [strings, concatenation]
 
   - slug: string-predict-index
@@ -750,7 +772,8 @@ exercises:
     expected_answer: "t"
     accepted_solutions: []
     hints:
-      - Index 0 is 'P', index 1 is 'y'...
+      - "Count from 0: P=0, y=1, t=2, h=3, o=4, n=5"
+      - Index 2 is the third character
     tags: [strings, indexing]
 
   - slug: string-predict-negative
@@ -771,6 +794,7 @@ exercises:
     accepted_solutions: []
     hints:
       - -1 is last, -2 is second to last
+      - "In 'Python': P-y-t-h-o-n where o is at -2"
     tags: [strings, indexing]
 
   - slug: string-predict-slice
@@ -791,6 +815,7 @@ exercises:
     accepted_solutions: []
     hints:
       - Slice includes start, excludes end
+      - Index 1 is 'y', goes up to but not including index 4
     tags: [strings, slicing]
 
   - slug: string-predict-reverse
@@ -811,6 +836,7 @@ exercises:
     accepted_solutions: []
     hints:
       - Step of -1 reverses the string
+      - Goes from end to start, one character at a time
     tags: [strings, slicing]
 
   - slug: string-predict-upper
@@ -831,6 +857,7 @@ exercises:
     accepted_solutions: []
     hints:
       - upper() converts all letters to uppercase
+      - Non-letter characters stay the same
     tags: [strings, methods]
 
   - slug: string-predict-replace
@@ -851,6 +878,7 @@ exercises:
     accepted_solutions: []
     hints:
       - replace() changes all occurrences
+      - Count the 'l's - there are 3 of them
     tags: [strings, methods]
 
   - slug: fstring-predict-basic
@@ -872,6 +900,7 @@ exercises:
     accepted_solutions: []
     hints:
       - Variables in {} are replaced with their values
+      - Numbers are automatically converted to strings
     tags: [strings, fstrings]
 
   - slug: fstring-predict-expr
@@ -892,6 +921,7 @@ exercises:
     accepted_solutions: []
     hints:
       - Expressions in {} are evaluated
+      - 5 * 2 = 10, which gets inserted into the string
     tags: [strings, fstrings]
 
   - slug: string-method-dynamic
@@ -912,6 +942,7 @@ exercises:
     expected_answer: "{{result}}"
     hints:
       - Apply the string method mentally
+      - Think about what {{method}}() does to each character
     tags: [strings, methods, dynamic]
 
   # --- Premium F-String Exercises (using string-format generator) ---

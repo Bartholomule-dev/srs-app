@@ -1,4 +1,4 @@
-# exercises/python/exceptions.yaml
+# exercises/python/error-handling.yaml
 language: python
 category: error-handling
 
@@ -7,7 +7,7 @@ exercises:
     objective: Write a basic try-except block to catch any exception
     title: Try Except Basic
     difficulty: 2
-    prompt: Write a try block that catches any exception
+    prompt: Write a complete try-except structure with pass in both blocks
     expected_answer: |
       try:
           pass
@@ -15,6 +15,7 @@ exercises:
           pass
     hints:
       - Use try and except keywords
+      - Code that might fail goes in try block
     tags: [exceptions, try, intermediate]
     concept: error-handling
     subconcept: try-except
@@ -30,7 +31,8 @@ exercises:
     prompt: Catch a ValueError exception
     expected_answer: "except ValueError:"
     hints:
-      - Specify the exception type after except
+      - Put exception type after the except keyword
+      - Better than bare except - catches only what you expect
     tags: [exceptions, specific, intermediate]
     concept: error-handling
     subconcept: try-except
@@ -45,6 +47,9 @@ exercises:
     difficulty: 2
     prompt: Raise a ValueError with message "Invalid value"
     expected_answer: raise ValueError("Invalid value")
+    accepted_solutions:
+      - raise ValueError("Invalid value")
+      - raise ValueError('Invalid value')
     hints:
       - Use the raise keyword
       - Pass message to exception constructor
@@ -63,7 +68,8 @@ exercises:
     prompt: Catch Exception and assign it to variable e
     expected_answer: "except Exception as e:"
     hints:
-      - Use as to give exception a name
+      - Use 'as' to bind exception to a variable name
+      - Allows access to exception message with str(e)
     tags: [exceptions, alias, intermediate]
     concept: error-handling
     subconcept: try-except
@@ -87,6 +93,7 @@ exercises:
     expected_answer: "finally:"
     hints:
       - finally runs whether exception occurs or not
+      - Use for cleanup code (closing files, etc.)
     tags: [exceptions, finally, cleanup]
 
   - slug: finally-cleanup
@@ -154,7 +161,8 @@ exercises:
       finally
       try
     hints:
-      - finally runs before function returns
+      - finally runs before function actually returns
+      - Return value is held until finally completes
     tags: [exceptions, finally, return]
 
   - slug: finally-exception-propagation
@@ -179,6 +187,7 @@ exercises:
       finally
     hints:
       - finally runs before exception propagates
+      - Exception continues after finally completes
     tags: [exceptions, finally, propagation]
 
   - slug: else-clause
@@ -201,6 +210,26 @@ exercises:
     tags: [exceptions, else, control]
 
   # --- Additional Raising Exercises ---
+  - slug: raise-intro
+    objective: Raise a basic exception to signal an error
+    title: Raise Exception Intro
+    difficulty: 1
+    concept: error-handling
+    subconcept: raising
+    level: intro
+    prereqs: [try-except]
+    type: write
+    pattern: handling
+    prompt: Raise a generic Exception
+    expected_answer: "raise Exception()"
+    accepted_solutions:
+      - "raise Exception()"
+      - "raise Exception"
+    hints:
+      - Use the raise keyword
+      - Exception is the base exception class
+    tags: [exceptions, raise, intro]
+
   - slug: raise-custom-message
     objective: Raise an exception with a descriptive error message
     title: Raise with Message
@@ -217,7 +246,8 @@ exercises:
       - 'raise ValueError("Age must be positive")'
       - "raise ValueError('Age must be positive')"
     hints:
-      - Pass message to exception constructor
+      - Pass message string to exception constructor
+      - Good messages describe what went wrong
     tags: [exceptions, raise, message]
 
   - slug: raise-from
@@ -292,7 +322,8 @@ exercises:
           risky_operation()
     expected_answer: "try"
     hints:
-      - Keyword that starts exception handling
+      - Keyword that starts exception handling block
+      - Usually paired with except
     tags: [exceptions, try, fill-in]
 
   - slug: except-keyword-fill
@@ -311,6 +342,7 @@ exercises:
     expected_answer: "except"
     hints:
       - Keyword that catches exceptions
+      - Comes after the try block
     tags: [exceptions, except, fill-in]
 
   - slug: raise-keyword-fill
@@ -329,6 +361,7 @@ exercises:
     expected_answer: "raise"
     hints:
       - Keyword to throw an exception
+      - Stops normal execution flow
     tags: [exceptions, raise, fill-in]
 
   # --- Predict Exercises ---
@@ -353,6 +386,7 @@ exercises:
     expected_answer: "{{output}}"
     hints:
       - Think about whether int({{value}}) is valid
+      - Invalid conversion raises ValueError
     tags: [exceptions, try-except, predict, dynamic]
 
   - slug: except-type-predict
@@ -376,6 +410,7 @@ exercises:
     expected_answer: "zero division"
     hints:
       - 1/0 raises ZeroDivisionError, not ValueError
+      - The matching except block is executed
     tags: [exceptions, except, predict]
 
   - slug: exception-as-predict
@@ -397,6 +432,7 @@ exercises:
     expected_answer: "oops"
     hints:
       - "'as e' captures the exception object"
+      - str(e) or print(e) shows the message
     tags: [exceptions, as, predict]
 
   # --- Dynamic Exception Exercises ---

@@ -22,12 +22,13 @@ exercises:
     accepted_solutions: ["//"]
     hints:
       - Floor division uses two slashes
+      - Always rounds down toward negative infinity
     tags: [integers, division]
 
   - slug: int-power-fill
     title: Exponentiation
     type: fill-in
-    difficulty: 1
+    difficulty: 2
     concept: numbers-booleans
     subconcept: integers
     level: practice
@@ -41,6 +42,7 @@ exercises:
     accepted_solutions: ["**"]
     hints:
       - Python uses ** for exponentiation
+      - Not ^ like some other languages
     tags: [integers, exponentiation]
 
   - slug: float-round-fill
@@ -60,12 +62,13 @@ exercises:
     accepted_solutions: ["round"]
     hints:
       - Which built-in function rounds numbers?
+      - Second argument specifies decimal places
     tags: [floats, rounding]
 
   - slug: float-abs-fill
     title: Absolute Value
     type: fill-in
-    difficulty: 1
+    difficulty: 2
     concept: numbers-booleans
     subconcept: floats
     level: practice
@@ -79,6 +82,7 @@ exercises:
     accepted_solutions: ["abs"]
     hints:
       - Which function returns absolute value?
+      - Removes the negative sign if present
     tags: [floats, absolute]
 
   - slug: bool-and-fill
@@ -98,12 +102,13 @@ exercises:
     accepted_solutions: ["and"]
     hints:
       - Python uses 'and' for logical AND
+      - True only if both sides are True
     tags: [booleans, logic]
 
   - slug: bool-or-fill
     title: Logical OR
     type: fill-in
-    difficulty: 1
+    difficulty: 2
     concept: numbers-booleans
     subconcept: booleans
     level: practice
@@ -117,6 +122,7 @@ exercises:
     accepted_solutions: ["or"]
     hints:
       - Python uses 'or' for logical OR
+      - True if at least one side is True
     tags: [booleans, logic]
 
   - slug: convert-int-fill
@@ -136,12 +142,13 @@ exercises:
     accepted_solutions: ["int"]
     hints:
       - Which function converts to integer?
+      - Works on strings and floats
     tags: [conversion, int]
 
   - slug: convert-str-fill
     title: Convert to String
     type: fill-in
-    difficulty: 1
+    difficulty: 2
     concept: numbers-booleans
     subconcept: conversion
     level: practice
@@ -155,6 +162,7 @@ exercises:
     accepted_solutions: ["str"]
     hints:
       - Which function converts to string?
+      - Works on any type
     tags: [conversion, str]
 
   - slug: truthiness-if-fill
@@ -174,6 +182,7 @@ exercises:
     accepted_solutions: ["items", "my_list", "data"]
     hints:
       - Non-empty lists are truthy
+      - More Pythonic than if len(items) > 0
     tags: [truthiness, idiomatic]
 
   - slug: truthiness-not-fill
@@ -193,6 +202,7 @@ exercises:
     accepted_solutions: ["not"]
     hints:
       - Use 'not' to check for falsy values
+      - More Pythonic than if len(items) == 0
     tags: [truthiness, idiomatic]
 
   - slug: comparison-is-fill
@@ -212,12 +222,13 @@ exercises:
     accepted_solutions: ["is"]
     hints:
       - Use 'is' for identity comparisons with None
+      - Don't use == for None checks
     tags: [comparisons, identity]
 
   - slug: comparison-in-fill
     title: Membership Check
     type: fill-in
-    difficulty: 1
+    difficulty: 2
     concept: numbers-booleans
     subconcept: comparisons
     level: practice
@@ -231,6 +242,7 @@ exercises:
     accepted_solutions: ["in"]
     hints:
       - Which operator checks membership?
+      - Works with lists, sets, dicts, strings, etc.
     tags: [comparisons, membership]
 
   # --- Predict-output Exercises for Numbers-Booleans ---
@@ -253,6 +265,7 @@ exercises:
     accepted_solutions: []
     hints:
       - Floor division rounds down
+      - 7 divided by 2 is 3.5, floor is 3
     tags: [integers, division]
 
   - slug: int-predict-modulo
@@ -273,6 +286,7 @@ exercises:
     accepted_solutions: []
     hints:
       - Modulo returns the remainder
+      - 10 = 3*3 + 1, so remainder is 1
     tags: [integers, modulo]
 
   - slug: float-predict-division
@@ -293,6 +307,7 @@ exercises:
     accepted_solutions: []
     hints:
       - Single / always returns a float
+      - Even 6/2 returns 3.0, not 3
     tags: [floats, division]
 
   - slug: float-predict-round
@@ -313,6 +328,7 @@ exercises:
     accepted_solutions: []
     hints:
       - round() rounds to nearest integer by default
+      - 3.7 is closer to 4 than to 3
     tags: [floats, rounding]
 
   - slug: bool-predict-and
@@ -334,12 +350,13 @@ exercises:
     accepted_solutions: []
     hints:
       - AND requires both to be True
+      - True AND False = False
     tags: [booleans, logic]
 
   - slug: bool-predict-not
     title: NOT Result
     type: predict
-    difficulty: 1
+    difficulty: 2
     concept: numbers-booleans
     subconcept: booleans
     level: practice
@@ -354,6 +371,7 @@ exercises:
     accepted_solutions: []
     hints:
       - not inverts the boolean
+      - not True = False, not False = True
     tags: [booleans, logic]
 
   - slug: convert-predict-int
@@ -374,6 +392,7 @@ exercises:
     accepted_solutions: []
     hints:
       - int() truncates toward zero
+      - Does NOT round - just removes decimals
     tags: [conversion, int]
 
   - slug: convert-predict-bool
@@ -393,6 +412,7 @@ exercises:
     accepted_solutions: []
     hints:
       - 0 is a falsy value
+      - Any non-zero number is truthy
     tags: [conversion, bool]
 
   - slug: truthiness-predict-empty
@@ -416,6 +436,7 @@ exercises:
     accepted_solutions: []
     hints:
       - Empty collections are falsy
+      - The else branch runs when if condition is False
     tags: [truthiness]
 
   - slug: truthiness-predict-zero
@@ -436,6 +457,7 @@ exercises:
     accepted_solutions: []
     hints:
       - 0 is falsy
+      - This is a ternary expression (if/else on one line)
     tags: [truthiness]
 
   - slug: comparison-predict-chain
@@ -456,6 +478,7 @@ exercises:
     accepted_solutions: []
     hints:
       - Python allows chained comparisons
+      - Same as (1 < x) and (x < 10)
     tags: [comparisons, chaining]
 
   - slug: comparison-predict-is
@@ -477,6 +500,7 @@ exercises:
     accepted_solutions: []
     hints:
       - == checks equality, is checks identity
+      - Two lists with same values are equal but not identical
     tags: [comparisons, identity]
 
   # --- Dynamic Exercises for Numbers-Booleans ---
@@ -496,6 +520,7 @@ exercises:
     accepted_solutions: []
     hints:
       - Add the two values together
+      - x + y means {{x}} + {{y}}
     tags: [integers, arithmetic, dynamic]
     generator: arithmetic-values
     code: |
@@ -506,7 +531,7 @@ exercises:
   - slug: int-multiply-dynamic
     title: Dynamic Multiplication
     type: predict
-    difficulty: 1
+    difficulty: 2
     concept: numbers-booleans
     subconcept: integers
     level: practice
@@ -518,6 +543,7 @@ exercises:
     accepted_solutions: []
     hints:
       - Multiply the two values together
+      - x * y means {{x}} * {{y}}
     tags: [integers, arithmetic, dynamic]
     generator: arithmetic-values
     code: |
@@ -687,3 +713,107 @@ exercises:
       - You don't need == or len()
       - The list itself can be the condition
     tags: [truthiness, intro, conditional]
+
+  # --- Task 13: Dynamic Truthiness Exercises ---
+  - slug: truthiness-predict-dynamic
+    objective: Predict whether a Python value is truthy or falsy
+    title: Dynamic Truthiness Predict
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: truthiness
+    level: practice
+    prereqs: [booleans]
+    type: predict
+    pattern: logical
+    generator: truthiness
+    prompt: "What does bool({{valueStr}}) return?"
+    code: |
+      value = {{valueStr}}
+      print(bool(value))
+    expected_answer: "{{isTruthy}}"
+    hints:
+      - "{{explanation}}"
+      - "Empty and zero values are falsy; most others are truthy"
+    tags: [truthiness, bool, dynamic, predict]
+
+  - slug: truthiness-write-dynamic
+    objective: Write code to check if a value is truthy
+    title: Dynamic Truthiness Check
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: truthiness
+    level: practice
+    prereqs: [booleans]
+    type: write
+    pattern: logical
+    generator: truthiness
+    prompt: "Convert {{valueStr}} to a boolean using bool()"
+    expected_answer: "bool({{valueStr}})"
+    hints:
+      - "Use the bool() function"
+      - "This will return {{isTruthy}}"
+    tags: [truthiness, bool, dynamic, write]
+
+  # --- Task 14: Dynamic Boolean Logic Exercise ---
+  - slug: bool-expr-dynamic
+    objective: Evaluate a compound boolean expression
+    title: Dynamic Boolean Expression
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: booleans
+    level: practice
+    prereqs: [booleans]
+    type: predict
+    pattern: logical
+    generator: bool-logic
+    prompt: "What is the result of this expression?"
+    code: |
+      a = {{a}}
+      b = {{b}}
+      result = {{expression}}
+      print(result)
+    expected_answer: "{{result}}"
+    hints:
+      - "Expression checks: {{description}}"
+      - "Evaluate step by step"
+    tags: [booleans, logic, dynamic, predict]
+
+  # --- Task 16: Dynamic Type Conversion Exercises ---
+  - slug: conversion-predict-dynamic
+    objective: Predict the result of a type conversion
+    title: Dynamic Type Conversion
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: conversion
+    level: practice
+    prereqs: [integers, floats]
+    type: predict
+    pattern: conversion
+    generator: type-conversion
+    prompt: "What does {{conversionCall}} return?"
+    code: |
+      result = {{conversionCall}}
+      print(result)
+    expected_answer: "{{result}}"
+    hints:
+      - "Converting {{inputValue}} to {{targetType}}"
+      - "Think about how Python handles this conversion"
+    tags: [conversion, type, dynamic, predict]
+
+  - slug: conversion-write-dynamic
+    objective: Write the correct type conversion call
+    title: Dynamic Conversion Write
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: conversion
+    level: practice
+    prereqs: [integers, floats]
+    type: write
+    pattern: conversion
+    generator: type-conversion
+    prompt: "Convert {{inputValue}} to {{targetType}}"
+    expected_answer: "{{conversionCall}}"
+    hints:
+      - "Use the {{targetType}}() function"
+      - "Pass the value as an argument"
+    tags: [conversion, type, dynamic, write]

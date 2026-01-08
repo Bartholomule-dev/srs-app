@@ -38,6 +38,8 @@ import { anyAllGenerator } from './definitions/any-all';
 import { setOpsGenerator } from './definitions/set-ops';
 import { sortedListGenerator } from './definitions/sorted-list';
 import { zipListsGenerator } from './definitions/zip-lists';
+import { typeConversionGenerator } from './definitions/type-conversion';
+import { truthinessGenerator } from './definitions/truthiness';
 
 // Re-export types
 export type { Generator, GeneratorParams, TargetConstruct, RenderedExerciseMetadata, VariantOverrides, VariantMap };
@@ -117,3 +119,5 @@ registerGenerator(anyAllGenerator);
 registerGenerator(setOpsGenerator);
 registerGenerator(sortedListGenerator);
 registerGenerator(zipListsGenerator);
+registerGenerator(typeConversionGenerator);
+registerGenerator(truthinessGenerator);
