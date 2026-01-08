@@ -22,6 +22,7 @@ vi.mock('@/components', () => ({
       {loading ? 'Loading stats...' : stats ? 'Stats loaded' : 'No stats'}
     </div>
   ),
+  SkillTree: () => <div data-testid="skill-tree">Skill Tree</div>,
 }));
 
 const mockUseAuth = vi.fn();
@@ -133,6 +134,22 @@ describe('DashboardPage', () => {
     await waitFor(() => {
       expect(screen.getByTestId('greeting')).toBeInTheDocument();
       expect(screen.getByText(/Due: 0/)).toBeInTheDocument();
+    });
+  });
+
+  it('renders SkillTree component', async () => {
+    render(<DashboardPage />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('skill-tree')).toBeInTheDocument();
+    });
+  });
+
+  it('renders Your Learning Path section header', async () => {
+    render(<DashboardPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Your Learning Path')).toBeInTheDocument();
     });
   });
 });

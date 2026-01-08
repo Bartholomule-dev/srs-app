@@ -9,6 +9,7 @@ import {
   Header,
   Greeting,
   StatsGrid,
+  SkillTree,
 } from '@/components';
 import { useAuth, useStats } from '@/lib/hooks';
 import { supabase } from '@/lib/supabase/client';
@@ -233,6 +234,18 @@ function DashboardContent() {
               }
               accentColor="var(--accent-primary)"
             />
+          </motion.div>
+
+          {/* Skill Tree Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.4 }}
+          >
+            <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-4">
+              Your Learning Path
+            </h2>
+            <SkillTree />
           </motion.div>
         </div>
       </main>
