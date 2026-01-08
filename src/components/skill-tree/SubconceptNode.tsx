@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useId } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { ANIMATION_BUDGET } from '@/lib/motion';
 import type { SkillTreeNode, SubconceptState } from '@/lib/skill-tree/types';
 import {
   MASTERY_STABILITY_STANDARD,
@@ -18,20 +19,17 @@ interface SubconceptNodeProps {
 
 const stateStyles: Record<SubconceptState, string> = {
   locked:
-    'opacity-40 border-[var(--text-tertiary)]/30 bg-[var(--bg-surface-2)]/30 cursor-not-allowed grayscale',
+    'border border-[var(--text-tertiary)]/30 bg-[var(--bg-surface-2)]/30 ' +
+    'opacity-40 cursor-not-allowed',
   available:
-    'border-[var(--accent-primary)]/60 bg-[var(--bg-surface-1)]/50 backdrop-blur-sm ' +
-    'shadow-[0_0_15px_rgba(245,158,11,0.15)] hover:shadow-[0_0_20px_rgba(245,158,11,0.25)] ' +
-    'hover:border-[var(--accent-primary)]',
+    'border-2 border-[var(--accent-primary)] bg-[var(--bg-surface-1)] ' +
+    'hover:bg-[var(--bg-surface-2)]',
   'in-progress':
-    'border-[var(--accent-primary)] bg-gradient-to-br from-[var(--accent-primary)]/30 to-[var(--accent-secondary)]/20 ' +
-    'backdrop-blur-sm shadow-[0_0_20px_rgba(245,158,11,0.25)]',
+    'border-[3px] border-[var(--accent-primary)] bg-[var(--bg-surface-1)]',
   proficient:
-    'border-emerald-500/80 bg-gradient-to-br from-emerald-500/40 to-teal-500/30 ' +
-    'backdrop-blur-sm shadow-[0_0_20px_rgba(16,185,129,0.3)]',
+    'border-2 border-emerald-500 bg-[var(--bg-surface-1)]',
   mastered:
-    'border-transparent bg-gradient-to-br from-amber-400 to-orange-500 ' +
-    'shadow-[0_0_25px_rgba(245,158,11,0.5),inset_0_1px_0_rgba(255,255,255,0.2)]',
+    'border-2 border-emerald-500 bg-emerald-500/20',
 };
 
 function getTooltipContent(
@@ -94,31 +92,11 @@ export function SubconceptNode({
         ref={nodeRef}
         type="button"
         className={cn(
-          'w-12 h-12 rounded-full border-2 transition-all duration-300',
+          'w-12 h-12 rounded-full',
           'focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:ring-offset-2 focus:ring-offset-[var(--bg-surface-1)]',
           stateStyles[node.state],
           className
         )}
-        animate={
-          node.state === 'available' && !reduceMotion
-            ? {
-                boxShadow: [
-                  '0 0 15px rgba(245,158,11,0.15)',
-                  '0 0 20px rgba(245,158,11,0.3)',
-                  '0 0 15px rgba(245,158,11,0.15)',
-                ],
-              }
-            : undefined
-        }
-        transition={
-          node.state === 'available' && !reduceMotion
-            ? {
-                duration: 2,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }
-            : undefined
-        }
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onFocus={handleFocus}
@@ -129,6 +107,7 @@ export function SubconceptNode({
         tabIndex={node.state === 'locked' ? -1 : 0}
         whileHover={node.state !== 'locked' && !reduceMotion ? { scale: 1.1 } : undefined}
         whileTap={node.state !== 'locked' && !reduceMotion ? { scale: 0.95 } : undefined}
+        transition={ANIMATION_BUDGET.hover}
       />
 
       <AnimatePresence>
@@ -144,7 +123,7 @@ export function SubconceptNode({
               'absolute z-50 left-1/2 -translate-x-1/2 bottom-full mb-2',
               'px-3 py-2 rounded-lg',
               'bg-[var(--bg-surface-3)] border border-[var(--border)]',
-              'shadow-lg backdrop-blur-sm',
+              'shadow-lg',
               'whitespace-nowrap pointer-events-none'
             )}
           >

@@ -31,35 +31,35 @@ describe('SubconceptNode', () => {
 
       const button = screen.getByRole('button');
       expect(button).toHaveClass('opacity-40');
-      expect(button).toHaveClass('grayscale');
+      expect(button).toHaveClass('cursor-not-allowed');
     });
 
-    it('renders available state with glass-morphism', () => {
+    it('renders available state with accent border', () => {
       render(<SubconceptNode node={makeNode({ state: 'available' })} />);
 
       const button = screen.getByRole('button');
-      expect(button).toHaveClass('border-[var(--accent-primary)]/60');
-      expect(button).toHaveClass('backdrop-blur-sm');
+      expect(button).toHaveClass('border-2');
+      expect(button).toHaveClass('border-[var(--accent-primary)]');
     });
 
-    it('renders in-progress state with gradient fill', () => {
+    it('renders in-progress state with thicker border', () => {
       render(
         <SubconceptNode node={makeNode({ state: 'in-progress', stability: 3 })} />
       );
 
       const button = screen.getByRole('button');
-      expect(button).toHaveClass('bg-gradient-to-br');
-      expect(button).toHaveClass('backdrop-blur-sm');
+      expect(button).toHaveClass('border-[3px]');
+      expect(button).toHaveClass('border-[var(--accent-primary)]');
     });
 
-    it('renders mastered state with solid gradient and inner glow', () => {
+    it('renders mastered state with emerald fill', () => {
       render(
         <SubconceptNode node={makeNode({ state: 'mastered', stability: 10 })} />
       );
 
       const button = screen.getByRole('button');
-      expect(button).toHaveClass('bg-gradient-to-br');
-      expect(button).toHaveClass('border-transparent');
+      expect(button).toHaveClass('border-emerald-500');
+      expect(button).toHaveClass('bg-emerald-500/20');
     });
   });
 
