@@ -139,14 +139,24 @@ export function validateYamlExercise(
   }
 
   // Validate template placeholders if generator present
-  if (exercise.generator && exercise.prompt) {
-    const placeholders = exercise.prompt.match(/\{\{(\w+)\}\}/g);
+  // Placeholders can be in prompt, code, expected_answer, or hints
+  if (exercise.generator) {
+    const fieldsToCheck = [
+      exercise.prompt,
+      exercise.code,
+      exercise.expected_answer,
+      ...(exercise.hints || []),
+    ].filter(Boolean);
+
+    const allText = fieldsToCheck.join(' ');
+    const placeholders = allText.match(/\{\{(\w+)\}\}/g);
+
     if (!placeholders || placeholders.length === 0) {
       errors.push({
         file,
         slug,
-        field: 'prompt',
-        message: 'Exercise has generator but no {{placeholders}} in prompt',
+        field: 'generator',
+        message: 'Exercise has generator but no {{placeholders}} in prompt, code, expected_answer, or hints',
       });
     }
   }
