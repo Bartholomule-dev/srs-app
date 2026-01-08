@@ -12,10 +12,8 @@ vi.mock('@/components', () => ({
     <div data-testid="error-boundary">{children}</div>
   ),
   Header: () => <header data-testid="header">Header</header>,
-  Greeting: ({ dueCount, isLoading }: { dueCount: number; isLoading: boolean }) => (
-    <div data-testid="greeting">
-      Welcome back! {isLoading ? 'Loading...' : `Due: ${dueCount}`}
-    </div>
+  DueNowBand: ({ dueCount, streak }: { dueCount: number; streak: number }) => (
+    <div data-testid="due-now-band">Due: {dueCount}, Streak: {streak}</div>
   ),
   StatsGrid: ({ stats, loading }: { stats: unknown; loading: boolean }) => (
     <div data-testid="stats-grid">
@@ -120,20 +118,20 @@ describe('DashboardPage', () => {
     });
   });
 
-  it('renders Greeting component', async () => {
+  it('renders DueNowBand component', async () => {
     render(<DashboardPage />);
 
     await waitFor(() => {
-      expect(screen.getByTestId('greeting')).toBeInTheDocument();
+      expect(screen.getByTestId('due-now-band')).toBeInTheDocument();
     });
   });
 
-  it('passes dueCount to Greeting component', async () => {
+  it('passes dueCount and streak to DueNowBand', async () => {
     render(<DashboardPage />);
 
     await waitFor(() => {
-      expect(screen.getByTestId('greeting')).toBeInTheDocument();
-      expect(screen.getByText(/Due: 0/)).toBeInTheDocument();
+      expect(screen.getByTestId('due-now-band')).toBeInTheDocument();
+      expect(screen.getByText(/Due: 0, Streak: 7/)).toBeInTheDocument();
     });
   });
 
@@ -145,11 +143,19 @@ describe('DashboardPage', () => {
     });
   });
 
-  it('renders Your Learning Path section header', async () => {
+  it('renders Learning Path section header', async () => {
     render(<DashboardPage />);
 
     await waitFor(() => {
-      expect(screen.getByText('Your Learning Path')).toBeInTheDocument();
+      expect(screen.getByText('Learning Path')).toBeInTheDocument();
+    });
+  });
+
+  it('renders Your Progress section header', async () => {
+    render(<DashboardPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Your Progress')).toBeInTheDocument();
     });
   });
 });
