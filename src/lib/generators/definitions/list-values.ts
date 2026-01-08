@@ -20,7 +20,8 @@ export const listValuesGenerator: Generator = {
     const a = rng.int(1, 99);
     const b = rng.int(1, 99);
     const c = rng.int(1, 99);
-    return { a, b, c };
+    const sum = a + b + c;
+    return { a, b, c, sum };
   },
 
   validate(params: GeneratorParams): boolean {

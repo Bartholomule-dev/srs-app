@@ -913,3 +913,95 @@ exercises:
     hints:
       - Apply the string method mentally
     tags: [strings, methods, dynamic]
+
+  # --- Premium F-String Exercises (using string-format generator) ---
+  - slug: fstring-greeting-dynamic
+    objective: Predict the output of an f-string with name and age
+    title: Dynamic F-String Greeting
+    difficulty: 2
+    concept: strings
+    subconcept: fstrings
+    level: practice
+    prereqs: [strings.fstrings]
+    type: predict
+    pattern: construction
+    generator: string-format
+    prompt: "What does this code print?"
+    code: "{{code}}"
+    expected_answer: "{{result}}"
+    hints:
+      - Variables in curly braces get substituted
+      - The f prefix enables string interpolation
+    tags: [strings, fstrings, dynamic]
+    target_construct:
+      type: f-string
+      feedback: "F-strings make string formatting cleaner and more readable"
+
+  - slug: fstring-write-dynamic
+    objective: Write an f-string that produces the expected output
+    title: Dynamic F-String Write
+    difficulty: 2
+    concept: strings
+    subconcept: fstrings
+    level: practice
+    prereqs: [strings.fstrings]
+    type: write
+    pattern: construction
+    generator: string-format
+    prompt: "Write an f-string that produces: {{result}}"
+    expected_answer: "{{fstring}}"
+    hints:
+      - Use f before the string quote
+      - Put variable names in curly braces
+    tags: [strings, fstrings, dynamic, write]
+    target_construct:
+      type: f-string
+      feedback: "Try using f-strings for cleaner formatting"
+
+  # --- Advanced String Slicing (using string-slice generator) ---
+  - slug: string-slice-advanced-dynamic
+    objective: Predict the result of an advanced string slice operation
+    title: Dynamic Advanced String Slice
+    difficulty: 2
+    concept: strings
+    subconcept: slicing
+    level: practice
+    prereqs: [strings.slicing]
+    type: predict
+    pattern: slicing
+    generator: string-slice
+    prompt: "What does this code print?"
+    code: "{{code}}"
+    expected_answer: "{{result}}"
+    hints:
+      - "This is {{description}}"
+      - Remember that slice notation is [start:end:step]
+    tags: [strings, slicing, dynamic]
+    target_construct:
+      type: slice
+      feedback: "String slicing is powerful for extracting substrings"
+
+  - slug: string-reverse-dynamic
+    objective: Write code to reverse a string using slicing
+    title: Dynamic String Reverse
+    difficulty: 2
+    concept: strings
+    subconcept: slicing
+    level: edge
+    prereqs: [strings.slicing]
+    type: write
+    pattern: slicing
+    generator: string-slice
+    prompt: "Reverse the string '{{word}}' using slice notation"
+    expected_answer: '"{{word}}"[::-1]'
+    accepted_solutions:
+      - '"{{word}}"[::-1]'
+      - "'{{word}}'[::-1]"
+      - "s[::-1]"
+    hints:
+      - Use step of -1 to reverse
+      - The pattern is [::-1]
+    tags: [strings, slicing, reverse, dynamic]
+    target_construct:
+      type: slice
+      feedback: "[::-1] is the Pythonic way to reverse a string"

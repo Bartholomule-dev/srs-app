@@ -316,7 +316,7 @@ describe('generator field validation', () => {
     };
     const errors = validateYamlExercise(exercise, 'test.yaml');
     expect(errors).toContainEqual(expect.objectContaining({
-      field: 'prompt',
+      field: 'generator',
       message: expect.stringContaining('no {{placeholders}}'),
     }));
   });

@@ -27,7 +27,8 @@ export const loopSimulationGenerator: Generator = {
     for (let i = start; i < stop; i += step) {
       values.push(i);
     }
-    const output = values.join(' ');
+    // Output as newline-separated to match print(i) behavior
+    const output = values.join('\n');
 
     return { start, stop, step, output };
   },
@@ -46,6 +47,6 @@ export const loopSimulationGenerator: Generator = {
     for (let i = start; i < stop; i += step) {
       values.push(i);
     }
-    return output === values.join(' ');
+    return output === values.join('\n');
   },
 };

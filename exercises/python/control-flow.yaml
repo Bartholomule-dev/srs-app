@@ -1002,3 +1002,218 @@ exercises:
     hints:
       - Compare the two values using the operator
     tags: [control-flow, comparison, dynamic]
+
+  - slug: bool-compound-dynamic
+    objective: Predict the result of a compound boolean expression
+    title: Dynamic Compound Boolean
+    difficulty: 2
+    concept: control-flow
+    subconcept: conditionals
+    level: practice
+    prereqs: [foundations, numbers-booleans.comparisons]
+    type: predict
+    pattern: logical
+    generator: bool-logic
+    prompt: "What does this expression evaluate to?"
+    code: |
+      print({{expression}})
+    expected_answer: "{{result}}"
+    hints:
+      - "This expression {{description}}"
+      - Evaluate each part separately then combine
+    tags: [control-flow, boolean, dynamic]
+
+  - slug: if-bool-logic-dynamic
+    objective: Write an if statement with a compound boolean condition
+    title: Dynamic Boolean If Statement
+    difficulty: 2
+    concept: control-flow
+    subconcept: conditionals
+    level: practice
+    prereqs: [control-flow.conditionals, numbers-booleans.comparisons]
+    type: write
+    pattern: conditional
+    generator: bool-logic
+    prompt: "Write an if statement that checks if {{description}} (using a={{a}}, b={{b}})"
+    expected_answer: "if {{expression}}:"
+    hints:
+      - "Use the boolean operators (and, or, not)"
+      - End with a colon
+    tags: [control-flow, boolean, conditionals, dynamic]
+
+  - slug: for-list-total-dynamic
+    objective: Predict the final value after loop accumulation
+    title: Dynamic For List Total
+    difficulty: 2
+    concept: control-flow
+    subconcept: for
+    level: practice
+    prereqs: [control-flow.for]
+    type: predict
+    pattern: accumulator
+    generator: list-values
+    prompt: "What does this code print?"
+    code: |
+      total = 0
+      for num in [{{a}}, {{b}}, {{c}}]:
+          total += num
+      print(total)
+    expected_answer: "{{sum}}"
+    hints:
+      - Add each number to total
+      - Output the final total after the loop
+    tags: [control-flow, for, accumulator, dynamic]
+
+  # --- If/Elif/Else Chain Exercises (using conditional-chain generator) ---
+  - slug: if-elif-else-predict-dynamic
+    objective: Predict which branch is taken in an if/elif/else chain
+    title: Dynamic If/Elif/Else Chain
+    difficulty: 2
+    concept: control-flow
+    subconcept: conditionals
+    level: practice
+    prereqs: [control-flow.conditionals]
+    type: predict
+    pattern: conditional
+    generator: conditional-chain
+    prompt: "What does this code print?"
+    code: "{{code}}"
+    expected_answer: "{{result}}"
+    hints:
+      - "This is a {{description}} classification"
+      - Check conditions from top to bottom
+      - First matching condition wins
+    tags: [control-flow, conditionals, elif, dynamic]
+
+  - slug: if-elif-chain-trace-dynamic
+    objective: Identify which branch executes for a given input value
+    title: Dynamic Branch Trace
+    difficulty: 2
+    concept: control-flow
+    subconcept: conditionals
+    level: edge
+    prereqs: [control-flow.conditionals]
+    type: predict
+    pattern: conditional
+    generator: conditional-chain
+    prompt: "For input value {{value}}, which branch executes (output the result)?"
+    code: "{{code}}"
+    expected_answer: "{{result}}"
+    hints:
+      - Evaluate each condition in order
+      - Stop at the first True condition
+    tags: [control-flow, conditionals, tracing, dynamic]
+
+  # --- Dynamic Sorted/Reversed Exercises ---
+  - slug: sorted-predict-dynamic
+    objective: Predict the output of sorted() or reversed()
+    title: Dynamic Sorted/Reversed
+    difficulty: 2
+    concept: control-flow
+    subconcept: sorted
+    level: practice
+    prereqs: [control-flow.for]
+    type: predict
+    pattern: transformation
+    generator: sorted-list
+    prompt: "What does this code return?"
+    code: "{{code}}"
+    expected_answer: "{{output}}"
+    hints:
+      - "{{func}}() returns a new sequence"
+      - Original list is unchanged
+    tags: [sorted, reversed, dynamic]
+
+  - slug: sorted-write-dynamic
+    objective: Write the correct sorted/reversed call
+    title: Write Sorted Call
+    difficulty: 2
+    concept: control-flow
+    subconcept: sorted
+    level: practice
+    prereqs: [control-flow.sorted]
+    type: write
+    pattern: transformation
+    generator: sorted-list
+    prompt: "Transform {{input}} to get {{output}}"
+    expected_answer: "{{code}}"
+    hints:
+      - Use sorted() with reverse parameter if needed
+      - Use list(reversed(...)) to reverse order
+    tags: [sorted, dynamic, write]
+
+  # --- Dynamic Any/All Exercises ---
+  - slug: any-all-predict-dynamic
+    objective: Predict the result of any() or all()
+    title: Dynamic Any/All
+    difficulty: 2
+    concept: control-flow
+    subconcept: any-all
+    level: practice
+    prereqs: [numbers-booleans.truthiness]
+    type: predict
+    pattern: logical
+    generator: any-all
+    prompt: "What does this code return?"
+    code: "{{code}}"
+    expected_answer: "{{result}}"
+    hints:
+      - "{{description}}"
+      - "{{func}}() checks elements for truthiness"
+    tags: [any, all, dynamic]
+
+  - slug: any-all-write-dynamic
+    objective: Write the any/all expression for a list
+    title: Write Any/All
+    difficulty: 2
+    concept: control-flow
+    subconcept: any-all
+    level: practice
+    prereqs: [control-flow.any-all]
+    type: write
+    pattern: logical
+    generator: any-all
+    prompt: "Check if {{func}} elements in {{list}} are truthy"
+    expected_answer: "{{func}}({{list}})"
+    hints:
+      - "{{func}}() takes an iterable"
+    tags: [any, all, dynamic, write]
+
+  # --- Dynamic Zip Exercises ---
+  - slug: zip-predict-dynamic
+    objective: Predict the output of zip() on two lists
+    title: Dynamic Zip Output
+    difficulty: 2
+    concept: control-flow
+    subconcept: zip
+    level: practice
+    prereqs: [control-flow.for]
+    type: predict
+    pattern: iteration
+    generator: zip-lists
+    prompt: "What does this code return?"
+    code: "list(zip({{list1}}, {{list2}}))"
+    expected_answer: "{{output}}"
+    hints:
+      - "{{description}}"
+      - zip() pairs elements by index
+    tags: [zip, dynamic, predict]
+
+  - slug: zip-sum-dynamic
+    objective: Predict the result of a zip comprehension for pairwise operations
+    title: Dynamic Zip Sum
+    difficulty: 2
+    concept: control-flow
+    subconcept: zip
+    level: practice
+    prereqs: [control-flow.zip, comprehensions.list-comp]
+    type: predict
+    pattern: iteration
+    generator: zip-lists
+    prompt: "What does this code return?"
+    code: "{{code}}"
+    expected_answer: "{{output}}"
+    hints:
+      - zip pairs elements for the comprehension
+      - a + b adds each pair
+    tags: [zip, comprehension, dynamic]

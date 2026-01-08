@@ -684,3 +684,61 @@ exercises:
     hints:
       - Use ** for exponentiation
     tags: [operators, power, exponent, dynamic]
+
+  # --- Operator Precedence Dynamic Exercises ---
+  - slug: operator-precedence-dynamic
+    objective: Predict the result of an expression with multiple operators
+    title: Dynamic Operator Precedence
+    difficulty: 2
+    concept: foundations
+    subconcept: expressions
+    level: practice
+    prereqs: [operators]
+    type: predict
+    pattern: arithmetic
+    generator: operator-chain
+    prompt: "What does this expression evaluate to?"
+    code: "{{code}}"
+    expected_answer: "{{resultStr}}"
+    hints:
+      - "Remember: {{description}}"
+      - "Evaluate step by step following precedence rules"
+    tags: [operators, precedence, dynamic, predict]
+
+  - slug: operator-expression-predict-dynamic
+    objective: Trace through an arithmetic expression with precedence
+    title: Dynamic Expression Evaluation
+    difficulty: 2
+    concept: foundations
+    subconcept: expressions
+    level: practice
+    prereqs: [operators]
+    type: predict
+    pattern: arithmetic
+    generator: operator-chain
+    prompt: "What is the result of: {{expression}}"
+    code: "{{code}}"
+    expected_answer: "{{resultStr}}"
+    hints:
+      - "Tip: {{description}}"
+      - "Work through operations in order of precedence"
+    tags: [operators, expressions, dynamic, predict]
+
+  - slug: operator-parentheses-dynamic
+    objective: Understand how parentheses affect evaluation order
+    title: Dynamic Parentheses Priority
+    difficulty: 2
+    concept: foundations
+    subconcept: expressions
+    level: practice
+    prereqs: [expressions]
+    type: predict
+    pattern: arithmetic
+    generator: operator-chain
+    prompt: "Evaluate: {{expression}}"
+    code: "{{code}}"
+    expected_answer: "{{resultStr}}"
+    hints:
+      - "Parentheses are always evaluated first"
+      - "{{description}}"
+    tags: [operators, parentheses, dynamic, predict]

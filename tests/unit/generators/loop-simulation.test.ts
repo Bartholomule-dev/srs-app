@@ -28,7 +28,7 @@ describe('loop-simulation generator', () => {
     for (let i = start as number; i < (stop as number); i += step as number) {
       expected.push(i);
     }
-    expect(output).toBe(expected.join(' '));
+    expect(output).toBe(expected.join('\n'));
   });
 
   it('produces deterministic output for same seed', () => {
@@ -39,7 +39,7 @@ describe('loop-simulation generator', () => {
 
   it('validates correct params', () => {
     expect(loopSimulationGenerator.validate({
-      start: 0, stop: 6, step: 2, output: '0 2 4'
+      start: 0, stop: 6, step: 2, output: '0\n2\n4'
     })).toBe(true);
   });
 
@@ -51,7 +51,7 @@ describe('loop-simulation generator', () => {
 
   it('rejects inconsistent output', () => {
     expect(loopSimulationGenerator.validate({
-      start: 0, stop: 6, step: 2, output: '0 1 2'
+      start: 0, stop: 6, step: 2, output: '0\n1\n2'
     })).toBe(false);
   });
 

@@ -532,3 +532,149 @@ exercises:
     hints:
       - / operator joins path components
     tags: [pathlib, join, predict]
+
+  # --- Dynamic Exercises (using generators) ---
+  - slug: path-join-dynamic
+    objective: Predict the result of joining path components
+    title: Dynamic Path Join
+    difficulty: 2
+    concept: modules-files
+    subconcept: pathlib
+    level: practice
+    prereqs: [modules-files.pathlib]
+    type: predict
+    pattern: construction
+    generator: path-ops
+    prompt: "What does this code print?"
+    code: |
+      from pathlib import Path
+      p = Path("{{dir1}}") / "{{dir2}}" / "{{filename}}"
+      print(p)
+    expected_answer: "{{fullPath}}"
+    hints:
+      - The / operator joins path components
+      - Result is a complete path string
+    tags: [pathlib, join, dynamic]
+
+  - slug: path-parent-dynamic
+    objective: Predict the parent directory of a path
+    title: Dynamic Path Parent
+    difficulty: 2
+    concept: modules-files
+    subconcept: pathlib
+    level: practice
+    prereqs: [modules-files.pathlib]
+    type: predict
+    pattern: attribute
+    generator: path-ops
+    prompt: "What does p.parent return?"
+    code: |
+      from pathlib import Path
+      p = Path("{{fullPath}}")
+      print(p.parent)
+    expected_answer: "{{parent}}"
+    hints:
+      - .parent gives the directory containing the file
+    tags: [pathlib, parent, dynamic]
+
+  - slug: path-stem-dynamic
+    objective: Predict the filename without extension
+    title: Dynamic Path Stem
+    difficulty: 2
+    concept: modules-files
+    subconcept: pathlib
+    level: practice
+    prereqs: [modules-files.pathlib]
+    type: predict
+    pattern: attribute
+    generator: path-ops
+    prompt: "What does p.stem return?"
+    code: |
+      from pathlib import Path
+      p = Path("{{fullPath}}")
+      print(p.stem)
+    expected_answer: "{{stem}}"
+    hints:
+      - .stem is the filename without extension
+    tags: [pathlib, stem, dynamic]
+
+  - slug: path-suffix-dynamic
+    objective: Predict the file extension
+    title: Dynamic Path Suffix
+    difficulty: 2
+    concept: modules-files
+    subconcept: pathlib
+    level: practice
+    prereqs: [modules-files.pathlib]
+    type: predict
+    pattern: attribute
+    generator: path-ops
+    prompt: "What does p.suffix return?"
+    code: |
+      from pathlib import Path
+      p = Path("{{fullPath}}")
+      print(p.suffix)
+    expected_answer: "{{suffix}}"
+    hints:
+      - .suffix is the file extension including the dot
+    tags: [pathlib, suffix, dynamic]
+
+  # --- File I/O Exercises (using file-io generator) ---
+  - slug: file-read-dynamic
+    objective: Predict the output of reading a file
+    title: Dynamic File Read
+    difficulty: 2
+    concept: modules-files
+    subconcept: file-io
+    level: practice
+    prereqs: [modules-files.file-io]
+    type: predict
+    pattern: io
+    generator: file-io
+    prompt: "What does this code print? (Assume {{filename}} contains '{{content}}')"
+    code: "{{code}}"
+    expected_answer: "{{result}}"
+    hints:
+      - "This will {{description}}"
+      - The with statement ensures proper file handling
+    tags: [files, io, dynamic]
+
+  - slug: file-context-dynamic
+    objective: Predict behavior of file context manager
+    title: Dynamic File Context
+    difficulty: 2
+    concept: modules-files
+    subconcept: file-io
+    level: practice
+    prereqs: [modules-files.file-io]
+    type: predict
+    pattern: context
+    generator: file-io
+    prompt: "What does this code print?"
+    code: "{{code}}"
+    expected_answer: "{{result}}"
+    hints:
+      - "Context managers automatically close files"
+      - "Check the file's closed property"
+    tags: [files, context, dynamic]
+
+  - slug: file-write-mode-dynamic
+    objective: Write code to open a file for writing
+    title: Dynamic File Write Mode
+    difficulty: 2
+    concept: modules-files
+    subconcept: file-io
+    level: practice
+    prereqs: [modules-files.file-io]
+    type: write
+    pattern: io
+    generator: file-io
+    prompt: "Write code to open '{{filename}}' in '{{mode}}' mode using a context manager"
+    expected_answer: 'with open("{{filename}}", "{{mode}}") as f:'
+    accepted_solutions:
+      - 'with open("{{filename}}", "{{mode}}") as f:'
+      - "with open('{{filename}}', '{{mode}}') as f:"
+    hints:
+      - Use the with statement for context management
+      - open() takes filename and mode arguments
+    tags: [files, write, dynamic]

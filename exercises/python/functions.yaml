@@ -210,6 +210,51 @@ exercises:
     tags: [functions, lambda, sorting]
 
   # --- Scope Subconcept ---
+  - slug: scope-intro
+    objective: Understand that variables defined inside functions are local
+    title: Local Scope Basics
+    difficulty: 2
+    concept: functions
+    subconcept: scope
+    level: intro
+    prereqs: [functions.fn-basics]
+    type: predict
+    pattern: scope
+    prompt: What does this print?
+    code: |
+      x = 10
+      def foo():
+          x = 20
+          print(x)
+      foo()
+    expected_answer: "20"
+    hints:
+      - Inside the function, x is local
+      - Local x shadows global x
+    tags: [functions, scope, intro]
+
+  - slug: scope-global-read
+    objective: Understand that functions can read global variables
+    title: Reading Global Variables
+    difficulty: 2
+    concept: functions
+    subconcept: scope
+    level: intro
+    prereqs: [functions.fn-basics]
+    type: predict
+    pattern: scope
+    prompt: What does this print?
+    code: |
+      x = 10
+      def foo():
+          print(x)
+      foo()
+    expected_answer: "10"
+    hints:
+      - No local x, so Python looks in global scope
+      - Functions can read globals without declaration
+    tags: [functions, scope, intro, global]
+
   - slug: global-keyword
     objective: "Declare a global variable from within a function"
     title: Global Keyword
@@ -712,3 +757,160 @@ exercises:
       - Mutable defaults are shared between calls
       - This is a common Python gotcha
     tags: [functions, mutable, gotcha, predict]
+
+  # --- Dynamic Exercises (using generators) ---
+  - slug: function-call-dynamic
+    objective: "Predict the return value of a realistic function call"
+    title: Dynamic Function Call
+    difficulty: 2
+    concept: functions
+    subconcept: fn-basics
+    level: practice
+    prereqs: [functions.basics]
+    type: predict
+    pattern: invocation
+    generator: function-call
+    prompt: "What does {{funcName}}({{argList}}) return?"
+    code: "{{code}}"
+    expected_answer: "{{result}}"
+    hints:
+      - Trace through the function with the given arguments
+      - Functions compute and return values
+    tags: [functions, dynamic, predict]
+
+  - slug: function-call-write-dynamic
+    objective: "Write the correct function call syntax"
+    title: Dynamic Function Call Write
+    difficulty: 2
+    concept: functions
+    subconcept: fn-basics
+    level: practice
+    prereqs: [functions.basics]
+    type: write
+    pattern: invocation
+    generator: function-call
+    prompt: "Call {{funcName}} with arguments {{argList}}"
+    expected_answer: "{{funcName}}({{argList}})"
+    hints:
+      - Function calls use parentheses
+      - Pass arguments in order
+    tags: [functions, call, dynamic, write]
+
+  - slug: function-result-predict-dynamic
+    objective: "Predict the computed result of a function"
+    title: Dynamic Function Result
+    difficulty: 2
+    concept: functions
+    subconcept: fn-basics
+    level: practice
+    prereqs: [functions.basics]
+    type: predict
+    pattern: invocation
+    generator: function-call
+    prompt: "What does this function call return?"
+    code: "{{code}}"
+    expected_answer: "{{result}}"
+    hints:
+      - Substitute the argument values
+      - Perform the computation
+    tags: [functions, return, dynamic, predict]
+
+  - slug: lambda-result-dynamic
+    objective: "Predict the result of calling a lambda expression"
+    title: Dynamic Lambda Result
+    difficulty: 2
+    concept: functions
+    subconcept: lambda
+    level: practice
+    prereqs: [functions.lambda]
+    type: predict
+    pattern: invocation
+    generator: lambda-expr
+    prompt: "What does this code print?"
+    code: |
+      {{opName}} = {{lambdaExpr}}
+      print({{opName}}({{argList}}))
+    expected_answer: "{{result}}"
+    hints:
+      - The lambda {{description}}
+      - Substitute the arguments into the expression
+    tags: [functions, lambda, dynamic, predict]
+    target_construct:
+      type: lambda
+      feedback: "Lambdas are concise anonymous functions"
+
+  - slug: lambda-write-dynamic
+    objective: "Write a lambda expression that performs the operation"
+    title: Dynamic Lambda Write
+    difficulty: 2
+    concept: functions
+    subconcept: lambda
+    level: practice
+    prereqs: [functions.lambda]
+    type: write
+    pattern: definition
+    generator: lambda-expr
+    prompt: "Write a lambda that {{description}}"
+    expected_answer: "{{lambdaExpr}}"
+    hints:
+      - "Lambda syntax: lambda params: expression"
+      - "Use the parameters {{params}}"
+    tags: [functions, lambda, dynamic, write]
+    target_construct:
+      type: lambda
+      feedback: "Use lambda for simple one-expression functions"
+
+  - slug: lambda-call-dynamic
+    objective: "Call a lambda with specific arguments"
+    title: Dynamic Lambda Call
+    difficulty: 2
+    concept: functions
+    subconcept: lambda
+    level: practice
+    prereqs: [functions.lambda]
+    type: write
+    pattern: invocation
+    generator: lambda-expr
+    prompt: "Call the lambda {{opName}} = {{lambdaExpr}} with arguments {{argList}}"
+    expected_answer: "{{opName}}({{argList}})"
+    hints:
+      - Call lambdas just like regular functions
+    tags: [functions, lambda, call, dynamic]
+
+  # --- Default Arguments Dynamic Exercises ---
+  - slug: default-args-predict-dynamic
+    objective: Predict function output with default arguments
+    title: Dynamic Default Args Predict
+    difficulty: 2
+    concept: functions
+    subconcept: defaults
+    level: practice
+    prereqs: [functions.fn-basics]
+    type: predict
+    pattern: invocation
+    generator: default-args
+    prompt: "What does this code print?"
+    code: "{{code}}"
+    expected_answer: "{{result}}"
+    hints:
+      - "The function {{description}}"
+      - "Check if default values are used"
+    tags: [functions, defaults, dynamic, predict]
+
+  - slug: default-args-call-dynamic
+    objective: Call a function using its default parameters
+    title: Dynamic Default Args Call
+    difficulty: 2
+    concept: functions
+    subconcept: defaults
+    level: practice
+    prereqs: [functions.defaults]
+    type: write
+    pattern: invocation
+    generator: default-args
+    prompt: "Given def {{funcName}}({{params}}), call it to get the result '{{result}}'"
+    expected_answer: "{{funcName}}({{callArgs}})"
+    hints:
+      - "Default parameters can be omitted"
+      - "Explicit args override defaults"
+    tags: [functions, defaults, dynamic, write]

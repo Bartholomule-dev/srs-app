@@ -398,3 +398,80 @@ exercises:
     hints:
       - "'as e' captures the exception object"
     tags: [exceptions, as, predict]
+
+  # --- Dynamic Exception Exercises ---
+  - slug: exception-catch-dynamic
+    objective: Write the correct except clause for a given exception type
+    title: Dynamic Exception Catch
+    difficulty: 2
+    concept: error-handling
+    subconcept: try-except
+    level: practice
+    prereqs: [error-handling.try-except]
+    type: write
+    pattern: handling
+    generator: exception-scenario
+    prompt: "Write the except clause to catch a {{exceptionType}} ({{context}} context)"
+    expected_answer: "{{catchBlock}}"
+    hints:
+      - "This exception is raised during {{operation}}"
+      - "Use except followed by the exception type"
+    tags: [exceptions, catch, dynamic, write]
+
+  - slug: exception-type-predict-dynamic
+    objective: Predict which exception type is raised
+    title: Dynamic Exception Type
+    difficulty: 2
+    concept: error-handling
+    subconcept: try-except
+    level: practice
+    prereqs: [error-handling.try-except]
+    type: predict
+    pattern: handling
+    generator: exception-scenario
+    prompt: "What exception type does this code raise?"
+    code: "{{code}}"
+    expected_answer: "{{exceptionType}}"
+    hints:
+      - "Think about what operation is being performed"
+      - "Context: {{context}}"
+    tags: [exceptions, type, dynamic, predict]
+
+  # --- Finally Flow Dynamic Exercises ---
+  - slug: finally-flow-predict-dynamic
+    objective: Predict the output of try/except/finally blocks
+    title: Dynamic Finally Flow
+    difficulty: 3
+    concept: error-handling
+    subconcept: finally
+    level: practice
+    prereqs: [error-handling.try-except]
+    type: predict
+    pattern: handling
+    generator: finally-flow
+    prompt: "What does this code print? (List each line of output)"
+    code: "{{code}}"
+    expected_answer: "{{outputStr}}"
+    hints:
+      - "{{description}}"
+      - "Finally block always executes"
+    tags: [exceptions, finally, dynamic, predict]
+
+  - slug: finally-trace-dynamic
+    objective: Trace execution through try/except/finally
+    title: Dynamic Finally Trace
+    difficulty: 3
+    concept: error-handling
+    subconcept: finally
+    level: edge
+    prereqs: [error-handling.finally]
+    type: predict
+    pattern: handling
+    generator: finally-flow
+    prompt: "How many lines does this code print?"
+    code: "{{code}}"
+    expected_answer: "{{outputCount}}"
+    hints:
+      - "Count: try block lines + except block lines (if exception) + finally block lines"
+      - "{{description}}"
+    tags: [exceptions, finally, trace, dynamic]

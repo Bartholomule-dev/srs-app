@@ -527,3 +527,79 @@ exercises:
     hints:
       - Child method overrides parent
     tags: [oop, inheritance, predict]
+
+  # --- Dynamic OOP Exercises ---
+  - slug: method-call-dynamic
+    objective: Predict the result of calling a method on an object
+    title: Dynamic Method Call
+    difficulty: 2
+    concept: oop
+    subconcept: methods
+    level: practice
+    prereqs: [oop.methods]
+    type: predict
+    pattern: invocation
+    generator: class-method
+    prompt: "What does this code print?"
+    code: "{{code}}"
+    expected_answer: "{{result}}"
+    hints:
+      - "The {{method}} method modifies or returns based on {{attribute}}"
+      - "Context: {{context}}"
+    tags: [oop, methods, dynamic, predict]
+
+  - slug: instance-method-write-dynamic
+    objective: Write a method call on an instance
+    title: Dynamic Instance Method Write
+    difficulty: 2
+    concept: oop
+    subconcept: methods
+    level: practice
+    prereqs: [oop.methods]
+    type: write
+    pattern: invocation
+    generator: class-method
+    prompt: "Given obj is a {{className}} instance, call its {{method}} method"
+    expected_answer: "{{methodCall}}"
+    hints:
+      - "Call methods using dot notation: obj.method()"
+    tags: [oop, methods, dynamic, write]
+
+  # --- Inheritance Dynamic Exercises ---
+  - slug: inheritance-predict-dynamic
+    objective: Predict the output when calling a method on a child class
+    title: Dynamic Inheritance Method
+    difficulty: 3
+    concept: oop
+    subconcept: inheritance
+    level: practice
+    prereqs: [oop.inheritance]
+    type: predict
+    pattern: invocation
+    generator: inheritance-method
+    prompt: "What does this code print?"
+    code: "{{code}}"
+    expected_answer: "{{result}}"
+    hints:
+      - "{{description}}"
+      - "Check if {{childClass}} overrides {{method}}"
+    tags: [oop, inheritance, dynamic, predict]
+
+  - slug: inheritance-override-dynamic
+    objective: Identify which class provides the method implementation
+    title: Dynamic Method Resolution
+    difficulty: 3
+    concept: oop
+    subconcept: inheritance
+    level: practice
+    prereqs: [oop.inheritance]
+    type: predict
+    pattern: invocation
+    generator: inheritance-method
+    prompt: "When calling {{method}}() on a {{callOn}} instance, which class provides the implementation? ({{parentClass}} or {{childClass}})"
+    code: "{{code}}"
+    expected_answer: "{{callOn}}"
+    hints:
+      - "Check if the child class overrides the method"
+      - "If no override, the parent's method is used"
+    tags: [oop, inheritance, dynamic, predict]

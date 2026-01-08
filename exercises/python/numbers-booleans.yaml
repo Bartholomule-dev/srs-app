@@ -587,3 +587,103 @@ exercises:
       - Variable name goes on the left
     tags: [variables, assignment, dynamic]
     generator: variable-names
+
+  # --- Dynamic Boolean Logic Exercises ---
+  - slug: bool-expression-dynamic
+    objective: Predict the result of a boolean expression
+    title: Dynamic Boolean Expression
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: comparisons
+    level: practice
+    prereqs: [numbers-booleans.comparisons]
+    type: predict
+    pattern: comparison
+    generator: bool-logic
+    prompt: "What does this expression evaluate to?"
+    code: |
+      a = {{a}}
+      b = {{b}}
+      print({{expression}})
+    expected_answer: "{{result}}"
+    hints:
+      - "Evaluate the condition: {{description}}"
+      - "Substitute a={{a}} and b={{b}}"
+    tags: [booleans, logic, dynamic, predict]
+
+  - slug: bool-logic-write-dynamic
+    objective: Write a boolean expression that checks a condition
+    title: Dynamic Boolean Write
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: comparisons
+    level: practice
+    prereqs: [numbers-booleans.comparisons]
+    type: write
+    pattern: comparison
+    generator: bool-logic
+    prompt: "Write an expression that checks if {{description}} (using a={{a}}, b={{b}})"
+    expected_answer: "{{expression}}"
+    hints:
+      - "Use comparison operators (<, >, ==, !=, <=, >=)"
+      - "Combine with and/or/not if needed"
+    tags: [booleans, logic, dynamic, write]
+
+  # --- Truthiness Intro Exercises ---
+  - slug: truthiness-intro
+    objective: Understand that non-boolean values have truthiness in boolean contexts
+    title: Truthiness Basics
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: truthiness
+    level: intro
+    prereqs: [numbers-booleans.booleans]
+    type: predict
+    pattern: conversion
+    prompt: What does bool(0) return?
+    code: |
+      print(bool(0))
+    expected_answer: "False"
+    hints:
+      - Zero is considered falsy in Python
+      - bool() converts to boolean
+    tags: [truthiness, intro, bool]
+
+  - slug: truthiness-empty-list
+    objective: Recognize that empty collections are falsy
+    title: Empty List Truthiness
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: truthiness
+    level: intro
+    prereqs: [numbers-booleans.booleans]
+    type: predict
+    pattern: conversion
+    prompt: What does bool([]) return?
+    code: |
+      print(bool([]))
+    expected_answer: "False"
+    hints:
+      - Empty collections are falsy
+      - Non-empty collections are truthy
+    tags: [truthiness, intro, collections]
+
+  - slug: truthiness-write-if
+    objective: Use truthiness in an if statement condition
+    title: Write Truthy Condition
+    difficulty: 1
+    concept: numbers-booleans
+    subconcept: truthiness
+    level: intro
+    prereqs: [numbers-booleans.truthiness]
+    type: write
+    pattern: conditional
+    prompt: Write an if statement that checks if list items is truthy (non-empty)
+    expected_answer: "if items:"
+    accepted_solutions:
+      - "if items:"
+      - "if bool(items):"
+    hints:
+      - You don't need == or len()
+      - The list itself can be the condition
+    tags: [truthiness, intro, conditional]

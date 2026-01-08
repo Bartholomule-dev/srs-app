@@ -550,6 +550,60 @@ exercises:
     tags: [sets, difference, operation]
 
   # --- Unpacking Subconcept ---
+  - slug: unpacking-intro
+    objective: Unpack a tuple into individual variables
+    title: Basic Tuple Unpacking
+    difficulty: 1
+    concept: collections
+    subconcept: unpacking
+    level: intro
+    prereqs: [collections.tuples]
+    type: write
+    pattern: assignment
+    prompt: Unpack the tuple point = (3, 5) into variables x and y
+    expected_answer: "x, y = point"
+    accepted_solutions:
+      - "x, y = point"
+      - "(x, y) = point"
+    hints:
+      - Variables on the left, tuple on the right
+      - Number of variables must match tuple length
+    tags: [unpacking, intro, tuples]
+
+  - slug: unpacking-list-intro
+    objective: Unpack a list into individual variables
+    title: List Unpacking
+    difficulty: 1
+    concept: collections
+    subconcept: unpacking
+    level: intro
+    prereqs: [collections.lists]
+    type: write
+    pattern: assignment
+    prompt: Unpack colors = ["red", "green", "blue"] into variables a, b, c
+    expected_answer: "a, b, c = colors"
+    hints:
+      - Same syntax as tuple unpacking
+      - Works with any iterable
+    tags: [unpacking, intro, lists]
+
+  - slug: unpacking-swap-intro
+    objective: Use unpacking to swap two variables
+    title: Variable Swap
+    difficulty: 1
+    concept: collections
+    subconcept: unpacking
+    level: intro
+    prereqs: [collections.unpacking]
+    type: write
+    pattern: assignment
+    prompt: Swap the values of variables a and b using unpacking (one line)
+    expected_answer: "a, b = b, a"
+    hints:
+      - Python evaluates the right side first
+      - No temp variable needed
+    tags: [unpacking, intro, swap]
+
   - slug: star-unpack
     objective: Use star unpacking to capture remaining elements into a list
     title: Star Unpacking
@@ -1067,3 +1121,139 @@ exercises:
     hints:
       - insert(index, value)
     tags: [lists, insert, mutation, dynamic]
+
+  - slug: list-method-predict-dynamic
+    objective: Predict the result of a list method or builtin function call
+    title: Dynamic List Method Result
+    difficulty: 2
+    concept: collections
+    subconcept: lists
+    level: practice
+    prereqs: [collections.lists]
+    type: predict
+    pattern: query
+    generator: list-method
+    prompt: "What does this code print?"
+    code: "{{code}}"
+    expected_answer: "{{result}}"
+    hints:
+      - "The {{method}}() {{description}}"
+    tags: [lists, methods, dynamic]
+
+  - slug: nested-access-predict-dynamic
+    objective: Predict the result of accessing nested data structures
+    title: Dynamic Nested Access
+    difficulty: 2
+    concept: collections
+    subconcept: dicts
+    level: practice
+    prereqs: [collections.dicts, collections.lists]
+    type: predict
+    pattern: indexing
+    generator: nested-access
+    prompt: "What does this code print?"
+    code: "{{code}}"
+    expected_answer: "{{result}}"
+    hints:
+      - "This is a {{description}}"
+      - "Use bracket notation for both list indices and dict keys"
+    tags: [collections, nested, dynamic]
+
+  - slug: nested-access-write-dynamic
+    objective: Write code to access a specific value in a nested structure
+    title: Dynamic Nested Access Write
+    difficulty: 2
+    concept: collections
+    subconcept: dicts
+    level: practice
+    prereqs: [collections.dicts, collections.lists]
+    type: write
+    pattern: indexing
+    generator: nested-access
+    prompt: "Given {{varName}} = {{dataStr}}, write code to access the value {{result}}"
+    expected_answer: "{{accessExpr}}"
+    hints:
+      - "This is a {{description}}"
+      - "Combine bracket notation for dict keys and list indices"
+    tags: [collections, nested, dynamic]
+
+  # --- Dynamic Tuple Exercises ---
+  - slug: tuple-index-dynamic
+    objective: Access a tuple element by index
+    title: Dynamic Tuple Index
+    difficulty: 1
+    concept: collections
+    subconcept: tuples
+    level: practice
+    prereqs: [collections.tuples]
+    type: predict
+    pattern: indexing
+    generator: tuple-access
+    prompt: "What does {{tupleVar}}[{{index}}] return?"
+    code: |
+      {{tupleVar}} = {{tuple}}
+      print({{tupleVar}}[{{index}}])
+    expected_answer: "{{result}}"
+    hints:
+      - Tuple indexing works like list indexing
+      - Index {{index}} gets the element at position {{index}}
+    tags: [tuples, indexing, dynamic]
+
+  - slug: tuple-unpack-dynamic
+    objective: Write unpacking for a dynamically generated tuple
+    title: Dynamic Tuple Unpack
+    difficulty: 2
+    concept: collections
+    subconcept: unpacking
+    level: practice
+    prereqs: [collections.unpacking]
+    type: write
+    pattern: assignment
+    generator: tuple-access
+    prompt: "Given {{tupleVar}} = {{tuple}}, unpack it into {{length}} variables"
+    expected_answer: "a, b, c = {{tupleVar}}"
+    accepted_solutions:
+      - "a, b, c = {{tupleVar}}"
+      - "x, y, z = {{tupleVar}}"
+      - "(a, b, c) = {{tupleVar}}"
+    hints:
+      - Number of variables must match tuple length
+      - Use comma-separated variable names
+    tags: [tuples, unpacking, dynamic]
+
+  # --- Dynamic Set Exercises ---
+  - slug: set-operation-dynamic
+    objective: Predict the result of a set operation
+    title: Dynamic Set Operation
+    difficulty: 2
+    concept: collections
+    subconcept: sets
+    level: practice
+    prereqs: [collections.sets]
+    type: predict
+    pattern: logical
+    generator: set-ops
+    prompt: "What does {{code}} return?"
+    code: "{{code}}"
+    expected_answer: "{{result}}"
+    hints:
+      - "{{description}}"
+      - The {{operationName}} operation uses {{operation}}
+    tags: [sets, operations, dynamic]
+
+  - slug: set-operation-write-dynamic
+    objective: Write the set operation to get a specific result
+    title: Write Set Operation
+    difficulty: 2
+    concept: collections
+    subconcept: sets
+    level: practice
+    prereqs: [collections.sets]
+    type: write
+    pattern: logical
+    generator: set-ops
+    prompt: "Write the {{operationName}} of {{set1}} and {{set2}}"
+    expected_answer: "{{set1}} {{operation}} {{set2}}"
+    hints:
+      - "{{operationName}} uses the {{operation}} operator"
+    tags: [sets, operations, dynamic, write]

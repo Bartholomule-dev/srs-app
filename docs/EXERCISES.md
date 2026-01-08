@@ -4,7 +4,7 @@
 
 # Exercise List - Complete
 
-> **352 exercises** across 10 concepts
+> **419 exercises** across 10 concepts
 
 ---
 
@@ -12,32 +12,32 @@
 
 | Type | Count | Level | Count |
 |------|-------|-------|-------|
-| write | 221 | intro | 146 |
-| fill-in | 58 | practice | 155 |
-| predict | 73 | edge | 47 |
-| **Dynamic** | **37** | integrated | 4 |
+| write | 245 | intro | 158 |
+| fill-in | 58 | practice | 207 |
+| predict | 116 | edge | 50 |
+| **Dynamic** | **92** | integrated | 4 |
 
 ---
 
 ## Contents
 
-- [[#^collections|collections]] (57)
-- [[#^comprehensions|comprehensions]] (17)
-- [[#^control-flow|control-flow]] (52)
-- [[#^error-handling|error-handling]] (20)
-- [[#^foundations|foundations]] (35)
-- [[#^functions|functions]] (39)
-- [[#^modules-files|modules-files]] (27)
-- [[#^numbers-booleans|numbers-booleans]] (30)
-- [[#^oop|oop]] (28)
-- [[#^strings|strings]] (47)
+- [[#^collections|collections]] (67)
+- [[#^comprehensions|comprehensions]] (26)
+- [[#^control-flow|control-flow]] (63)
+- [[#^error-handling|error-handling]] (24)
+- [[#^foundations|foundations]] (38)
+- [[#^functions|functions]] (49)
+- [[#^modules-files|modules-files]] (34)
+- [[#^numbers-booleans|numbers-booleans]] (35)
+- [[#^oop|oop]] (32)
+- [[#^strings|strings]] (51)
 
 ---
 
-## Collections (57)
+## Collections (67)
 ^collections
 
-### dicts (13)
+### dicts (15)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
@@ -54,8 +54,10 @@
 | 11 | P | P | What does this code print? | `d = {"a": 1} print(d.get("b", 0)) ` | `0` |  |
 | 12 | W | P | Get all key-value pairs from dict d as tuples |  | `d.items()` |  |
 | 13 | W | P | Remove and return the value for key "name" from dict d |  | `d.pop("name")` |  |
+| 14 | P | P | What does this code print? | `{{code}}` | `{{result}}` | ✓ |
+| 15 | W | P | Given {{varName}} = {{dataStr}}, write code to access the value {{result}} |  | `{{accessExpr}}` | ✓ |
 
-### lists (21)
+### lists (22)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
@@ -73,13 +75,14 @@
 | 12 | W | P | Extend list a with elements from list b |  | `a.extend(b)` |  |
 | 13 | W | P | Find the index of value "apple" in list items |  | `items.index("apple")` |  |
 | 14 | W | P | Insert value "x" at index {{idx}} in list items |  | `items.insert({{idx}}, "x")` | ✓ |
-| 15 | P | P | Given nums = [{{a}}, {{b}}, {{c}}], what does nums[-1] return? | `nums = [{{a}}, {{b}}, {{c}}] print(nums[-1]) ` | `{{c}}` | ✓ |
-| 16 | P | P | Given nums = [{{a}}, {{b}}, {{c}}], what does nums.pop() return? | `nums = [{{a}}, {{b}}, {{c}}] print(nums.pop()) ` | `{{c}}` | ✓ |
-| 17 | W | P | Remove and return the element at index 2 from list items |  | `items.pop(2)` |  |
-| 18 | W | P | Reverse list items in place |  | `items.reverse()` |  |
-| 19 | W | P | Extract elements from index {{start}} to {{end}} (exclusive) from list nums |  | `nums[{{start}}:{{end}}]` | ✓ |
-| 20 | W | P | Sort list items in place |  | `items.sort()` |  |
-| 21 | W | E | Return a sorted copy of list items without modifying it |  | `sorted(items)` |  |
+| 15 | P | P | What does this code print? | `{{code}}` | `{{result}}` | ✓ |
+| 16 | P | P | Given nums = [{{a}}, {{b}}, {{c}}], what does nums[-1] return? | `nums = [{{a}}, {{b}}, {{c}}] print(nums[-1]) ` | `{{c}}` | ✓ |
+| 17 | P | P | Given nums = [{{a}}, {{b}}, {{c}}], what does nums.pop() return? | `nums = [{{a}}, {{b}}, {{c}}] print(nums.pop()) ` | `{{c}}` | ✓ |
+| 18 | W | P | Remove and return the element at index 2 from list items |  | `items.pop(2)` |  |
+| 19 | W | P | Reverse list items in place |  | `items.reverse()` |  |
+| 20 | W | P | Extract elements from index {{start}} to {{end}} (exclusive) from list nums |  | `nums[{{start}}:{{end}}]` | ✓ |
+| 21 | W | P | Sort list items in place |  | `items.sort()` |  |
+| 22 | W | E | Return a sorted copy of list items without modifying it |  | `sorted(items)` |  |
 
 ### mutability (8)
 
@@ -94,7 +97,7 @@
 | 7 | W | E | Extend list items in place with [4, 5] (don't reassign) |  | `items.extend([4, 5])` |  |
 | 8 | W | E | Create new tuple by concatenating t with (4, 5) since tuples are immutable |  | `t + (4, 5)` |  |
 
-### sets (8)
+### sets (10)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
@@ -103,40 +106,51 @@
 | 3 | W | P | Get elements in set a but not in set b |  | `a - b` |  |
 | 4 | W | P | Remove value 5 from set s if present (no error if not found) |  | `s.discard(5)` |  |
 | 5 | W | P | Get the intersection of sets a and b |  | `a & b` |  |
-| 6 | W | P | Remove value 5 from set s (raises error if not found) |  | `s.remove(5)` |  |
-| 7 | W | P | Get the union of sets a and b |  | `a \| b` |  |
-| 8 | P | P | What does this code print? | `a = {1, 2} b = {2, 3} print(a \| b) ` | `{1, 2, 3}` |  |
+| 6 | P | P | What does {{code}} return? | `{{code}}` | `{{result}}` | ✓ |
+| 7 | W | P | Write the {{operationName}} of {{set1}} and {{set2}} |  | `{{set1}} {{operation}} {{set2}}` | ✓ |
+| 8 | W | P | Remove value 5 from set s (raises error if not found) |  | `s.remove(5)` |  |
+| 9 | W | P | Get the union of sets a and b |  | `a \| b` |  |
+| 10 | P | P | What does this code print? | `a = {1, 2} b = {2, 3} print(a \| b) ` | `{1, 2, 3}` |  |
 
-### tuples (4)
+### tuples (5)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
 | 1 | W | I | Create a tuple with values 1, 2, 3 |  | `(1, 2, 3)` |  |
 | 2 | W | I | Get the second element of tuple t |  | `t[1]` |  |
-| 3 | W | P | Create a tuple with single element 5 (note the syntax) |  | `(5,)` |  |
-| 4 | W | P | Unpack tuple point = (3, 4) into variables x and y |  | `x, y = point` |  |
+| 3 | P | P | What does {{tupleVar}}[{{index}}] return? | `{{tupleVar}} = {{tuple}} print({{tupleVar}}[{{index}}]) ` | `{{result}}` | ✓ |
+| 4 | W | P | Create a tuple with single element 5 (note the syntax) |  | `(5,)` |  |
+| 5 | W | P | Unpack tuple point = (3, 4) into variables x and y |  | `x, y = point` |  |
 
-### unpacking (3)
+### unpacking (7)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
-| 1 | W | E | Unpack first element to a, rest to remaining from list [1, 2, 3, 4] |  | `a, *remaining = [1, 2, 3, 4]` |  |
-| 2 | W | E | Call function func with dict kwargs unpacked as keyword arguments |  | `func(**kwargs)` |  |
-| 3 | W | E | Call function func with list args unpacked as positional arguments |  | `func(*args)` |  |
+| 1 | W | I | Unpack the tuple point = (3, 5) into variables x and y |  | `x, y = point` |  |
+| 2 | W | I | Unpack colors = ["red", "green", "blue"] into variables a, b, c |  | `a, b, c = colors` |  |
+| 3 | W | I | Swap the values of variables a and b using unpacking (one line) |  | `a, b = b, a` |  |
+| 4 | W | P | Given {{tupleVar}} = {{tuple}}, unpack it into {{length}} variables |  | `a, b, c = {{tupleVar}}` | ✓ |
+| 5 | W | E | Unpack first element to a, rest to remaining from list [1, 2, 3, 4] |  | `a, *remaining = [1, 2, 3, 4]` |  |
+| 6 | W | E | Call function func with dict kwargs unpacked as keyword arguments |  | `func(**kwargs)` |  |
+| 7 | W | E | Call function func with list args unpacked as positional arguments |  | `func(*args)` |  |
 
 ---
 
-## Comprehensions (17)
+## Comprehensions (26)
 ^comprehensions
 
-### dict-comp (4)
+### dict-comp (8)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
-| 1 | W | P | Create a dict mapping numbers 1-3 to their squares |  | `{x: x**2 for x in range(1, 4)}` |  |
-| 2 | F | P | Complete the key-value separator |  | `:` |  |
-| 3 | P | P | What does this code produce? | `result = {x: x**2 for x in range(3)} print(result) ` | `{0: 0, 1: 1, 2: 4}` |  |
-| 4 | W | P | Create dict from keys list and values list using comprehension |  | `{k: v for k, v in zip(keys, values)}` |  |
+| 1 | W | I | Create a dict mapping numbers 1-3 to their squares using comprehension |  | `{x: x**2 for x in range(1, 4)}` |  |
+| 2 | P | I | What does this create? | `{x: x*2 for x in [1, 2, 3]}` | `{1: 2, 2: 4, 3: 6}` |  |
+| 3 | W | P | Create a dict mapping numbers 1-3 to their squares |  | `{x: x**2 for x in range(1, 4)}` |  |
+| 4 | F | P | Complete the key-value separator |  | `:` |  |
+| 5 | P | P | What does this code produce? | `result = {{code}} print(result) ` | `{{result}}` | ✓ |
+| 6 | P | P | What does this code produce? | `result = {x: x**2 for x in range(3)} print(result) ` | `{0: 0, 1: 1, 2: 4}` |  |
+| 7 | W | P | Write a dict comprehension that {{description}} for range({{n}}) |  | `{{code}}` | ✓ |
+| 8 | W | P | Create dict from keys list and values list using comprehension |  | `{k: v for k, v in zip(keys, values)}` |  |
 
 ### generator-exp (2)
 
@@ -145,7 +159,7 @@
 | 1 | W | I | Create a generator of squares from 1 to 5 |  | `(x**2 for x in range(1, 6))` |  |
 | 2 | W | P | Sum all squares from 1 to 100 using generator expression |  | `sum(x**2 for x in range(1, 101))` |  |
 
-### list-comp (9)
+### list-comp (12)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
@@ -153,34 +167,41 @@
 | 2 | F | I | Complete the list comprehension |  | `for` |  |
 | 3 | P | I | What does this code produce? | `result = [x * {{m}} for x in range({{n}})] print(result) ` | `{{result}}` | ✓ |
 | 4 | W | P | Create a list of even numbers from 1 to 10 using comprehension |  | `[x for x in range(1, 11) if x % 2 == 0]` |  |
-| 5 | P | P | What does this code produce? | `result = [x for x in range({{n}}) if x % {{mod}} == 0] pr...` | `{{result}}` | ✓ |
-| 6 | F | P | Complete the filter condition |  | `if` |  |
-| 7 | W | E | Create list replacing negative numbers with 0 from list nums |  | `[x if x >= 0 else 0 for x in nums]` |  |
-| 8 | W | E | Flatten a 2D list called matrix using comprehension |  | `[item for row in matrix for item in row]` |  |
-| 9 | P | E | What does this code produce? | `matrix = [[1, 2], [3, 4]] result = [x for row in matrix f...` | `[1, 2, 3, 4]` |  |
+| 5 | P | P | What does this code print? | `{{code}}` | `{{outputStr}}` | ✓ |
+| 6 | P | P | What does this code produce? | `result = [x for x in range({{n}}) if x % {{mod}} == 0] pr...` | `{{result}}` | ✓ |
+| 7 | F | P | Complete the filter condition |  | `if` |  |
+| 8 | P | P | What does this code print? | `{{code}}` | `{{outputStr}}` | ✓ |
+| 9 | W | P | Write a list comprehension to {{description}} from nums = {{inputStr}} |  | `{{expression}}` | ✓ |
+| 10 | W | E | Create list replacing negative numbers with 0 from list nums |  | `[x if x >= 0 else 0 for x in nums]` |  |
+| 11 | W | E | Flatten a 2D list called matrix using comprehension |  | `[item for row in matrix for item in row]` |  |
+| 12 | P | E | What does this code produce? | `matrix = [[1, 2], [3, 4]] result = [x for row in matrix f...` | `[1, 2, 3, 4]` |  |
 
-### set-comp (2)
+### set-comp (4)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
-| 1 | W | P | Create a set of first letters from list of words |  | `{word[0] for word in words}` |  |
-| 2 | F | P | Complete to create a set (unique values) |  | `{` |  |
+| 1 | W | I | Create a set of squares for numbers 1-4 using comprehension |  | `{x**2 for x in range(1, 5)}` |  |
+| 2 | P | I | What does this create? | `{x % 3 for x in [1, 2, 3, 4, 5, 6]}` | `{0, 1, 2}` |  |
+| 3 | W | P | Create a set of first letters from list of words |  | `{word[0] for word in words}` |  |
+| 4 | F | P | Complete to create a set (unique values) |  | `{` |  |
 
 ---
 
-## Control Flow (52)
+## Control Flow (63)
 ^control-flow
 
-### any-all (4)
+### any-all (6)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
 | 1 | W | I | Check if all numbers in nums are positive (greater than 0) |  | `all(n > 0 for n in nums)` |  |
 | 2 | W | I | Check if any number in nums is greater than 10 |  | `any(n > 10 for n in nums)` |  |
-| 3 | W | P | Check if any word in words starts with the letter 'a' |  | `any(word.startswith('a') for word in words)` |  |
-| 4 | W | E | Write an if statement that checks if all items are valid AND any item is prio... |  | `if all(item.valid for item in items) and any(it...` |  |
+| 3 | P | P | What does this code return? | `{{code}}` | `{{result}}` | ✓ |
+| 4 | W | P | Check if {{func}} elements in {{list}} are truthy |  | `{{func}}({{list}})` | ✓ |
+| 5 | W | P | Check if any word in words starts with the letter 'a' |  | `any(word.startswith('a') for word in words)` |  |
+| 6 | W | E | Write an if statement that checks if all items are valid AND any item is prio... |  | `if all(item.valid for item in items) and any(it...` |  |
 
-### conditionals (11)
+### conditionals (15)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
@@ -188,15 +209,19 @@
 | 2 | W | I | Write the else clause for an if statement |  | `else:` |  |
 | 3 | W | I | Write an if statement that checks if {{x}} is greater than {{y}} |  | `if {{x}} > {{y}}:` | ✓ |
 | 4 | W | I | Write an if statement that checks if x > 0 |  | `if x > 0:` |  |
-| 5 | W | P | Write if statement checking if x > 0 AND y > 0 |  | `if x > 0 and y > 0:` |  |
-| 6 | W | P | Write an elif clause that checks if x < 0 |  | `elif x < 0:` |  |
-| 7 | W | P | Write if statement checking if x is in list items |  | `if x in items:` |  |
-| 8 | W | P | Write if statement checking if NOT done |  | `if not done:` |  |
-| 9 | W | P | Write if statement checking if x == 0 OR y == 0 |  | `if x == 0 or y == 0:` |  |
-| 10 | W | E | Write a match statement for variable command |  | `match command:` |  |
-| 11 | W | E | Write a case clause for value "start" |  | `case "start":` |  |
+| 5 | P | P | What does this expression evaluate to? | `print({{expression}}) ` | `{{result}}` | ✓ |
+| 6 | W | P | Write if statement checking if x > 0 AND y > 0 |  | `if x > 0 and y > 0:` |  |
+| 7 | W | P | Write an if statement that checks if {{description}} (using a={{a}}, b={{b}}) |  | `if {{expression}}:` | ✓ |
+| 8 | W | P | Write an elif clause that checks if x < 0 |  | `elif x < 0:` |  |
+| 9 | P | P | What does this code print? | `{{code}}` | `{{result}}` | ✓ |
+| 10 | W | P | Write if statement checking if x is in list items |  | `if x in items:` |  |
+| 11 | W | P | Write if statement checking if NOT done |  | `if not done:` |  |
+| 12 | W | P | Write if statement checking if x == 0 OR y == 0 |  | `if x == 0 or y == 0:` |  |
+| 13 | P | E | For input value {{value}}, which branch executes (output the result)? | `{{code}}` | `{{result}}` | ✓ |
+| 14 | W | E | Write a match statement for variable command |  | `match command:` |  |
+| 15 | W | E | Write a case clause for value "start" |  | `case "start":` |  |
 
-### for (17)
+### for (18)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
@@ -210,13 +235,14 @@
 | 8 | F | I | Complete to loop 5 times (0 to 4) |  | `range` |  |
 | 9 | P | P | What does this code print? | `for i in range(5):     if i == 3:         break     print...` | `0 1 2 ` |  |
 | 10 | P | P | What does this code print? | `for i in range(5):     if i == 2:         continue     pr...` | `0 1 3 4 ` |  |
-| 11 | W | P | Write a for loop using range({{start}}, {{stop}}, {{step}}) |  | `for i in range({{start}}, {{stop}}, {{step}}):` | ✓ |
-| 12 | P | P | Given x = {{x}} and y = {{y}}, what does this code print? | `total = 0 for num in [{{x}}, {{y}}]:     total += num pri...` | `{{sum}}` | ✓ |
-| 13 | P | P | What does this code print? | `for i in range({{start}}, {{stop}}, {{step}}):     print(i) ` | `{{output}}` | ✓ |
-| 14 | W | E | Exit a loop early using a statement |  | `break` |  |
-| 15 | W | E | Skip to next iteration using a statement |  | `continue` |  |
-| 16 | P | E | What does this code print? | `for i in range(2):     for j in range(2):         print(i...` | `0 0 0 1 1 0 1 1 ` |  |
-| 17 | W | Int | Write the else clause for a for loop that executes when loop completes withou... |  | `else:` |  |
+| 11 | P | P | What does this code print? | `total = 0 for num in [{{a}}, {{b}}, {{c}}]:     total += ...` | `{{sum}}` | ✓ |
+| 12 | W | P | Write a for loop using range({{start}}, {{stop}}, {{step}}) |  | `for i in range({{start}}, {{stop}}, {{step}}):` | ✓ |
+| 13 | P | P | Given x = {{x}} and y = {{y}}, what does this code print? | `total = 0 for num in [{{x}}, {{y}}]:     total += num pri...` | `{{sum}}` | ✓ |
+| 14 | P | P | What does this code print? | `for i in range({{start}}, {{stop}}, {{step}}):     print(i) ` | `{{output}}` | ✓ |
+| 15 | W | E | Exit a loop early using a statement |  | `break` |  |
+| 16 | W | E | Skip to next iteration using a statement |  | `continue` |  |
+| 17 | P | E | What does this code print? | `for i in range(2):     for j in range(2):         print(i...` | `0 0 0 1 1 0 1 1 ` |  |
+| 18 | W | Int | Write the else clause for a for loop that executes when loop completes withou... |  | `else:` |  |
 
 ### iteration (5)
 
@@ -236,14 +262,16 @@
 | 2 | W | P | Count down from 5 to 1 using reversed and range |  | `for i in reversed(range(1, 6)):` |  |
 | 3 | W | E | Iterate over items in reverse while keeping track of original indices |  | `for i, item in reversed(list(enumerate(items))):` |  |
 
-### sorted (4)
+### sorted (6)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
 | 1 | W | I | Iterate over items list in sorted order |  | `for item in sorted(items):` |  |
 | 2 | W | P | Sort words list by string length using the key parameter |  | `for word in sorted(words, key=len):` |  |
-| 3 | W | P | Iterate over numbers in descending (reverse) order |  | `for num in sorted(numbers, reverse=True):` |  |
-| 4 | W | E | Sort a list of tuples by the second element using a lambda |  | `for item in sorted(data, key=lambda x: x[1]):` |  |
+| 3 | P | P | What does this code return? | `{{code}}` | `{{output}}` | ✓ |
+| 4 | W | P | Iterate over numbers in descending (reverse) order |  | `for num in sorted(numbers, reverse=True):` |  |
+| 5 | W | P | Transform {{input}} to get {{output}} |  | `{{code}}` | ✓ |
+| 6 | W | E | Sort a list of tuples by the second element using a lambda |  | `for item in sorted(data, key=lambda x: x[1]):` |  |
 
 ### while (4)
 
@@ -254,30 +282,34 @@
 | 3 | W | P | Write a while loop that runs while count < 5 |  | `while count < 5:` |  |
 | 4 | W | E | Create an infinite loop that can be exited |  | `while True:` |  |
 
-### zip (4)
+### zip (6)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
 | 1 | W | I | Use zip to iterate over names and ages lists together |  | `for name, age in zip(names, ages):` |  |
 | 2 | P | P | What does this code print? | `for a, b in zip([1, 2], ["x", "y"]):     print(a, b) ` | `1 x 2 y ` |  |
-| 3 | W | P | Use zip to iterate over first, middle, and last name lists simultaneously |  | `for f, m, l in zip(first, middle, last):` |  |
-| 4 | W | E | Import and use zip_longest to handle lists of different lengths with a fillva... |  | `for a, b in zip_longest(list1, list2, fillvalue...` |  |
+| 3 | P | P | What does this code return? | `list(zip({{list1}}, {{list2}}))` | `{{output}}` | ✓ |
+| 4 | P | P | What does this code return? | `{{code}}` | `{{output}}` | ✓ |
+| 5 | W | P | Use zip to iterate over first, middle, and last name lists simultaneously |  | `for f, m, l in zip(first, middle, last):` |  |
+| 6 | W | E | Import and use zip_longest to handle lists of different lengths with a fillva... |  | `for a, b in zip_longest(list1, list2, fillvalue...` |  |
 
 ---
 
-## Error Handling (20)
+## Error Handling (24)
 ^error-handling
 
-### finally (6)
+### finally (8)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
 | 1 | W | I | Write a finally block that always runs |  | `finally:` |  |
 | 2 | W | I | Close a file object f in a finally block |  | `finally:     f.close() ` |  |
-| 3 | P | P | What gets printed? | `def test():     try:         return "try"     finally:   ...` | `finally try ` |  |
-| 4 | W | P | Write a complete try-except-finally structure with pass in each block |  | `try:     pass except:     pass finally:     pass ` |  |
-| 5 | W | E | Write an else block that runs when no exception is raised |  | `else:     pass ` |  |
-| 6 | P | E | What gets printed before the error? | `try:     print("try")     raise ValueError("error") final...` | `try finally ` |  |
+| 3 | P | P | What does this code print? (List each line of output) | `{{code}}` | `{{outputStr}}` | ✓ |
+| 4 | P | P | What gets printed? | `def test():     try:         return "try"     finally:   ...` | `finally try ` |  |
+| 5 | W | P | Write a complete try-except-finally structure with pass in each block |  | `try:     pass except:     pass finally:     pass ` |  |
+| 6 | W | E | Write an else block that runs when no exception is raised |  | `else:     pass ` |  |
+| 7 | P | E | What gets printed before the error? | `try:     print("try")     raise ValueError("error") final...` | `try finally ` |  |
+| 8 | P | E | How many lines does this code print? | `{{code}}` | `{{outputCount}}` | ✓ |
 
 ### raising (6)
 
@@ -290,7 +322,7 @@
 | 5 | W | P | Re-raise the current exception after logging it |  | `raise` |  |
 | 6 | W | E | Define a custom exception class ValidationError that inherits from Exception |  | `class ValidationError(Exception):` |  |
 
-### try-except (8)
+### try-except (10)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
@@ -302,13 +334,15 @@
 | 6 | W | P | Catch Exception and assign it to variable e |  | `except Exception as e:` |  |
 | 7 | P | P | What does this code print? | `try:     x = 1 / 0 except ValueError:     print("value er...` | `zero division` |  |
 | 8 | P | P | What does this code print? | `try:     raise ValueError("oops") except ValueError as e:...` | `oops` |  |
+| 9 | W | P | Write the except clause to catch a {{exceptionType}} ({{context}} context) |  | `{{catchBlock}}` | ✓ |
+| 10 | P | P | What exception type does this code raise? | `{{code}}` | `{{exceptionType}}` | ✓ |
 
 ---
 
-## Foundations (35)
+## Foundations (38)
 ^foundations
 
-### expressions (8)
+### expressions (11)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
@@ -319,7 +353,10 @@
 | 5 | P | I | What does this code print? | `result = True and False print(result) ` | `False` |  |
 | 6 | F | P | Complete the expression to invert the boolean |  | `not` |  |
 | 7 | P | P | What does this code print? | `result = True or False print(result) ` | `True` |  |
-| 8 | W | P | Write a ternary expression that returns "even" if x is even, "odd" otherwise |  | `"even" if x % 2 == 0 else "odd"` |  |
+| 8 | P | P | What is the result of: {{expression}} | `{{code}}` | `{{resultStr}}` | ✓ |
+| 9 | P | P | Evaluate: {{expression}} | `{{code}}` | `{{resultStr}}` | ✓ |
+| 10 | P | P | What does this expression evaluate to? | `{{code}}` | `{{resultStr}}` | ✓ |
+| 11 | W | P | Write a ternary expression that returns "even" if x is even, "odd" otherwise |  | `"even" if x % 2 == 0 else "odd"` |  |
 
 ### io (10)
 
@@ -365,7 +402,7 @@
 
 ---
 
-## Functions (39)
+## Functions (49)
 ^functions
 
 ### args-kwargs (7)
@@ -388,19 +425,21 @@
 | 2 | W | E | Define a function config that accepts any keyword arguments |  | `def config(**kwargs):` |  |
 | 3 | W | E | Define func(a, /, b) where a must be passed positionally |  | `def func(a, /, b):` |  |
 
-### defaults (7)
+### defaults (9)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
 | 1 | W | I | Define greet(name, greeting="Hello") with a default greeting |  | `def greet(name, greeting="Hello"):` |  |
-| 2 | W | P | Define connect(host, port=8080, timeout=30) with two defaults |  | `def connect(host, port=8080, timeout=30):` |  |
-| 3 | W | P | Define append_to(item, target=None) with None as default |  | `def append_to(item, target=None):` |  |
-| 4 | P | P | What does this code print? | `def greet(name, greeting="Hello"):     return f"{greeting...` | `Hello, Alice!` |  |
-| 5 | F | P | Complete to make greeting default to "Hello" |  | `=` |  |
-| 6 | W | E | Define add_item(item, items=None) avoiding the mutable default trap (use None... |  | `def add_item(item, items=None):` |  |
-| 7 | P | E | What does this code print? | `def add_item(item, items=[]):     items.append(item)     ...` | `[1] [1, 2] ` |  |
+| 2 | W | P | Given def {{funcName}}({{params}}), call it to get the result '{{result}}' |  | `{{funcName}}({{callArgs}})` | ✓ |
+| 3 | P | P | What does this code print? | `{{code}}` | `{{result}}` | ✓ |
+| 4 | W | P | Define connect(host, port=8080, timeout=30) with two defaults |  | `def connect(host, port=8080, timeout=30):` |  |
+| 5 | W | P | Define append_to(item, target=None) with None as default |  | `def append_to(item, target=None):` |  |
+| 6 | P | P | What does this code print? | `def greet(name, greeting="Hello"):     return f"{greeting...` | `Hello, Alice!` |  |
+| 7 | F | P | Complete to make greeting default to "Hello" |  | `=` |  |
+| 8 | W | E | Define add_item(item, items=None) avoiding the mutable default trap (use None... |  | `def add_item(item, items=None):` |  |
+| 9 | P | E | What does this code print? | `def add_item(item, items=[]):     items.append(item)     ...` | `[1] [1, 2] ` |  |
 
-### fn-basics (8)
+### fn-basics (11)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
@@ -411,26 +450,34 @@
 | 5 | W | I | Define a function add that takes a and b, returns their sum |  | `def add(a, b):     return a + b ` |  |
 | 6 | P | I | What does this code print? | `def add(a, b):     return a + b print(add(3, 4)) ` | `7` |  |
 | 7 | F | I | Complete to return the result |  | `return` |  |
-| 8 | W | P | Return both x and y from a function (tuple return) |  | `return x, y` |  |
+| 8 | P | P | What does {{funcName}}({{argList}}) return? | `{{code}}` | `{{result}}` | ✓ |
+| 9 | W | P | Call {{funcName}} with arguments {{argList}} |  | `{{funcName}}({{argList}})` | ✓ |
+| 10 | W | P | Return both x and y from a function (tuple return) |  | `return x, y` |  |
+| 11 | P | P | What does this function call return? | `{{code}}` | `{{result}}` | ✓ |
 
-### lambda (6)
+### lambda (9)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
 | 1 | F | I | Complete the anonymous function |  | `lambda` |  |
 | 2 | W | I | Create a lambda that doubles its input x |  | `lambda x: x * 2` |  |
-| 3 | P | P | What does this code print? | `double = lambda x: x * 2 print(double(5)) ` | `10` |  |
-| 4 | W | P | Create a lambda that adds two numbers x and y |  | `lambda x, y: x + y` |  |
-| 5 | W | E | Create a lambda that returns "even" if x is even, "odd" otherwise |  | `lambda x: "even" if x % 2 == 0 else "odd"` |  |
-| 6 | W | Int | Sort list of tuples by second element using lambda |  | `sorted(items, key=lambda x: x[1])` |  |
+| 3 | W | P | Call the lambda {{opName}} = {{lambdaExpr}} with arguments {{argList}} |  | `{{opName}}({{argList}})` | ✓ |
+| 4 | P | P | What does this code print? | `double = lambda x: x * 2 print(double(5)) ` | `10` |  |
+| 5 | P | P | What does this code print? | `{{opName}} = {{lambdaExpr}} print({{opName}}({{argList}})) ` | `{{result}}` | ✓ |
+| 6 | W | P | Create a lambda that adds two numbers x and y |  | `lambda x, y: x + y` |  |
+| 7 | W | P | Write a lambda that {{description}} |  | `{{lambdaExpr}}` | ✓ |
+| 8 | W | E | Create a lambda that returns "even" if x is even, "odd" otherwise |  | `lambda x: "even" if x % 2 == 0 else "odd"` |  |
+| 9 | W | Int | Sort list of tuples by second element using lambda |  | `sorted(items, key=lambda x: x[1])` |  |
 
-### scope (3)
+### scope (5)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
-| 1 | W | P | Declare counter as a global variable inside a function |  | `global counter` |  |
-| 2 | P | P | What does this code print? | `x = 10 def foo():     x = 20     print(x) foo() print(x) ` | `20 10 ` |  |
-| 3 | W | E | Access outer function variable x from inner function using nonlocal |  | `nonlocal x` |  |
+| 1 | P | I | What does this print? | `x = 10 def foo():     print(x) foo() ` | `10` |  |
+| 2 | P | I | What does this print? | `x = 10 def foo():     x = 20     print(x) foo() ` | `20` |  |
+| 3 | W | P | Declare counter as a global variable inside a function |  | `global counter` |  |
+| 4 | P | P | What does this code print? | `x = 10 def foo():     x = 20     print(x) foo() print(x) ` | `20 10 ` |  |
+| 5 | W | E | Access outer function variable x from inner function using nonlocal |  | `nonlocal x` |  |
 
 ### typehints (5)
 
@@ -444,7 +491,7 @@
 
 ---
 
-## Modules Files (27)
+## Modules Files (34)
 ^modules-files
 
 ### context (3)
@@ -454,6 +501,14 @@
 | 1 | W | I | Open file "data.txt" using a with statement, assigning to f |  | `with open("data.txt") as f:` |  |
 | 2 | W | P | Open input.txt and output.txt simultaneously in a with statement |  | `with open("input.txt") as inp, open("output.txt...` |  |
 | 3 | F | P | Complete to open file safely |  | `with` |  |
+
+### file-io (3)
+
+| # | Type | Level | Prompt | Code | Answer | Dyn |
+|---|------|-------|--------|------|--------|-----|
+| 1 | P | P | What does this code print? | `{{code}}` | `{{result}}` | ✓ |
+| 2 | P | P | What does this code print? (Assume {{filename}} contains '{{content}}') | `{{code}}` | `{{result}}` | ✓ |
+| 3 | W | P | Write code to open '{{filename}}' in '{{mode}}' mode using a context manager |  | `with open("{{filename}}", "{{mode}}") as f:` | ✓ |
 
 ### imports (6)
 
@@ -475,15 +530,19 @@
 | 3 | W | P | Write main guard that calls main() function |  | `if __name__ == "__main__":     main() ` |  |
 | 4 | W | E | Define a main() function that prints "Running" and call it from a main guard |  | `def main():     print("Running")  if __name__ =...` |  |
 
-### pathlib (5)
+### pathlib (9)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
 | 1 | W | I | Create a Path object for the current directory |  | `Path('.')` |  |
-| 2 | P | P | What does this produce? | `from pathlib import Path p = Path("home") / "user" / "fil...` | `home/user/file.txt` |  |
-| 3 | W | P | Get the parent directory of Path object p |  | `p.parent` |  |
-| 4 | W | P | Join Path object base with "subdir" and "file.txt" using the / operator |  | `base / "subdir" / "file.txt"` |  |
-| 5 | W | E | Check if Path p exists and is a directory |  | `p.exists() and p.is_dir()` |  |
+| 2 | P | P | What does this code print? | `from pathlib import Path p = Path("{{dir1}}") / "{{dir2}}...` | `{{fullPath}}` | ✓ |
+| 3 | P | P | What does this produce? | `from pathlib import Path p = Path("home") / "user" / "fil...` | `home/user/file.txt` |  |
+| 4 | P | P | What does p.parent return? | `from pathlib import Path p = Path("{{fullPath}}") print(p...` | `{{parent}}` | ✓ |
+| 5 | P | P | What does p.stem return? | `from pathlib import Path p = Path("{{fullPath}}") print(p...` | `{{stem}}` | ✓ |
+| 6 | P | P | What does p.suffix return? | `from pathlib import Path p = Path("{{fullPath}}") print(p...` | `{{suffix}}` | ✓ |
+| 7 | W | P | Get the parent directory of Path object p |  | `p.parent` |  |
+| 8 | W | P | Join Path object base with "subdir" and "file.txt" using the / operator |  | `base / "subdir" / "file.txt"` |  |
+| 9 | W | E | Check if Path p exists and is a directory |  | `p.exists() and p.is_dir()` |  |
 
 ### reading (5)
 
@@ -506,7 +565,7 @@
 
 ---
 
-## Numbers Booleans (30)
+## Numbers Booleans (35)
 ^numbers-booleans
 
 ### arithmetic (1)
@@ -524,14 +583,16 @@
 | 3 | F | P | Complete the boolean expression |  | `or` |  |
 | 4 | P | P | What does this code print? | `value = True print(not value) ` | `False` |  |
 
-### comparisons (4)
+### comparisons (6)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
 | 1 | F | I | Complete the Pythonic way to check for None |  | `is` |  |
 | 2 | P | I | What does this code print? | `x = 5 print(1 < x < 10) ` | `True` |  |
-| 3 | F | P | Complete the code to check if item is in list |  | `in` |  |
-| 4 | P | P | What does this code print? | `a = [1, 2, 3] b = [1, 2, 3] print(a == b, a is b) ` | `True False` |  |
+| 3 | P | P | What does this expression evaluate to? | `a = {{a}} b = {{b}} print({{expression}}) ` | `{{result}}` | ✓ |
+| 4 | W | P | Write an expression that checks if {{description}} (using a={{a}}, b={{b}}) |  | `{{expression}}` | ✓ |
+| 5 | F | P | Complete the code to check if item is in list |  | `in` |  |
+| 6 | P | P | What does this code print? | `a = [1, 2, 3] b = [1, 2, 3] print(a == b, a is b) ` | `True False` |  |
 
 ### conversion (4)
 
@@ -565,18 +626,21 @@
 | 8 | F | P | Complete the expression to calculate 2 to the power of 8 |  | `**` |  |
 | 9 | P | P | What does this code print? | `result = 10 % 3 print(result) ` | `1` |  |
 
-### truthiness (4)
+### truthiness (7)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
-| 1 | F | I | Complete the Pythonic way to check if list has items |  | `items` |  |
-| 2 | P | I | What does this code print? | `items = [] if items:     print("has items") else:     pri...` | `empty` |  |
-| 3 | F | P | Complete the Pythonic way to check if list is empty |  | `not` |  |
-| 4 | P | P | What does this code print? | `count = 0 print("yes" if count else "no") ` | `no` |  |
+| 1 | P | I | What does bool([]) return? | `print(bool([])) ` | `False` |  |
+| 2 | F | I | Complete the Pythonic way to check if list has items |  | `items` |  |
+| 3 | P | I | What does bool(0) return? | `print(bool(0)) ` | `False` |  |
+| 4 | P | I | What does this code print? | `items = [] if items:     print("has items") else:     pri...` | `empty` |  |
+| 5 | W | I | Write an if statement that checks if list items is truthy (non-empty) |  | `if items:` |  |
+| 6 | F | P | Complete the Pythonic way to check if list is empty |  | `not` |  |
+| 7 | P | P | What does this code print? | `count = 0 print("yes" if count else "no") ` | `no` |  |
 
 ---
 
-## Oop (28)
+## Oop (32)
 ^oop
 
 ### classes (4)
@@ -599,27 +663,31 @@
 | 5 | W | P | Define a static method called validate using @staticmethod decorator |  | `@staticmethod def validate(value): ` |  |
 | 6 | W | E | Define a utility method is_valid that doesn't need self or cls |  | `@staticmethod def is_valid(value): ` |  |
 
-### inheritance (8)
+### inheritance (10)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
 | 1 | W | I | Define class Student that inherits from Person |  | `class Student(Person):` |  |
 | 2 | W | I | Call the parent class __init__ with name parameter using super() |  | `super().__init__(name)` |  |
 | 3 | W | P | Check if student is an instance of Person (including subclasses) |  | `isinstance(student, Person)` |  |
-| 4 | W | P | Define a greet method in a subclass that overrides the parent's greet |  | `def greet(self):` |  |
-| 5 | P | P | What does this code print? | `class Animal:     def speak(self):         return "sound"...` | `bark` |  |
-| 6 | W | P | Call the parent's greet method from within an overriding greet method |  | `super().greet()` |  |
-| 7 | F | P | Complete to call parent's __init__ |  | `super` |  |
-| 8 | W | E | Check if Student is a subclass of Person |  | `issubclass(Student, Person)` |  |
+| 4 | P | P | When calling {{method}}() on a {{callOn}} instance, which class provides the ... | `{{code}}` | `{{callOn}}` | ✓ |
+| 5 | W | P | Define a greet method in a subclass that overrides the parent's greet |  | `def greet(self):` |  |
+| 6 | P | P | What does this code print? | `class Animal:     def speak(self):         return "sound"...` | `bark` |  |
+| 7 | P | P | What does this code print? | `{{code}}` | `{{result}}` | ✓ |
+| 8 | W | P | Call the parent's greet method from within an overriding greet method |  | `super().greet()` |  |
+| 9 | F | P | Complete to call parent's __init__ |  | `super` |  |
+| 10 | W | E | Check if Student is a subclass of Person |  | `issubclass(Student, Person)` |  |
 
-### methods (4)
+### methods (6)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
 | 1 | W | I | Define __init__ that takes self and name parameter |  | `def __init__(self, name):` |  |
 | 2 | F | I | Complete the constructor's first parameter |  | `self` |  |
 | 3 | W | I | Define a method called greet that takes self |  | `def greet(self):` |  |
-| 4 | P | P | What does this code print? | `class Counter:     def __init__(self):         self.count...` | `1 2 ` |  |
+| 4 | W | P | Given obj is a {{className}} instance, call its {{method}} method |  | `{{methodCall}}` | ✓ |
+| 5 | P | P | What does this code print? | `{{code}}` | `{{result}}` | ✓ |
+| 6 | P | P | What does this code print? | `class Counter:     def __init__(self):         self.count...` | `1 2 ` |  |
 
 ### properties (6)
 
@@ -634,7 +702,7 @@
 
 ---
 
-## Strings (47)
+## Strings (51)
 ^strings
 
 ### basics (7)
@@ -649,7 +717,7 @@
 | 6 | W | I | Repeat string s three times |  | `s * 3` |  |
 | 7 | P | P | What does this code print? | `a = "Hello" b = "World" print(a + " " + b) ` | `Hello World` |  |
 
-### fstrings (9)
+### fstrings (11)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
@@ -658,10 +726,12 @@
 | 3 | W | P | Create an f-string that includes the variable name |  | `f"Hello, {name}"` |  |
 | 4 | W | P | Create an f-string showing "Sum is X" where X is a + b |  | `f"Sum is {a + b}"` |  |
 | 5 | F | P | Complete the f-string to show the doubled value |  | `*` |  |
-| 6 | P | P | What does this code print? | `x = 5 print(f"Double is {x * 2}") ` | `Double is 10` |  |
-| 7 | W | P | Create an f-string that says "Value is " followed by the variable {{name}} |  | `f"Value is {{{name}}}"` | ✓ |
-| 8 | W | E | Format number x with 2 decimal places in an f-string |  | `f"{x:.2f}"` |  |
-| 9 | W | E | Format number x to be 5 characters wide with zero padding |  | `f"{x:05}"` |  |
+| 6 | P | P | What does this code print? | `{{code}}` | `{{result}}` | ✓ |
+| 7 | P | P | What does this code print? | `x = 5 print(f"Double is {x * 2}") ` | `Double is 10` |  |
+| 8 | W | P | Create an f-string that says "Value is " followed by the variable {{name}} |  | `f"Value is {{{name}}}"` | ✓ |
+| 9 | W | P | Write an f-string that produces: {{result}} |  | `{{fstring}}` | ✓ |
+| 10 | W | E | Format number x with 2 decimal places in an f-string |  | `f"{x:.2f}"` |  |
+| 11 | W | E | Format number x to be 5 characters wide with zero padding |  | `f"{x:05}"` |  |
 
 ### indexing (7)
 
@@ -675,7 +745,7 @@
 | 6 | P | P | What does this code print? | `text = "Python" print(text[-2]) ` | `o` |  |
 | 7 | W | P | Get the second to last character of string s |  | `s[-2]` |  |
 
-### slicing (11)
+### slicing (13)
 
 | # | Type | Level | Prompt | Code | Answer | Dyn |
 |---|------|-------|--------|------|--------|-----|
@@ -684,12 +754,14 @@
 | 3 | W | I | Get the first 5 characters of string s |  | `s[:5]` |  |
 | 4 | F | I | Complete the slice to get first 3 characters |  | `:3` |  |
 | 5 | P | P | What does this code print? | `text = "abc" print(text[::-1]) ` | `cba` |  |
-| 6 | F | P | Complete the slice to get last 3 characters |  | `-3:` |  |
-| 7 | W | P | Get the last {{end}} characters of string s using negative slicing |  | `s[-{{end}}:]` | ✓ |
-| 8 | W | P | Get characters from index {{start}} to {{end}} (exclusive) of string s |  | `s[{{start}}:{{end}}]` | ✓ |
-| 9 | W | E | Get every other character of string s (starting from first) |  | `s[::2]` |  |
-| 10 | W | E | Reverse string s using slicing |  | `s[::-1]` |  |
-| 11 | W | E | Get every other character of string s starting from index {{idx}} |  | `s[{{idx}}::2]` | ✓ |
+| 6 | P | P | What does this code print? | `{{code}}` | `{{result}}` | ✓ |
+| 7 | F | P | Complete the slice to get last 3 characters |  | `-3:` |  |
+| 8 | W | P | Get the last {{end}} characters of string s using negative slicing |  | `s[-{{end}}:]` | ✓ |
+| 9 | W | P | Get characters from index {{start}} to {{end}} (exclusive) of string s |  | `s[{{start}}:{{end}}]` | ✓ |
+| 10 | W | E | Get every other character of string s (starting from first) |  | `s[::2]` |  |
+| 11 | W | E | Reverse string s using slicing |  | `s[::-1]` |  |
+| 12 | W | E | Reverse the string '{{word}}' using slice notation |  | `"{{word}}"[::-1]` | ✓ |
+| 13 | W | E | Get every other character of string s starting from index {{idx}} |  | `s[{{idx}}::2]` | ✓ |
 
 ### string-methods (13)
 
