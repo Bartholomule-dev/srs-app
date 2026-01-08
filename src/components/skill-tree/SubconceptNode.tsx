@@ -4,7 +4,11 @@ import { useState, useRef, useCallback, useId } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import type { SkillTreeNode, SubconceptState } from '@/lib/skill-tree/types';
-import { MASTERY_THRESHOLD_DAYS } from '@/lib/skill-tree/types';
+import {
+  MASTERY_STABILITY_STANDARD,
+  MASTERY_REPS,
+  PROFICIENT_STABILITY,
+} from '@/lib/skill-tree/types';
 
 interface SubconceptNodeProps {
   node: SkillTreeNode;
@@ -22,6 +26,9 @@ const stateStyles: Record<SubconceptState, string> = {
   'in-progress':
     'border-[var(--accent-primary)] bg-gradient-to-br from-[var(--accent-primary)]/30 to-[var(--accent-secondary)]/20 ' +
     'backdrop-blur-sm shadow-[0_0_20px_rgba(245,158,11,0.25)]',
+  proficient:
+    'border-emerald-500/80 bg-gradient-to-br from-emerald-500/40 to-teal-500/30 ' +
+    'backdrop-blur-sm shadow-[0_0_20px_rgba(16,185,129,0.3)]',
   mastered:
     'border-transparent bg-gradient-to-br from-amber-400 to-orange-500 ' +
     'shadow-[0_0_25px_rgba(245,158,11,0.5),inset_0_1px_0_rgba(255,255,255,0.2)]',
@@ -44,9 +51,18 @@ function getTooltipContent(
       return { title, subtitle: 'Ready to learn' };
     case 'in-progress': {
       const stability = node.stability?.toFixed(1) ?? '0';
+      const reps = node.reps ?? 0;
       return {
         title,
-        subtitle: `Stability: ${stability} days (${MASTERY_THRESHOLD_DAYS} days to master)`,
+        subtitle: `Stability: ${stability} days, ${reps}/${MASTERY_REPS} reviews`,
+      };
+    }
+    case 'proficient': {
+      const stability = node.stability?.toFixed(1) ?? '0';
+      const reps = node.reps ?? 0;
+      return {
+        title,
+        subtitle: `Proficient! ${stability} days stability, ${reps}/${MASTERY_REPS} reviews to master`,
       };
     }
     case 'mastered': {

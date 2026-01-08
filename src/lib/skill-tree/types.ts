@@ -3,7 +3,7 @@ import type { SubconceptProgress } from '@/lib/curriculum/types';
 /**
  * Visual states for subconcept nodes in the skill tree
  */
-export const SUBCONCEPT_STATES = ['locked', 'available', 'in-progress', 'mastered'] as const;
+export const SUBCONCEPT_STATES = ['locked', 'available', 'in-progress', 'proficient', 'mastered'] as const;
 export type SubconceptState = (typeof SUBCONCEPT_STATES)[number];
 
 /**
@@ -14,9 +14,20 @@ export function isValidSubconceptState(value: unknown): value is SubconceptState
 }
 
 /**
- * Mastery threshold - stability in days required for "mastered" state
- * FSRS stability >= 7 means the algorithm predicts retention for at least a week
+ * Mastery thresholds for tiered progress system
+ *
+ * Fast-track: stability >= 21 → mastered (genuine long-term retention)
+ * Standard:   stability >= 14 AND reps >= 3 → mastered (proven consistency)
+ * Proficient: stability >= 10 AND reps >= 2 → proficient (on track)
+ * In-progress: reps >= 1
  */
+export const MASTERY_STABILITY_FAST = 21;
+export const MASTERY_STABILITY_STANDARD = 14;
+export const MASTERY_REPS = 3;
+export const PROFICIENT_STABILITY = 10;
+export const PROFICIENT_REPS = 2;
+
+/** @deprecated Use MASTERY_STABILITY_STANDARD instead */
 export const MASTERY_THRESHOLD_DAYS = 7;
 
 /**
@@ -28,6 +39,7 @@ export interface SkillTreeNode {
   concept: string;
   state: SubconceptState;
   stability: number | null; // FSRS stability in days
+  reps: number; // Number of successful reviews
   prereqs: string[];
 }
 
@@ -56,6 +68,14 @@ export interface SkillTreeData {
 /**
  * Determine the visual state of a subconcept node
  *
+ * Uses tiered progress system:
+ * - Fast-track: stability >= 21 → mastered (genuine long-term retention)
+ * - Standard:   stability >= 14 AND reps >= 3 → mastered (proven consistency)
+ * - Proficient: stability >= 10 AND reps >= 2 → proficient (on track)
+ * - In-progress: has any progress
+ * - Available: prerequisites met, no progress
+ * - Locked: prerequisites not met
+ *
  * @param slug - The subconcept slug
  * @param progressMap - Map of slug -> SubconceptProgress
  * @param prereqs - Array of prerequisite subconcept slugs
@@ -66,10 +86,15 @@ export function getSubconceptState(
   progressMap: Map<string, SubconceptProgress>,
   prereqs: string[]
 ): SubconceptState {
-  // Check if all prerequisites are mastered
+  // Check if all prerequisites are mastered (use standard threshold for prereq check)
   const prereqsMastered = prereqs.every((prereqSlug) => {
     const prereqProgress = progressMap.get(prereqSlug);
-    return prereqProgress && prereqProgress.stability >= MASTERY_THRESHOLD_DAYS;
+    if (!prereqProgress) return false;
+    // Prereq is mastered if it meets fast-track OR standard mastery criteria
+    return (
+      prereqProgress.stability >= MASTERY_STABILITY_FAST ||
+      (prereqProgress.stability >= MASTERY_STABILITY_STANDARD && prereqProgress.reps >= MASTERY_REPS)
+    );
   });
 
   if (!prereqsMastered) {
@@ -82,8 +107,19 @@ export function getSubconceptState(
     return 'available';
   }
 
-  if (myProgress.stability >= MASTERY_THRESHOLD_DAYS) {
+  // Fast-track: genuine long-term retention
+  if (myProgress.stability >= MASTERY_STABILITY_FAST) {
     return 'mastered';
+  }
+
+  // Standard mastery: proven consistency over time
+  if (myProgress.stability >= MASTERY_STABILITY_STANDARD && myProgress.reps >= MASTERY_REPS) {
+    return 'mastered';
+  }
+
+  // Proficient: on track but not yet mastered
+  if (myProgress.stability >= PROFICIENT_STABILITY && myProgress.reps >= PROFICIENT_REPS) {
+    return 'proficient';
   }
 
   return 'in-progress';

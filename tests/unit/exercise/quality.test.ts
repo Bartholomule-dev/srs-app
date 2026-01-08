@@ -1,6 +1,6 @@
 // tests/unit/exercise/quality.test.ts
 import { describe, it, expect } from 'vitest';
-import { inferQuality, FAST_THRESHOLD_MS, SLOW_THRESHOLD_MS } from '@/lib/exercise';
+import { inferQuality, FAST_THRESHOLD_MS, SLOW_THRESHOLD_MS, MIN_REPS_FOR_EASY } from '@/lib/exercise';
 import type { QualityInputs } from '@/lib/exercise';
 
 describe('inferQuality', () => {
@@ -71,17 +71,51 @@ describe('inferQuality', () => {
   });
 
   describe('correct without hint (time-based)', () => {
-    it('returns 5 for fast answer (< 15s)', () => {
+    it('returns 5 for fast answer (< 10s) when reps >= MIN_REPS_FOR_EASY', () => {
       const inputs: QualityInputs = {
         isCorrect: true,
         hintUsed: false,
         responseTimeMs: FAST_THRESHOLD_MS - 1,
         usedAstMatch: false,
+        currentReps: MIN_REPS_FOR_EASY,
       };
       expect(inferQuality(inputs)).toBe(5);
     });
 
-    it('returns 4 for medium answer (15-30s)', () => {
+    it('returns 4 for fast answer when reps < MIN_REPS_FOR_EASY (prevents one-shot mastery)', () => {
+      const inputs: QualityInputs = {
+        isCorrect: true,
+        hintUsed: false,
+        responseTimeMs: FAST_THRESHOLD_MS - 1,
+        usedAstMatch: false,
+        currentReps: 1,
+      };
+      expect(inferQuality(inputs)).toBe(4);
+    });
+
+    it('returns 4 for fast answer when currentReps is 0', () => {
+      const inputs: QualityInputs = {
+        isCorrect: true,
+        hintUsed: false,
+        responseTimeMs: FAST_THRESHOLD_MS - 1,
+        usedAstMatch: false,
+        currentReps: 0,
+      };
+      expect(inferQuality(inputs)).toBe(4);
+    });
+
+    it('returns 5 for fast answer when currentReps is undefined (legacy behavior)', () => {
+      const inputs: QualityInputs = {
+        isCorrect: true,
+        hintUsed: false,
+        responseTimeMs: FAST_THRESHOLD_MS - 1,
+        usedAstMatch: false,
+        // currentReps not provided
+      };
+      expect(inferQuality(inputs)).toBe(5);
+    });
+
+    it('returns 4 for medium answer (10-30s)', () => {
       const inputs: QualityInputs = {
         isCorrect: true,
         hintUsed: false,
@@ -123,14 +157,26 @@ describe('inferQuality', () => {
   });
 
   describe('edge cases', () => {
-    it('handles zero response time', () => {
+    it('handles zero response time with sufficient reps', () => {
       const inputs: QualityInputs = {
         isCorrect: true,
         hintUsed: false,
         responseTimeMs: 0,
         usedAstMatch: false,
+        currentReps: MIN_REPS_FOR_EASY,
       };
       expect(inferQuality(inputs)).toBe(5);
+    });
+
+    it('handles zero response time with insufficient reps', () => {
+      const inputs: QualityInputs = {
+        isCorrect: true,
+        hintUsed: false,
+        responseTimeMs: 0,
+        usedAstMatch: false,
+        currentReps: 0,
+      };
+      expect(inferQuality(inputs)).toBe(4);
     });
 
     it('handles exactly FAST_THRESHOLD_MS', () => {
@@ -156,11 +202,15 @@ describe('inferQuality', () => {
 });
 
 describe('threshold constants', () => {
-  it('FAST_THRESHOLD_MS is 15 seconds', () => {
-    expect(FAST_THRESHOLD_MS).toBe(15_000);
+  it('FAST_THRESHOLD_MS is 10 seconds', () => {
+    expect(FAST_THRESHOLD_MS).toBe(10_000);
   });
 
   it('SLOW_THRESHOLD_MS is 30 seconds', () => {
     expect(SLOW_THRESHOLD_MS).toBe(30_000);
+  });
+
+  it('MIN_REPS_FOR_EASY is 2', () => {
+    expect(MIN_REPS_FOR_EASY).toBe(2);
   });
 });

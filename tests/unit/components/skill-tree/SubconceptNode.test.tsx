@@ -11,6 +11,7 @@ const makeNode = (overrides: Partial<SkillTreeNode> = {}): SkillTreeNode => ({
   concept: 'foundations',
   state: 'available',
   stability: null,
+  reps: 0,
   prereqs: [],
   ...overrides,
 });

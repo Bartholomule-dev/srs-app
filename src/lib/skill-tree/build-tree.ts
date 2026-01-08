@@ -65,6 +65,7 @@ export function buildSkillTreeData(progress: SubconceptProgress[]): SkillTreeDat
         concept: concept.slug,
         state,
         stability: prog?.stability ?? null,
+        reps: prog?.reps ?? 0,
         prereqs: def?.prereqs ?? [],
       };
     });

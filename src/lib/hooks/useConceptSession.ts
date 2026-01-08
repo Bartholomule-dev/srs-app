@@ -62,6 +62,11 @@ export interface UseConceptSessionReturn {
   endSession: () => Promise<void>;
   /** Retry loading session */
   retry: () => void;
+  /**
+   * Current number of reps for the current card's subconcept.
+   * Used to prevent one-shot "Easy" ratings on first exposure.
+   */
+  currentReps: number;
 }
 
 function createInitialStats(): SessionStats {
@@ -505,6 +510,9 @@ export function useConceptSession(): UseConceptSessionReturn {
     refetchSRS();
   }, [refetchSRS]);
 
+  // Get current reps for quality inference (prevents one-shot Easy ratings)
+  const currentReps = cardProgressMap.get(currentIndex)?.reps ?? 0;
+
   return {
     cards,
     cardTypes,
@@ -517,5 +525,6 @@ export function useConceptSession(): UseConceptSessionReturn {
     recordResult,
     endSession,
     retry,
+    currentReps,
   };
 }

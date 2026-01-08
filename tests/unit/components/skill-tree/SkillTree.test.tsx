@@ -73,7 +73,7 @@ describe('SkillTree', () => {
             description: 'Basic concepts',
             tier: 1,
             subconcepts: [
-              { slug: 'variables', name: 'Variables', concept: 'foundations', state: 'available', stability: null, prereqs: [] },
+              { slug: 'variables', name: 'Variables', concept: 'foundations', state: 'available', stability: null, reps: 0, prereqs: [] },
             ],
             masteredCount: 0,
             totalCount: 1,

@@ -19,9 +19,14 @@ type Phase = 'answering' | 'feedback';
 interface ExerciseCardProps {
   exercise: Exercise;
   onComplete: (quality: Quality) => void;
+  /**
+   * Current number of successful reviews for this subconcept.
+   * Used to prevent one-shot "Easy" ratings on first exposure.
+   */
+  currentReps?: number;
 }
 
-export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
+export function ExerciseCard({ exercise, onComplete, currentReps }: ExerciseCardProps) {
   const { pyodide, loading: pyodideLoading, loadPyodide } = usePyodide();
 
   const [phase, setPhase] = useState<Phase>('answering');
@@ -154,11 +159,12 @@ export function ExerciseCard({ exercise, onComplete }: ExerciseCardProps) {
       hintUsed,
       responseTimeMs,
       usedAstMatch: false, // GradingResult uses gradingMethod instead
+      currentReps, // Pass reps to prevent one-shot Easy ratings
     };
 
     const quality = inferQuality(inputs);
     onComplete(quality);
-  }, [startTime, pausedMs, hintUsed, gradingResult, onComplete]);
+  }, [startTime, pausedMs, hintUsed, gradingResult, onComplete, currentReps]);
 
   // Calculate next review days (rough estimate based on current state)
   const nextReviewDays = gradingResult?.isCorrect ? 6 : 1;

@@ -75,7 +75,7 @@ describe('useSkillTree', () => {
     expect(result.current.data?.totalSubconcepts).toBe(54);
   });
 
-  it('computes states from fetched progress', async () => {
+  it('computes states from fetched progress (fast-track mastery)', async () => {
     vi.mocked(supabase.auth.getUser).mockResolvedValue({
       data: { user: mockUser },
       error: null,
@@ -87,7 +87,7 @@ describe('useSkillTree', () => {
         user_id: 'test-user-id',
         subconcept_slug: 'variables',
         concept_slug: 'foundations',
-        stability: 10,
+        stability: 21, // Fast-track mastery threshold (>= MASTERY_STABILITY_FAST)
         difficulty: 5,
         fsrs_state: 2,
         reps: 5,
@@ -120,6 +120,54 @@ describe('useSkillTree', () => {
     );
     const variables = foundations?.subconcepts.find((s) => s.slug === 'variables');
     expect(variables?.state).toBe('mastered');
+  });
+
+  it('computes proficient state for intermediate progress', async () => {
+    vi.mocked(supabase.auth.getUser).mockResolvedValue({
+      data: { user: mockUser },
+      error: null,
+    } as never);
+
+    const mockProgress = [
+      {
+        id: '1',
+        user_id: 'test-user-id',
+        subconcept_slug: 'variables',
+        concept_slug: 'foundations',
+        stability: 10, // Proficient threshold (>= PROFICIENT_STABILITY)
+        difficulty: 5,
+        fsrs_state: 2,
+        reps: 2, // Meets PROFICIENT_REPS but not MASTERY_REPS
+        lapses: 0,
+        elapsed_days: 1,
+        scheduled_days: 7,
+        next_review: new Date().toISOString(),
+        last_reviewed: new Date().toISOString(),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+    ];
+
+    vi.mocked(supabase.from).mockReturnValue({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => Promise.resolve({ data: mockProgress, error: null })),
+      })),
+    } as never);
+
+    const { result } = renderHook(() => useSkillTree(), { wrapper });
+
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false);
+    });
+
+    // Should not count as mastered
+    expect(result.current.data?.totalMastered).toBe(0);
+
+    const foundations = result.current.data?.clusters.find(
+      (c) => c.slug === 'foundations'
+    );
+    const variables = foundations?.subconcepts.find((s) => s.slug === 'variables');
+    expect(variables?.state).toBe('proficient');
   });
 
   it('returns null data when not authenticated', async () => {

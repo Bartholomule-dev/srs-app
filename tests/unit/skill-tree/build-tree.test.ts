@@ -1,13 +1,15 @@
 // tests/unit/skill-tree/build-tree.test.ts
 import { describe, it, expect } from 'vitest';
 import { buildSkillTreeData } from '@/lib/skill-tree/build-tree';
+import { MASTERY_STABILITY_FAST, MASTERY_STABILITY_STANDARD, MASTERY_REPS } from '@/lib/skill-tree/types';
 import type { SubconceptProgress, ConceptSlug } from '@/lib/curriculum/types';
 
 describe('buildSkillTreeData', () => {
   const makeProgress = (
     slug: string,
     concept: ConceptSlug,
-    stability: number
+    stability: number,
+    reps = 1
   ): SubconceptProgress => ({
     id: `id-${slug}`,
     userId: 'user-1',
@@ -16,7 +18,7 @@ describe('buildSkillTreeData', () => {
     stability,
     difficulty: 5,
     fsrsState: 2,
-    reps: 1,
+    reps,
     lapses: 0,
     elapsedDays: 0,
     scheduledDays: 1,
@@ -66,11 +68,23 @@ describe('buildSkillTreeData', () => {
     expect(result.totalSubconcepts).toBe(54);
   });
 
-  it('computes mastered count from progress', () => {
+  it('computes mastered count from progress (fast-track)', () => {
     const progress = [
-      makeProgress('variables', 'foundations', 10), // mastered
-      makeProgress('operators', 'foundations', 10), // mastered
-      makeProgress('expressions', 'foundations', 3), // in-progress
+      makeProgress('variables', 'foundations', MASTERY_STABILITY_FAST), // mastered via fast-track
+      makeProgress('operators', 'foundations', MASTERY_STABILITY_FAST), // mastered via fast-track
+      makeProgress('expressions', 'foundations', 5), // in-progress
+    ];
+
+    const result = buildSkillTreeData(progress);
+
+    expect(result.totalMastered).toBe(2);
+  });
+
+  it('computes mastered count from progress (standard path)', () => {
+    const progress = [
+      makeProgress('variables', 'foundations', MASTERY_STABILITY_STANDARD, MASTERY_REPS), // mastered via standard
+      makeProgress('operators', 'foundations', MASTERY_STABILITY_STANDARD, MASTERY_REPS), // mastered via standard
+      makeProgress('expressions', 'foundations', 10, 2), // proficient, not mastered
     ];
 
     const result = buildSkillTreeData(progress);
@@ -80,8 +94,8 @@ describe('buildSkillTreeData', () => {
 
   it('computes cluster mastered counts', () => {
     const progress = [
-      makeProgress('variables', 'foundations', 10),
-      makeProgress('operators', 'foundations', 10),
+      makeProgress('variables', 'foundations', MASTERY_STABILITY_FAST),
+      makeProgress('operators', 'foundations', MASTERY_STABILITY_STANDARD, MASTERY_REPS),
     ];
 
     const result = buildSkillTreeData(progress);
@@ -93,7 +107,7 @@ describe('buildSkillTreeData', () => {
 
   it('sets correct states for subconcepts', () => {
     const progress = [
-      makeProgress('variables', 'foundations', 10), // mastered
+      makeProgress('variables', 'foundations', MASTERY_STABILITY_FAST), // mastered via fast-track
     ];
 
     const result = buildSkillTreeData(progress);

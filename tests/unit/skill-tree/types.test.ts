@@ -6,14 +6,15 @@ import {
 } from '@/lib/skill-tree/types';
 
 describe('SubconceptState types', () => {
-  it('defines all four states', () => {
-    expect(SUBCONCEPT_STATES).toEqual(['locked', 'available', 'in-progress', 'mastered']);
+  it('defines all five states (including proficient)', () => {
+    expect(SUBCONCEPT_STATES).toEqual(['locked', 'available', 'in-progress', 'proficient', 'mastered']);
   });
 
   it('validates valid states', () => {
     expect(isValidSubconceptState('locked')).toBe(true);
     expect(isValidSubconceptState('available')).toBe(true);
     expect(isValidSubconceptState('in-progress')).toBe(true);
+    expect(isValidSubconceptState('proficient')).toBe(true);
     expect(isValidSubconceptState('mastered')).toBe(true);
   });
 

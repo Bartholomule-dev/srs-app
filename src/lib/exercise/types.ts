@@ -30,6 +30,12 @@ export interface QualityInputs {
   responseTimeMs: number;
   /** Whether AST matching was used for correctness */
   usedAstMatch: boolean;
+  /**
+   * Current number of successful reviews for this subconcept.
+   * Used to prevent one-shot "Easy" ratings on first exposure.
+   * If reps < 2, quality is capped at 4 (Good) even if answer is fast.
+   */
+  currentReps?: number;
 }
 
 /** Grading method used for correctness check. */

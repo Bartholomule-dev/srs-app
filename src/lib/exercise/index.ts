@@ -1,7 +1,7 @@
 // src/lib/exercise/index.ts
 export type { AnswerResult, QualityInputs, GradingMethod, GradingResult, ConstructCheckResult } from './types';
 export { normalizePython, checkAnswer, checkAnswerWithAlternatives, checkFillInAnswer, checkPredictAnswer } from './matching';
-export { inferQuality, FAST_THRESHOLD_MS, SLOW_THRESHOLD_MS } from './quality';
+export { inferQuality, FAST_THRESHOLD_MS, SLOW_THRESHOLD_MS, MIN_REPS_FOR_EASY } from './quality';
 export { gradeAnswer, shouldShowCoaching, gradeAnswerAsync } from './grading';
 export { checkConstruct, checkAnyConstruct, CONSTRUCT_PATTERNS } from './construct-check';
 export * from './yaml-types';

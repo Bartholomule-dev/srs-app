@@ -153,6 +153,7 @@ function PracticeSessionContent() {
     recordResult,
     endSession,
     retry,
+    currentReps,
   } = useConceptSession();
 
   const handleDashboard = () => {
@@ -231,6 +232,7 @@ function PracticeSessionContent() {
             <ExerciseCard
               exercise={currentCard.exercise}
               onComplete={recordResult}
+              currentReps={currentReps}
             />
           )}
         </motion.div>
