@@ -161,27 +161,30 @@ export function SkillTree({ className }: SkillTreeProps) {
         className
       )}
     >
-      <div
-        data-testid="skill-tree-scroll"
-        className="overflow-x-auto overflow-y-hidden"
-      >
+      <div data-testid="skill-tree-scroll" className="overflow-visible">
         <div
           ref={containerRef}
-          className="relative min-w-max p-6"
+          className="relative p-6"
           style={{ minHeight: '350px' }}
         >
+          {/* Central spine - only visible on md+ screens */}
+          <div
+            className="absolute left-1/2 top-12 bottom-12 w-px bg-gradient-to-b from-transparent via-[var(--border)] to-transparent -translate-x-1/2 hidden md:block"
+            aria-hidden="true"
+          />
+
           {/* Dependency lines SVG overlay */}
           <DependencyLines
             clusters={data.clusters}
             nodePositions={nodePositions}
           />
 
-          {/* Concept clusters in grid */}
-          <div className="flex gap-8">
+          {/* Concept clusters in vertical tier rows */}
+          <div className="flex flex-col gap-8 max-w-4xl mx-auto">
             {Array.from(tierGroups.entries())
               .sort(([a], [b]) => a - b)
               .map(([tier, slugs]) => (
-                <div key={tier} className="flex flex-col gap-6">
+                <div key={tier} className="flex flex-wrap justify-center gap-6">
                   {slugs.map((slug) => {
                     const cluster = data.clusters.find((c) => c.slug === slug);
                     if (!cluster) return null;
@@ -189,8 +192,8 @@ export function SkillTree({ className }: SkillTreeProps) {
                     return (
                       <motion.div
                         key={slug}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3, delay: tier * 0.1 }}
                       >
                         <ClusterWithNodeRefs

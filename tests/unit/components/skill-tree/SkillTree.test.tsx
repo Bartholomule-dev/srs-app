@@ -135,7 +135,7 @@ describe('SkillTree', () => {
     expect(treeContainer).toHaveClass('bg-[var(--bg-surface-1)]');
   });
 
-  it('is horizontally scrollable', () => {
+  it('uses vertical layout with visible overflow', () => {
     vi.mocked(useSkillTree).mockReturnValue({
       data: {
         clusters: [],
@@ -151,6 +151,6 @@ describe('SkillTree', () => {
     const { container } = render(<SkillTree />, { wrapper });
 
     const scrollContainer = container.querySelector('[data-testid="skill-tree-scroll"]');
-    expect(scrollContainer).toHaveClass('overflow-x-auto');
+    expect(scrollContainer).toHaveClass('overflow-visible');
   });
 });
