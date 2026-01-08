@@ -82,3 +82,37 @@ export const staggerItem = {
   animate: { opacity: 1, y: 0 },
   transition: { duration: DURATION.normal, ease: EASE.default },
 };
+
+/**
+ * Animation Budget - Per debate consensus
+ * Only these events should animate:
+ * - State changes: 150ms ease-out
+ * - Completion: 120ms ease-out
+ * - Hover: 100ms ease-out
+ * - Page load: 0ms (instant)
+ */
+export const ANIMATION_BUDGET = {
+  stateChange: { duration: 0.15, ease: 'easeOut' },
+  completion: { duration: 0.12, ease: 'easeOut' },
+  hover: { duration: 0.1, ease: 'easeOut' },
+  pageLoad: { duration: 0 },
+} as const;
+
+/**
+ * Respiratory pulse - for single CTA emphasis only
+ * Respects prefers-reduced-motion
+ */
+export const respiratoryPulse = {
+  animate: {
+    boxShadow: [
+      '0 0 0 0 rgba(245, 158, 11, 0)',
+      '0 0 0 4px rgba(245, 158, 11, 0.2)',
+      '0 0 0 0 rgba(245, 158, 11, 0)',
+    ] as string[],
+  },
+  transition: {
+    duration: 2,
+    repeat: Infinity,
+    ease: 'easeInOut' as const,
+  },
+};
