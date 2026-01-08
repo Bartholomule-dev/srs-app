@@ -22,8 +22,16 @@ pnpm test:coverage     # Run with coverage report
 # Playwright E2E tests
 pnpm exec playwright test                    # Run all E2E tests
 pnpm exec playwright test --ui               # Run with UI
-pnpm exec playwright test tests/example.spec.ts  # Run specific file
+pnpm exec playwright test tests/e2e/critical-path.spec.ts  # Run specific file
 pnpm exec playwright codegen localhost:3000  # Generate tests
+```
+
+## Exercise Validation
+```bash
+pnpm validate:exercises   # Schema validation (Ajv against schema.json)
+pnpm validate:curriculum  # Curriculum consistency validation
+pnpm validate:dynamic     # Dynamic exercise rendering validation
+pnpm validate:all         # Run all validations
 ```
 
 ## Database (Supabase Local)

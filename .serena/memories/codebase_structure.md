@@ -152,7 +152,8 @@ src/
     │       ├── list-values.ts       # a/b/c integers (1-99)
     │       ├── variable-names.ts    # Python identifiers
     │       ├── index-values.ts      # single index (0-4)
-    │       └── arithmetic-values.ts # x/y with precomputed results
+    │       ├── arithmetic-values.ts # x/y with precomputed results
+    │       └── ... (36 total generators)
     │
     ├── stats/                # Stats calculation library
     │   ├── index.ts          # Barrel export
@@ -257,7 +258,13 @@ exercises/
     ├── oop.yaml              # classes, methods, dunder, inheritance, etc. (6 subconcepts)
     └── modules-files.yaml    # importing, packages, reading, writing, etc. (6 subconcepts)
 
-Exercise types: write (65%), fill-in (17%), predict (18%)
+Exercise types: write (53%), fill-in (14%), predict (17%), dynamic (16%)
+
+**Validation Commands:**
+- `pnpm validate:exercises` - Schema validation (Ajv against schema.json)
+- `pnpm validate:curriculum` - Curriculum consistency validation
+- `pnpm validate:dynamic` - Dynamic exercise rendering validation
+- `pnpm validate:all` - Run all validations
 ```
 
 ## Key Configuration Files
