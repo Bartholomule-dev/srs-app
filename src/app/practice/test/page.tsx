@@ -20,18 +20,18 @@ function PracticeTestContent() {
   const slug = searchParams.get('slug');
 
   const [exercise, setExercise] = useState<Exercise | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [fetchError, setFetchError] = useState<string | null>(null);
+  const [fetchComplete, setFetchComplete] = useState(false);
+
+  // Derive validation error from slug - no effect needed
+  const validationError = !slug ? 'No exercise slug provided. Use ?slug=exercise-slug' : null;
+
+  // Loading is true only when we have a slug and user but haven't completed fetch
+  const loading = !!slug && !!user && !fetchComplete;
 
   useEffect(() => {
-    if (!slug) {
-      setError('No exercise slug provided. Use ?slug=exercise-slug');
-      setLoading(false);
-      return;
-    }
-
-    // Wait for user to be available for deterministic seed generation
-    if (!user) {
+    // Skip fetch if no slug or no user
+    if (!slug || !user) {
       return;
     }
 
@@ -43,14 +43,14 @@ function PracticeTestContent() {
         .single();
 
       if (dbError) {
-        setError(`Failed to load exercise: ${dbError.message}`);
-        setLoading(false);
+        setFetchError(`Failed to load exercise: ${dbError.message}`);
+        setFetchComplete(true);
         return;
       }
 
       if (!data) {
-        setError(`Exercise not found: ${slug}`);
-        setLoading(false);
+        setFetchError(`Exercise not found: ${slug}`);
+        setFetchComplete(true);
         return;
       }
 
@@ -58,11 +58,14 @@ function PracticeTestContent() {
       const mappedExercise = mapExercise(data);
       const renderedExercise = renderExercise(mappedExercise, user!.id, new Date());
       setExercise(renderedExercise);
-      setLoading(false);
+      setFetchComplete(true);
     }
 
     loadExercise();
   }, [slug, user]);
+
+  // Combine validation and fetch errors
+  const error = validationError || fetchError;
 
   const handleComplete = () => {
     // Stay on the page after completion for E2E assertions

@@ -20,7 +20,9 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:ui": "playwright test --ui",
     "validate:exercises": "npx tsx scripts/validate-exercises.ts",
+    "validate:curriculum": "npx tsx scripts/validate-curriculum.ts",
     "validate:dynamic": "npx tsx scripts/validate-dynamic-exercises.ts",
+    "validate:all": "pnpm validate:exercises && pnpm validate:curriculum && pnpm validate:dynamic",
     "generate:exercise-list": "npx tsx scripts/generate-exercise-list.ts",
     "generate:exercise-list:obsidian": "npx tsx scripts/generate-exercise-list.ts --obsidian \"/home/brett/GoogleDrive/Obsidian Vault\""
   },
@@ -62,6 +64,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/seedrandom": "^3.0.8",
+    "@vitest/coverage-v8": "^4.0.16",
     "ajv": "^8.17.1",
     "babel-plugin-react-compiler": "1.0.0",
     "dotenv": "^17.2.3",

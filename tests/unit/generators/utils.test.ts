@@ -1,6 +1,6 @@
 // tests/unit/generators/utils.test.ts
 import { describe, it, expect } from 'vitest';
-import { seededRandom, type SeededRandom } from '@/lib/generators/utils';
+import { seededRandom } from '@/lib/generators/utils';
 
 describe('seededRandom', () => {
   it('creates a SeededRandom instance from a seed', () => {

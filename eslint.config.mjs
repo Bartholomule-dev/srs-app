@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Generated Playwright artifacts
+    "playwright-report/**",
+    "test-results/**",
   ]),
   // Allow 'any' in test files for mocking purposes
   {

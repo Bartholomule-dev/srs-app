@@ -1,7 +1,7 @@
 // tests/integration/srs/fsrs-flow.test.ts
 // Integration tests for FSRS-based subconcept progress
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 import {
   LOCAL_SUPABASE_URL,
   LOCAL_SUPABASE_SERVICE_KEY,

@@ -50,7 +50,6 @@ const SCENARIOS: DefaultArgScenario[] = [
     name: 'mixed_params',
     generate: (rng) => {
       const a = rng.int(1, 5);
-      const b = rng.int(2, 6);
       const defaultMult = rng.int(2, 4);
 
       return {

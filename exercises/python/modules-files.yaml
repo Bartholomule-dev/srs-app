@@ -625,9 +625,9 @@ exercises:
     title: Dynamic File Read
     difficulty: 2
     concept: modules-files
-    subconcept: file-io
+    subconcept: reading
     level: practice
-    prereqs: [modules-files.file-io]
+    prereqs: [reading]
     type: predict
     pattern: io
     generator: file-io
@@ -644,9 +644,9 @@ exercises:
     title: Dynamic File Context
     difficulty: 2
     concept: modules-files
-    subconcept: file-io
+    subconcept: reading
     level: practice
-    prereqs: [modules-files.file-io]
+    prereqs: [reading]
     type: predict
     pattern: context
     generator: file-io
@@ -663,9 +663,9 @@ exercises:
     title: Dynamic File Write Mode
     difficulty: 2
     concept: modules-files
-    subconcept: file-io
+    subconcept: reading
     level: practice
-    prereqs: [modules-files.file-io]
+    prereqs: [reading]
     type: write
     pattern: io
     generator: file-io

@@ -948,7 +948,7 @@ exercises:
       - Addition is straightforward arithmetic
     tags: [arithmetic, dynamic]
     concept: numbers-booleans
-    subconcept: arithmetic
+    subconcept: integers
     level: practice
     prereqs: []
     type: predict

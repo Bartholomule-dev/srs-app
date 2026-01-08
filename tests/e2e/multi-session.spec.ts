@@ -1,5 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 import { createTestUser, deleteTestUser, TestUser } from './utils/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;

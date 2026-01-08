@@ -4,16 +4,6 @@
 import type { Generator, GeneratorParams } from '../types';
 import { seededRandom } from '../utils';
 
-/**
- * Realistic scenarios for string formatting exercises.
- * Each produces a context-rich f-string exercise.
- */
-interface FormatScenario {
-  template: string; // The f-string template
-  vars: Record<string, () => string | number>; // Variable generators
-  category: string;
-}
-
 const NAMES = [
   'Alice',
   'Bob',
@@ -44,17 +34,6 @@ const CITIES = [
   'Boston',
   'Seattle',
 ];
-const LANGUAGES = [
-  'Python',
-  'JavaScript',
-  'TypeScript',
-  'Rust',
-  'Go',
-  'Java',
-  'C++',
-  'Ruby',
-];
-
 /**
  * string-format generator
  *

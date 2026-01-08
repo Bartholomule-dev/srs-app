@@ -9,7 +9,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { createEmptyFSRSCard, reviewCard } from '@/lib/srs/fsrs/adapter';
-import type { FSRSRating, FSRSCardState } from '@/lib/srs/fsrs/types';
+import type { FSRSRating } from '@/lib/srs/fsrs/types';
 
 // Deterministic random for reproducibility
 function seededRandom(seed: number) {

@@ -55,7 +55,7 @@ describe('FSRS Regression Tests - Pinned Behavior', () => {
 
   describe('Learning to Review Graduation', () => {
     it('graduates to Review state after consistent Good ratings', () => {
-      let card = createEmptyFSRSCard(FIXED_DATE);
+      const card = createEmptyFSRSCard(FIXED_DATE);
       let currentTime = FIXED_DATE;
       let result = reviewCard(card, 'Good', currentTime);
       let reviewCount = 1;
@@ -77,7 +77,7 @@ describe('FSRS Regression Tests - Pinned Behavior', () => {
   describe('Review State Interval Growth', () => {
     // Helper to get a card into Review state
     function getReviewStateCard(startDate: Date) {
-      let card = createEmptyFSRSCard(startDate);
+      const card = createEmptyFSRSCard(startDate);
       let currentTime = startDate;
       let result = reviewCard(card, 'Good', currentTime);
 
@@ -134,7 +134,7 @@ describe('FSRS Regression Tests - Pinned Behavior', () => {
 
   describe('Lapse Behavior', () => {
     function getReviewStateCard(startDate: Date) {
-      let card = createEmptyFSRSCard(startDate);
+      const card = createEmptyFSRSCard(startDate);
       let currentTime = startDate;
       let result = reviewCard(card, 'Good', currentTime);
 
@@ -204,7 +204,7 @@ describe('FSRS Regression Tests - Pinned Behavior', () => {
       ];
 
       let currentCard = card;
-      let baseDate = new Date('2026-01-01T09:00:00Z');
+      const baseDate = new Date('2026-01-01T09:00:00Z');
 
       for (const review of reviews) {
         const reviewDate = new Date(
@@ -238,7 +238,7 @@ describe('FSRS Regression Tests - Pinned Behavior', () => {
       ];
 
       let currentCard = card;
-      let baseDate = new Date('2026-01-01T09:00:00Z');
+      const baseDate = new Date('2026-01-01T09:00:00Z');
 
       for (const review of reviews) {
         const reviewDate = new Date(

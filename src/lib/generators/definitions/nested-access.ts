@@ -27,19 +27,12 @@ const SCENARIOS: NestedAccessScenario[] = [
     generate: (rng) => {
       const names = ['Alice', 'Bob', 'Carol', 'Dave', 'Eve'];
       const ages = [25, 30, 35, 28, 32];
-      const idx = rng.int(0, 2);
       const name = rng.pick(names);
       const age = rng.pick(ages);
       const name2 = rng.pick(names.filter((n) => n !== name));
       const age2 = rng.pick(ages.filter((a) => a !== age));
 
-      const data = [
-        { name, age },
-        { name: name2, age: age2 },
-      ];
-      const dataStr = JSON.stringify(data).replace(/"/g, "'").replace(/,/g, ', ').replace(/{/g, "{'").replace(/:/g, "': ").replace(/}/g, "}");
-      // Fix the formatting
-      const formattedData = `[{'name': '${name}', 'age': ${age}}, {'name': '${name2}', 'age': ${age2}}]`;
+      const dataStr = `[{'name': '${name}', 'age': ${age}}, {'name': '${name2}', 'age': ${age2}}]`;
 
       const accessIdx = rng.int(0, 1);
       const field = rng.pick(['name', 'age']);
@@ -47,11 +40,11 @@ const SCENARIOS: NestedAccessScenario[] = [
       const result = accessIdx === 0 ? (field === 'name' ? name : String(age)) : (field === 'name' ? name2 : String(age2));
 
       return {
-        dataStr: formattedData,
+        dataStr,
         varName: 'users',
         accessExpr,
         result: field === 'name' ? `'${result}'` : result,
-        code: `users = ${formattedData}\nprint(users[${accessIdx}]["${field}"])`,
+        code: `users = ${dataStr}\nprint(users[${accessIdx}]["${field}"])`,
       };
     },
   },
