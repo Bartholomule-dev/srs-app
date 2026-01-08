@@ -7,3 +7,5 @@ export { useConceptSession } from './useConceptSession';
 export type { UseConceptSessionReturn } from './useConceptSession';
 export { useStats } from './useStats';
 export type { UseStatsReturn } from './useStats';
+export { useSkillTree } from './useSkillTree';
+export type { UseSkillTreeReturn } from './useSkillTree';
