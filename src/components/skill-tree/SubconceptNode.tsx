@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef, useCallback, useId } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import type { SkillTreeNode, SubconceptState } from '@/lib/skill-tree/types';
 import { MASTERY_THRESHOLD_DAYS } from '@/lib/skill-tree/types';
@@ -62,6 +62,8 @@ export function SubconceptNode({
 }: SubconceptNodeProps) {
   const [showTooltip, setShowTooltip] = useState(false);
   const nodeRef = useRef<HTMLButtonElement>(null);
+  const tooltipId = useId();
+  const reduceMotion = useReducedMotion();
 
   const handleMouseEnter = useCallback(() => setShowTooltip(true), []);
   const handleMouseLeave = useCallback(() => setShowTooltip(false), []);
@@ -74,6 +76,7 @@ export function SubconceptNode({
     <div className="relative w-12 h-12 rounded-full">
       <motion.button
         ref={nodeRef}
+        type="button"
         className={cn(
           'w-12 h-12 rounded-full border-2 transition-all duration-300',
           'focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:ring-offset-2 focus:ring-offset-[var(--bg-surface-1)]',
@@ -81,7 +84,7 @@ export function SubconceptNode({
           className
         )}
         animate={
-          node.state === 'available'
+          node.state === 'available' && !reduceMotion
             ? {
                 boxShadow: [
                   '0 0 15px rgba(245,158,11,0.15)',
@@ -92,7 +95,7 @@ export function SubconceptNode({
             : undefined
         }
         transition={
-          node.state === 'available'
+          node.state === 'available' && !reduceMotion
             ? {
                 duration: 2,
                 repeat: Infinity,
@@ -105,14 +108,18 @@ export function SubconceptNode({
         onFocus={handleFocus}
         onBlur={handleBlur}
         aria-label={node.name}
-        tabIndex={0}
-        whileHover={node.state !== 'locked' ? { scale: 1.1 } : undefined}
-        whileTap={node.state !== 'locked' ? { scale: 0.95 } : undefined}
+        aria-describedby={showTooltip ? tooltipId : undefined}
+        aria-disabled={node.state === 'locked'}
+        tabIndex={node.state === 'locked' ? -1 : 0}
+        whileHover={node.state !== 'locked' && !reduceMotion ? { scale: 1.1 } : undefined}
+        whileTap={node.state !== 'locked' && !reduceMotion ? { scale: 0.95 } : undefined}
       />
 
       <AnimatePresence>
         {showTooltip && (
           <motion.div
+            id={tooltipId}
+            role="tooltip"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}

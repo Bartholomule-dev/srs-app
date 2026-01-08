@@ -72,8 +72,9 @@ describe('DependencyLines', () => {
     );
 
     const path = container.querySelector('path');
-    // Path should reference the gradient URL for unlocked paths
-    expect(path).toHaveAttribute('stroke', 'url(#line-gradient-unlocked)');
+    // Path should reference a gradient URL (using dynamic useId())
+    const stroke = path?.getAttribute('stroke');
+    expect(stroke).toMatch(/^url\(#.+\)$/);
   });
 
   it('defines gradient in SVG defs', () => {
@@ -81,7 +82,7 @@ describe('DependencyLines', () => {
       <DependencyLines clusters={makeClusters()} nodePositions={{}} />
     );
 
-    const gradient = container.querySelector('#line-gradient-unlocked');
+    const gradient = container.querySelector('linearGradient');
     expect(gradient).toBeInTheDocument();
     expect(gradient?.tagName.toLowerCase()).toBe('lineargradient');
   });

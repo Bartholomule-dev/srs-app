@@ -66,21 +66,26 @@ export function SkillTree({ className }: SkillTreeProps) {
       requestAnimationFrame(updatePositions);
     });
 
+    // Debounced resize handler to avoid excessive recalculations
+    let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
+    const debouncedUpdate = () => {
+      if (resizeTimeout) clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(updatePositions, 100);
+    };
+
     // Watch for container resize
-    const resizeObserver = new ResizeObserver(() => {
-      updatePositions();
-    });
+    const resizeObserver = new ResizeObserver(debouncedUpdate);
 
     resizeObserver.observe(containerRef.current);
 
     // Also handle window resize for edge cases
-    const handleResize = () => updatePositions();
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', debouncedUpdate);
 
     return () => {
       cancelAnimationFrame(initialTimer);
+      if (resizeTimeout) clearTimeout(resizeTimeout);
       resizeObserver.disconnect();
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', debouncedUpdate);
     };
   }, [data, updatePositions]);
 

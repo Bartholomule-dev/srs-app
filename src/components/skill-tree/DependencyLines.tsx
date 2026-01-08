@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useId } from 'react';
 import { motion } from 'framer-motion';
 import type { SkillTreeCluster } from '@/lib/skill-tree/types';
 
@@ -45,6 +45,8 @@ export function DependencyLines({
   nodePositions,
   className,
 }: DependencyLinesProps) {
+  const gradientId = useId();
+
   // Build state map for determining line colors
   const stateMap = useMemo(() => {
     const map = new Map<string, string>();
@@ -91,7 +93,7 @@ export function DependencyLines({
       aria-hidden="true"
     >
       <defs>
-        <linearGradient id="line-gradient-unlocked" x1="0%" y1="0%" x2="0%" y2="100%">
+        <linearGradient id={gradientId} x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor="var(--accent-primary)" stopOpacity="0.4" />
           <stop offset="50%" stopColor="var(--accent-primary)" stopOpacity="0.8" />
           <stop offset="100%" stopColor="var(--accent-secondary)" stopOpacity="0.4" />
@@ -102,7 +104,7 @@ export function DependencyLines({
           key={`${line.from}-${line.to}`}
           d={bezierPath(line.fromPos, line.toPos)}
           fill="none"
-          stroke={line.isUnlocked ? 'url(#line-gradient-unlocked)' : 'var(--text-tertiary)'}
+          stroke={line.isUnlocked ? `url(#${gradientId})` : 'var(--text-tertiary)'}
           strokeWidth={line.isUnlocked ? 2.5 : 1.5}
           strokeOpacity={line.isUnlocked ? 1 : 0.15}
           initial={{ pathLength: 0 }}
