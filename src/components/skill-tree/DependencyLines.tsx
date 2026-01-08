@@ -24,8 +24,20 @@ interface Line {
 }
 
 function bezierPath(from: Position, to: Position): string {
-  const midY = (from.y + to.y) / 2;
-  return `M ${from.x} ${from.y} C ${from.x} ${midY}, ${to.x} ${midY}, ${to.x} ${to.y}`;
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+
+  // For vertical flow (lines going down), use vertical control points
+  // For horizontal flow (lines within a tier), use horizontal control points
+  if (Math.abs(dy) > Math.abs(dx)) {
+    // Vertical dominant - curve with horizontal variation
+    const midY = (from.y + to.y) / 2;
+    return `M ${from.x} ${from.y} C ${from.x} ${midY}, ${to.x} ${midY}, ${to.x} ${to.y}`;
+  } else {
+    // Horizontal dominant - curve with vertical variation
+    const midX = (from.x + to.x) / 2;
+    return `M ${from.x} ${from.y} C ${midX} ${from.y}, ${midX} ${to.y}, ${to.x} ${to.y}`;
+  }
 }
 
 export function DependencyLines({
@@ -78,14 +90,21 @@ export function DependencyLines({
       className={`absolute inset-0 w-full h-full pointer-events-none ${className ?? ''}`}
       aria-hidden="true"
     >
+      <defs>
+        <linearGradient id="line-gradient-unlocked" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="var(--accent-primary)" stopOpacity="0.4" />
+          <stop offset="50%" stopColor="var(--accent-primary)" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="var(--accent-secondary)" stopOpacity="0.4" />
+        </linearGradient>
+      </defs>
       {lines.map((line) => (
         <motion.path
           key={`${line.from}-${line.to}`}
           d={bezierPath(line.fromPos, line.toPos)}
           fill="none"
-          stroke={line.isUnlocked ? 'var(--accent-primary)' : 'var(--text-tertiary)'}
-          strokeWidth={2}
-          strokeOpacity={line.isUnlocked ? 0.6 : 0.2}
+          stroke={line.isUnlocked ? 'url(#line-gradient-unlocked)' : 'var(--text-tertiary)'}
+          strokeWidth={line.isUnlocked ? 2.5 : 1.5}
+          strokeOpacity={line.isUnlocked ? 1 : 0.15}
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}

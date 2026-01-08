@@ -61,7 +61,7 @@ describe('DependencyLines', () => {
     expect(paths.length).toBe(0);
   });
 
-  it('uses amber color for unlocked paths', () => {
+  it('uses gradient for unlocked paths', () => {
     const nodePositions = {
       variables: { x: 50, y: 50 },
       operators: { x: 50, y: 120 },
@@ -72,7 +72,17 @@ describe('DependencyLines', () => {
     );
 
     const path = container.querySelector('path');
-    // Path should reference the amber color variable
-    expect(path).toHaveAttribute('stroke', 'var(--accent-primary)');
+    // Path should reference the gradient URL for unlocked paths
+    expect(path).toHaveAttribute('stroke', 'url(#line-gradient-unlocked)');
+  });
+
+  it('defines gradient in SVG defs', () => {
+    const { container } = render(
+      <DependencyLines clusters={makeClusters()} nodePositions={{}} />
+    );
+
+    const gradient = container.querySelector('#line-gradient-unlocked');
+    expect(gradient).toBeInTheDocument();
+    expect(gradient?.tagName.toLowerCase()).toBe('lineargradient');
   });
 });
