@@ -1,16 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
-import { createClient } from '@supabase/supabase-js';
-import {
-  LOCAL_SUPABASE_URL,
-  LOCAL_SUPABASE_SERVICE_KEY,
-} from '../../setup';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || LOCAL_SUPABASE_URL;
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || LOCAL_SUPABASE_SERVICE_KEY;
-
-const serviceClient = createClient(supabaseUrl, serviceKey, {
-  auth: { persistSession: false },
-});
+import { serviceClient } from '@tests/fixtures/supabase';
 
 describe('Stats Integration', () => {
   let testUserId: string;
@@ -24,16 +13,28 @@ describe('Stats Integration', () => {
     });
     testUserId = userData.user!.id;
 
-    // Get an exercise from seed data
+    // Create test exercise instead of relying on seed data
     const { data: exercise } = await serviceClient
       .from('exercises')
-      .select('id')
-      .limit(1)
+      .insert({
+        language: 'python',
+        category: 'test',
+        difficulty: 1,
+        title: 'Stats Flow Test Exercise',
+        slug: `stats-flow-test-${Date.now()}`,
+        prompt: 'Test prompt',
+        expected_answer: 'test',
+      })
+      .select()
       .single();
     testExerciseId = exercise!.id;
   });
 
   afterAll(async () => {
+    // Clean up test exercise
+    if (testExerciseId) {
+      await serviceClient.from('exercises').delete().eq('id', testExerciseId);
+    }
     // Clean up test user (cascades to user_progress)
     if (testUserId) {
       await serviceClient.auth.admin.deleteUser(testUserId);

@@ -1,20 +1,10 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
-import { createClient } from '@supabase/supabase-js';
-import {
-  LOCAL_SUPABASE_URL,
-  LOCAL_SUPABASE_SERVICE_KEY,
-} from '../../setup';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || LOCAL_SUPABASE_URL;
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || LOCAL_SUPABASE_SERVICE_KEY;
-
-const serviceClient = createClient(supabaseUrl, serviceKey, {
-  auth: { persistSession: false },
-});
+import { serviceClient } from '@tests/fixtures/supabase';
 
 describe('SRS Flow Integration', () => {
   let testUserId: string;
   let testExerciseId: string;
+  const testExerciseIds: string[] = [];
 
   beforeAll(async () => {
     // Create test user
@@ -24,16 +14,47 @@ describe('SRS Flow Integration', () => {
     });
     testUserId = userData.user!.id;
 
-    // Get an exercise ID from seed data
-    const { data: exercises } = await serviceClient
+    // Create test exercise instead of relying on seed data
+    const { data: exercise } = await serviceClient
       .from('exercises')
-      .select('id')
-      .limit(1)
+      .insert({
+        language: 'python',
+        category: 'test',
+        difficulty: 1,
+        title: 'SRS Flow Test Exercise',
+        slug: `srs-flow-test-${Date.now()}`,
+        prompt: 'Test prompt',
+        expected_answer: 'test',
+      })
+      .select()
       .single();
-    testExerciseId = exercises!.id;
+    testExerciseId = exercise!.id;
+    testExerciseIds.push(testExerciseId);
+
+    // Create additional test exercises for 'fetches due cards correctly' test
+    for (let i = 0; i < 2; i++) {
+      const { data: ex } = await serviceClient
+        .from('exercises')
+        .insert({
+          language: 'python',
+          category: 'test',
+          difficulty: 1,
+          title: `SRS Flow Test Exercise ${i + 2}`,
+          slug: `srs-flow-test-${Date.now()}-${i}`,
+          prompt: 'Test prompt',
+          expected_answer: 'test',
+        })
+        .select()
+        .single();
+      if (ex) testExerciseIds.push(ex.id);
+    }
   });
 
   afterAll(async () => {
+    // Clean up test exercises
+    if (testExerciseIds.length > 0) {
+      await serviceClient.from('exercises').delete().in('id', testExerciseIds);
+    }
     // Clean up test user (cascades to user_progress)
     if (testUserId) {
       await serviceClient.auth.admin.deleteUser(testUserId);
@@ -164,16 +185,13 @@ describe('SRS Flow Integration', () => {
     const tomorrow = new Date(now);
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    // Get multiple exercise IDs
-    const { data: exercises } = await serviceClient
-      .from('exercises')
-      .select('id')
-      .limit(3);
+    // Use the test exercises we created in beforeAll
+    expect(testExerciseIds.length).toBeGreaterThanOrEqual(2);
 
     // Create due card (yesterday)
     await serviceClient.from('user_progress').insert({
       user_id: testUserId,
-      exercise_id: exercises![0].id,
+      exercise_id: testExerciseIds[0],
       ease_factor: 2.5,
       interval: 1,
       repetitions: 1,
@@ -186,7 +204,7 @@ describe('SRS Flow Integration', () => {
     // Create not-due card (tomorrow)
     await serviceClient.from('user_progress').insert({
       user_id: testUserId,
-      exercise_id: exercises![1].id,
+      exercise_id: testExerciseIds[1],
       ease_factor: 2.5,
       interval: 2,
       repetitions: 1,
@@ -204,6 +222,6 @@ describe('SRS Flow Integration', () => {
       .lte('next_review', now.toISOString());
 
     expect(dueCards).toHaveLength(1);
-    expect(dueCards![0].exercise_id).toBe(exercises![0].id);
+    expect(dueCards![0].exercise_id).toBe(testExerciseIds[0]);
   });
 });

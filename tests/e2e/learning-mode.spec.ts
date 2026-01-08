@@ -1,40 +1,5 @@
-import { test, expect, Page } from '@playwright/test';
-import { createClient } from '@supabase/supabase-js';
-import { createTestUser, deleteTestUser, TestUser } from './utils/auth';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
-/**
- * Helper to authenticate a test user and inject session cookies
- */
-async function authenticateUser(page: Page, user: TestUser): Promise<void> {
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
-  const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-    email: user.email,
-    password: user.password,
-  });
-
-  if (signInError) {
-    throw new Error(`Failed to sign in: ${signInError.message}`);
-  }
-
-  const session = signInData.session;
-  const projectRef = new URL(supabaseUrl).hostname.split('.')[0];
-  const cookieName = `sb-${projectRef}-auth-token`;
-
-  await page.context().addCookies([
-    {
-      name: cookieName,
-      value: encodeURIComponent(JSON.stringify(session)),
-      domain: 'localhost',
-      path: '/',
-      httpOnly: false,
-      secure: false,
-      sameSite: 'Lax',
-    },
-  ]);
-}
+import { test, expect } from '@playwright/test';
+import { createTestUser, deleteTestUser, authenticateUser, TestUser } from './utils/auth';
 
 // Run tests serially to avoid database connection pool issues
 test.describe.configure({ mode: 'serial' });

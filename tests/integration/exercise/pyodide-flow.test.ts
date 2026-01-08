@@ -1,25 +1,10 @@
 // tests/integration/exercise/pyodide-flow.test.ts
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { gradeAnswerAsync } from '@/lib/exercise/grading';
 import type { Exercise } from '@/lib/types';
-import type { PyodideInterface } from '@/lib/context/PyodideContext';
+import { createMockPyodide } from '@tests/fixtures/pyodide';
 
 // Note: These tests use mock Pyodide. E2E tests verify real Pyodide.
-
-function createMockPyodide(output: string | Error): PyodideInterface {
-  return {
-    runPython: vi.fn(() => {
-      if (output instanceof Error) throw output;
-      return output;
-    }),
-    runPythonAsync: vi.fn(async () => {
-      if (output instanceof Error) throw output;
-      return output;
-    }),
-    loadPackage: vi.fn(async () => {}),
-    globals: new Map(),
-  };
-}
 
 const baseExercise: Partial<Exercise> = {
   id: 'test-id',
@@ -43,7 +28,7 @@ const baseExercise: Partial<Exercise> = {
 describe('Pyodide grading integration', () => {
   describe('predict exercises', () => {
     it('grades predict exercise via execution', async () => {
-      const mockPyodide = createMockPyodide('42\n');
+      const mockPyodide = createMockPyodide({ output: '42\n' });
       const exercise = {
         ...baseExercise,
         exerciseType: 'predict',
@@ -59,7 +44,7 @@ describe('Pyodide grading integration', () => {
     });
 
     it('marks wrong predict answer correctly', async () => {
-      const mockPyodide = createMockPyodide('42\n');
+      const mockPyodide = createMockPyodide({ output: '42\n' });
       const exercise = {
         ...baseExercise,
         exerciseType: 'predict',
@@ -75,7 +60,7 @@ describe('Pyodide grading integration', () => {
     });
 
     it('falls back to string matching on execution error', async () => {
-      const mockPyodide = createMockPyodide(new Error('Runtime error'));
+      const mockPyodide = createMockPyodide({ error: new Error('Runtime error') });
       const exercise = {
         ...baseExercise,
         exerciseType: 'predict',
@@ -93,7 +78,7 @@ describe('Pyodide grading integration', () => {
 
   describe('write exercises with execution', () => {
     it('verifies write exercise by execution', async () => {
-      const mockPyodide = createMockPyodide('[2, 4, 6]\n');
+      const mockPyodide = createMockPyodide({ output: '[2, 4, 6]\n' });
       const exercise = {
         ...baseExercise,
         exerciseType: 'write',
@@ -116,7 +101,7 @@ describe('Pyodide grading integration', () => {
 
   describe('non-execution exercises', () => {
     it('uses string matching when Pyodide available but not needed', async () => {
-      const mockPyodide = createMockPyodide('unused');
+      const mockPyodide = createMockPyodide({ output: 'unused' });
       const exercise = {
         ...baseExercise,
         exerciseType: 'write',

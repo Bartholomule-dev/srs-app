@@ -1,15 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { createClient } from '@supabase/supabase-js';
-import {
-  LOCAL_SUPABASE_URL,
-  LOCAL_SUPABASE_SERVICE_KEY,
-} from '../../setup';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || LOCAL_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY || LOCAL_SUPABASE_SERVICE_KEY,
-  { auth: { persistSession: false } }
-);
+import { serviceClient as supabase } from '@tests/fixtures/supabase';
 
 describe('Exercises Migration', () => {
   const testIds: string[] = [];
@@ -98,25 +88,79 @@ describe('Exercises Migration', () => {
     });
 
     it('has slug column with unique constraint per language', async () => {
-      const { data, error } = await supabase
+      // First insert two exercises with same language, different slugs
+      const { data: data1, error: error1 } = await supabase
         .from('exercises')
-        .select('slug')
-        .eq('language', 'python');
+        .insert({
+          language: 'python',
+          category: 'test',
+          difficulty: 1,
+          title: 'Test Slug 1',
+          slug: 'test-unique-slug-1',
+          prompt: 'Test',
+          expected_answer: 'test',
+        })
+        .select()
+        .single();
 
-      expect(error).toBeNull();
-      expect(data).not.toBeNull();
-      expect(data!.length).toBeGreaterThan(0);
+      if (data1?.id) testIds.push(data1.id);
+      expect(error1).toBeNull();
 
-      // Verify all slugs are non-null
-      for (const exercise of data!) {
-        expect(exercise.slug).toBeTruthy();
-        expect(typeof exercise.slug).toBe('string');
-      }
+      const { data: data2, error: error2 } = await supabase
+        .from('exercises')
+        .insert({
+          language: 'python',
+          category: 'test',
+          difficulty: 1,
+          title: 'Test Slug 2',
+          slug: 'test-unique-slug-2',
+          prompt: 'Test',
+          expected_answer: 'test',
+        })
+        .select()
+        .single();
 
-      // Verify slugs are unique within language
-      const slugs = data!.map(e => e.slug);
-      const uniqueSlugs = new Set(slugs);
-      expect(uniqueSlugs.size).toBe(slugs.length);
+      if (data2?.id) testIds.push(data2.id);
+      expect(error2).toBeNull();
+
+      // Verify both exercises have non-null slugs
+      expect(data1?.slug).toBe('test-unique-slug-1');
+      expect(data2?.slug).toBe('test-unique-slug-2');
+
+      // Attempt to insert duplicate slug for same language - should fail
+      const { error: dupeError } = await supabase
+        .from('exercises')
+        .insert({
+          language: 'python',
+          category: 'test',
+          difficulty: 1,
+          title: 'Test Slug Dupe',
+          slug: 'test-unique-slug-1', // Duplicate!
+          prompt: 'Test',
+          expected_answer: 'test',
+        });
+
+      expect(dupeError).not.toBeNull();
+      expect(dupeError?.code).toBe('23505'); // unique_violation
+
+      // Same slug with different language should work
+      const { data: data3, error: error3 } = await supabase
+        .from('exercises')
+        .insert({
+          language: 'javascript', // Different language
+          category: 'test',
+          difficulty: 1,
+          title: 'Test Slug JS',
+          slug: 'test-unique-slug-1', // Same slug, different language
+          prompt: 'Test',
+          expected_answer: 'test',
+        })
+        .select()
+        .single();
+
+      if (data3?.id) testIds.push(data3.id);
+      expect(error3).toBeNull();
+      expect(data3?.slug).toBe('test-unique-slug-1');
     });
   });
 });

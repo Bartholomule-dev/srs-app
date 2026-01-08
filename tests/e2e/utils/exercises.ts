@@ -113,6 +113,94 @@ export async function waitForExerciseOrComplete(page: Page): Promise<'exercise' 
 }
 
 /**
+ * Complete one interaction (exercise or teaching card).
+ * Returns what was completed: 'exercise', 'teaching', or 'none' if session complete.
+ *
+ * @param page - Playwright page
+ * @param answer - Answer to submit for exercises (default: 'test_answer')
+ */
+export async function completeOneInteraction(
+  page: Page,
+  answer: string = 'test_answer'
+): Promise<'exercise' | 'teaching' | 'none'> {
+  const submitButton = page.getByRole('button', { name: /submit/i });
+  const gotItButton = page.getByRole('button', { name: /got it/i });
+  const endSession = page.getByRole('button', { name: /end session/i });
+  const noCards = page.getByText(/no cards|no exercises|all caught up/i);
+
+  // Wait for any interactive element
+  await Promise.race([
+    submitButton.waitFor({ state: 'visible', timeout: 15000 }).catch(() => {}),
+    gotItButton.waitFor({ state: 'visible', timeout: 15000 }).catch(() => {}),
+    endSession.waitFor({ state: 'visible', timeout: 15000 }).catch(() => {}),
+    noCards.waitFor({ state: 'visible', timeout: 15000 }).catch(() => {}),
+  ]);
+
+  // Check what we got
+  if (await noCards.isVisible({ timeout: 500 }).catch(() => false)) {
+    return 'none';
+  }
+
+  if (await gotItButton.isVisible({ timeout: 500 }).catch(() => false)) {
+    await gotItButton.click();
+    await page.waitForTimeout(300);
+    return 'teaching';
+  }
+
+  if (await submitButton.isVisible({ timeout: 500 }).catch(() => false)) {
+    // Fill answer if input exists
+    const answerInput = page.getByPlaceholder(/type your answer|your answer/i);
+    if (await answerInput.isVisible({ timeout: 500 }).catch(() => false)) {
+      await answerInput.fill(answer);
+    } else {
+      // Try generic textbox
+      const textbox = page.getByRole('textbox').first();
+      if (await textbox.isVisible({ timeout: 500 }).catch(() => false)) {
+        await textbox.fill(answer);
+      }
+    }
+
+    await submitButton.click();
+
+    // Wait for continue button and click it
+    const continueButton = page.getByRole('button', { name: /continue/i });
+    await continueButton.waitFor({ state: 'visible', timeout: 5000 });
+    await continueButton.click();
+    await page.waitForTimeout(500);
+
+    return 'exercise';
+  }
+
+  return 'none';
+}
+
+/**
+ * Complete multiple interactions until the specified count or session ends.
+ *
+ * @param page - Playwright page
+ * @param maxInteractions - Maximum number of interactions to complete
+ * @param answer - Answer to submit for exercises
+ * @returns Object with counts of exercises and teaching cards completed
+ */
+export async function completeInteractions(
+  page: Page,
+  maxInteractions: number = 10,
+  answer: string = 'test_answer'
+): Promise<{ exercises: number; teaching: number }> {
+  let exercises = 0;
+  let teaching = 0;
+
+  for (let i = 0; i < maxInteractions; i++) {
+    const result = await completeOneInteraction(page, answer);
+    if (result === 'exercise') exercises++;
+    else if (result === 'teaching') teaching++;
+    else break; // 'none' means session ended
+  }
+
+  return { exercises, teaching };
+}
+
+/**
  * Inject a fixed date into browser context for deterministic testing.
  */
 export async function mockDate(context: BrowserContext, date: Date): Promise<void> {

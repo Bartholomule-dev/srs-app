@@ -1,9 +1,9 @@
 // tests/unit/exercise/grading.test.ts
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { gradeAnswer, shouldShowCoaching, gradeAnswerAsync } from '@/lib/exercise/grading';
-import type { PyodideInterface } from '@/lib/context/PyodideContext';
 import type { Exercise } from '@/lib/types';
 import type { GradingResult } from '@/lib/exercise/types';
+import { createMockPyodide } from '@tests/fixtures/pyodide';
 
 // Helper to create minimal exercise fixtures
 function createExercise(overrides: Partial<Exercise> = {}): Exercise {
@@ -388,16 +388,6 @@ describe('grading', () => {
   });
 
   describe('gradeAnswerAsync', () => {
-    // Mock Pyodide
-    function createMockPyodide(output: string): PyodideInterface {
-      return {
-        runPython: vi.fn(() => output),
-        runPythonAsync: vi.fn(async () => output),
-        loadPackage: vi.fn(async () => {}),
-        globals: new Map(),
-      };
-    }
-
     describe('without Pyodide', () => {
       it('uses string matching when pyodide is null', async () => {
         const exercise = createExercise({ expectedAnswer: 's[1:4]' });
@@ -410,7 +400,7 @@ describe('grading', () => {
 
     describe('with Pyodide for predict exercises', () => {
       it('uses execution grading for predict exercises', async () => {
-        const mockPyodide = createMockPyodide('hello\n');
+        const mockPyodide = createMockPyodide({ output: 'hello\n' });
         const exercise = createExercise({
           exerciseType: 'predict',
           code: 'print("hello")',
@@ -423,16 +413,7 @@ describe('grading', () => {
       });
 
       it('falls back to string on execution error', async () => {
-        const mockPyodide: PyodideInterface = {
-          runPython: vi.fn(() => {
-            throw new Error('Execution error');
-          }),
-          runPythonAsync: vi.fn(async () => {
-            throw new Error('Execution error');
-          }),
-          loadPackage: vi.fn(async () => {}),
-          globals: new Map(),
-        };
+        const mockPyodide = createMockPyodide({ error: new Error('Execution error') });
 
         const exercise = createExercise({
           exerciseType: 'predict',
@@ -448,7 +429,7 @@ describe('grading', () => {
 
     describe('with verifyByExecution flag', () => {
       it('uses execution for write exercises with flag', async () => {
-        const mockPyodide = createMockPyodide('[2, 4, 6]\n');
+        const mockPyodide = createMockPyodide({ output: '[2, 4, 6]\n' });
         const exercise = createExercise({
           exerciseType: 'write',
           expectedAnswer: '[2, 4, 6]',

@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     // Generated Playwright artifacts
     "playwright-report/**",
     "test-results/**",
+    // Coverage reports
+    "coverage/**",
   ]),
   // Allow 'any' in test files for mocking purposes
   {

@@ -1,17 +1,6 @@
 // tests/integration/hooks/profile-creation.test.ts
 import { describe, it, expect, afterAll } from 'vitest';
-import { createClient } from '@supabase/supabase-js';
-import {
-  LOCAL_SUPABASE_URL,
-  LOCAL_SUPABASE_SERVICE_KEY,
-} from '../../setup';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || LOCAL_SUPABASE_URL;
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || LOCAL_SUPABASE_SERVICE_KEY;
-
-const serviceClient = createClient(supabaseUrl, serviceKey, {
-  auth: { persistSession: false },
-});
+import { serviceClient } from '@tests/fixtures/supabase';
 
 describe('Profile Auto-Creation', () => {
   let testUserId: string;

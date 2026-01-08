@@ -1,9 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { createClient } from '@supabase/supabase-js';
-import { createTestUser, deleteTestUser, TestUser } from './utils/auth';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+import { createTestUser, deleteTestUser, authenticateUser, TestUser } from './utils/auth';
 
 let testUser: TestUser;
 
@@ -20,33 +16,7 @@ test.describe('Full Practice Session Flow', () => {
 
   test('complete multiple questions without session resetting', async ({ page }) => {
     test.setTimeout(240000); // 4 minute timeout for full session (teaching cards + exercises)
-    // Sign in programmatically
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
-    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-      email: testUser.email,
-      password: testUser.password,
-    });
-
-    if (signInError) {
-      throw new Error(`Failed to sign in: ${signInError.message}`);
-    }
-
-    // Inject session cookie
-    const session = signInData.session;
-    const projectRef = new URL(supabaseUrl).hostname.split('.')[0];
-    const cookieName = `sb-${projectRef}-auth-token`;
-
-    await page.context().addCookies([
-      {
-        name: cookieName,
-        value: encodeURIComponent(JSON.stringify(session)),
-        domain: 'localhost',
-        path: '/',
-        httpOnly: false,
-        secure: false,
-        sameSite: 'Lax',
-      },
-    ]);
+    await authenticateUser(page, testUser);
 
     // Navigate to practice page directly
     await page.goto('/practice');
@@ -182,33 +152,7 @@ test.describe('Full Practice Session Flow', () => {
   });
 
   test('session progress increments correctly', async ({ page }) => {
-    // Sign in
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
-    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-      email: testUser.email,
-      password: testUser.password,
-    });
-
-    if (signInError) {
-      throw new Error(`Failed to sign in: ${signInError.message}`);
-    }
-
-    const session = signInData.session;
-    const projectRef = new URL(supabaseUrl).hostname.split('.')[0];
-    const cookieName = `sb-${projectRef}-auth-token`;
-
-    await page.context().addCookies([
-      {
-        name: cookieName,
-        value: encodeURIComponent(JSON.stringify(session)),
-        domain: 'localhost',
-        path: '/',
-        httpOnly: false,
-        secure: false,
-        sameSite: 'Lax',
-      },
-    ]);
-
+    await authenticateUser(page, testUser);
     await page.goto('/practice');
 
     // Wait for either submit button, teaching card, or empty state

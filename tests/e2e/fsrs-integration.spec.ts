@@ -6,40 +6,10 @@
 
 import { test, expect, Page } from '@playwright/test';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { createTestUser, deleteTestUser, TestUser } from './utils/auth';
+import { createTestUser, deleteTestUser, authenticateUser, TestUser } from './utils/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-
-// Helper to set up authenticated session
-async function authenticateUser(page: Page, testUser: TestUser) {
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
-  const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-    email: testUser.email,
-    password: testUser.password,
-  });
-
-  if (signInError) {
-    throw new Error(`Failed to sign in: ${signInError.message}`);
-  }
-
-  const session = signInData.session;
-  const projectRef = new URL(supabaseUrl).hostname.split('.')[0];
-  const cookieName = `sb-${projectRef}-auth-token`;
-
-  await page.context().addCookies([
-    {
-      name: cookieName,
-      value: encodeURIComponent(JSON.stringify(session)),
-      domain: 'localhost',
-      path: '/',
-      httpOnly: false,
-      secure: false,
-      sameSite: 'Lax',
-    },
-  ]);
-}
 
 // Helper to complete an exercise interaction (handles teaching cards too)
 async function completeOneInteraction(page: Page): Promise<'exercise' | 'teaching' | 'none'> {

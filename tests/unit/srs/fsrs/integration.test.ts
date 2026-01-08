@@ -20,47 +20,14 @@ import {
 } from '@/lib/srs/fsrs/adapter';
 import { mapFSRSStateToPhase, selectExercise } from '@/lib/srs/exercise-selection';
 import type { FSRSState } from '@/lib/srs/fsrs/types';
-import type { Exercise } from '@/lib/types/app.types';
-
-// Helper to create mock exercises
-function createMockExercise(overrides: Partial<Exercise> = {}): Exercise {
-  return {
-    id: 'ex-1',
-    slug: 'for-loop-basic',
-    language: 'python',
-    category: 'control-flow',
-    difficulty: 1,
-    title: 'Basic For Loop',
-    prompt: 'Write a for loop',
-    expectedAnswer: 'for i in range(10): print(i)',
-    acceptedSolutions: [],
-    hints: ['Use range()'],
-    explanation: null,
-    tags: ['loops'],
-    timesPracticed: 0,
-    avgSuccessRate: null,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    concept: 'control-flow',
-    subconcept: 'for',
-    level: 'intro',
-    prereqs: [],
-    exerciseType: 'write',
-    pattern: 'iteration',
-    objective: 'Write a basic for loop',
-    targets: null,
-    template: null,
-    blankPosition: null,
-    ...overrides,
-  } as Exercise;
-}
+import { createMockExercise } from '@tests/fixtures/exercise';
 
 describe('FSRS Cross-Module Integration', () => {
   describe('FSRS State → Exercise Selection Phase', () => {
     const exercises = [
-      createMockExercise({ id: '1', slug: 'intro-1', level: 'intro' }),
-      createMockExercise({ id: '2', slug: 'practice-1', level: 'practice' }),
-      createMockExercise({ id: '3', slug: 'edge-1', level: 'edge' }),
+      createMockExercise({ id: '1', slug: 'intro-1', level: 'intro', subconcept: 'for' }),
+      createMockExercise({ id: '2', slug: 'practice-1', level: 'practice', subconcept: 'for' }),
+      createMockExercise({ id: '3', slug: 'edge-1', level: 'edge', subconcept: 'for' }),
     ];
 
     it('New state maps to learning phase, selecting intro exercises', () => {

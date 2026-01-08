@@ -1,9 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { createClient } from '@supabase/supabase-js';
-import { createTestUser, deleteTestUser, TestUser } from './utils/auth';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+import { createTestUser, deleteTestUser, authenticateUser, TestUser } from './utils/auth';
 
 let testUser: TestUser;
 
@@ -27,44 +23,18 @@ test.describe('Critical Path: Login → Dashboard → Practice', () => {
       page.getByRole('heading', { name: /Keep Your Code Sharp/i })
     ).toBeVisible({ timeout: 10000 });
 
-    // Step 2: Sign in programmatically via Supabase client (Node.js side)
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
-    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-      email: testUser.email,
-      password: testUser.password,
-    });
+    // Step 2: Sign in and inject session cookie
+    await authenticateUser(page, testUser);
 
-    if (signInError) {
-      throw new Error(`Failed to sign in test user: ${signInError.message}`);
-    }
-
-    // Step 3: Inject the session into browser cookies (@supabase/ssr uses cookies, not localStorage)
-    const session = signInData.session;
-    const projectRef = new URL(supabaseUrl).hostname.split('.')[0];
-    const cookieName = `sb-${projectRef}-auth-token`;
-
-    // Set the session cookie - Supabase SSR stores the full session object as JSON
-    await page.context().addCookies([
-      {
-        name: cookieName,
-        value: encodeURIComponent(JSON.stringify(session)),
-        domain: 'localhost',
-        path: '/',
-        httpOnly: false,
-        secure: false,
-        sameSite: 'Lax',
-      },
-    ]);
-
-    // Step 4: Navigate to dashboard (this will pick up the session)
+    // Step 3: Navigate to dashboard (this will pick up the session)
     await page.goto('/dashboard');
 
-    // Step 5: Verify dashboard loads - look for greeting heading
+    // Step 4: Verify dashboard loads - look for greeting heading
     await expect(
       page.getByRole('heading', { name: /Good (morning|afternoon|evening|night)/i })
     ).toBeVisible({ timeout: 15000 });
 
-    // Step 6: Look for practice button/link - could be "Learn new cards", "Start Practice", or "Browse exercises"
+    // Step 5: Look for practice button/link - could be "Learn new cards", "Start Practice", or "Browse exercises"
     // It could be either a button or a link depending on the component
     const practiceLink = page.getByRole('link', { name: /learn new cards|start practice|browse exercises/i });
     const practiceBtn = page.getByRole('button', { name: /learn new cards|start practice/i });

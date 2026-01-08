@@ -1,11 +1,7 @@
 // tests/integration/srs/fsrs-flow.test.ts
 // Integration tests for FSRS-based subconcept progress
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
-import { createClient } from '@supabase/supabase-js';
-import {
-  LOCAL_SUPABASE_URL,
-  LOCAL_SUPABASE_SERVICE_KEY,
-} from '../../setup';
+import { serviceClient } from '@tests/fixtures/supabase';
 import {
   createEmptyFSRSCard,
   reviewCard,
@@ -13,13 +9,6 @@ import {
 import { qualityToRating } from '@/lib/srs/fsrs/mapping';
 import { STATE_MAP } from '@/lib/srs/fsrs/types';
 import type { Quality } from '@/lib/types';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || LOCAL_SUPABASE_URL;
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || LOCAL_SUPABASE_SERVICE_KEY;
-
-const serviceClient = createClient(supabaseUrl, serviceKey, {
-  auth: { persistSession: false },
-});
 
 describe('FSRS Flow Integration', () => {
   let testUserId: string;

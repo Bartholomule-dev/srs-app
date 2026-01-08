@@ -1,15 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { createClient } from '@supabase/supabase-js';
-import {
-  LOCAL_SUPABASE_URL,
-  LOCAL_SUPABASE_SERVICE_KEY,
-} from '../../setup';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || LOCAL_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY || LOCAL_SUPABASE_SERVICE_KEY,
-  { auth: { persistSession: false } }
-);
+import { serviceClient as supabase } from '@tests/fixtures/supabase';
 
 /**
  * These tests validate that the exercise seed data has been properly imported.

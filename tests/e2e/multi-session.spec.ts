@@ -1,42 +1,10 @@
 import { test, expect, Page } from '@playwright/test';
 import { createClient } from '@supabase/supabase-js';
-import { createTestUser, deleteTestUser, TestUser } from './utils/auth';
+import { createTestUser, deleteTestUser, authenticateUser, TestUser } from './utils/auth';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 let testUser: TestUser;
-
-/**
- * Helper to sign in and inject session cookie
- */
-async function signInAndSetCookie(page: Page, user: TestUser): Promise<void> {
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
-  const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-    email: user.email,
-    password: user.password,
-  });
-
-  if (signInError) {
-    throw new Error(`Failed to sign in: ${signInError.message}`);
-  }
-
-  const session = signInData.session;
-  const projectRef = new URL(supabaseUrl).hostname.split('.')[0];
-  const cookieName = `sb-${projectRef}-auth-token`;
-
-  await page.context().addCookies([
-    {
-      name: cookieName,
-      value: encodeURIComponent(JSON.stringify(session)),
-      domain: 'localhost',
-      path: '/',
-      httpOnly: false,
-      secure: false,
-      sameSite: 'Lax',
-    },
-  ]);
-}
 
 /**
  * Complete one full practice session
@@ -161,7 +129,7 @@ async function getSubconceptSlugs(userId: string): Promise<string[]> {
     return [];
   }
 
-  return data?.map(d => d.subconcept_slug) ?? [];
+  return data?.map((d: { subconcept_slug: string }) => d.subconcept_slug) ?? [];
 }
 
 test.describe('Multi-Session New Cards Flow', () => {
@@ -178,7 +146,7 @@ test.describe('Multi-Session New Cards Flow', () => {
   test('completes 3 consecutive sessions with new cards each time', async ({ page }) => {
     test.setTimeout(360000); // 6 minute timeout for 3 full sessions
 
-    await signInAndSetCookie(page, testUser);
+    await authenticateUser(page, testUser);
 
     // Session 1: Fresh user should get 5 teaching pairs (5 exercises)
     console.log('\n=== SESSION 1 ===');
@@ -234,7 +202,7 @@ test.describe('Multi-Session New Cards Flow', () => {
     const freshUser = await createTestUser();
 
     try {
-      await signInAndSetCookie(page, freshUser);
+      await authenticateUser(page, freshUser);
 
       const allSubconcepts: string[] = [];
 

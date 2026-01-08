@@ -7,25 +7,7 @@ import {
   captureStdout,
 } from '@/lib/exercise/execution';
 import type { PyodideInterface } from '@/lib/context/PyodideContext';
-
-// Mock Pyodide interface
-function createMockPyodide(
-  runPythonResult: unknown = undefined,
-  throwError: Error | null = null
-): PyodideInterface {
-  return {
-    runPython: vi.fn(() => {
-      if (throwError) throw throwError;
-      return runPythonResult;
-    }),
-    runPythonAsync: vi.fn(async () => {
-      if (throwError) throw throwError;
-      return runPythonResult;
-    }),
-    loadPackage: vi.fn(async () => {}),
-    globals: new Map(),
-  };
-}
+import { createMockPyodide } from '@tests/fixtures/pyodide';
 
 describe('captureStdout', () => {
   it('returns wrapper code that captures stdout', () => {
@@ -40,7 +22,7 @@ describe('captureStdout', () => {
 
 describe('executePythonCode', () => {
   it('returns success result with output', async () => {
-    const mockPyodide = createMockPyodide('hello\n');
+    const mockPyodide = createMockPyodide({ output: 'hello\n' });
 
     const result = await executePythonCode(mockPyodide, 'print("hello")');
 
@@ -50,7 +32,7 @@ describe('executePythonCode', () => {
   });
 
   it('returns error result on execution failure', async () => {
-    const mockPyodide = createMockPyodide(undefined, new Error('SyntaxError'));
+    const mockPyodide = createMockPyodide({ error: new Error('SyntaxError') });
 
     const result = await executePythonCode(mockPyodide, 'invalid python');
 
@@ -85,7 +67,7 @@ describe('executePythonCode', () => {
 
 describe('verifyPredictAnswer', () => {
   it('returns true when output matches expected', async () => {
-    const mockPyodide = createMockPyodide('42\n');
+    const mockPyodide = createMockPyodide({ output: '42\n' });
 
     const isCorrect = await verifyPredictAnswer(
       mockPyodide,
@@ -97,7 +79,7 @@ describe('verifyPredictAnswer', () => {
   });
 
   it('returns false when output differs', async () => {
-    const mockPyodide = createMockPyodide('43\n');
+    const mockPyodide = createMockPyodide({ output: '43\n' });
 
     const isCorrect = await verifyPredictAnswer(
       mockPyodide,
@@ -109,7 +91,7 @@ describe('verifyPredictAnswer', () => {
   });
 
   it('normalizes whitespace in comparison', async () => {
-    const mockPyodide = createMockPyodide('hello\n\n');
+    const mockPyodide = createMockPyodide({ output: 'hello\n\n' });
 
     const isCorrect = await verifyPredictAnswer(
       mockPyodide,
@@ -121,7 +103,7 @@ describe('verifyPredictAnswer', () => {
   });
 
   it('throws error on execution failure for fallback', async () => {
-    const mockPyodide = createMockPyodide(undefined, new Error('Error'));
+    const mockPyodide = createMockPyodide({ error: new Error('Error') });
 
     await expect(
       verifyPredictAnswer(mockPyodide, 'invalid', 'expected')
@@ -131,7 +113,7 @@ describe('verifyPredictAnswer', () => {
 
 describe('verifyWriteAnswer', () => {
   it('returns true when user code produces expected output', async () => {
-    const mockPyodide = createMockPyodide('[2, 4, 6]\n');
+    const mockPyodide = createMockPyodide({ output: '[2, 4, 6]\n' });
 
     const isCorrect = await verifyWriteAnswer(
       mockPyodide,
@@ -144,7 +126,7 @@ describe('verifyWriteAnswer', () => {
   });
 
   it('substitutes {{answer}} in verification template', async () => {
-    const mockPyodide = createMockPyodide('6\n');
+    const mockPyodide = createMockPyodide({ output: '6\n' });
 
     await verifyWriteAnswer(
       mockPyodide,
@@ -159,7 +141,7 @@ describe('verifyWriteAnswer', () => {
   });
 
   it('uses default template when none provided', async () => {
-    const mockPyodide = createMockPyodide('result\n');
+    const mockPyodide = createMockPyodide({ output: 'result\n' });
 
     await verifyWriteAnswer(mockPyodide, '"result"', 'result');
 

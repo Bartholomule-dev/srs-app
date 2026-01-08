@@ -1,35 +1,9 @@
 import { describe, it, expect, afterAll } from 'vitest';
-import { createClient } from '@supabase/supabase-js';
 import {
-  LOCAL_SUPABASE_URL,
-  LOCAL_SUPABASE_SERVICE_KEY,
-} from '../../setup';
-
-// Service client bypasses RLS for testing schema
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || LOCAL_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY || LOCAL_SUPABASE_SERVICE_KEY,
-  { auth: { persistSession: false } }
-);
-
-/**
- * Create a test user in auth.users (profile is auto-created by trigger)
- */
-async function createTestUser(): Promise<string> {
-  const { data, error } = await supabase.auth.admin.createUser({
-    email: `test-${crypto.randomUUID()}@example.com`,
-    email_confirm: true,
-  });
-  if (error) throw error;
-  return data.user.id;
-}
-
-/**
- * Delete a test user (cascades to profile)
- */
-async function deleteTestUser(userId: string): Promise<void> {
-  await supabase.auth.admin.deleteUser(userId);
-}
+  serviceClient as supabase,
+  createTestUser,
+  deleteTestUser,
+} from '@tests/fixtures/supabase';
 
 describe('Profiles Migration', () => {
   const testUserIds: string[] = [];
