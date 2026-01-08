@@ -1,7 +1,6 @@
 'use client';
 
 import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useSkillTree } from '@/lib/hooks/useSkillTree';
 import { SubconceptNode } from './SubconceptNode';
@@ -116,7 +115,7 @@ export function SkillTree({ className }: SkillTreeProps) {
       <div
         data-testid="skill-tree-loading"
         className={cn(
-          'rounded-xl border border-[var(--border)] bg-[var(--bg-surface-1)]/50 backdrop-blur-sm p-6',
+          'rounded-xl border border-[var(--border)] bg-[var(--bg-surface-1)]/50 p-6',
           className
         )}
       >
@@ -147,7 +146,7 @@ export function SkillTree({ className }: SkillTreeProps) {
     return (
       <div
         className={cn(
-          'rounded-xl border border-red-500/20 bg-red-500/5 backdrop-blur-sm p-6 text-center',
+          'rounded-xl border border-red-500/20 bg-red-500/5 p-6 text-center',
           className
         )}
       >
@@ -166,7 +165,7 @@ export function SkillTree({ className }: SkillTreeProps) {
     <div
       data-testid="skill-tree-container"
       className={cn(
-        'rounded-xl border border-[var(--border)] bg-[var(--bg-surface-1)] backdrop-blur-sm',
+        'rounded-xl border border-[var(--border)] bg-[var(--bg-surface-1)]',
         className
       )}
     >
@@ -199,18 +198,12 @@ export function SkillTree({ className }: SkillTreeProps) {
                     if (!cluster) return null;
 
                     return (
-                      <motion.div
+                      <ClusterWithNodeRefs
                         key={slug}
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: tier * 0.1 }}
-                      >
-                        <ClusterWithNodeRefs
-                          cluster={cluster}
-                          registerNode={registerNode}
-                          prereqNames={globalPrereqNames}
-                        />
-                      </motion.div>
+                        cluster={cluster}
+                        registerNode={registerNode}
+                        prereqNames={globalPrereqNames}
+                      />
                     );
                   })}
                 </div>
@@ -235,7 +228,7 @@ function ClusterWithNodeRefs({
   prereqNames,
 }: ClusterWithNodeRefsProps) {
   return (
-    <div className="flex flex-col items-center gap-3 p-4 rounded-xl bg-[var(--bg-surface-1)]/30 border border-[var(--border)]/50 backdrop-blur-sm">
+    <div className="flex flex-col items-center gap-3 p-4 rounded-xl bg-[var(--bg-surface-1)]/30 border border-[var(--border)]/50">
       {/* Label and progress badge */}
       <div className="flex items-center gap-2 mb-1">
         <span className="font-display text-sm font-semibold text-[var(--text-primary)]">
