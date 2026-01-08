@@ -69,6 +69,21 @@ describe('CodeInput', () => {
     });
   });
 
+  describe('auto-indent', () => {
+    it('auto-indents on Shift+Enter', async () => {
+      const user = userEvent.setup();
+      const handleChange = vi.fn();
+      render(<CodeInput value="def foo():" onChange={handleChange} onSubmit={() => {}} />);
+
+      const textarea = screen.getByRole('textbox');
+      await user.click(textarea);
+      await user.keyboard('{End}');
+      await user.keyboard('{Shift>}{Enter}{/Shift}');
+
+      expect(handleChange).toHaveBeenCalledWith('def foo():\n    ');
+    });
+  });
+
   describe('disabled state', () => {
     it('can be disabled', () => {
       render(<CodeInput value="" onChange={() => {}} onSubmit={() => {}} disabled />);
