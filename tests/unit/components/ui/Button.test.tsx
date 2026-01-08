@@ -41,17 +41,17 @@ describe('Button', () => {
       expect(button.className).toContain('transition-all');
     });
 
-    it('applies glow effect when glow prop is true on primary variant', () => {
+    it('applies transition-shadow when glow prop is true', () => {
       render(<Button variant="primary" glow>Glowing</Button>);
       const button = screen.getByRole('button');
-      expect(button.className).toContain('shadow-');
+      // Glow prop now applies transition class for external animation via motion wrapper
+      expect(button.className).toContain('transition-shadow');
     });
 
-    it('does not apply glow effect on non-primary variants', () => {
-      render(<Button variant="secondary" glow>No Glow</Button>);
+    it('applies transition-shadow on any variant when glow is true', () => {
+      render(<Button variant="secondary" glow>With Transition</Button>);
       const button = screen.getByRole('button');
-      // The shadow class should not be present for non-primary variants
-      expect(button.className).not.toContain('shadow-[0_0_20px');
+      expect(button.className).toContain('transition-shadow');
     });
 
     it('merges custom className with default classes', () => {

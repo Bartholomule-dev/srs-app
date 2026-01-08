@@ -73,7 +73,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           'active:scale-[0.98]',
           variantStyles[variant],
           sizeStyles[size],
-          glow && variant === 'primary' && 'shadow-[0_0_20px_rgba(245,158,11,0.4)]',
+          glow && 'transition-shadow duration-150',
           isDisabled && 'opacity-50 cursor-not-allowed pointer-events-none',
           className
         )}
