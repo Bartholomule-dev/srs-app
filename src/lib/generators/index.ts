@@ -11,6 +11,10 @@ import { loopSimulationGenerator } from './definitions/loop-simulation';
 import { comparisonLogicGenerator } from './definitions/comparison-logic';
 import { stringOpsGenerator } from './definitions/string-ops';
 import { dictValuesGenerator } from './definitions/dict-values';
+import { compMappingGenerator } from './definitions/comp-mapping';
+import { compFilterGenerator } from './definitions/comp-filter';
+import { tryExceptFlowGenerator } from './definitions/try-except-flow';
+import { oopInstanceGenerator } from './definitions/oop-instance';
 
 // Re-export types
 export type { Generator, GeneratorParams, TargetConstruct, RenderedExerciseMetadata, VariantOverrides, VariantMap };
@@ -63,3 +67,7 @@ registerGenerator(loopSimulationGenerator);
 registerGenerator(comparisonLogicGenerator);
 registerGenerator(stringOpsGenerator);
 registerGenerator(dictValuesGenerator);
+registerGenerator(compMappingGenerator);
+registerGenerator(compFilterGenerator);
+registerGenerator(tryExceptFlowGenerator);
+registerGenerator(oopInstanceGenerator);

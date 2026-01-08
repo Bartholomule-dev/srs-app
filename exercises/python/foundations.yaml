@@ -76,25 +76,11 @@ exercises:
     tags: [variables, swap, intermediate]
 
   # --- Operators Subconcept ---
-  - slug: add-numbers
-    objective: Use the addition operator for arithmetic calculations
-    title: Add Numbers
-    difficulty: 1
-    concept: foundations
-    subconcept: operators
-    level: intro
-    prereqs: []
-    type: write
-    pattern: arithmetic
-    prompt: Add the numbers 5 and 3
-    expected_answer: 5 + 3
-    hints:
-      - Use the + operator
-    tags: [operators, arithmetic, addition]
+  # Static add-numbers removed - covered by int-addition-dynamic
 
-  - slug: floor-division-intro
+  - slug: floor-division-dynamic
     objective: Apply floor division operator for integer division results
-    title: Floor Division
+    title: Dynamic Floor Division
     difficulty: 1
     concept: foundations
     subconcept: operators
@@ -102,16 +88,20 @@ exercises:
     prereqs: []
     type: write
     pattern: arithmetic
-    prompt: Perform floor division of 17 by 5 (integer division)
-    expected_answer: 17 // 5
+    generator: arithmetic-values
+    prompt: Perform floor division of {{x}} by {{y}} (integer division)
+    expected_answer: "{{x}} // {{y}}"
+    accepted_solutions:
+      - "{{x}} // {{y}}"
+      - "{{x}}//{{y}}"
     hints:
       - Use // for integer division
-      - Result is 3 (rounds down)
-    tags: [operators, division, floor]
+      - Result rounds down to nearest integer
+    tags: [operators, division, floor, dynamic]
 
-  - slug: modulo-operator-intro
+  - slug: modulo-dynamic
     objective: Use the modulo operator to find the remainder of division
-    title: Modulo Operator
+    title: Dynamic Modulo
     difficulty: 1
     concept: foundations
     subconcept: operators
@@ -119,32 +109,21 @@ exercises:
     prereqs: []
     type: write
     pattern: arithmetic
-    prompt: Get the remainder when 17 is divided by 5
-    expected_answer: 17 % 5
+    generator: arithmetic-values
+    prompt: Get the remainder when {{x}} is divided by {{y}}
+    expected_answer: "{{x}} % {{y}}"
+    accepted_solutions:
+      - "{{x}} % {{y}}"
+      - "{{x}}%{{y}}"
     hints:
       - Use the % operator
-      - Result is 2
-    tags: [operators, modulo, remainder]
+    tags: [operators, modulo, remainder, dynamic]
 
-  - slug: exponentiation-intro
-    objective: Calculate powers using the exponentiation operator
-    title: Exponentiation
-    difficulty: 1
-    concept: foundations
-    subconcept: operators
-    level: practice
-    prereqs: [operators]
-    type: write
-    pattern: arithmetic
-    prompt: Calculate 2 to the power of 10
-    expected_answer: 2 ** 10
-    hints:
-      - Use ** for exponentiation
-    tags: [operators, power, exponent]
+  # Static exponentiation-intro removed - covered by exponentiation-dynamic
 
-  - slug: augmented-assignment
+  - slug: augmented-assignment-dynamic
     objective: Apply augmented assignment operators for concise updates
-    title: Augmented Assignment
+    title: Dynamic Augmented Assignment
     difficulty: 2
     concept: foundations
     subconcept: operators
@@ -152,12 +131,13 @@ exercises:
     prereqs: [operators]
     type: write
     pattern: assignment
-    prompt: Add 5 to x using augmented assignment
-    expected_answer: x += 5
+    generator: arithmetic-values
+    prompt: Add {{y}} to x using augmented assignment
+    expected_answer: "x += {{y}}"
     hints:
       - Use += for add-and-assign
-      - Equivalent to x = x + 5
-    tags: [operators, assignment, augmented]
+      - Equivalent to x = x + value
+    tags: [operators, assignment, augmented, dynamic]
 
   - slug: comparison-chaining
     objective: Chain comparison operators to check value ranges

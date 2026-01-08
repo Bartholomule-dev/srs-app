@@ -10,12 +10,12 @@ SRS-App is a gamified web platform for practicing code syntax through spaced rep
 - **Auth System:** ✅ Complete (Magic Link via Supabase + auto-generated usernames)
 - **Database Schema:** ✅ Complete (profiles, exercises, user_progress)
 - **TypeScript Types:** ✅ Complete (auto-generated + camelCase mappers)
-- **Test Infrastructure:** ✅ Complete (Vitest 998 tests + Playwright E2E)
+- **Test Infrastructure:** ✅ Complete (Vitest 1088 tests + Playwright E2E)
 - **Error Handling:** ✅ Complete (AppError + ErrorBoundary + Toast)
-- **Core SRS Engine:** ✅ Complete (SM-2 algorithm + useConceptSRS hook)
+- **Core SRS Engine:** ✅ Complete (FSRS algorithm + useConceptSRS hook)
 - **Exercise Engine:** ✅ Complete (ExerciseCard + components)
 - **Practice Session:** ✅ Complete (useConceptSession + /dashboard + /practice)
-- **Exercise Library:** ✅ Complete (218 Python exercises across 54 subconcepts)
+- **Exercise Library:** ✅ Complete (355 Python exercises, 23 dynamic, across 54 subconcepts)
 - **Basic Stats:** ✅ Complete (StatsGrid + useStats + streak/accuracy)
 - **Deployment:** ✅ Complete (Vercel + Supabase + GitHub Actions CI/E2E)
 - **UI/UX Redesign:** ✅ Complete (Landing page, Header, Dashboard, Practice flow)
@@ -42,6 +42,9 @@ SRS-App is a gamified web platform for practicing code syntax through spaced rep
 19. **Milestone 19: Dedicated Teaching Examples** - exampleCode field, instructional examples
 20. **Milestone 20: Dynamic Exercises Phase 1** - Generator infrastructure, deterministic seeding, Mustache templates
 21. **Milestone 21: Dynamic Exercises Phase 2 (Grading)** - Two-pass grading (correctness + construct coaching), 8 construct patterns, CoachingFeedback component
+22. **Milestone 22: Dynamic Exercises Phase 3 (Pyodide)** - Lazy-loaded Python execution, PyodideContext, execution-based grading
+23. **Milestone 23: Dynamic Exercises Phase 4 (Metrics)** - Audit logging, retention/transfer metrics, construct adoption tracking
+24. **Milestone 24: Dynamic Exercises Phase 5 (Content)** - 23 dynamic exercises, 5 generators (slice-bounds, list-values, variable-names, index-values, arithmetic-values)
 
 ## Next Up
 - **Username Selection UI** (auto-generated for now)

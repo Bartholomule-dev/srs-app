@@ -238,14 +238,15 @@ exercises:
     prereqs: [comprehensions.list-comp]
     type: predict
     pattern: mapping
+    generator: comp-mapping
     prompt: What does this code produce?
     code: |
-      result = [x * 2 for x in range(4)]
+      result = [x * {{m}} for x in range({{n}})]
       print(result)
-    expected_answer: "[0, 2, 4, 6]"
+    expected_answer: "{{result}}"
     hints:
-      - Doubles each number 0-3
-    tags: [comprehensions, list-comp, predict]
+      - Multiplies each number 0-{{n}} by {{m}}
+    tags: [comprehensions, list-comp, predict, dynamic]
 
   - slug: list-comp-filter-predict
     objective: Predict filtered list comprehension
@@ -257,14 +258,15 @@ exercises:
     prereqs: [comprehensions.list-comp]
     type: predict
     pattern: filtering
+    generator: comp-filter
     prompt: What does this code produce?
     code: |
-      result = [x for x in range(6) if x % 2 == 0]
+      result = [x for x in range({{n}}) if x % {{mod}} == 0]
       print(result)
-    expected_answer: "[0, 2, 4]"
+    expected_answer: "{{result}}"
     hints:
-      - Only includes even numbers
-    tags: [comprehensions, list-comp, predict]
+      - Only includes numbers divisible by {{mod}}
+    tags: [comprehensions, list-comp, predict, dynamic]
 
   - slug: dict-comp-predict
     objective: Predict dict comprehension output

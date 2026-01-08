@@ -18,7 +18,7 @@
 
 A gamified web platform for practicing code syntax through spaced repetition. Target users are AI-assisted developers who want to maintain their programming fundamentals.
 
-**Current Status:** Dynamic Exercise System Complete (All 6 Phases) - 29 dynamic exercises across 4 concept files using 9 generators (slice-bounds, list-values, variable-names, index-values, arithmetic-values, loop-simulation, comparison-logic, string-ops, dict-values). Variant support architecture for multi-prompt exercises. Two-pass grading (correctness + construct coaching), 8 construct detection patterns, Pyodide integration for execution-based grading with fallback, metrics logging. FSRS algorithm (ts-fsrs), ~355 Python exercises across 10 files, three exercise types (write 65%, fill-in 17%, predict 18%). Next: Gamification (achievements, points, leaderboards).
+**Current Status:** Dynamic Exercise System Complete (All 6 Phases) - 37 dynamic exercises across 6 concept files using 13 generators (slice-bounds, list-values, variable-names, index-values, arithmetic-values, loop-simulation, comparison-logic, string-ops, dict-values, comp-mapping, comp-filter, try-except-flow, oop-instance). Variant support architecture for multi-prompt exercises. Two-pass grading (correctness + construct coaching), 8 construct detection patterns, Pyodide integration for execution-based grading with fallback, metrics logging. FSRS algorithm (ts-fsrs), 352 Python exercises across 10 files, three exercise types (write 63%, fill-in 17%, predict 21%). Next: Gamification (achievements, points, leaderboards).
 
 ---
 
@@ -43,12 +43,18 @@ pnpm dev              # Start dev server (localhost:3000)
 pnpm build            # Production build
 pnpm lint             # ESLint check
 pnpm typecheck        # TypeScript type checking
-pnpm test             # Run Vitest tests (1088 tests)
+pnpm test             # Run Vitest tests (1125+ tests)
 pnpm test:e2e         # Run Playwright E2E tests
 pnpm test:e2e:headed  # Run E2E with browser visible
 pnpm db:start         # Start local Supabase
 pnpm db:reset         # Reset database with migrations
 pnpm db:import-exercises  # Import exercises from YAML
+
+# Exercise Management
+pnpm validate:exercises   # Validate YAML against schema
+pnpm validate:dynamic     # Validate dynamic exercises
+pnpm generate:exercise-list           # Generate docs/EXERCISES.md from YAML
+pnpm generate:exercise-list:obsidian  # Also generate to Obsidian vault
 ```
 
 ---
@@ -291,12 +297,37 @@ To disable (not recommended): `export DAEM0NMCP_DISABLE_COVENANT=1` in `~/.bashr
 
 ---
 
+## Exercise Content Management
+
+**Source of Truth:** `exercises/python/*.yaml` files (352 exercises across 10 files)
+
+**Workflow for adding/modifying exercises:**
+1. Edit the appropriate YAML file in `exercises/python/`
+2. Run `pnpm validate:exercises` to check schema compliance
+3. Run `pnpm validate:dynamic` if adding dynamic exercises
+4. Run `pnpm generate:exercise-list:obsidian` to regenerate documentation
+5. Commit both YAML changes and generated docs
+
+**Auto-Generated Files (DO NOT EDIT DIRECTLY):**
+- `docs/EXERCISES.md` - Exercise list in repo
+- Obsidian `SRS-app/Exercise-List.md` - Same content for Obsidian vault
+
+**Exercise Types:**
+- `write` (221): Write code from scratch
+- `fill-in` (58): Complete blanks in template
+- `predict` (73): Predict code output
+- **Dynamic** (37): Values change per user/day via generators
+
+**Generators:** slice-bounds, list-values, variable-names, index-values, arithmetic-values, loop-simulation, comparison-logic, string-ops, dict-values, comp-mapping, comp-filter, try-except-flow, oop-instance
+
+---
+
 ## Database (Implemented)
 
 See `Database-Schema.md` in Obsidian for full schema. Key tables:
 
 - `profiles` - User data with auto-generated username, stats (streak, accuracy, total)
-- `exercises` - Exercise content with slug-based identity (278 Python exercises)
+- `exercises` - Exercise content with slug-based identity (352 Python exercises)
 - `user_progress` - SRS state per user/exercise (SM-2 algorithm)
 - `subconcept_progress` - **(Phase 2)** Concept-based SRS state per subconcept
 - `exercise_attempts` - **(Phase 2)** Exercise usage tracking for selection algorithm
@@ -396,7 +427,8 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 20. ✅ Dynamic Exercises Phase 3 (Pyodide Integration) - Lazy-loaded Python execution for predict exercises. PyodideContext provider with CDN loading, `usePyodide` hook, `gradeAnswerAsync()` with execution-based grading, graceful fallback to string matching on failure. Execution verification for predict exercises and opt-in write exercises. Files: `src/lib/context/PyodideContext.tsx`, `src/lib/exercise/execution.ts`. Design doc: `docs/plans/2026-01-07-dynamic-exercises-phase3-pyodide.md`.
 21. ✅ Dynamic Exercises Phase 4 (Metrics & Logging) - Audit logging for dynamic exercises via `logAttempt()`, dynamic metrics queries for retention/transfer analysis, construct adoption tracking. Files: `src/lib/exercise/log-attempt.ts`, `src/lib/stats/dynamic-metrics.ts`. Design doc: `docs/plans/2026-01-07-dynamic-exercises-phase4-metrics.md`.
 22. ✅ Dynamic Exercises Phase 5 (Content Migration) - 23 dynamic exercises across 4 concept files (strings, collections, numbers-booleans, control-flow). 5 generators: slice-bounds, list-values, variable-names, index-values, arithmetic-values. Each generator with property-based tests (fast-check). Dynamic validation script (`pnpm validate:dynamic`). 1088 total tests. Design doc: `docs/plans/2026-01-07-dynamic-exercises-phase5-content.md`.
-23. ✅ Dynamic Exercise Expansion (Phase 6) - Variant support architecture (one slug, multiple prompts via generator's `variant` param). 4 new generators: loop-simulation (range output), comparison-logic (boolean expressions), string-ops (method calls), dict-values (dictionary access). 6 new dynamic exercises using new and existing generators. Removed 3 duplicate exercises. Totals: 9 generators, 29 dynamic exercises, ~355 total exercises, 143 generator tests. Design doc: `docs/plans/2026-01-07-dynamic-exercise-expansion.md`.
+23. ✅ Dynamic Exercise Expansion (Phase 6) - Variant support architecture (one slug, multiple prompts via generator's `variant` param). 4 new generators: loop-simulation (range output), comparison-logic (boolean expressions), string-ops (method calls), dict-values (dictionary access). 6 new dynamic exercises using new and existing generators. Removed duplicate exercises. Totals: 9 generators, 33 dynamic exercises, 353 total exercises, 143 generator tests. Design doc: `docs/plans/2026-01-07-dynamic-exercise-expansion.md`.
+24. ✅ Exercise-List.md Auto-Generation - Created `scripts/generate-exercise-list.ts` to generate Exercise-List.md from YAML source of truth. Audit found documentation claimed 383 exercises but YAML only had 353. Script parses all YAML, computes counts, detects duplicates, generates Obsidian-formatted markdown with "AUTO-GENERATED: DO NOT EDIT" header. Commands: `pnpm generate:exercise-list`, `pnpm generate:exercise-list:obsidian`. Created `docs/plans/exercise-backlog.md` for future exercise ideas.
 
 ## Phase 2.7: Exercise Variety (Complete)
 

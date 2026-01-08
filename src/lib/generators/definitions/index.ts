@@ -10,3 +10,7 @@ export { loopSimulationGenerator } from './loop-simulation';
 export { comparisonLogicGenerator } from './comparison-logic';
 export { stringOpsGenerator } from './string-ops';
 export { dictValuesGenerator } from './dict-values';
+export { compMappingGenerator } from './comp-mapping';
+export { compFilterGenerator } from './comp-filter';
+export { tryExceptFlowGenerator } from './try-except-flow';
+export { oopInstanceGenerator } from './oop-instance';

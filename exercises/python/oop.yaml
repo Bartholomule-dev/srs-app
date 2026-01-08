@@ -68,22 +68,6 @@ exercises:
     type: write
     pattern: definition
 
-  - slug: class-inheritance
-    objective: Create a subclass that inherits from a parent class
-    title: Class Inheritance
-    difficulty: 3
-    prompt: Define class Student that inherits from Person
-    expected_answer: "class Student(Person):"
-    hints:
-      - Put parent class in parentheses
-    tags: [classes, inheritance, advanced]
-    concept: oop
-    subconcept: classes
-    level: edge
-    prereqs: [functions]
-    type: write
-    pattern: definition
-
   # --- Inheritance Subconcept ---
   - slug: inheritance-basic
     objective: Create a subclass that inherits from a parent class
@@ -478,17 +462,18 @@ exercises:
     prereqs: [oop.classes]
     type: predict
     pattern: invocation
+    generator: oop-instance
     prompt: What does this code print?
     code: |
       class Person:
           def __init__(self, name):
               self.name = name
-      p = Person("Alice")
+      p = Person("{{personName}}")
       print(p.name)
-    expected_answer: "Alice"
+    expected_answer: "{{personName}}"
     hints:
       - self.name stores the passed value
-    tags: [oop, attribute, predict]
+    tags: [oop, attribute, predict, dynamic]
 
   - slug: method-call-predict
     objective: Predict method return value

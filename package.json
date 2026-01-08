@@ -20,7 +20,9 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:ui": "playwright test --ui",
     "validate:exercises": "npx tsx scripts/validate-exercises.ts",
-    "validate:dynamic": "npx tsx scripts/validate-dynamic-exercises.ts"
+    "validate:dynamic": "npx tsx scripts/validate-dynamic-exercises.ts",
+    "generate:exercise-list": "npx tsx scripts/generate-exercise-list.ts",
+    "generate:exercise-list:obsidian": "npx tsx scripts/generate-exercise-list.ts --obsidian \"/home/brett/GoogleDrive/Obsidian Vault\""
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.2.8",

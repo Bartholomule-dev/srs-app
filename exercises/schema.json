@@ -73,16 +73,17 @@
           "type": "string",
           "enum": [
             "accumulator", "aggregation", "arithmetic", "assignment", "attribute",
-            "comparison", "conditional", "construction", "context", "conversion",
+            "comparison", "conditional", "construction", "context", "control", "conversion",
             "declaration", "definition",
             "file", "filtering", "function",
+            "gotcha",
             "handling",
             "import", "indexing", "input", "invocation", "io", "iteration",
             "logic", "logical", "lookup",
             "mapping", "mutation",
             "output",
             "query",
-            "swap",
+            "scope", "slicing", "swap",
             "transformation"
           ],
           "description": "Programming pattern being practiced"

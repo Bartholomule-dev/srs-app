@@ -342,17 +342,18 @@ exercises:
     prereqs: [error-handling.try-except]
     type: predict
     pattern: handling
+    generator: try-except-flow
     prompt: What does this code print?
     code: |
       try:
-          x = int("abc")
+          x = int({{value}})
           print("success")
       except ValueError:
           print("error")
-    expected_answer: "error"
+    expected_answer: "{{output}}"
     hints:
-      - int("abc") raises ValueError
-    tags: [exceptions, try-except, predict]
+      - Think about whether int({{value}}) is valid
+    tags: [exceptions, try-except, predict, dynamic]
 
   - slug: except-type-predict
     objective: Predict exception type matching

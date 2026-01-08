@@ -55,6 +55,7 @@ src/
 │   ├── exercise/             # Exercise display components
 │   │   ├── index.ts          # Barrel export
 │   │   ├── CodeInput.tsx     # Textarea with Enter-to-submit
+│   │   ├── PredictOutputExercise.tsx # ✅ Predict code output exercise type
 │   │   ├── ExercisePrompt.tsx # Language/category + prompt display
 │   │   ├── HintButton.tsx    # Hint reveal with SRS penalty warning
 │   │   ├── ExerciseFeedback.tsx # Correct/incorrect + next review
@@ -86,7 +87,8 @@ src/
     │   ├── AuthContext.tsx   # Auth state provider
     │   ├── auth.types.ts     # Auth type definitions
     │   ├── ToastContext.tsx  # Toast notification provider
-    │   └── toast.types.ts    # Toast type definitions
+    │   ├── toast.types.ts    # Toast type definitions
+    │   └── PyodideContext.tsx # ✅ Lazy-loaded Python execution (Phase 3)
     │
     ├── hooks/                # Custom React hooks
     │   ├── index.ts          # Barrel export
@@ -116,10 +118,14 @@ src/
     │
     ├── exercise/             # Exercise evaluation library
     │   ├── index.ts          # Barrel export
-    │   ├── types.ts          # AnswerResult, Quality inference types
+    │   ├── types.ts          # AnswerResult, Quality inference types, GradingResult
     │   ├── normalize.ts      # normalizePython (whitespace handling)
     │   ├── matching.ts       # checkAnswer (normalized comparison)
-    │   └── quality.ts        # inferQuality (time-based + hint penalty)
+    │   ├── quality.ts        # inferQuality (time-based + hint penalty)
+    │   ├── grading.ts        # ✅ gradeAnswer (two-pass grading orchestrator)
+    │   ├── construct-check.ts # ✅ checkConstruct, checkAnyConstruct (8 patterns)
+    │   ├── execution.ts      # ✅ gradeAnswerAsync (Pyodide execution)
+    │   └── log-attempt.ts    # ✅ logAttempt (audit logging)
     │
     ├── curriculum/           # Curriculum data & types
     │   ├── index.ts          # Barrel export
@@ -135,21 +141,26 @@ src/
     │   ├── teaching-cards.ts # buildTeachingPair (teaching + practice card pairs)
     │   └── interleave-teaching.ts # interleaveWithTeaching (insert teaching pairs)
     │
-    ├── generators/           # ✅ Dynamic exercise generation (Phase 1)
+    ├── generators/           # ✅ Dynamic exercise generation (5 generators)
     │   ├── index.ts          # Registry (getGenerator, registerGenerator, hasGenerator)
     │   ├── types.ts          # Generator, GeneratorParams, TargetConstruct
     │   ├── seed.ts           # createSeed, hashString (deterministic seeding)
     │   ├── utils.ts          # seededRandom (int, pick, shuffle)
     │   ├── render.ts         # renderExercise, renderExercises (Mustache)
     │   └── definitions/      # Generator implementations
-    │       └── slice-bounds.ts  # start/end indices generator
+    │       ├── slice-bounds.ts      # start/end indices for slicing
+    │       ├── list-values.ts       # a/b/c integers (1-99)
+    │       ├── variable-names.ts    # Python identifiers
+    │       ├── index-values.ts      # single index (0-4)
+    │       └── arithmetic-values.ts # x/y with precomputed results
     │
     ├── stats/                # Stats calculation library
     │   ├── index.ts          # Barrel export
     │   ├── types.ts          # UserStats, DailyStats types
     │   ├── queries.ts        # getCardsReviewedToday, getTotalAccuracy
     │   ├── streak.ts         # calculateCurrentStreak, calculateLongestStreak
-    │   └── updateProfile.ts  # updateProfileStats (on session end)
+    │   ├── updateProfile.ts  # updateProfileStats (on session end)
+    │   └── dynamic-metrics.ts # ✅ Dynamic exercise metrics (Phase 4)
     │
     ├── supabase/             # Supabase client & utilities
     │   ├── index.ts          # Barrel export
@@ -234,7 +245,7 @@ supabase/
 ## Exercises (`exercises/`)
 ```
 exercises/
-└── python/                   # Python exercises (332 total, restructured to match curriculum graph)
+└── python/                   # Python exercises (355 total, 23 dynamic, restructured to match curriculum graph)
     ├── foundations.yaml      # variables, operators, expressions, io (4 subconcepts)
     ├── strings.yaml          # basics, indexing, slicing, methods, fstrings (5 subconcepts)
     ├── numbers-booleans.yaml # integers, floats, booleans, conversion, truthiness, comparisons (6 subconcepts)

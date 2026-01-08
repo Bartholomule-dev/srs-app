@@ -70,24 +70,7 @@ exercises:
       - Adds all elements from b to a
     tags: [lists, extend, mutation]
 
-  - slug: list-insert
-    objective: Use insert() to add an element at a specific position
-    title: List Insert
-    difficulty: 2
-    concept: collections
-    subconcept: lists
-    level: practice
-    prereqs: [collections.lists]
-    type: write
-    pattern: mutation
-    prompt: Insert value "x" at index 2 in list items
-    expected_answer: items.insert(2, "x")
-    accepted_solutions:
-      - 'items.insert(2, "x")'
-      - "items.insert(2, 'x')"
-    hints:
-      - insert(index, value)
-    tags: [lists, insert, mutation]
+  # Static list-insert removed - covered by list-insert-dynamic
 
   - slug: list-pop-index
     objective: Use pop() to remove and return an element by index

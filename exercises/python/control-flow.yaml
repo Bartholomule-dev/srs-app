@@ -107,9 +107,9 @@ exercises:
       - Use the continue keyword
     tags: [loops, control, intermediate]
 
-  - slug: for-range-step
+  - slug: for-range-step-dynamic
     objective: "Use range() with start, stop, and step parameters for custom iteration"
-    title: For Loop Range with Step
+    title: Dynamic Range Step Loop
     difficulty: 2
     concept: control-flow
     subconcept: for
@@ -117,11 +117,15 @@ exercises:
     prereqs: [control-flow.for]
     type: write
     pattern: iteration
-    prompt: Loop from 0 to 10 in steps of 2
-    expected_answer: "for i in range(0, 10, 2):"
+    generator: loop-simulation
+    prompt: Write a for loop using range({{start}}, {{stop}}, {{step}})
+    expected_answer: "for i in range({{start}}, {{stop}}, {{step}}):"
+    accepted_solutions:
+      - "for i in range({{start}}, {{stop}}, {{step}}):"
+      - "for i in range({{start}},{{stop}},{{step}}):"
     hints:
       - range(start, stop, step)
-    tags: [loops, range, step]
+    tags: [loops, range, step, dynamic]
 
   - slug: for-zip
     objective: "Use zip() to iterate over multiple sequences in parallel"

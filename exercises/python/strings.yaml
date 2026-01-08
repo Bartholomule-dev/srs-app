@@ -3,39 +3,8 @@ language: python
 category: strings
 
 exercises:
-  - slug: string-indexing
-    objective: "Use bracket notation to access individual characters in a string"
-    title: String Indexing
-    difficulty: 1
-    prompt: Get the first character of string s
-    expected_answer: s[0]
-    hints:
-      - Use square bracket indexing
-      - Indices start at 0
-    tags: [strings, indexing, beginner]
-    concept: strings
-    subconcept: indexing
-    level: intro
-    prereqs: [strings.basics]
-    type: write
-    pattern: indexing
-
-  - slug: string-slicing
-    objective: "Use slice notation to extract a substring from a string"
-    title: String Slicing
-    difficulty: 2
-    prompt: Get characters from index 1 to 4 (exclusive) of string s
-    expected_answer: s[1:4]
-    hints:
-      - Use slice notation [start:end]
-      - End index is exclusive
-    tags: [strings, slicing, intermediate]
-    concept: strings
-    subconcept: slicing
-    level: practice
-    prereqs: [strings.indexing]
-    type: write
-    pattern: indexing
+  # Static string-indexing removed - covered by string-index-dynamic
+  # Static string-slicing removed - covered by string-slicing-dynamic
 
   - slug: string-slicing-dynamic
     objective: Use slice notation to extract a substring from a string
