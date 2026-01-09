@@ -1,8 +1,8 @@
 // tests/unit/generators/render.test.ts
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderExercise, type RenderableExercise } from '@/lib/generators/render';
+import { renderExercise, renderExercises, type RenderableExercise } from '@/lib/generators/render';
 import { registerGenerator, type Generator } from '@/lib/generators';
-import type { SkinVars } from '@/lib/paths/types';
+import type { Skin, SkinVars } from '@/lib/paths/types';
 
 // Mock generator for testing
 const mockGenerator: Generator = {
@@ -269,5 +269,77 @@ describe('renderExercise with skin', () => {
     // Generator provides start/end, skin provides list_name
     expect(result.prompt).toBe('tasks[2:6]');
     expect(result.expectedAnswer).toBe('tasks[2:6]');
+  });
+});
+
+describe('renderExercises with skins', () => {
+  it('applies skins to matching exercises', () => {
+    const exercises: RenderableExercise[] = [
+      {
+        slug: 'ex-1',
+        prompt: 'Create {{list_name}}',
+        expectedAnswer: '{{list_name}} = []',
+        acceptedSolutions: [],
+      },
+      {
+        slug: 'ex-2',
+        prompt: 'Static prompt',
+        expectedAnswer: 'static',
+        acceptedSolutions: [],
+      },
+    ];
+
+    const skins: (Skin | null)[] = [
+      {
+        id: 'task-manager',
+        title: 'Task Manager',
+        icon: '✅',
+        blueprints: [],
+        vars: {
+          list_name: 'tasks',
+          item_singular: 'task',
+          item_plural: 'tasks',
+          item_examples: [],
+          record_keys: [],
+        },
+        contexts: {},
+      },
+      null, // No skin for second exercise
+    ];
+
+    const results = renderExercises(exercises, 'user-1', new Date(), skins);
+
+    expect(results[0].prompt).toBe('Create tasks');
+    expect(results[1].prompt).toBe('Static prompt');
+  });
+
+  it('handles empty skins array', () => {
+    const exercises: RenderableExercise[] = [
+      {
+        slug: 'ex-1',
+        prompt: 'Static {{thing}}',
+        expectedAnswer: 'answer',
+        acceptedSolutions: [],
+      },
+    ];
+
+    const results = renderExercises(exercises, 'user-1', new Date(), []);
+
+    expect(results[0].prompt).toBe('Static {{thing}}'); // Template not rendered
+  });
+
+  it('handles undefined skins parameter', () => {
+    const exercises: RenderableExercise[] = [
+      {
+        slug: 'ex-1',
+        prompt: 'Static prompt',
+        expectedAnswer: 'answer',
+        acceptedSolutions: [],
+      },
+    ];
+
+    const results = renderExercises(exercises, 'user-1', new Date());
+
+    expect(results[0].prompt).toBe('Static prompt');
   });
 });

@@ -5,7 +5,7 @@ import Mustache from 'mustache';
 import { createSeed } from './seed';
 import { getGenerator } from './index';
 import type { RenderedExerciseMetadata, VariantMap } from './types';
-import type { SkinVars } from '@/lib/paths/types';
+import type { Skin, SkinVars } from '@/lib/paths/types';
 
 // Disable Mustache's HTML escaping (we're not rendering to HTML)
 Mustache.escape = (text: string) => text;
@@ -146,13 +146,22 @@ export function renderExercise<T extends RenderableExercise>(
 }
 
 /**
- * Batch render multiple exercises for a session.
+ * Batch render multiple exercises with optional per-exercise skins.
+ *
+ * @param exercises - Array of exercises to render
+ * @param userId - User ID for seed generation
+ * @param dueDate - Due date for seed generation
+ * @param skins - Optional array of skins (or null) corresponding to each exercise
+ * @returns Array of rendered exercises with templates filled in
  */
 export function renderExercises<T extends RenderableExercise>(
   exercises: T[],
   userId: string,
   dueDate: Date,
-  skinVars?: SkinVars
+  skins?: (Skin | null)[]
 ): RenderedExercise<T>[] {
-  return exercises.map((e) => renderExercise(e, userId, dueDate, skinVars));
+  return exercises.map((exercise, i) => {
+    const skin = skins?.[i];
+    return renderExercise(exercise, userId, dueDate, skin?.vars);
+  });
 }
