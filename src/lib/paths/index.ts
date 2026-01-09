@@ -10,3 +10,5 @@ export * from './render-skin-vars';
 export * from './grouping';
 export * from './apply-skin';
 export * from './slot-vocabulary';
+export * from './roles';
+export * from './role-selection';

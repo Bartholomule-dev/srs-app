@@ -107,6 +107,79 @@ describe('BeatHeader', () => {
     expect(container.firstChild).toHaveClass('custom-class');
   });
 
+  describe('Side Quest indicator', () => {
+    it('shows side-quest indicator when isSideQuest is true', () => {
+      render(
+        <BeatHeader
+          skinIcon={null}
+          blueprintTitle={null}
+          beat={null}
+          totalBeats={null}
+          beatTitle="Bonus Practice"
+          isSideQuest={true}
+        />
+      );
+
+      expect(screen.getByText('Side Quest')).toBeInTheDocument();
+      expect(screen.getByText('⭐')).toBeInTheDocument();
+      expect(screen.getByText(/"Bonus Practice"/)).toBeInTheDocument();
+    });
+
+    it('shows normal beat display when isSideQuest is false', () => {
+      render(
+        <BeatHeader
+          skinIcon="✅"
+          blueprintTitle="Task Manager"
+          beat={1}
+          totalBeats={8}
+          beatTitle="Create storage"
+          isSideQuest={false}
+        />
+      );
+
+      expect(screen.getByText(/Beat 1 of 8/)).toBeInTheDocument();
+      expect(screen.getByText('Task Manager')).toBeInTheDocument();
+      expect(screen.queryByText('Side Quest')).not.toBeInTheDocument();
+    });
+
+    it('renders side quest without beat title', () => {
+      render(
+        <BeatHeader
+          skinIcon={null}
+          blueprintTitle={null}
+          beat={null}
+          totalBeats={null}
+          beatTitle={null}
+          isSideQuest={true}
+        />
+      );
+
+      expect(screen.getByText('Side Quest')).toBeInTheDocument();
+      expect(screen.getByText('⭐')).toBeInTheDocument();
+      // Should not have any quoted text
+      expect(screen.queryByText(/"/)).not.toBeInTheDocument();
+    });
+
+    it('side quest overrides normal beat display', () => {
+      render(
+        <BeatHeader
+          skinIcon="✅"
+          blueprintTitle="Task Manager"
+          beat={3}
+          totalBeats={8}
+          beatTitle="Review items"
+          isSideQuest={true}
+        />
+      );
+
+      // Should show side quest indicator, not beat progress
+      expect(screen.getByText('Side Quest')).toBeInTheDocument();
+      expect(screen.getByText('⭐')).toBeInTheDocument();
+      expect(screen.queryByText(/Beat 3 of 8/)).not.toBeInTheDocument();
+      expect(screen.queryByText('Task Manager')).not.toBeInTheDocument();
+    });
+  });
+
   describe('Quick Drill fallback', () => {
     it('shows Quick Drill when showQuickDrill is true and no beat', () => {
       render(

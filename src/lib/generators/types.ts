@@ -2,14 +2,22 @@
 // Type definitions for the dynamic exercise generator system
 
 /**
- * Parameters produced by a generator or merged from skin vars.
+ * Parameters produced by a generator or merged from skin vars/dataPack.
  * Used in Mustache templates for dynamic exercises.
  *
  * Standard generator params: a, b, c, sum, start, end, etc.
  * Skin vars: list_name, item_singular, item_plural, item_examples, etc.
+ * Skin dataPack: list_sample, dict_sample, records_sample, string_samples, etc.
  */
 export interface GeneratorParams {
-  [key: string]: string | number | boolean | (string | number)[] | undefined;
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | (string | number | boolean)[]
+    | Record<string, string | number | boolean>
+    | Record<string, string | number | boolean>[]
+    | undefined;
   /** Optional variant name for exercises with multiple templates */
   variant?: string;
 }

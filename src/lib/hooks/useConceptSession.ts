@@ -8,7 +8,7 @@ import { useToast } from '@/lib/context/ToastContext';
 import { usePyodide } from '@/lib/context/PyodideContext';
 import { supabase } from '@/lib/supabase/client';
 import { mapExercise } from '@/lib/supabase/mappers';
-import { renderExercises } from '@/lib/generators/render';
+import { renderExercise, renderExercises } from '@/lib/generators/render';
 import { handleSupabaseError, AppError } from '@/lib/errors';
 import { updateProfileStats } from '@/lib/stats';
 import { logExerciseAttempt } from '@/lib/exercise';
@@ -433,6 +433,29 @@ export function useConceptSession(): UseConceptSessionReturn {
 
             // Select skins (tries to use same skin for exercises in same blueprint)
             const selectedSkins = selectSkinForExercises(slugs, recentSkins, pathIndex);
+
+            // Re-render exercises with their selected skin vars and data packs
+            // This applies skin variables (like list_name, item_singular) and
+            // sample data (for predict exercises) to templates
+            for (let i = 0; i < exerciseCardsInfo.length; i++) {
+              const skin = selectedSkins[i];
+              if (skin?.vars || skin?.dataPack) {
+                const cardIndex = exerciseCardsInfo[i].index;
+                const card = sessionCards[cardIndex];
+                if (card.type !== 'teaching') {
+                  // Re-render the exercise with skin vars and data pack
+                  const reRendered = renderExercise(
+                    card.exercise,
+                    userId,
+                    new Date(),
+                    skin?.vars,
+                    skin?.dataPack
+                  );
+                  // Update the card's exercise with re-rendered version
+                  (sessionCards[cardIndex] as { exercise: typeof reRendered }).exercise = reRendered;
+                }
+              }
+            }
 
             // Apply skin context to get SkinnedCard objects
             const skinnedInfo = applySkinContextBatch(

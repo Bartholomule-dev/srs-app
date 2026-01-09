@@ -5,7 +5,7 @@ import Mustache from 'mustache';
 import { createSeed } from './seed';
 import { getGenerator } from './index';
 import type { RenderedExerciseMetadata, VariantMap } from './types';
-import type { Skin, SkinVars } from '@/lib/paths/types';
+import type { Skin, SkinVars, SkinDataPack } from '@/lib/paths/types';
 
 // Disable Mustache's HTML escaping (we're not rendering to HTML)
 Mustache.escape = (text: string) => text;
@@ -65,30 +65,38 @@ function renderWithParams<T extends RenderableExercise>(
 /**
  * Render a parameterized exercise by interpolating templates.
  *
- * Static exercises (no generator field) pass through unchanged unless skinVars provided.
+ * Static exercises (no generator field) pass through unchanged unless skinVars/dataPack provided.
  * Dynamic exercises have their templates rendered with generated params.
  * When skinVars are provided, they are merged with generator params (generator takes precedence).
+ * When skinDataPack is provided, its values are available for predict exercises.
  *
  * @param exercise - Exercise to render (may have generator field)
  * @param userId - User ID for seed generation
  * @param dueDate - Due date for seed generation
  * @param skinVars - Optional skin variables for Mustache templating
+ * @param skinDataPack - Optional data pack for predict exercises (sample data)
  * @returns Exercise with rendered templates and metadata
  */
 export function renderExercise<T extends RenderableExercise>(
   exercise: T,
   userId: string,
   dueDate: Date,
-  skinVars?: SkinVars
+  skinVars?: SkinVars,
+  skinDataPack?: SkinDataPack
 ): RenderedExercise<T> {
-  // Static exercises with no skinVars pass through unchanged
-  if (!exercise.generator && !skinVars) {
+  // Merge skin vars with data pack (skinVars take precedence over dataPack)
+  const skinContext = skinDataPack
+    ? { ...skinDataPack, ...skinVars }
+    : skinVars;
+
+  // Static exercises with no skinContext pass through unchanged
+  if (!exercise.generator && !skinContext) {
     return exercise as RenderedExercise<T>;
   }
 
-  // If only skinVars (no generator), render with skin variables
-  if (!exercise.generator && skinVars) {
-    return renderWithParams(exercise, skinVars);
+  // If only skinContext (no generator), render with skin variables/data pack
+  if (!exercise.generator && skinContext) {
+    return renderWithParams(exercise, skinContext);
   }
 
   // Look up generator (we know exercise.generator exists at this point)
@@ -101,8 +109,8 @@ export function renderExercise<T extends RenderableExercise>(
   // Generate parameters from seed
   const seed = createSeed(userId, exercise.slug, dueDate);
   const generatorParams = generator.generate(seed);
-  // Merge skinVars with generator params (generator takes precedence)
-  const params = skinVars ? { ...skinVars, ...generatorParams } : generatorParams;
+  // Merge dataPack -> skinVars -> generator params (generator takes precedence)
+  const params = skinContext ? { ...skinContext, ...generatorParams } : generatorParams;
 
   // Check if generator returned a variant selection
   const variantName = typeof params.variant === 'string' ? params.variant : undefined;
@@ -162,6 +170,6 @@ export function renderExercises<T extends RenderableExercise>(
 ): RenderedExercise<T>[] {
   return exercises.map((exercise, i) => {
     const skin = skins?.[i];
-    return renderExercise(exercise, userId, dueDate, skin?.vars);
+    return renderExercise(exercise, userId, dueDate, skin?.vars, skin?.dataPack);
   });
 }

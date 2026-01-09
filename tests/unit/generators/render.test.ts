@@ -342,4 +342,207 @@ describe('renderExercises with skins', () => {
 
     expect(results[0].prompt).toBe('Static prompt');
   });
+
+  it('applies dataPack from skins to exercises', () => {
+    const exercises: RenderableExercise[] = [
+      {
+        slug: 'predict-ex',
+        prompt: 'What does this output?',
+        code: 'print(items[0])',
+        expectedAnswer: '{{list_sample.0}}',
+        acceptedSolutions: [],
+      },
+    ];
+
+    const skins: (Skin | null)[] = [
+      {
+        id: 'fantasy-game',
+        title: 'Fantasy Game',
+        icon: '⚔️',
+        vars: {
+          list_name: 'inventory',
+          item_singular: 'item',
+          item_plural: 'items',
+          item_examples: [],
+          record_keys: [],
+        },
+        contexts: {},
+        dataPack: {
+          list_sample: ['sword', 'shield', 'potion'],
+          dict_sample: { name: 'Excalibur', rarity: 'legendary' },
+          records_sample: [{ name: 'sword', damage: 10 }],
+          string_samples: ['Quest accepted!'],
+        },
+      },
+    ];
+
+    const results = renderExercises(exercises, 'user-1', new Date(), skins);
+
+    expect(results[0].expectedAnswer).toBe('sword');
+  });
+});
+
+describe('renderExercise with dataPack', () => {
+  const baseSkinVars: SkinVars = {
+    list_name: 'inventory',
+    item_singular: 'item',
+    item_plural: 'items',
+    item_examples: [],
+    record_keys: [],
+  };
+
+  it('renders list_sample array values in templates', () => {
+    const exercise: RenderableExercise = {
+      slug: 'predict-list',
+      prompt: 'What is the first item?',
+      code: 'items = {{#list_sample}}["{{.}}", {{/list_sample}}]\nprint(items[0])',
+      expectedAnswer: '{{list_sample.0}}',
+      acceptedSolutions: [],
+    };
+
+    const dataPack = {
+      list_sample: ['sword', 'shield', 'potion'],
+      dict_sample: { name: 'Excalibur' },
+      records_sample: [],
+      string_samples: [],
+    };
+
+    const result = renderExercise(exercise, 'user-1', new Date(), baseSkinVars, dataPack);
+
+    expect(result.expectedAnswer).toBe('sword');
+  });
+
+  it('renders dict_sample values in templates', () => {
+    const exercise: RenderableExercise = {
+      slug: 'predict-dict',
+      prompt: 'What is the item name?',
+      code: 'item = {"name": "{{dict_sample.name}}", "rarity": "{{dict_sample.rarity}}"}\nprint(item["name"])',
+      expectedAnswer: '{{dict_sample.name}}',
+      acceptedSolutions: [],
+    };
+
+    const dataPack = {
+      list_sample: [],
+      dict_sample: { name: 'Excalibur', rarity: 'legendary' },
+      records_sample: [],
+      string_samples: [],
+    };
+
+    const result = renderExercise(exercise, 'user-1', new Date(), baseSkinVars, dataPack);
+
+    expect(result.expectedAnswer).toBe('Excalibur');
+    expect(result.code).toContain('"name": "Excalibur"');
+    expect(result.code).toContain('"rarity": "legendary"');
+  });
+
+  it('renders string_samples in templates', () => {
+    const exercise: RenderableExercise = {
+      slug: 'predict-string',
+      prompt: 'What message appears?',
+      code: 'print("{{string_samples.0}}")',
+      expectedAnswer: '{{string_samples.0}}',
+      acceptedSolutions: [],
+    };
+
+    const dataPack = {
+      list_sample: [],
+      dict_sample: {},
+      records_sample: [],
+      string_samples: ['Quest accepted!', 'Level up!'],
+    };
+
+    const result = renderExercise(exercise, 'user-1', new Date(), baseSkinVars, dataPack);
+
+    expect(result.expectedAnswer).toBe('Quest accepted!');
+    expect(result.code).toBe('print("Quest accepted!")');
+  });
+
+  it('skinVars take precedence over dataPack on collision', () => {
+    const exercise: RenderableExercise = {
+      slug: 'collision-test',
+      prompt: 'List name is {{list_name}}',
+      expectedAnswer: '{{list_name}}',
+      acceptedSolutions: [],
+    };
+
+    const skinVars: SkinVars = {
+      ...baseSkinVars,
+      list_name: 'tasks', // This should win
+    };
+
+    const dataPack = {
+      list_sample: [],
+      dict_sample: {},
+      records_sample: [],
+      string_samples: [],
+      list_name: 'inventory', // This should be overridden (via spread)
+    };
+
+    const result = renderExercise(exercise, 'user-1', new Date(), skinVars, dataPack as never);
+
+    expect(result.prompt).toBe('List name is tasks');
+    expect(result.expectedAnswer).toBe('tasks');
+  });
+
+  it('passes through exercise unchanged when no dataPack and no skinVars', () => {
+    const exercise: RenderableExercise = {
+      slug: 'static-ex',
+      prompt: 'Static prompt with {{template}}',
+      expectedAnswer: '{{answer}}',
+      acceptedSolutions: [],
+    };
+
+    const result = renderExercise(exercise, 'user-1', new Date());
+
+    expect(result.prompt).toBe('Static prompt with {{template}}');
+    expect(result.expectedAnswer).toBe('{{answer}}');
+  });
+
+  it('renders with only dataPack (no skinVars)', () => {
+    const exercise: RenderableExercise = {
+      slug: 'datapack-only',
+      prompt: 'First item: {{list_sample.0}}',
+      expectedAnswer: '{{list_sample.0}}',
+      acceptedSolutions: [],
+    };
+
+    const dataPack = {
+      list_sample: ['apple', 'banana'],
+      dict_sample: {},
+      records_sample: [],
+      string_samples: [],
+    };
+
+    const result = renderExercise(exercise, 'user-1', new Date(), undefined, dataPack);
+
+    expect(result.prompt).toBe('First item: apple');
+    expect(result.expectedAnswer).toBe('apple');
+  });
+
+  it('combines skinVars and dataPack for predict exercises', () => {
+    const exercise: RenderableExercise = {
+      slug: 'combined-predict',
+      prompt: 'What does {{list_name}}[0] return?',
+      code: '{{list_name}} = {{#list_sample}}["{{.}}", {{/list_sample}}]\nprint({{list_name}}[0])',
+      expectedAnswer: '{{list_sample.0}}',
+      acceptedSolutions: [],
+    };
+
+    const skinVars: SkinVars = {
+      ...baseSkinVars,
+      list_name: 'inventory',
+    };
+
+    const dataPack = {
+      list_sample: ['sword', 'shield'],
+      dict_sample: {},
+      records_sample: [],
+      string_samples: [],
+    };
+
+    const result = renderExercise(exercise, 'user-1', new Date(), skinVars, dataPack);
+
+    expect(result.prompt).toBe('What does inventory[0] return?');
+    expect(result.expectedAnswer).toBe('sword');
+  });
 });

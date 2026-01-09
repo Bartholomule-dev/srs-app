@@ -10,6 +10,7 @@ interface BeatHeaderProps {
   beatTitle: string | null;
   className?: string;
   showQuickDrill?: boolean;
+  isSideQuest?: boolean;
 }
 
 /**
@@ -24,6 +25,7 @@ export function BeatHeader({
   beatTitle,
   className,
   showQuickDrill = false,
+  isSideQuest = false,
 }: BeatHeaderProps) {
   // For standalone exercises when showQuickDrill is enabled
   if (!beat && showQuickDrill) {
@@ -42,8 +44,8 @@ export function BeatHeader({
     );
   }
 
-  // Don't render if no beat context and no Quick Drill
-  if (!beat || !blueprintTitle) {
+  // Don't render if no beat context, no Quick Drill, and not a side quest
+  if (!isSideQuest && (!beat || !blueprintTitle)) {
     return null;
   }
 
@@ -56,16 +58,33 @@ export function BeatHeader({
         className
       )}
     >
-      {skinIcon && <span className="text-base">{skinIcon}</span>}
-      <span className="font-medium text-[var(--text-primary)]">{blueprintTitle}</span>
-      <span className="text-[var(--text-tertiary)]">·</span>
-      <span>
-        Beat {beat} of {totalBeats}
-      </span>
-      {beatTitle && (
+      {isSideQuest ? (
+        // Side quest display - distinct styling with star icon
         <>
+          <span className="text-base">⭐</span>
+          <span className="font-medium text-[var(--accent-secondary)]">Side Quest</span>
+          {beatTitle && (
+            <>
+              <span className="text-[var(--text-tertiary)]">·</span>
+              <span className="italic">&quot;{beatTitle}&quot;</span>
+            </>
+          )}
+        </>
+      ) : (
+        // Main beat display
+        <>
+          {skinIcon && <span className="text-base">{skinIcon}</span>}
+          <span className="font-medium text-[var(--text-primary)]">{blueprintTitle}</span>
           <span className="text-[var(--text-tertiary)]">·</span>
-          <span className="italic">&quot;{beatTitle}&quot;</span>
+          <span>
+            Beat {beat} of {totalBeats}
+          </span>
+          {beatTitle && (
+            <>
+              <span className="text-[var(--text-tertiary)]">·</span>
+              <span className="italic">&quot;{beatTitle}&quot;</span>
+            </>
+          )}
         </>
       )}
     </div>

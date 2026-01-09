@@ -13,6 +13,7 @@ import { groupByBlueprint, sortByBeat } from '@/lib/paths/grouping';
 import { selectSkinForExercises } from '@/lib/paths/selector';
 import { applySkinContextBatch } from '@/lib/paths/apply-skin';
 import { buildPathIndex } from '@/lib/paths/loader';
+import { renderExercise, type RenderableExercise } from '@/lib/generators/render';
 import type { Blueprint, Skin, PathIndex } from '@/lib/paths/types';
 
 // Mock path data for testing
@@ -311,6 +312,91 @@ describe('Session + Paths Integration', () => {
 
       const skins = selectSkinForExercises([], [], index);
       expect(skins).toEqual([]);
+    });
+  });
+
+  describe('Skin vars in exercise rendering', () => {
+    it('renders exercise templates with skin variables', () => {
+      const index = createTestIndex();
+      const skin = index.skins.get('skin-tasks')!;
+
+      // Exercise with skin variable templates
+      const exercise: RenderableExercise = {
+        slug: 'list-create-1',
+        prompt: 'Create an empty list called {{list_name}}',
+        expectedAnswer: '{{list_name}} = []',
+        acceptedSolutions: ['{{list_name}} = list()'],
+      };
+
+      const rendered = renderExercise(exercise, 'user-1', new Date(), skin.vars);
+
+      expect(rendered.prompt).toBe('Create an empty list called tasks');
+      expect(rendered.expectedAnswer).toBe('tasks = []');
+      expect(rendered.acceptedSolutions).toEqual(['tasks = list()']);
+    });
+
+    it('renders with different skins producing different output', () => {
+      const index = createTestIndex();
+      const taskSkin = index.skins.get('skin-tasks')!;
+      const musicSkin = index.skins.get('skin-music')!;
+
+      const exercise: RenderableExercise = {
+        slug: 'list-append-1',
+        prompt: 'Add a {{item_singular}} to {{list_name}}',
+        expectedAnswer: '{{list_name}}.append("{{item_singular}}")',
+        acceptedSolutions: [],
+      };
+
+      const taskRendered = renderExercise(exercise, 'user-1', new Date(), taskSkin.vars);
+      const musicRendered = renderExercise(exercise, 'user-1', new Date(), musicSkin.vars);
+
+      expect(taskRendered.prompt).toBe('Add a task to tasks');
+      expect(musicRendered.prompt).toBe('Add a song to playlist');
+
+      expect(taskRendered.expectedAnswer).toBe('tasks.append("task")');
+      expect(musicRendered.expectedAnswer).toBe('playlist.append("song")');
+    });
+
+    it('complete flow: select skin and render exercises with its vars', () => {
+      const index = createTestIndex();
+      const exercises = ['list-create-1', 'list-append-1'];
+      const recentSkins: string[] = [];
+
+      // Step 1: Select skins for exercises
+      const selectedSkins = selectSkinForExercises(exercises, recentSkins, index);
+      expect(selectedSkins[0]).not.toBeNull();
+
+      // Get the selected skin (same for both exercises in blueprint)
+      const skin = selectedSkins[0]!;
+
+      // Step 2: Render each exercise with the skin vars
+      const exerciseTemplates: RenderableExercise[] = [
+        {
+          slug: 'list-create-1',
+          prompt: 'Create an empty {{item_plural}} list called {{list_name}}',
+          expectedAnswer: '{{list_name}} = []',
+          acceptedSolutions: [],
+        },
+        {
+          slug: 'list-append-1',
+          prompt: 'Add "{{item_examples.0}}" to {{list_name}}',
+          expectedAnswer: '{{list_name}}.append("{{item_examples.0}}")',
+          acceptedSolutions: [],
+        },
+      ];
+
+      const rendered = exerciseTemplates.map((ex) =>
+        renderExercise(ex, 'user-1', new Date(), skin.vars)
+      );
+
+      // Verify skin vars are applied consistently
+      if (skin.id === 'skin-tasks') {
+        expect(rendered[0].prompt).toBe('Create an empty tasks list called tasks');
+        expect(rendered[1].prompt).toBe('Add "Buy groceries" to tasks');
+      } else if (skin.id === 'skin-music') {
+        expect(rendered[0].prompt).toBe('Create an empty songs list called playlist');
+        expect(rendered[1].prompt).toBe('Add "Bohemian Rhapsody" to playlist');
+      }
     });
   });
 });
