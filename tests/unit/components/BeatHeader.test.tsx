@@ -106,4 +106,53 @@ describe('BeatHeader', () => {
 
     expect(container.firstChild).toHaveClass('custom-class');
   });
+
+  describe('Quick Drill fallback', () => {
+    it('shows Quick Drill when showQuickDrill is true and no beat', () => {
+      render(
+        <BeatHeader
+          skinIcon={null}
+          blueprintTitle={null}
+          beat={null}
+          totalBeats={null}
+          beatTitle={null}
+          showQuickDrill={true}
+        />
+      );
+
+      expect(screen.getByText('Quick Drill')).toBeInTheDocument();
+      expect(screen.getByText('⚡')).toBeInTheDocument();
+    });
+
+    it('does not show Quick Drill when showQuickDrill is false', () => {
+      const { container } = render(
+        <BeatHeader
+          skinIcon={null}
+          blueprintTitle={null}
+          beat={null}
+          totalBeats={null}
+          beatTitle={null}
+          showQuickDrill={false}
+        />
+      );
+
+      expect(container.firstChild).toBeNull();
+    });
+
+    it('prefers beat info over Quick Drill', () => {
+      render(
+        <BeatHeader
+          skinIcon="✅"
+          blueprintTitle="Task Manager"
+          beat={1}
+          totalBeats={8}
+          beatTitle="Create storage"
+          showQuickDrill={true}
+        />
+      );
+
+      expect(screen.getByText('Task Manager')).toBeInTheDocument();
+      expect(screen.queryByText('Quick Drill')).not.toBeInTheDocument();
+    });
+  });
 });

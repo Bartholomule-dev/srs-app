@@ -9,6 +9,7 @@ interface BeatHeaderProps {
   totalBeats: number | null;
   beatTitle: string | null;
   className?: string;
+  showQuickDrill?: boolean;
 }
 
 /**
@@ -22,8 +23,25 @@ export function BeatHeader({
   totalBeats,
   beatTitle,
   className,
+  showQuickDrill = false,
 }: BeatHeaderProps) {
-  // Don't render if no beat context
+  // For standalone exercises when showQuickDrill is enabled
+  if (!beat && showQuickDrill) {
+    return (
+      <div
+        className={cn(
+          'flex items-center gap-2 text-sm text-[var(--text-secondary)] mb-4',
+          'px-3 py-2 rounded-lg bg-[var(--bg-surface-1)]',
+          className
+        )}
+      >
+        <span className="text-base">⚡</span>
+        <span className="font-medium text-[var(--text-primary)]">Quick Drill</span>
+      </div>
+    );
+  }
+
+  // Don't render if no beat context and no Quick Drill
   if (!beat || !blueprintTitle) {
     return null;
   }
