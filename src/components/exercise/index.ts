@@ -6,3 +6,5 @@ export { ExerciseCard } from './ExerciseCard';
 export { FillInExercise } from './FillInExercise';
 export { TeachingCard } from './TeachingCard';
 export { PredictOutputExercise } from './PredictOutputExercise';
+export { BeatHeader } from './BeatHeader';
+export { ContextHint } from './ContextHint';
