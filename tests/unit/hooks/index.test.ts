@@ -29,4 +29,8 @@ describe('Hooks barrel export', () => {
   it('exports useStats', () => {
     expect(typeof hooks.useStats).toBe('function');
   });
+
+  it('exports usePoints', () => {
+    expect(typeof hooks.usePoints).toBe('function');
+  });
 });

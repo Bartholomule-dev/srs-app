@@ -9,3 +9,5 @@ export { useStats } from './useStats';
 export type { UseStatsReturn } from './useStats';
 export { useSkillTree } from './useSkillTree';
 export type { UseSkillTreeReturn } from './useSkillTree';
+export { usePoints } from './usePoints';
+export type { UsePointsReturn } from './usePoints';
