@@ -16,6 +16,16 @@ vars:
     - "Imagine"
     - "Sweet Child O Mine"
   record_keys: ["title", "artist", "duration"]
+  # Extended slots for future exercises
+  attr_key_1: title
+  attr_key_2: artist
+  id_var: track_id
+  filename: playlist.json
+  filetype: json
+  user_role: listener
+  status_var: playing
+  action_verb: play
+  entity_name: Track
 
 contexts:
   list-create-empty: "Create an empty playlist for the user."

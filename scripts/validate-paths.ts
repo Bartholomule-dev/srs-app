@@ -107,21 +107,23 @@ async function main() {
           errors++;
         }
       }
-      // Check blueprint references
-      for (const bpId of skin.blueprints) {
-        if (!blueprints.find(bp => bp.id === bpId)) {
-          console.error(`  ✗ Skin ${skin.id}: references unknown blueprint ${bpId}`);
-          errors++;
+      // Check blueprint references (if skin is blueprint-restricted)
+      if (skin.blueprints) {
+        for (const bpId of skin.blueprints) {
+          if (!blueprints.find(bp => bp.id === bpId)) {
+            console.error(`  ✗ Skin ${skin.id}: references unknown blueprint ${bpId}`);
+            errors++;
+          }
         }
-      }
-      // Check contexts reference valid exercises in blueprints
-      for (const exerciseSlug of Object.keys(skin.contexts)) {
-        const isInBlueprint = skin.blueprints.some(bpId => {
-          const bp = blueprints.find(b => b.id === bpId);
-          return bp?.beats.some(beat => beat.exercise === exerciseSlug);
-        });
-        if (!isInBlueprint) {
-          console.warn(`  ⚠ Skin ${skin.id}: context for '${exerciseSlug}' not in any linked blueprint`);
+        // Check contexts reference valid exercises in blueprints
+        for (const exerciseSlug of Object.keys(skin.contexts)) {
+          const isInBlueprint = skin.blueprints.some(bpId => {
+            const bp = blueprints.find(b => b.id === bpId);
+            return bp?.beats.some(beat => beat.exercise === exerciseSlug);
+          });
+          if (!isInBlueprint) {
+            console.warn(`  ⚠ Skin ${skin.id}: context for '${exerciseSlug}' not in any linked blueprint`);
+          }
         }
       }
     }

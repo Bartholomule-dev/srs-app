@@ -16,6 +16,16 @@ vars:
     - "eggs"
     - "cheese"
   record_keys: ["name", "quantity", "price"]
+  # Extended slots for future exercises
+  attr_key_1: name
+  attr_key_2: price
+  id_var: product_id
+  filename: cart.json
+  filetype: json
+  user_role: customer
+  status_var: in_cart
+  action_verb: buy
+  entity_name: Product
 
 contexts:
   list-create-empty: "Start with an empty shopping cart for the user."

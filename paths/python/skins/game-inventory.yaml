@@ -16,6 +16,16 @@ vars:
     - "leather armor"
     - "gold coins"
   record_keys: ["name", "quantity", "weight"]
+  # Extended slots for future exercises
+  attr_key_1: name
+  attr_key_2: rarity
+  id_var: item_id
+  filename: inventory.json
+  filetype: json
+  user_role: player
+  status_var: equipped
+  action_verb: equip
+  entity_name: Item
 
 contexts:
   list-create-empty: "Create the player's empty inventory."

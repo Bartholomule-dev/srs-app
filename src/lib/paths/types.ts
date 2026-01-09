@@ -49,8 +49,44 @@ export interface SkinVars {
   item_examples: string[];
   /** Keys for dict/record exercises */
   record_keys: string[];
+
+  // Extended optional slots for broader exercise coverage
+  /** First attribute key (e.g., "power", "price") */
+  attr_key_1?: string;
+  /** Second attribute key (e.g., "rarity", "quantity") */
+  attr_key_2?: string;
+  /** ID variable name (e.g., "item_id", "task_id") */
+  id_var?: string;
+  /** Filename for file I/O exercises */
+  filename?: string;
+  /** File type (e.g., "json", "csv", "txt") */
+  filetype?: string;
+  /** User role in the domain (e.g., "player", "admin", "user") */
+  user_role?: string;
+  /** Status variable name (e.g., "equipped", "completed", "active") */
+  status_var?: string;
+  /** Action verb for the domain (e.g., "equip", "complete", "add") */
+  action_verb?: string;
+  /** Entity name for OOP exercises (e.g., "Equipment", "Task", "Product") */
+  entity_name?: string;
+
   /** Allow additional custom variables */
-  [key: string]: string | string[];
+  [key: string]: string | string[] | undefined;
+}
+
+/**
+ * Data pack for predict exercises - provides themed sample data
+ * that varies based on the skin domain.
+ */
+export interface SkinDataPack {
+  /** Sample list values for list exercises */
+  list_sample: (string | number | boolean)[];
+  /** Sample dictionary for dict exercises */
+  dict_sample: Record<string, string | number | boolean>;
+  /** Sample records array for iteration exercises */
+  records_sample: Record<string, string | number | boolean>[];
+  /** Sample string messages for output exercises */
+  string_samples: string[];
 }
 
 /**
@@ -58,18 +94,23 @@ export interface SkinVars {
  *
  * Provides themed variable values and contextual explanations
  * that make exercises feel like building a real application.
+ *
+ * Skins can be global (compatible with any blueprint) or restricted
+ * to specific blueprints via the optional `blueprints` array.
  */
 export interface Skin {
   id: string;
   title: string;
   /** Emoji icon for display */
   icon: string;
-  /** Which blueprints this skin is compatible with */
-  blueprints: string[];
+  /** Which blueprints this skin is compatible with (omit for global skins) */
+  blueprints?: string[];
   /** Variable values for Mustache templating */
   vars: SkinVars;
   /** Exercise-specific context text (keyed by exercise slug) */
   contexts: Record<string, string>;
+  /** Optional data pack for predict exercises */
+  dataPack?: SkinDataPack;
 }
 
 /**

@@ -55,6 +55,99 @@
     }
   },
   "skins": {
+    "fantasy-game": {
+      "id": "fantasy-game",
+      "title": "Fantasy Game",
+      "icon": "⚔️",
+      "vars": {
+        "list_name": "inventory",
+        "item_singular": "item",
+        "item_plural": "items",
+        "item_examples": [
+          "sword",
+          "shield",
+          "potion",
+          "helmet",
+          "bow",
+          "staff"
+        ],
+        "record_keys": [
+          "name",
+          "rarity",
+          "damage",
+          "weight"
+        ],
+        "attr_key_1": "name",
+        "attr_key_2": "rarity",
+        "id_var": "item_id",
+        "filename": "inventory.json",
+        "filetype": "json",
+        "user_role": "player",
+        "status_var": "equipped",
+        "action_verb": "equip",
+        "entity_name": "Item"
+      },
+      "dataPack": {
+        "list_sample": [
+          "sword",
+          "shield",
+          "potion",
+          "bow"
+        ],
+        "dict_sample": {
+          "name": "Excalibur",
+          "rarity": "legendary",
+          "damage": 100,
+          "weight": 5
+        },
+        "records_sample": [
+          {
+            "name": "sword",
+            "rarity": "common",
+            "damage": 10
+          },
+          {
+            "name": "shield",
+            "rarity": "rare",
+            "damage": 0
+          },
+          {
+            "name": "potion",
+            "rarity": "common",
+            "damage": 0
+          }
+        ],
+        "string_samples": [
+          "Quest accepted!",
+          "Enemy defeated!",
+          "Level up!",
+          "Item acquired!"
+        ]
+      },
+      "contexts": {
+        "list-create-empty": "Every adventurer needs an inventory to carry their loot.",
+        "list-append-dynamic": "Add a newly found item to your inventory.",
+        "list-in-check": "Check if you already have this item before picking it up.",
+        "dict-create-values": "Items have stats like damage and rarity.",
+        "for-loop-list": "Display all items in your inventory.",
+        "enumerate-basic": "Number your items so you can select them by index.",
+        "while-loop-basic": "Keep fighting until the enemy is defeated.",
+        "list-comp-filter-dynamic": "Filter your inventory to show only rare items.",
+        "list-comp-basic": "Create a list of item names from your inventory.",
+        "dict-comp-basic": "Create a lookup table of item names to damage values.",
+        "context-intro": "Save your inventory to a file so progress persists.",
+        "file-read-basic": "Load your saved game from a file.",
+        "file-write-basic": "Write your current stats to the save file.",
+        "try-except-basic": "Handle the case where the save file doesn't exist.",
+        "try-except-specific": "Catch the error when an item slot is empty.",
+        "function-basic": "Create a function to calculate total inventory weight.",
+        "function-args": "Create a function that adds an item with a given quantity.",
+        "if-else-basic": "Check if the player has enough gold to buy an item.",
+        "elif-chain": "Determine item quality: legendary, rare, or common.",
+        "class-basic": "Create an Item class to represent inventory items.",
+        "class-method": "Add a method to calculate item value based on rarity."
+      }
+    },
     "game-inventory": {
       "id": "game-inventory",
       "title": "Game Inventory",
@@ -77,7 +170,16 @@
           "name",
           "quantity",
           "weight"
-        ]
+        ],
+        "attr_key_1": "name",
+        "attr_key_2": "rarity",
+        "id_var": "item_id",
+        "filename": "inventory.json",
+        "filetype": "json",
+        "user_role": "player",
+        "status_var": "equipped",
+        "action_verb": "equip",
+        "entity_name": "Item"
       },
       "contexts": {
         "list-create-empty": "Create the player's empty inventory.",
@@ -88,6 +190,99 @@
         "enumerate-basic": "Number items for the use/drop menu.",
         "list-comp-filter-dynamic": "Show only items that can be equipped.",
         "context-intro": "Save the game state to continue later."
+      }
+    },
+    "music-app": {
+      "id": "music-app",
+      "title": "Music Streaming",
+      "icon": "🎶",
+      "vars": {
+        "list_name": "playlist",
+        "item_singular": "track",
+        "item_plural": "tracks",
+        "item_examples": [
+          "Bohemian Rhapsody",
+          "Stairway to Heaven",
+          "Hotel California",
+          "Imagine",
+          "Smells Like Teen Spirit",
+          "Purple Rain"
+        ],
+        "record_keys": [
+          "title",
+          "artist",
+          "duration",
+          "album"
+        ],
+        "attr_key_1": "title",
+        "attr_key_2": "duration",
+        "id_var": "track_id",
+        "filename": "playlist.json",
+        "filetype": "json",
+        "user_role": "listener",
+        "status_var": "playing",
+        "action_verb": "play",
+        "entity_name": "Track"
+      },
+      "dataPack": {
+        "list_sample": [
+          "rock",
+          "pop",
+          "jazz",
+          "classical"
+        ],
+        "dict_sample": {
+          "title": "Bohemian Rhapsody",
+          "artist": "Queen",
+          "duration": 354,
+          "album": "A Night at the Opera"
+        },
+        "records_sample": [
+          {
+            "title": "Imagine",
+            "artist": "John Lennon",
+            "duration": 187
+          },
+          {
+            "title": "Yesterday",
+            "artist": "The Beatles",
+            "duration": 125
+          },
+          {
+            "title": "Purple Rain",
+            "artist": "Prince",
+            "duration": 520
+          }
+        ],
+        "string_samples": [
+          "Now playing...",
+          "Added to queue",
+          "Shuffling playlist",
+          "Repeat mode on"
+        ]
+      },
+      "contexts": {
+        "list-create-empty": "Every music app needs a playlist to store tracks.",
+        "list-append-dynamic": "Add a track to the current playlist.",
+        "list-in-check": "Check if a track is already in the playlist.",
+        "dict-create-values": "Tracks have metadata like artist and duration.",
+        "for-loop-list": "Display all tracks in the playlist.",
+        "enumerate-basic": "Number tracks so users can select by position.",
+        "while-loop-basic": "Keep playing tracks until the playlist ends.",
+        "list-comp-filter-dynamic": "Filter to show only tracks by a specific artist.",
+        "list-comp-basic": "Create a list of track titles from the playlist.",
+        "dict-comp-basic": "Create a lookup table of track titles to durations.",
+        "context-intro": "Save the playlist so it persists between sessions.",
+        "file-read-basic": "Load your saved playlist from a file.",
+        "file-write-basic": "Write the current playlist to a file.",
+        "try-except-basic": "Handle the case where the playlist file is missing.",
+        "try-except-specific": "Catch the error when trying to play an empty playlist.",
+        "function-basic": "Create a function to calculate total playlist duration.",
+        "function-args": "Create a function that adds a track with a given artist.",
+        "if-else-basic": "Check if a track is longer than 5 minutes.",
+        "elif-chain": "Categorize track length: short, medium, or long.",
+        "class-basic": "Create a Track class to represent songs.",
+        "class-method": "Add a method to format track duration as mm:ss."
       }
     },
     "playlist-app": {
@@ -112,7 +307,16 @@
           "title",
           "artist",
           "duration"
-        ]
+        ],
+        "attr_key_1": "title",
+        "attr_key_2": "artist",
+        "id_var": "track_id",
+        "filename": "playlist.json",
+        "filetype": "json",
+        "user_role": "listener",
+        "status_var": "playing",
+        "action_verb": "play",
+        "entity_name": "Track"
       },
       "contexts": {
         "list-create-empty": "Create an empty playlist for the user.",
@@ -147,7 +351,16 @@
           "name",
           "servings",
           "time_minutes"
-        ]
+        ],
+        "attr_key_1": "name",
+        "attr_key_2": "cuisine",
+        "id_var": "recipe_id",
+        "filename": "recipes.json",
+        "filetype": "json",
+        "user_role": "chef",
+        "status_var": "favorite",
+        "action_verb": "cook",
+        "entity_name": "Recipe"
       },
       "contexts": {
         "list-create-empty": "Start your recipe book with an empty collection.",
@@ -182,7 +395,16 @@
           "name",
           "quantity",
           "price"
-        ]
+        ],
+        "attr_key_1": "name",
+        "attr_key_2": "price",
+        "id_var": "product_id",
+        "filename": "cart.json",
+        "filetype": "json",
+        "user_role": "customer",
+        "status_var": "in_cart",
+        "action_verb": "buy",
+        "entity_name": "Product"
       },
       "contexts": {
         "list-create-empty": "Start with an empty shopping cart for the user.",
@@ -217,7 +439,16 @@
           "title",
           "done",
           "priority"
-        ]
+        ],
+        "attr_key_1": "title",
+        "attr_key_2": "priority",
+        "id_var": "task_id",
+        "filename": "tasks.json",
+        "filetype": "json",
+        "user_role": "user",
+        "status_var": "done",
+        "action_verb": "complete",
+        "entity_name": "Task"
       },
       "contexts": {
         "list-create-empty": "Every task manager needs somewhere to store tasks.",

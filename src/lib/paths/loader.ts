@@ -48,8 +48,8 @@ export async function loadSkins(): Promise<Skin[]> {
     const content = await readFile(join(SKINS_DIR, file), 'utf-8');
     const data = yaml.load(content) as Skin;
 
-    // Basic validation
-    if (!data.id || !data.title || !data.vars || !data.blueprints) {
+    // Basic validation - blueprints is optional for global skins
+    if (!data.id || !data.title || !data.vars) {
       console.warn(`Invalid skin in ${file}: missing required fields`);
       continue;
     }
@@ -93,19 +93,26 @@ export function buildPathIndex(blueprints: Blueprint[], skins: Skin[]): PathInde
     index.skins.set(skin.id, skin);
 
     // Map exercises to compatible skins
-    // A skin is compatible with an exercise if it's in a blueprint the skin supports
-    for (const bpId of skin.blueprints) {
-      const bp = index.blueprints.get(bpId);
-      if (!bp) continue;
+    // A skin is compatible with an exercise if:
+    // - It's a global skin (no blueprints specified) - compatible with all exercises
+    // - It's in a blueprint the skin supports
+    if (skin.blueprints) {
+      // Blueprint-restricted skin
+      for (const bpId of skin.blueprints) {
+        const bp = index.blueprints.get(bpId);
+        if (!bp) continue;
 
-      for (const beat of bp.beats) {
-        const existing = index.exerciseToSkins.get(beat.exercise) ?? [];
-        if (!existing.includes(skin.id)) {
-          existing.push(skin.id);
+        for (const beat of bp.beats) {
+          const existing = index.exerciseToSkins.get(beat.exercise) ?? [];
+          if (!existing.includes(skin.id)) {
+            existing.push(skin.id);
+          }
+          index.exerciseToSkins.set(beat.exercise, existing);
         }
-        index.exerciseToSkins.set(beat.exercise, existing);
       }
     }
+    // Note: Global skins (no blueprints) are handled at lookup time,
+    // not during indexing, to avoid inflating the index with every exercise
   }
 
   return index;

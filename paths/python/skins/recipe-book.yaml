@@ -16,6 +16,16 @@ vars:
     - "caesar salad"
     - "beef stew"
   record_keys: ["name", "servings", "time_minutes"]
+  # Extended slots for future exercises
+  attr_key_1: name
+  attr_key_2: cuisine
+  id_var: recipe_id
+  filename: recipes.json
+  filetype: json
+  user_role: chef
+  status_var: favorite
+  action_verb: cook
+  entity_name: Recipe
 
 contexts:
   list-create-empty: "Start your recipe book with an empty collection."

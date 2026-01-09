@@ -1,0 +1,87 @@
+# paths/python/skins/music-app.yaml
+# Global skin - no blueprints restriction = usable with any Python blueprint
+
+id: music-app
+title: "Music Streaming"
+icon: "\U0001F3B6"
+# NO blueprints field = global skin (usable with any blueprint)
+
+vars:
+  # REQUIRED existing fields (match current SkinVars interface)
+  list_name: playlist
+  item_singular: track
+  item_plural: tracks
+  item_examples:
+    - "Bohemian Rhapsody"
+    - "Stairway to Heaven"
+    - "Hotel California"
+    - "Imagine"
+    - "Smells Like Teen Spirit"
+    - "Purple Rain"
+  record_keys: ["title", "artist", "duration", "album"]
+
+  # Extended optional slots for broader exercise coverage
+  attr_key_1: title
+  attr_key_2: duration
+  id_var: track_id
+  filename: playlist.json
+  filetype: json
+  user_role: listener
+  status_var: playing
+  action_verb: play
+  entity_name: Track
+
+dataPack:
+  list_sample: ["rock", "pop", "jazz", "classical"]
+  dict_sample:
+    title: "Bohemian Rhapsody"
+    artist: "Queen"
+    duration: 354
+    album: "A Night at the Opera"
+  records_sample:
+    - { title: "Imagine", artist: "John Lennon", duration: 187 }
+    - { title: "Yesterday", artist: "The Beatles", duration: 125 }
+    - { title: "Purple Rain", artist: "Prince", duration: 520 }
+  string_samples:
+    - "Now playing..."
+    - "Added to queue"
+    - "Shuffling playlist"
+    - "Repeat mode on"
+
+contexts:
+  # Collection exercises
+  list-create-empty: "Every music app needs a playlist to store tracks."
+  list-append-dynamic: "Add a track to the current playlist."
+  list-in-check: "Check if a track is already in the playlist."
+  dict-create-values: "Tracks have metadata like artist and duration."
+
+  # Loop exercises
+  for-loop-list: "Display all tracks in the playlist."
+  enumerate-basic: "Number tracks so users can select by position."
+  while-loop-basic: "Keep playing tracks until the playlist ends."
+
+  # Comprehension exercises
+  list-comp-filter-dynamic: "Filter to show only tracks by a specific artist."
+  list-comp-basic: "Create a list of track titles from the playlist."
+  dict-comp-basic: "Create a lookup table of track titles to durations."
+
+  # File exercises
+  context-intro: "Save the playlist so it persists between sessions."
+  file-read-basic: "Load your saved playlist from a file."
+  file-write-basic: "Write the current playlist to a file."
+
+  # Error handling
+  try-except-basic: "Handle the case where the playlist file is missing."
+  try-except-specific: "Catch the error when trying to play an empty playlist."
+
+  # Functions
+  function-basic: "Create a function to calculate total playlist duration."
+  function-args: "Create a function that adds a track with a given artist."
+
+  # Conditionals
+  if-else-basic: "Check if a track is longer than 5 minutes."
+  elif-chain: "Categorize track length: short, medium, or long."
+
+  # OOP
+  class-basic: "Create a Track class to represent songs."
+  class-method: "Add a method to format track duration as mm:ss."

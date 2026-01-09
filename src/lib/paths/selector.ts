@@ -6,7 +6,41 @@ import type { Skin, PathIndex } from './types';
 const RECENCY_WINDOW = 3;
 
 /**
- * Select a skin for an exercise, avoiding recently used skins
+ * Get IDs of global skins (skins without blueprints restriction).
+ * Global skins are available for ALL exercises.
+ */
+function getGlobalSkinIds(index: PathIndex): string[] {
+  const globalIds: string[] = [];
+  for (const [id, skin] of index.skins) {
+    // Global skins have no blueprints field or empty blueprints array
+    if (!skin.blueprints || skin.blueprints.length === 0) {
+      globalIds.push(id);
+    }
+  }
+  return globalIds;
+}
+
+/**
+ * Get all candidate skin IDs for an exercise.
+ * Combines blueprint-specific skins with global skins.
+ */
+function getCandidateSkinIds(exerciseSlug: string, index: PathIndex): string[] {
+  const blueprintSpecificIds = index.exerciseToSkins.get(exerciseSlug) ?? [];
+  const globalIds = getGlobalSkinIds(index);
+
+  // Combine and dedupe (in case a skin is in both lists somehow)
+  const allIds = [...blueprintSpecificIds];
+  for (const id of globalIds) {
+    if (!allIds.includes(id)) {
+      allIds.push(id);
+    }
+  }
+  return allIds;
+}
+
+/**
+ * Select a skin for an exercise, avoiding recently used skins.
+ * Includes both blueprint-specific skins and global skins.
  *
  * @param exerciseSlug - The exercise to find a skin for
  * @param recentSkins - Array of recently used skin IDs (most recent last)
@@ -18,9 +52,10 @@ export function selectSkin(
   recentSkins: string[],
   index: PathIndex
 ): Skin | null {
-  const compatibleSkinIds = index.exerciseToSkins.get(exerciseSlug);
+  // Get all candidate skins (blueprint-specific + global)
+  const candidateSkinIds = getCandidateSkinIds(exerciseSlug, index);
 
-  if (!compatibleSkinIds || compatibleSkinIds.length === 0) {
+  if (candidateSkinIds.length === 0) {
     return null;
   }
 
@@ -28,10 +63,10 @@ export function selectSkin(
   const toAvoid = new Set(recentSkins.slice(-RECENCY_WINDOW));
 
   // Filter to fresh skins
-  const freshSkinIds = compatibleSkinIds.filter(id => !toAvoid.has(id));
+  const freshSkinIds = candidateSkinIds.filter(id => !toAvoid.has(id));
 
   // Use fresh skins if available, otherwise fall back to all compatible
-  const pool = freshSkinIds.length > 0 ? freshSkinIds : compatibleSkinIds;
+  const pool = freshSkinIds.length > 0 ? freshSkinIds : candidateSkinIds;
 
   // Random selection from pool
   const selectedId = pool[Math.floor(Math.random() * pool.length)];
@@ -110,10 +145,11 @@ export function selectSkinForExercises(
   // Process each blueprint group
   for (const [_bpId, group] of blueprintGroups) {
     // Find skins compatible with ALL exercises in this group
+    // Include both blueprint-specific skins and global skins
     let commonSkinIds: Set<string> | null = null;
 
     for (const { slug } of group) {
-      const skinIds = index.exerciseToSkins.get(slug) ?? [];
+      const skinIds = getCandidateSkinIds(slug, index);
       if (skinIds.length === 0) continue; // Skip exercises without skin support
 
       if (commonSkinIds === null) {
@@ -136,8 +172,8 @@ export function selectSkinForExercises(
 
     // Assign skin to all exercises in this group
     for (const { index: i, slug } of group) {
-      // Only assign if exercise has skin support
-      const hasSkinSupport = (index.exerciseToSkins.get(slug)?.length ?? 0) > 0;
+      // Check if exercise has skin support (blueprint-specific or global)
+      const hasSkinSupport = getCandidateSkinIds(slug, index).length > 0;
       result[i] = hasSkinSupport ? selectedSkin : null;
       assigned.add(i);
     }
@@ -148,7 +184,8 @@ export function selectSkinForExercises(
     if (assigned.has(i)) continue;
 
     const slug = exerciseSlugs[i];
-    const skinIds = index.exerciseToSkins.get(slug) ?? [];
+    // Get all candidate skins (blueprint-specific + global)
+    const skinIds = getCandidateSkinIds(slug, index);
 
     if (skinIds.length > 0) {
       const selectedSkin = pickSkinFromPool(skinIds, batchRecency, index);

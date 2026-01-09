@@ -16,6 +16,16 @@ vars:
     - "finish report"
     - "schedule meeting"
   record_keys: ["title", "done", "priority"]
+  # Extended slots for future exercises
+  attr_key_1: title
+  attr_key_2: priority
+  id_var: task_id
+  filename: tasks.json
+  filetype: json
+  user_role: user
+  status_var: done
+  action_verb: complete
+  entity_name: Task
 
 contexts:
   list-create-empty: "Every task manager needs somewhere to store tasks."

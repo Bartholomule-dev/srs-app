@@ -35,13 +35,21 @@ interface SkinVars {
   [key: string]: string | string[];
 }
 
+interface SkinDataPack {
+  list_sample: (string | number | boolean)[];
+  dict_sample: Record<string, string | number | boolean>;
+  records_sample: Record<string, string | number | boolean>[];
+  string_samples: string[];
+}
+
 interface Skin {
   id: string;
   title: string;
   icon: string;
-  blueprints: string[];
+  blueprints?: string[];
   vars: SkinVars;
   contexts: Record<string, string>;
+  dataPack?: SkinDataPack;
 }
 
 interface BlueprintRef {
@@ -103,7 +111,8 @@ async function loadSkins(): Promise<Skin[]> {
       const content = await readFile(join(SKINS_DIR, file), 'utf-8');
       const data = yaml.load(content) as Skin;
 
-      if (!data.id || !data.title || !data.vars || !data.blueprints) {
+      // blueprints is optional for global skins
+      if (!data.id || !data.title || !data.vars) {
         console.warn(`  Warning: Invalid skin in ${file}: missing required fields`);
         continue;
       }
@@ -152,19 +161,25 @@ function buildSerializedIndex(blueprints: Blueprint[], skins: Skin[]): Serialize
     index.skins[skin.id] = skin;
 
     // Map exercises to compatible skins
-    for (const bpId of skin.blueprints) {
-      const bp = index.blueprints[bpId];
-      if (!bp) continue;
+    // Blueprint-restricted skins only apply to exercises in those blueprints
+    // Global skins (no blueprints) are handled at lookup time, not during indexing
+    if (skin.blueprints) {
+      for (const bpId of skin.blueprints) {
+        const bp = index.blueprints[bpId];
+        if (!bp) continue;
 
-      for (const beat of bp.beats) {
-        if (!index.exerciseToSkins[beat.exercise]) {
-          index.exerciseToSkins[beat.exercise] = [];
-        }
-        if (!index.exerciseToSkins[beat.exercise].includes(skin.id)) {
-          index.exerciseToSkins[beat.exercise].push(skin.id);
+        for (const beat of bp.beats) {
+          if (!index.exerciseToSkins[beat.exercise]) {
+            index.exerciseToSkins[beat.exercise] = [];
+          }
+          if (!index.exerciseToSkins[beat.exercise].includes(skin.id)) {
+            index.exerciseToSkins[beat.exercise].push(skin.id);
+          }
         }
       }
     }
+    // Note: Global skins (no blueprints) are handled at lookup time,
+    // not during indexing, to avoid inflating the index with every exercise
   }
 
   return index;

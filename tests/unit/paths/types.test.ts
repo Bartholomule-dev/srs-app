@@ -5,6 +5,7 @@ import type {
   Beat,
   Skin,
   SkinVars,
+  SkinDataPack,
   PathIndex,
   BlueprintRef,
   SkinnedCard,
@@ -210,6 +211,162 @@ describe('Path Types', () => {
       expect(card.skinId).toBeNull();
       expect(card.blueprintId).toBeNull();
       expect(card.beat).toBeNull();
+    });
+  });
+
+  describe('Global Skin', () => {
+    it('allows skins without blueprint restriction', () => {
+      const globalSkin: Skin = {
+        id: 'fantasy-game',
+        title: 'Fantasy Game',
+        icon: '⚔️',
+        // blueprints is now optional (no restriction)
+        vars: {
+          list_name: 'inventory',
+          item_singular: 'item',
+          item_plural: 'items',
+          item_examples: ['sword', 'potion', 'shield'],
+          record_keys: ['name', 'rarity', 'damage'],
+        },
+        contexts: {},
+      };
+
+      expect(globalSkin.blueprints).toBeUndefined();
+    });
+
+    it('still supports blueprint-restricted skins', () => {
+      const restrictedSkin: Skin = {
+        id: 'task-manager',
+        title: 'Task Manager',
+        icon: '✅',
+        blueprints: ['collection-cli-app'],
+        vars: {
+          list_name: 'tasks',
+          item_singular: 'task',
+          item_plural: 'tasks',
+          item_examples: ['buy groceries', 'call mom'],
+          record_keys: ['title', 'done', 'priority'],
+        },
+        contexts: {},
+      };
+
+      expect(restrictedSkin.blueprints).toEqual(['collection-cli-app']);
+    });
+  });
+
+  describe('SkinDataPack', () => {
+    it('defines data packs for predict exercises', () => {
+      const pack: SkinDataPack = {
+        list_sample: ['sword', 'shield', 'potion'],
+        dict_sample: { name: 'Excalibur', rarity: 'legendary' },
+        records_sample: [
+          { name: 'sword', damage: 10 },
+          { name: 'shield', defense: 5 },
+        ],
+        string_samples: ['Quest accepted!', 'Enemy defeated!'],
+      };
+
+      expect(Array.isArray(pack.list_sample)).toBe(true);
+      expect(typeof pack.dict_sample).toBe('object');
+      expect(pack.records_sample).toHaveLength(2);
+      expect(pack.string_samples).toContain('Quest accepted!');
+    });
+
+    it('supports mixed primitive types in list_sample', () => {
+      const pack: SkinDataPack = {
+        list_sample: ['string', 42, true],
+        dict_sample: { key: 'value' },
+        records_sample: [],
+        string_samples: [],
+      };
+
+      expect(pack.list_sample).toContain('string');
+      expect(pack.list_sample).toContain(42);
+      expect(pack.list_sample).toContain(true);
+    });
+  });
+
+  describe('Skin with dataPack', () => {
+    it('allows optional dataPack on skins', () => {
+      const skinWithData: Skin = {
+        id: 'rpg-inventory',
+        title: 'RPG Inventory',
+        icon: '🎮',
+        vars: {
+          list_name: 'inventory',
+          item_singular: 'item',
+          item_plural: 'items',
+          item_examples: ['sword', 'potion'],
+          record_keys: ['name', 'power'],
+        },
+        contexts: {},
+        dataPack: {
+          list_sample: ['sword', 'shield', 'potion'],
+          dict_sample: { name: 'Excalibur', rarity: 'legendary' },
+          records_sample: [{ name: 'sword', damage: 10 }],
+          string_samples: ['Quest accepted!'],
+        },
+      };
+
+      expect(skinWithData.dataPack).toBeDefined();
+      expect(skinWithData.dataPack?.list_sample).toHaveLength(3);
+    });
+
+    it('dataPack is optional', () => {
+      const skinWithoutData: Skin = {
+        id: 'simple-skin',
+        title: 'Simple Skin',
+        icon: '📝',
+        vars: {
+          list_name: 'items',
+          item_singular: 'item',
+          item_plural: 'items',
+          item_examples: ['a', 'b'],
+          record_keys: ['key'],
+        },
+        contexts: {},
+      };
+
+      expect(skinWithoutData.dataPack).toBeUndefined();
+    });
+  });
+
+  describe('Extended SkinVars', () => {
+    it('supports optional extended variable slots', () => {
+      const extendedVars: SkinVars = {
+        list_name: 'inventory',
+        item_singular: 'item',
+        item_plural: 'items',
+        item_examples: ['sword', 'shield'],
+        record_keys: ['name', 'power'],
+        // Extended optional slots
+        attr_key_1: 'power',
+        attr_key_2: 'rarity',
+        id_var: 'item_id',
+        filename: 'inventory.json',
+        filetype: 'json',
+        user_role: 'player',
+        status_var: 'equipped',
+        action_verb: 'equip',
+        entity_name: 'Equipment',
+      };
+
+      expect(extendedVars.attr_key_1).toBe('power');
+      expect(extendedVars.entity_name).toBe('Equipment');
+    });
+
+    it('extended slots are optional and backwards compatible', () => {
+      // Original minimal SkinVars should still work
+      const minimalVars: SkinVars = {
+        list_name: 'tasks',
+        item_singular: 'task',
+        item_plural: 'tasks',
+        item_examples: ['task1'],
+        record_keys: ['key1'],
+      };
+
+      expect(minimalVars.list_name).toBe('tasks');
+      expect(minimalVars.attr_key_1).toBeUndefined();
     });
   });
 });
