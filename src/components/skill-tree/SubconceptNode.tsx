@@ -140,14 +140,31 @@ export function SubconceptNode({
   className,
 }: SubconceptNodeProps) {
   const [showTooltip, setShowTooltip] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
   const nodeRef = useRef<HTMLButtonElement>(null);
   const tooltipId = useId();
   const reduceMotion = useReducedMotion();
 
-  const handleMouseEnter = useCallback(() => setShowTooltip(true), []);
+  const handleMouseEnter = useCallback(() => {
+    // Skip hover on touch devices
+    if (isTouch) return;
+    setShowTooltip(true);
+  }, [isTouch]);
   const handleMouseLeave = useCallback(() => setShowTooltip(false), []);
   const handleFocus = useCallback(() => setShowTooltip(true), []);
   const handleBlur = useCallback(() => setShowTooltip(false), []);
+
+  // Touch support: tap to toggle tooltip
+  const handleTouchStart = useCallback(() => {
+    setIsTouch(true);
+  }, []);
+
+  const handleClick = useCallback(() => {
+    // On touch devices, toggle tooltip on tap
+    if (isTouch) {
+      setShowTooltip((prev) => !prev);
+    }
+  }, [isTouch]);
 
   const { title, subtitle } = getTooltipContent(node, prereqNames);
 
@@ -160,12 +177,14 @@ export function SubconceptNode({
   const tierAnimation = getTierAnimation(badgeTier, reduceMotion);
 
   return (
-    <div className="relative w-12 h-12 rounded-full" data-badge-tier={badgeTier}>
+    // Container: min-w-[44px] min-h-[44px] ensures touch target meets 44x44px accessibility guidelines
+    <div className="relative min-w-[44px] min-h-[44px] flex items-center justify-center" data-badge-tier={badgeTier}>
       <motion.button
         ref={nodeRef}
         type="button"
         className={cn(
-          'w-12 h-12 rounded-full transition-all',
+          // Visual size is 48px (w-12 h-12) which exceeds 44px touch target requirement
+          'w-12 h-12 rounded-full transition-all touch-manipulation',
           'focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:ring-offset-2 focus:ring-offset-[var(--bg-surface-1)]',
           nodeStyles,
           className
@@ -174,6 +193,8 @@ export function SubconceptNode({
         onMouseLeave={handleMouseLeave}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        onTouchStart={handleTouchStart}
+        onClick={handleClick}
         aria-label={node.name}
         aria-describedby={showTooltip ? tooltipId : undefined}
         aria-disabled={node.state === 'locked'}

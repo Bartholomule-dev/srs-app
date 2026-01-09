@@ -108,6 +108,7 @@ vi.mock('framer-motion', async (importOriginal) => {
       on: () => () => {},
     }),
     useInView: () => true,
+    useReducedMotion: () => false,
   };
 });
 

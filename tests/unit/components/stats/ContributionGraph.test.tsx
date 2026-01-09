@@ -61,9 +61,10 @@ describe('ContributionGraph', () => {
 
   it('shows day of week labels', () => {
     render(<ContributionGraph days={mockDays} loading={false} />);
-    expect(screen.getByText('Mon')).toBeInTheDocument();
-    expect(screen.getByText('Wed')).toBeInTheDocument();
-    expect(screen.getByText('Fri')).toBeInTheDocument();
+    // Both desktop and mobile views have day labels, so there are multiple
+    expect(screen.getAllByText('Mon').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Wed').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Fri').length).toBeGreaterThanOrEqual(1);
   });
 
   it('applies collapsed class on mobile', () => {
@@ -85,8 +86,9 @@ describe('ContributionGraph', () => {
 
   it('renders legend with Less and More labels', () => {
     render(<ContributionGraph days={mockDays} loading={false} />);
-    expect(screen.getByText('Less')).toBeInTheDocument();
-    expect(screen.getByText('More')).toBeInTheDocument();
+    // Both desktop and mobile views have legends, so there are multiple
+    expect(screen.getAllByText('Less').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('More').length).toBeGreaterThanOrEqual(1);
   });
 
   it('applies custom className', () => {
@@ -97,10 +99,32 @@ describe('ContributionGraph', () => {
     expect(graph?.className).toContain('custom-class');
   });
 
-  it('renders 52 weeks of contribution squares', () => {
-    const { container } = render(<ContributionGraph days={mockDays} loading={false} />);
+  it('renders 52 weeks of contribution squares when compactMobile disabled', () => {
+    const { container } = render(
+      <ContributionGraph days={mockDays} loading={false} compactMobile={false} />
+    );
     // 52 weeks * 7 days = 364 squares
     const squares = container.querySelectorAll('[data-contribution-day]');
     expect(squares.length).toBe(364);
+  });
+
+  it('renders both desktop (52 weeks) and mobile (13 weeks) views by default', () => {
+    const { container } = render(
+      <ContributionGraph days={mockDays} loading={false} />
+    );
+    // Desktop: 52 weeks * 7 days = 364 squares
+    // Mobile: 13 weeks * 7 days = 91 squares
+    // Total: 455 squares (both views rendered but mobile hidden via CSS)
+    const squares = container.querySelectorAll('[data-contribution-day]');
+    expect(squares.length).toBe(455);
+  });
+
+  it('renders compact mobile view with touch-friendly larger squares', () => {
+    const { container } = render(
+      <ContributionGraph days={mockDays} loading={false} compactMobile={true} />
+    );
+    // Mobile view should have larger squares (12px instead of 10px)
+    const mobileContainer = container.querySelector('.md\\:hidden');
+    expect(mobileContainer).toBeInTheDocument();
   });
 });

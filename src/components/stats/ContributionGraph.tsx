@@ -12,30 +12,33 @@ interface ContributionGraphProps {
   loading: boolean;
   /** Collapse on mobile (show only on md+) */
   collapsedMobile?: boolean;
+  /** Show compact 3-month view on mobile instead of hiding */
+  compactMobile?: boolean;
   className?: string;
 }
 
 const WEEKS = 52;
+const MOBILE_WEEKS = 13; // ~3 months for compact mobile view
 const DAYS_PER_WEEK = 7;
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const DAY_LABELS = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
 
 /**
- * Generate array of all dates for the past 52 weeks
+ * Generate array of all dates for the past N weeks
  */
-function generateDateGrid(): string[][] {
+function generateDateGrid(weekCount: number = WEEKS): string[][] {
   const grid: string[][] = [];
   const today = new Date();
 
-  // Go back to start of 52 weeks ago
+  // Go back to start of N weeks ago
   const startDate = new Date(today);
-  startDate.setDate(startDate.getDate() - (WEEKS * DAYS_PER_WEEK - 1));
+  startDate.setDate(startDate.getDate() - (weekCount * DAYS_PER_WEEK - 1));
 
   // Align to start of week (Sunday)
   const dayOfWeek = startDate.getDay();
   startDate.setDate(startDate.getDate() - dayOfWeek);
 
-  for (let week = 0; week < WEEKS; week++) {
+  for (let week = 0; week < weekCount; week++) {
     const weekDates: string[] = [];
     for (let day = 0; day < DAYS_PER_WEEK; day++) {
       const date = new Date(startDate);
@@ -70,7 +73,8 @@ function getMonthLabels(dateGrid: string[][]): { month: string; week: number }[]
 export function ContributionGraph({
   days,
   loading,
-  collapsedMobile = true,
+  collapsedMobile = false,
+  compactMobile = true,
   className,
 }: ContributionGraphProps) {
   // Create lookup map for day data
@@ -82,8 +86,13 @@ export function ContributionGraph({
     return map;
   }, [days]);
 
-  const dateGrid = useMemo(() => generateDateGrid(), []);
-  const monthLabels = useMemo(() => getMonthLabels(dateGrid), [dateGrid]);
+  // Full 52-week grid for desktop
+  const fullDateGrid = useMemo(() => generateDateGrid(WEEKS), []);
+  const fullMonthLabels = useMemo(() => getMonthLabels(fullDateGrid), [fullDateGrid]);
+
+  // Compact 13-week grid for mobile
+  const mobileGrid = useMemo(() => generateDateGrid(MOBILE_WEEKS), []);
+  const mobileMonthLabels = useMemo(() => getMonthLabels(mobileGrid), [mobileGrid]);
 
   if (loading) {
     return (
@@ -102,15 +111,9 @@ export function ContributionGraph({
     );
   }
 
-  return (
-    <div
-      className={cn(
-        'space-y-2',
-        collapsedMobile && 'hidden md:block',
-        className
-      )}
-      data-contribution-graph
-    >
+  // Render contribution grid for a given date grid and month labels
+  const renderGrid = (dateGrid: string[][], monthLabels: { month: string; week: number }[], isMobile = false) => (
+    <div className="space-y-2">
       {/* Month labels */}
       <div className="flex text-xs text-text-tertiary pl-7">
         {monthLabels.map(({ month, week }, i) => (
@@ -148,7 +151,9 @@ export function ContributionGraph({
                       <div
                         data-contribution-day={date}
                         className={cn(
-                          'w-[10px] h-[10px] rounded-sm cursor-default',
+                          // Slightly larger squares on mobile for touch targets
+                          isMobile ? 'w-[12px] h-[12px]' : 'w-[10px] h-[10px]',
+                          'rounded-sm cursor-default touch-manipulation',
                           CONTRIBUTION_COLORS[level]
                         )}
                       />
@@ -187,6 +192,30 @@ export function ContributionGraph({
         <div className={cn('w-[10px] h-[10px] rounded-sm', CONTRIBUTION_COLORS.strong)} />
         <span>More</span>
       </div>
+    </div>
+  );
+
+  return (
+    <div
+      className={cn(
+        collapsedMobile && 'hidden md:block',
+        className
+      )}
+      data-contribution-graph
+    >
+      {/* Desktop: Full 52-week view */}
+      <div className={cn(
+        compactMobile ? 'hidden md:block' : 'block'
+      )}>
+        {renderGrid(fullDateGrid, fullMonthLabels)}
+      </div>
+
+      {/* Mobile: Compact 13-week (3 month) view */}
+      {compactMobile && (
+        <div className="md:hidden overflow-x-auto">
+          {renderGrid(mobileGrid, mobileMonthLabels, true)}
+        </div>
+      )}
     </div>
   );
 }

@@ -93,12 +93,20 @@ export function TooltipTrigger({
   onMouseLeave,
   onFocus,
   onBlur,
+  onClick,
+  onTouchStart,
   ...props
-}: TooltipTriggerProps) {
-  const { setOpen, delayDuration } = useTooltipContext();
+}: TooltipTriggerProps & {
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
+  onTouchStart?: (e: React.TouchEvent<HTMLElement>) => void;
+}) {
+  const { open, setOpen, delayDuration } = useTooltipContext();
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const isTouchRef = useRef(false);
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
+    // Skip hover on touch devices
+    if (isTouchRef.current) return;
     timeoutRef.current = setTimeout(() => setOpen(true), delayDuration);
     // Call consumer's handler if provided (merge, don't override)
     onMouseEnter?.(e as React.MouseEvent<HTMLSpanElement>);
@@ -120,11 +128,28 @@ export function TooltipTrigger({
     onBlur?.(e as React.FocusEvent<HTMLSpanElement>);
   };
 
+  // Touch support: tap to toggle tooltip
+  const handleTouchStart = (e: React.TouchEvent<HTMLElement>) => {
+    isTouchRef.current = true;
+    onTouchStart?.(e);
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    // On touch devices, toggle tooltip on tap
+    if (isTouchRef.current) {
+      e.preventDefault();
+      setOpen(!open);
+    }
+    onClick?.(e);
+  };
+
   const triggerProps = {
     onMouseEnter: handleMouseEnter,
     onMouseLeave: handleMouseLeave,
     onFocus: handleFocus,
     onBlur: handleBlur,
+    onTouchStart: handleTouchStart,
+    onClick: handleClick,
     ...props,
   };
 

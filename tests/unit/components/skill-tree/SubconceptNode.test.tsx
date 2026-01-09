@@ -18,17 +18,19 @@ const makeNode = (overrides: Partial<SkillTreeNode> = {}): SkillTreeNode => ({
 });
 
 describe('SubconceptNode', () => {
-  it('renders as a 48px circle', () => {
+  it('renders as a 48px circle with 44px touch target', () => {
     const { container } = render(<SubconceptNode node={makeNode()} />);
 
-    // The wrapper div and button both should be 48px circles
+    // The wrapper div provides 44px touch target (accessibility guideline)
     const wrapper = container.firstChild as HTMLElement;
-    expect(wrapper).toHaveClass('w-12', 'h-12'); // 48px = w-12 in Tailwind
-    expect(wrapper).toHaveClass('rounded-full');
+    expect(wrapper).toHaveClass('min-w-[44px]', 'min-h-[44px]');
+    expect(wrapper).toHaveClass('flex', 'items-center', 'justify-center');
 
+    // The button is the visual 48px circle
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('w-12', 'h-12');
+    expect(button).toHaveClass('w-12', 'h-12'); // 48px = w-12 in Tailwind
     expect(button).toHaveClass('rounded-full');
+    expect(button).toHaveClass('touch-manipulation'); // Improved touch handling
   });
 
   describe('visual states', () => {
