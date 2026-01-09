@@ -1,0 +1,33 @@
+# paths/python/blueprints/collection-cli-app.yaml
+
+id: collection-cli-app
+title: "Build a CLI Collection App"
+description: "Learn to store, display, and persist data through building a practical command-line application"
+difficulty: beginner
+concepts: [collections, loops, modules-files]
+
+beats:
+  - beat: 1
+    exercise: list-create-empty
+    title: "Create storage"
+  - beat: 2
+    exercise: list-append-dynamic
+    title: "Add entries"
+  - beat: 3
+    exercise: list-in-check
+    title: "Prevent duplicates"
+  - beat: 4
+    exercise: dict-create-values
+    title: "Store richer data"
+  - beat: 5
+    exercise: for-loop-list
+    title: "Display items"
+  - beat: 6
+    exercise: enumerate-basic
+    title: "Number items"
+  - beat: 7
+    exercise: list-comp-filter
+    title: "Filter results"
+  - beat: 8
+    exercise: context-intro
+    title: "Save to file"

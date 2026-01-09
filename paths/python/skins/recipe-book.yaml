@@ -1,0 +1,28 @@
+# paths/python/skins/recipe-book.yaml
+
+id: recipe-book
+title: "Recipe Book"
+icon: "book-open"
+blueprints: [collection-cli-app]
+
+vars:
+  list_name: recipes
+  item_singular: recipe
+  item_plural: recipes
+  item_examples:
+    - "spaghetti carbonara"
+    - "chicken curry"
+    - "chocolate cake"
+    - "caesar salad"
+    - "beef stew"
+  record_keys: ["name", "servings", "time_minutes"]
+
+contexts:
+  list-create-empty: "Start your recipe book with an empty collection."
+  list-append-dynamic: "Add a new recipe to your collection."
+  list-in-check: "Check if you already have this recipe."
+  dict-create-values: "Store recipe details like servings and prep time."
+  for-loop-list: "List all your saved recipes."
+  enumerate-basic: "Number recipes for quick selection."
+  list-comp-filter: "Find quick recipes under 30 minutes."
+  context-intro: "Save your recipe book to disk."

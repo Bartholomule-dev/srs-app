@@ -1,0 +1,28 @@
+# paths/python/skins/task-manager.yaml
+
+id: task-manager
+title: "Task Manager"
+icon: "check"
+blueprints: [collection-cli-app]
+
+vars:
+  list_name: tasks
+  item_singular: task
+  item_plural: tasks
+  item_examples:
+    - "buy groceries"
+    - "call mom"
+    - "email boss"
+    - "finish report"
+    - "schedule meeting"
+  record_keys: ["title", "done", "priority"]
+
+contexts:
+  list-create-empty: "Every task manager needs somewhere to store tasks."
+  list-append-dynamic: "Add a new task the user typed in."
+  list-in-check: "Check if a task already exists before adding it."
+  dict-create-values: "Tasks need more than just a name - add status too."
+  for-loop-list: "Display all tasks so the user can see what's pending."
+  enumerate-basic: "Number the tasks so users can reference them."
+  list-comp-filter: "Show only incomplete tasks."
+  context-intro: "Save tasks to a file so they persist between sessions."

@@ -1,0 +1,28 @@
+# paths/python/skins/shopping-cart.yaml
+
+id: shopping-cart
+title: "Shopping Cart"
+icon: "shopping-cart"
+blueprints: [collection-cli-app]
+
+vars:
+  list_name: cart
+  item_singular: item
+  item_plural: items
+  item_examples:
+    - "coffee"
+    - "milk"
+    - "bread"
+    - "eggs"
+    - "cheese"
+  record_keys: ["name", "quantity", "price"]
+
+contexts:
+  list-create-empty: "Start with an empty shopping cart for the user."
+  list-append-dynamic: "Add an item the customer wants to buy."
+  list-in-check: "Check if an item is already in the cart before adding."
+  dict-create-values: "Track item details like quantity and price."
+  for-loop-list: "Display all items in the cart."
+  enumerate-basic: "Number items so the user can remove by number."
+  list-comp-filter: "Show only items above a certain price."
+  context-intro: "Save the cart to resume shopping later."

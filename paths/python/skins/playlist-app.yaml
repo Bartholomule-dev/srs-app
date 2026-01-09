@@ -1,0 +1,28 @@
+# paths/python/skins/playlist-app.yaml
+
+id: playlist-app
+title: "Playlist App"
+icon: "music"
+blueprints: [collection-cli-app]
+
+vars:
+  list_name: playlist
+  item_singular: song
+  item_plural: songs
+  item_examples:
+    - "Bohemian Rhapsody"
+    - "Stairway to Heaven"
+    - "Hotel California"
+    - "Imagine"
+    - "Sweet Child O Mine"
+  record_keys: ["title", "artist", "duration"]
+
+contexts:
+  list-create-empty: "Create an empty playlist for the user."
+  list-append-dynamic: "Add a song to the playlist."
+  list-in-check: "Check if a song is already in the playlist."
+  dict-create-values: "Store song details like artist and duration."
+  for-loop-list: "Display all songs in the playlist."
+  enumerate-basic: "Number songs for easy selection."
+  list-comp-filter: "Find songs by a specific artist."
+  context-intro: "Save the playlist to a file."
