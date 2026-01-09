@@ -364,8 +364,8 @@ exercises:
     generator: comp-mapping
     prompt: What does this code produce?
     code: |
-      result = [x * {{m}} for x in range({{n}})]
-      print(result)
+      {{list_name}} = [x * {{m}} for x in range({{n}})]
+      print({{list_name}})
     expected_answer: "{{result}}"
     hints:
       - Multiplies each number 0-{{n}} by {{m}}
@@ -385,8 +385,8 @@ exercises:
     generator: comp-filter
     prompt: What does this code produce?
     code: |
-      result = [x for x in range({{n}}) if x % {{mod}} == 0]
-      print(result)
+      {{list_name}} = [x for x in range({{n}}) if x % {{mod}} == 0]
+      print({{list_name}})
     expected_answer: "{{result}}"
     hints:
       - Only includes numbers divisible by {{mod}}
@@ -456,8 +456,8 @@ exercises:
     generator: dict-comp
     prompt: "What does this code produce?"
     code: |
-      result = {{code}}
-      print(result)
+      {{list_name}} = {{code}}
+      print({{list_name}})
     expected_answer: "{{result}}"
     hints:
       - "This comprehension {{description}}"
@@ -475,7 +475,7 @@ exercises:
     type: write
     pattern: mapping
     generator: dict-comp
-    prompt: "Write a dict comprehension that {{description}} for range({{n}})"
+    prompt: "Write a dict comprehension to create {{list_name}} that {{description}} for range({{n}})"
     expected_answer: "{{code}}"
     hints:
       - "Use {key: value for x in range({{n}})}"
@@ -494,7 +494,7 @@ exercises:
     type: predict
     pattern: mapping
     generator: list-transform
-    prompt: "What does this code print?"
+    prompt: "What does this code print for the {{list_name}}?"
     code: "{{code}}"
     expected_answer: "{{outputStr}}"
     hints:
@@ -503,7 +503,7 @@ exercises:
     tags: [comprehensions, list-comp, transform, dynamic]
     target_construct:
       type: comprehension
-      feedback: "List comprehensions are a concise way to transform lists"
+      feedback: "List comprehensions are a concise way to transform {{item_plural}}"
 
   - slug: list-comp-filter-dynamic
     objective: Predict the output of a filtering list comprehension
@@ -516,16 +516,16 @@ exercises:
     type: predict
     pattern: filtering
     generator: list-transform
-    prompt: "What does this code print?"
+    prompt: "What does this code print when filtering the {{list_name}}?"
     code: "{{code}}"
     expected_answer: "{{outputStr}}"
     hints:
       - "The filter will {{description}}"
-      - "Check which elements pass the condition"
+      - "Check which {{item_plural}} pass the condition"
     tags: [comprehensions, list-comp, filter, dynamic]
     target_construct:
       type: comprehension
-      feedback: "Use list comprehensions with if clauses to filter elements"
+      feedback: "Use list comprehensions with if clauses to filter {{item_plural}}"
 
   - slug: list-comp-write-transform-dynamic
     objective: Write a list comprehension to transform values
@@ -538,10 +538,10 @@ exercises:
     type: write
     pattern: mapping
     generator: list-transform
-    prompt: "Write a list comprehension to {{description}} from nums = {{inputStr}}"
+    prompt: "Write a list comprehension to {{description}} from {{list_name}} = {{inputStr}}"
     expected_answer: "{{expression}}"
     hints:
-      - "Use [expression for x in nums] syntax"
+      - "Use [expression for {{item_singular}} in {{list_name}}] syntax"
       - "The expression should {{description}}"
     tags: [comprehensions, list-comp, write, dynamic]
     target_construct:

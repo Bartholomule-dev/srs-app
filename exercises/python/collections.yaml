@@ -962,11 +962,11 @@ exercises:
     objective: Use bracket notation to access list elements
     title: Dynamic List Indexing
     difficulty: 1
-    prompt: "Given nums = [{{a}}, {{b}}, {{c}}], what does nums[1] return?"
+    prompt: "Given {{list_name}} = [{{a}}, {{b}}, {{c}}], what does {{list_name}}[1] return?"
     expected_answer: "{{b}}"
     hints:
       - List indices start at 0
-      - nums[1] returns the second element
+      - "{{list_name}}[1] returns the second element"
     tags: [lists, indexing, dynamic]
     concept: collections
     subconcept: lists
@@ -976,8 +976,8 @@ exercises:
     pattern: indexing
     generator: list-values
     code: |
-      nums = [{{a}}, {{b}}, {{c}}]
-      print(nums[1])
+      {{list_name}} = [{{a}}, {{b}}, {{c}}]
+      print({{list_name}}[1])
 
   - slug: list-sum-dynamic
     objective: Predict the output of adding two numbers
@@ -1005,8 +1005,8 @@ exercises:
     objective: Write slice syntax to extract elements from index start to end
     title: Dynamic List Slice Write
     difficulty: 2
-    prompt: "Extract elements from index {{start}} to {{end}} (exclusive) from list nums"
-    expected_answer: "nums[{{start}}:{{end}}]"
+    prompt: "Extract elements from index {{start}} to {{end}} (exclusive) from {{list_name}}"
+    expected_answer: "{{list_name}}[{{start}}:{{end}}]"
     hints:
       - List slicing uses [start:end] syntax
       - The end index is exclusive
@@ -1026,11 +1026,11 @@ exercises:
     objective: Use negative indexing to access list elements from the end
     title: Dynamic Negative Index
     difficulty: 2
-    prompt: "Given nums = [{{a}}, {{b}}, {{c}}], what does nums[-1] return?"
+    prompt: "Given {{list_name}} = [{{a}}, {{b}}, {{c}}], what does {{list_name}}[-1] return?"
     expected_answer: "{{c}}"
     hints:
       - Negative indices count from the end
-      - nums[-1] is the last element
+      - "{{list_name}}[-1] is the last element"
     tags: [lists, indexing, negative, dynamic]
     concept: collections
     subconcept: lists
@@ -1040,18 +1040,18 @@ exercises:
     pattern: indexing
     generator: list-values
     code: |
-      nums = [{{a}}, {{b}}, {{c}}]
-      print(nums[-1])
+      {{list_name}} = [{{a}}, {{b}}, {{c}}]
+      print({{list_name}}[-1])
 
   - slug: list-len-dynamic
     objective: Predict the length of a list
     title: Dynamic List Length
     difficulty: 1
-    prompt: "Given nums = [{{a}}, {{b}}, {{c}}], what does len(nums) return?"
+    prompt: "Given {{list_name}} = [{{a}}, {{b}}, {{c}}], what does len({{list_name}}) return?"
     expected_answer: "3"
     hints:
       - len() returns the number of elements
-      - Count how many items are in the list
+      - "Count how many {{item_plural}} are in the list"
     tags: [lists, len, dynamic]
     concept: collections
     subconcept: lists
@@ -1061,17 +1061,17 @@ exercises:
     pattern: query
     generator: list-values
     code: |
-      nums = [{{a}}, {{b}}, {{c}}]
-      print(len(nums))
+      {{list_name}} = [{{a}}, {{b}}, {{c}}]
+      print(len({{list_name}}))
 
   - slug: list-append-dynamic
     objective: Predict the result of appending an element to a list
     title: Dynamic List Append
     difficulty: 2
-    prompt: "Given nums = [{{a}}, {{b}}], what is nums after nums.append({{c}})?"
+    prompt: "Given {{list_name}} = [{{a}}, {{b}}], what is {{list_name}} after {{list_name}}.append({{c}})?"
     expected_answer: "[{{a}}, {{b}}, {{c}}]"
     hints:
-      - append() adds element to the end
+      - "append() adds a {{item_singular}} to the end"
       - The list is modified in place
     tags: [lists, append, mutation, dynamic]
     concept: collections
@@ -1082,18 +1082,18 @@ exercises:
     pattern: mutation
     generator: list-values
     code: |
-      nums = [{{a}}, {{b}}]
-      nums.append({{c}})
-      print(nums)
+      {{list_name}} = [{{a}}, {{b}}]
+      {{list_name}}.append({{c}})
+      print({{list_name}})
 
   - slug: list-pop-dynamic
     objective: Predict the value returned when popping from a list
     title: Dynamic List Pop
     difficulty: 2
-    prompt: "Given nums = [{{a}}, {{b}}, {{c}}], what does nums.pop() return?"
+    prompt: "Given {{list_name}} = [{{a}}, {{b}}, {{c}}], what does {{list_name}}.pop() return?"
     expected_answer: "{{c}}"
     hints:
-      - pop() removes and returns the last element
+      - "pop() removes and returns the last {{item_singular}}"
       - The last element is {{c}}
     tags: [lists, pop, mutation, dynamic]
     concept: collections
@@ -1104,15 +1104,15 @@ exercises:
     pattern: mutation
     generator: list-values
     code: |
-      nums = [{{a}}, {{b}}, {{c}}]
-      print(nums.pop())
+      {{list_name}} = [{{a}}, {{b}}, {{c}}]
+      print({{list_name}}.pop())
 
   - slug: list-access-index-dynamic
     objective: Write bracket notation to access a list element by index
     title: Dynamic List Access
     difficulty: 1
-    prompt: "Get the element at index {{idx}} from list items"
-    expected_answer: "items[{{idx}}]"
+    prompt: "Get the {{item_singular}} at index {{idx}} from {{list_name}}"
+    expected_answer: "{{list_name}}[{{idx}}]"
     hints:
       - Use square bracket notation
       - Indices start at 0
@@ -1157,14 +1157,14 @@ exercises:
     type: write
     pattern: mutation
     generator: index-values
-    prompt: 'Insert value "x" at index {{idx}} in list items'
-    expected_answer: 'items.insert({{idx}}, "x")'
+    prompt: 'Insert a new {{item_singular}} "x" at index {{idx}} in {{list_name}}'
+    expected_answer: '{{list_name}}.insert({{idx}}, "x")'
     accepted_solutions:
-      - 'items.insert({{idx}}, "x")'
-      - "items.insert({{idx}}, 'x')"
+      - '{{list_name}}.insert({{idx}}, "x")'
+      - "{{list_name}}.insert({{idx}}, 'x')"
     hints:
       - insert(index, value)
-      - Elements at or after index shift right
+      - "{{item_plural}} at or after index shift right"
     tags: [lists, insert, mutation, dynamic]
 
   - slug: list-method-predict-dynamic
