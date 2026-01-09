@@ -22,7 +22,8 @@
     "validate:exercises": "npx tsx scripts/validate-exercises.ts",
     "validate:curriculum": "npx tsx scripts/validate-curriculum.ts",
     "validate:dynamic": "npx tsx scripts/validate-dynamic-exercises.ts",
-    "validate:all": "pnpm validate:exercises && pnpm validate:curriculum && pnpm validate:dynamic",
+    "validate:paths": "npx tsx scripts/validate-paths.ts",
+    "validate:all": "pnpm validate:exercises && pnpm validate:curriculum && pnpm validate:dynamic && pnpm validate:paths",
     "generate:exercise-list": "npx tsx scripts/generate-exercise-list.ts",
     "generate:exercise-list:obsidian": "npx tsx scripts/generate-exercise-list.ts --obsidian \"/home/brett/GoogleDrive/Obsidian Vault\""
   },
