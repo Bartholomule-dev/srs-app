@@ -5,7 +5,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ProtectedRoute, ExerciseCard, SessionProgress, SessionSummary, TeachingCard } from '@/components';
+import { AchievementUnlockHandler } from '@/components/session/AchievementUnlockHandler';
 import { useConceptSession } from '@/lib/hooks';
+import { useAuth } from '@/lib/hooks';
 import { ErrorBoundary } from '@/components';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent } from '@/components/ui/Card';
@@ -143,6 +145,7 @@ function EmptyState({ onDashboard }: { onDashboard: () => void }) {
 
 function PracticeSessionContent() {
   const router = useRouter();
+  const { user } = useAuth();
   const {
     cardTypes,
     currentCard,
@@ -177,6 +180,8 @@ function PracticeSessionContent() {
       <div className="min-h-screen flex items-center justify-center p-4">
         <PracticeBackground />
         <SessionSummary stats={stats} onDashboard={handleDashboard} />
+        {/* Check and celebrate achievement unlocks after session completes */}
+        {user && <AchievementUnlockHandler userId={user.id} />}
       </div>
     );
   }
