@@ -45,3 +45,12 @@ export {
   getTierDisplayName,
   getTierUpgradeMessage,
 } from './badges';
+
+// Achievement types and utilities
+export type { Achievement, AchievementCategory, UserAchievement } from './achievements';
+export {
+  ACHIEVEMENTS,
+  getAchievementsByCategory,
+  getAllAchievementSlugs,
+  getAchievement,
+} from './achievements';
