@@ -2,8 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { usePathContext } from '@/lib/hooks/usePathContext';
 
-// Mock the loader
-vi.mock('@/lib/paths/loader', () => ({
+// Mock the client-loader (this is what usePathContext actually uses)
+vi.mock('@/lib/paths/client-loader', () => ({
   getPathIndex: vi.fn().mockResolvedValue({
     blueprints: new Map([
       [
@@ -137,7 +137,7 @@ describe('usePathContext - error handling', () => {
   });
 
   it('sets error state when loading fails', async () => {
-    const { getPathIndex } = await import('@/lib/paths/loader');
+    const { getPathIndex } = await import('@/lib/paths/client-loader');
     vi.mocked(getPathIndex).mockRejectedValueOnce(new Error('Network error'));
 
     const { result } = renderHook(() => usePathContext());
