@@ -55,6 +55,14 @@ export function Header() {
             <span className="text-[var(--text-secondary)]">today</span>
           </div>
 
+          {/* Achievements link */}
+          <Link
+            href="/achievements"
+            className="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+          >
+            Achievements
+          </Link>
+
           {/* User menu */}
           <div className="flex items-center gap-3">
             <span className="text-sm text-[var(--text-secondary)]">
