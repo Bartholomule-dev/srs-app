@@ -1,0 +1,1 @@
+export { PointsAnimation } from './PointsAnimation';
