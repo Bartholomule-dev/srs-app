@@ -30,6 +30,7 @@ export interface Profile {
   longestStreak: number;
   totalExercisesCompleted: number;
   experienceLevel: ExperienceLevel;
+  recentSkins: string[];
   createdAt: string;
   updatedAt: string;
 }

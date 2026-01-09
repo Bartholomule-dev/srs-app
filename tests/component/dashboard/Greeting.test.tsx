@@ -16,6 +16,7 @@ let mockProfile: Profile | null = {
   longestStreak: 10,
   totalExercisesCompleted: 50,
   experienceLevel: 'refresher',
+  recentSkins: [],
   createdAt: '2024-01-01T00:00:00Z',
   updatedAt: '2024-01-01T00:00:00Z',
 };
@@ -49,6 +50,7 @@ describe('Greeting', () => {
       longestStreak: 10,
       totalExercisesCompleted: 50,
       experienceLevel: 'refresher',
+      recentSkins: [],
       createdAt: '2024-01-01T00:00:00Z',
       updatedAt: '2024-01-01T00:00:00Z',
     };

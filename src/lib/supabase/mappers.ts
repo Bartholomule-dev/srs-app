@@ -8,8 +8,11 @@ import type { DbProfile, DbExercise, Profile, Exercise, ExperienceLevel } from '
  * Map database profile to app profile
  */
 export function mapProfile(db: DbProfile): Profile {
-  // Type assertion for experience_level until database types are regenerated
-  const dbExt = db as DbProfile & { experience_level?: string | null };
+  // Type assertion for fields until database types are regenerated
+  const dbExt = db as DbProfile & {
+    experience_level?: string | null;
+    recent_skins?: string[] | null;
+  };
 
   return {
     id: db.id,
@@ -23,6 +26,7 @@ export function mapProfile(db: DbProfile): Profile {
     longestStreak: db.longest_streak ?? 0,
     totalExercisesCompleted: db.total_exercises_completed ?? 0,
     experienceLevel: (dbExt.experience_level as ExperienceLevel) ?? 'refresher',
+    recentSkins: dbExt.recent_skins ?? [],
     createdAt: db.created_at ?? new Date().toISOString(),
     updatedAt: db.updated_at ?? new Date().toISOString(),
   };
