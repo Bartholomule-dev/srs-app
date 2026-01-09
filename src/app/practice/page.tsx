@@ -6,12 +6,14 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ProtectedRoute, ExerciseCard, SessionProgress, SessionSummary, TeachingCard } from '@/components';
 import { AchievementUnlockHandler } from '@/components/session/AchievementUnlockHandler';
-import { useConceptSession } from '@/lib/hooks';
+import { useConceptSession, usePathContext } from '@/lib/hooks';
 import { useAuth } from '@/lib/hooks';
+import { useState } from 'react';
 import { ErrorBoundary } from '@/components';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent } from '@/components/ui/Card';
 import { hasExercise, getCardKey, isTeachingCard } from '@/lib/session';
+import type { Quality } from '@/lib/types';
 
 // Aurora gradient background for immersive practice mode
 function PracticeBackground() {
@@ -159,6 +161,40 @@ function PracticeSessionContent() {
     currentReps,
   } = useConceptSession();
 
+  // Path context for skin/blueprint information
+  const { index, getSkinnedCard } = usePathContext();
+
+  // Track recently used skins to avoid repetition
+  const [recentSkins, setRecentSkins] = useState<string[]>([]);
+
+  // Get skinned card info for current exercise
+  const currentSkinnedCard = currentCard && hasExercise(currentCard)
+    ? getSkinnedCard(currentCard.exercise.slug, recentSkins)
+    : null;
+
+  // Get skin icon from path index
+  const skinIcon = currentSkinnedCard?.skinId && index
+    ? index.skins.get(currentSkinnedCard.skinId)?.icon ?? null
+    : null;
+
+  // Get blueprint title from path index
+  const blueprintTitle = currentSkinnedCard?.blueprintId && index
+    ? index.blueprints.get(currentSkinnedCard.blueprintId)?.title ?? null
+    : null;
+
+  // Wrapper to track skin usage when recording results
+  const handleRecordResult = async (quality: Quality) => {
+    // Track the skin that was used (if any) before advancing
+    if (currentSkinnedCard?.skinId) {
+      setRecentSkins(prev => {
+        const updated = [currentSkinnedCard.skinId!, ...prev.filter(s => s !== currentSkinnedCard.skinId)];
+        // Keep last 5 skins for diversity
+        return updated.slice(0, 5);
+      });
+    }
+    await recordResult(quality);
+  };
+
   const handleDashboard = () => {
     router.push('/dashboard');
   };
@@ -230,14 +266,21 @@ function PracticeSessionContent() {
           {currentCard && isTeachingCard(currentCard) && (
             <TeachingCard
               card={currentCard}
-              onContinue={() => recordResult(5)}
+              onContinue={() => handleRecordResult(5)}
             />
           )}
           {currentCard && hasExercise(currentCard) && (
             <ExerciseCard
               exercise={currentCard.exercise}
-              onComplete={recordResult}
+              onComplete={handleRecordResult}
               currentReps={currentReps}
+              // Skin/blueprint context props
+              skinIcon={skinIcon}
+              blueprintTitle={blueprintTitle}
+              beat={currentSkinnedCard?.beat ?? null}
+              totalBeats={currentSkinnedCard?.totalBeats ?? null}
+              beatTitle={currentSkinnedCard?.beatTitle ?? null}
+              context={currentSkinnedCard?.context ?? null}
             />
           )}
         </motion.div>
