@@ -118,3 +118,57 @@ export function shouldCelebrateTierUp(
 
   return null;
 }
+
+/**
+ * Get display name for a badge tier
+ */
+export function getTierDisplayName(tier: BadgeTier): string {
+  const names: Record<BadgeTier, string> = {
+    locked: 'Locked',
+    available: 'Available',
+    bronze: 'Bronze',
+    silver: 'Silver',
+    gold: 'Gold',
+    platinum: 'Platinum',
+  };
+  return names[tier];
+}
+
+/**
+ * Get celebration message for a tier upgrade
+ */
+export function getTierUpgradeMessage(
+  newTier: BadgeTier,
+  subconceptName?: string
+): { title: string; description: string } {
+  const tierName = getTierDisplayName(newTier);
+  const subject = subconceptName ?? 'skill';
+
+  switch (newTier) {
+    case 'bronze':
+      return {
+        title: `${tierName} Tier Unlocked!`,
+        description: `You started learning ${subject}.`,
+      };
+    case 'silver':
+      return {
+        title: `${tierName} Tier Achieved!`,
+        description: `Your ${subject} knowledge is growing.`,
+      };
+    case 'gold':
+      return {
+        title: `${tierName} Mastery!`,
+        description: `You have mastered ${subject}!`,
+      };
+    case 'platinum':
+      return {
+        title: `${tierName} Excellence!`,
+        description: `Deep mastery of ${subject} achieved!`,
+      };
+    default:
+      return {
+        title: 'Progress Made!',
+        description: `Your ${subject} is improving.`,
+      };
+  }
+}

@@ -42,4 +42,6 @@ export {
   BADGE_THRESHOLDS,
   BADGE_STYLES,
   shouldCelebrateTierUp,
+  getTierDisplayName,
+  getTierUpgradeMessage,
 } from './badges';

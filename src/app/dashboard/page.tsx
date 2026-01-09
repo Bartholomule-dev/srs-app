@@ -9,8 +9,9 @@ import {
   DueNowBand,
   StatsGrid,
   SkillTree,
+  ContributionGraph,
 } from '@/components';
-import { useAuth, useStats } from '@/lib/hooks';
+import { useAuth, useStats, useContributionGraph } from '@/lib/hooks';
 import { supabase } from '@/lib/supabase/client';
 import type { Database } from '@/lib/types';
 
@@ -49,6 +50,7 @@ function LoadingSkeleton() {
 function DashboardContent() {
   const { user } = useAuth();
   const { stats, loading: statsLoading } = useStats();
+  const { days: contributionDays, loading: contributionLoading } = useContributionGraph();
   const [dueCount, setDueCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -125,6 +127,18 @@ function DashboardContent() {
               Your Progress
             </h2>
             <StatsGrid stats={stats} loading={statsLoading} />
+          </section>
+
+          {/* Contribution History Section */}
+          <section>
+            <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
+              Activity History
+            </h2>
+            <ContributionGraph
+              days={contributionDays}
+              loading={contributionLoading}
+              collapsedMobile={true}
+            />
           </section>
 
           {/* Skill Tree Section */}

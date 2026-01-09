@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   getBadgeTier,
   BADGE_THRESHOLDS,
+  shouldCelebrateTierUp,
 } from '@/lib/gamification/badges';
 
 describe('Badge types', () => {
@@ -44,5 +45,42 @@ describe('getBadgeTier', () => {
 
   it('ignores stability when prereqs not met', () => {
     expect(getBadgeTier({ stability: 100, prereqsMet: false })).toBe('locked');
+  });
+});
+
+describe('shouldCelebrateTierUp', () => {
+  it('returns null when tier stays the same', () => {
+    expect(shouldCelebrateTierUp('bronze', 'bronze')).toBeNull();
+  });
+
+  it('returns null when tier goes down', () => {
+    expect(shouldCelebrateTierUp('gold', 'silver')).toBeNull();
+    expect(shouldCelebrateTierUp('platinum', 'bronze')).toBeNull();
+  });
+
+  it('returns "mini" for upgrade to bronze', () => {
+    expect(shouldCelebrateTierUp('available', 'bronze')).toBe('mini');
+    expect(shouldCelebrateTierUp('locked', 'bronze')).toBe('mini');
+  });
+
+  it('returns "mini" for upgrade to silver', () => {
+    expect(shouldCelebrateTierUp('bronze', 'silver')).toBe('mini');
+    expect(shouldCelebrateTierUp('available', 'silver')).toBe('mini');
+  });
+
+  it('returns "full" for upgrade to gold', () => {
+    expect(shouldCelebrateTierUp('silver', 'gold')).toBe('full');
+    expect(shouldCelebrateTierUp('bronze', 'gold')).toBe('full');
+    expect(shouldCelebrateTierUp('available', 'gold')).toBe('full');
+  });
+
+  it('returns "full" for upgrade to platinum', () => {
+    expect(shouldCelebrateTierUp('gold', 'platinum')).toBe('full');
+    expect(shouldCelebrateTierUp('silver', 'platinum')).toBe('full');
+    expect(shouldCelebrateTierUp('bronze', 'platinum')).toBe('full');
+  });
+
+  it('returns null for non-badge tier transitions (locked to available)', () => {
+    expect(shouldCelebrateTierUp('locked', 'available')).toBeNull();
   });
 });

@@ -32,3 +32,6 @@ export { AuthForm, Hero, Features, HowItWorks } from './landing';
 
 // Skill tree components
 export { SkillTree } from './skill-tree';
+
+// Stats components
+export { ContributionGraph } from './stats';

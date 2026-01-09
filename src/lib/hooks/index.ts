@@ -13,3 +13,5 @@ export { usePoints } from './usePoints';
 export type { UsePointsReturn } from './usePoints';
 export { useContributionGraph } from './useContributionGraph';
 export type { UseContributionGraphReturn } from './useContributionGraph';
+export { useBadgeCelebration } from './useBadgeCelebration';
+export type { UseBadgeCelebrationReturn } from './useBadgeCelebration';

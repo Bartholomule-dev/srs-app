@@ -21,14 +21,21 @@ vi.mock('@/components', () => ({
     </div>
   ),
   SkillTree: () => <div data-testid="skill-tree">Skill Tree</div>,
+  ContributionGraph: ({ loading }: { days: unknown[]; loading: boolean }) => (
+    <div data-testid="contribution-graph">
+      {loading ? 'Loading contributions...' : 'Contribution Graph'}
+    </div>
+  ),
 }));
 
 const mockUseAuth = vi.fn();
 const mockUseStats = vi.fn();
+const mockUseContributionGraph = vi.fn();
 
 vi.mock('@/lib/hooks', () => ({
   useAuth: () => mockUseAuth(),
   useStats: () => mockUseStats(),
+  useContributionGraph: () => mockUseContributionGraph(),
 }));
 
 vi.mock('@/lib/supabase/client', () => ({
@@ -69,6 +76,13 @@ describe('DashboardPage', () => {
       },
       loading: false,
       error: null,
+    });
+    mockUseContributionGraph.mockReturnValue({
+      days: [],
+      loading: false,
+      error: null,
+      refetch: vi.fn(),
+      currentStreakDays: 0,
     });
   });
 
