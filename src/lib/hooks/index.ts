@@ -17,3 +17,5 @@ export { useBadgeCelebration } from './useBadgeCelebration';
 export type { UseBadgeCelebrationReturn } from './useBadgeCelebration';
 export { useAchievements } from './useAchievements';
 export type { UseAchievementsReturn, AchievementWithStatus } from './useAchievements';
+export { usePathContext } from './usePathContext';
+export type { UsePathContextReturn } from './usePathContext';
