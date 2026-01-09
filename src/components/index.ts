@@ -21,6 +21,7 @@ export {
   EmptyState,
   Greeting,
   PracticeCTA,
+  RecentAchievements,
   StatsGrid,
 } from './dashboard';
 

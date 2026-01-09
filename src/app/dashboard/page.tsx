@@ -8,6 +8,7 @@ import {
   Header,
   DueNowBand,
   StatsGrid,
+  RecentAchievements,
   SkillTree,
   ContributionGraph,
 } from '@/components';
@@ -128,6 +129,9 @@ function DashboardContent() {
             </h2>
             <StatsGrid stats={stats} loading={statsLoading} />
           </section>
+
+          {/* Recent Achievements Section */}
+          <RecentAchievements />
 
           {/* Contribution History Section */}
           <section>

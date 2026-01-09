@@ -3,6 +3,7 @@ export { DueNowBand } from './DueNowBand';
 export { EmptyState } from './EmptyState';
 export { Greeting } from './Greeting';
 export { PracticeCTA } from './PracticeCTA';
+export { RecentAchievements } from './RecentAchievements';
 export { StatsCard } from './StatsCard';
 export type { StatsCardProps } from './StatsCard';
 export { StatsGrid } from './StatsGrid';
