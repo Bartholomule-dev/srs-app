@@ -9,7 +9,7 @@
  * Skin vars: list_name, item_singular, item_plural, item_examples, etc.
  */
 export interface GeneratorParams {
-  [key: string]: string | number | boolean | (string | number)[];
+  [key: string]: string | number | boolean | (string | number)[] | undefined;
   /** Optional variant name for exercises with multiple templates */
   variant?: string;
 }
