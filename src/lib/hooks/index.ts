@@ -15,3 +15,5 @@ export { useContributionGraph } from './useContributionGraph';
 export type { UseContributionGraphReturn } from './useContributionGraph';
 export { useBadgeCelebration } from './useBadgeCelebration';
 export type { UseBadgeCelebrationReturn } from './useBadgeCelebration';
+export { useAchievements } from './useAchievements';
+export type { UseAchievementsReturn, AchievementWithStatus } from './useAchievements';
