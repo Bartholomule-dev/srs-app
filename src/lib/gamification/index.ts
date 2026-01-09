@@ -16,3 +16,13 @@ export {
   POINTS,
   STREAK_FREEZE,
 } from './types';
+
+// Points calculation utilities
+export {
+  calculateQualityBonus,
+  calculateSpeedBonus,
+  calculateStreakMultiplier,
+  calculatePointsBreakdown,
+  formatPoints,
+  type PointsCalculationInput,
+} from './points';
