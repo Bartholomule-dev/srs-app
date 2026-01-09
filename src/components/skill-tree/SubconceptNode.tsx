@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useId } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import type { TargetAndTransition } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { ANIMATION_BUDGET } from '@/lib/motion';
 import type { SkillTreeNode, SubconceptState } from '@/lib/skill-tree/types';
@@ -30,6 +31,38 @@ const stateStyles: Record<SubconceptState, string> = {
     'border-2 border-emerald-500 bg-[var(--bg-surface-1)]',
   mastered:
     'border-2 border-emerald-500 bg-emerald-500/20',
+};
+
+/**
+ * Animation variants for badge tiers
+ */
+
+// Pulse animation for 'available' tier - subtle glow pulsing to draw attention
+const availablePulseAnimation: TargetAndTransition = {
+  boxShadow: [
+    '0 0 0 0 rgba(245, 158, 11, 0)',
+    '0 0 0 6px rgba(245, 158, 11, 0.15)',
+    '0 0 0 0 rgba(245, 158, 11, 0)',
+  ],
+  transition: {
+    duration: 2.5,
+    repeat: Infinity,
+    ease: 'easeInOut',
+  },
+};
+
+// Shimmer animation for 'platinum' tier - subtle shine effect
+const platinumShimmerAnimation: TargetAndTransition = {
+  background: [
+    'linear-gradient(135deg, rgba(103, 232, 249, 0.1) 0%, transparent 50%, rgba(103, 232, 249, 0.1) 100%)',
+    'linear-gradient(135deg, transparent 0%, rgba(103, 232, 249, 0.2) 50%, transparent 100%)',
+    'linear-gradient(135deg, rgba(103, 232, 249, 0.1) 0%, transparent 50%, rgba(103, 232, 249, 0.1) 100%)',
+  ],
+  transition: {
+    duration: 3,
+    repeat: Infinity,
+    ease: 'easeInOut',
+  },
 };
 
 function getTooltipContent(
@@ -82,6 +115,24 @@ function getBadgeTierStyles(badgeTier: BadgeTier): string {
   );
 }
 
+/**
+ * Get tier-specific animation (respects reduced motion)
+ */
+function getTierAnimation(
+  badgeTier: BadgeTier | undefined,
+  reduceMotion: boolean | null
+): TargetAndTransition | undefined {
+  if (reduceMotion) return undefined;
+
+  if (badgeTier === 'available') {
+    return availablePulseAnimation;
+  }
+  if (badgeTier === 'platinum') {
+    return platinumShimmerAnimation;
+  }
+  return undefined;
+}
+
 export function SubconceptNode({
   node,
   prereqNames,
@@ -105,8 +156,11 @@ export function SubconceptNode({
     ? getBadgeTierStyles(badgeTier)
     : stateStyles[node.state];
 
+  // Get tier-specific animation
+  const tierAnimation = getTierAnimation(badgeTier, reduceMotion);
+
   return (
-    <div className="relative w-12 h-12 rounded-full">
+    <div className="relative w-12 h-12 rounded-full" data-badge-tier={badgeTier}>
       <motion.button
         ref={nodeRef}
         type="button"
@@ -127,7 +181,16 @@ export function SubconceptNode({
         whileHover={node.state !== 'locked' && !reduceMotion ? { scale: 1.1 } : undefined}
         whileTap={node.state !== 'locked' && !reduceMotion ? { scale: 0.95 } : undefined}
         transition={ANIMATION_BUDGET.hover}
-      />
+      >
+        {/* Animated overlay for tier-specific effects */}
+        {tierAnimation && (
+          <motion.div
+            className="absolute inset-0 rounded-full pointer-events-none"
+            animate={tierAnimation}
+            data-tier-animation={badgeTier}
+          />
+        )}
+      </motion.button>
 
       <AnimatePresence>
         {showTooltip && (

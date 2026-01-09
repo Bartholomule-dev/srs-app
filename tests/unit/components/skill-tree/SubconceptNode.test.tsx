@@ -21,9 +21,14 @@ describe('SubconceptNode', () => {
   it('renders as a 48px circle', () => {
     const { container } = render(<SubconceptNode node={makeNode()} />);
 
-    const node = container.firstChild as HTMLElement;
-    expect(node).toHaveClass('w-12', 'h-12'); // 48px = w-12 in Tailwind
-    expect(node).toHaveClass('rounded-full');
+    // The wrapper div and button both should be 48px circles
+    const wrapper = container.firstChild as HTMLElement;
+    expect(wrapper).toHaveClass('w-12', 'h-12'); // 48px = w-12 in Tailwind
+    expect(wrapper).toHaveClass('rounded-full');
+
+    const button = screen.getByRole('button');
+    expect(button).toHaveClass('w-12', 'h-12');
+    expect(button).toHaveClass('rounded-full');
   });
 
   describe('visual states', () => {
@@ -276,6 +281,116 @@ describe('SubconceptNode', () => {
 
       const button = screen.getByRole('button');
       expect(button.className).not.toContain('shadow-[0_0_');
+    });
+  });
+
+  describe('badge tier animations', () => {
+    it('renders data-badge-tier attribute when badgeTier is provided', () => {
+      const { container } = render(
+        <SubconceptNode
+          node={makeNode({ state: 'available' })}
+          badgeTier="available"
+        />
+      );
+
+      const wrapper = container.querySelector('[data-badge-tier="available"]');
+      expect(wrapper).toBeInTheDocument();
+    });
+
+    it('renders pulse animation overlay for available tier', () => {
+      const { container } = render(
+        <SubconceptNode
+          node={makeNode({ state: 'available' })}
+          badgeTier="available"
+        />
+      );
+
+      const animationOverlay = container.querySelector('[data-tier-animation="available"]');
+      expect(animationOverlay).toBeInTheDocument();
+    });
+
+    it('renders shimmer animation overlay for platinum tier', () => {
+      const { container } = render(
+        <SubconceptNode
+          node={makeNode({ state: 'mastered', stability: 90 })}
+          badgeTier="platinum"
+        />
+      );
+
+      const animationOverlay = container.querySelector('[data-tier-animation="platinum"]');
+      expect(animationOverlay).toBeInTheDocument();
+    });
+
+    it('does not render animation overlay for bronze tier', () => {
+      const { container } = render(
+        <SubconceptNode
+          node={makeNode({ state: 'in-progress', stability: 2 })}
+          badgeTier="bronze"
+        />
+      );
+
+      const animationOverlay = container.querySelector('[data-tier-animation]');
+      expect(animationOverlay).not.toBeInTheDocument();
+    });
+
+    it('does not render animation overlay for silver tier', () => {
+      const { container } = render(
+        <SubconceptNode
+          node={makeNode({ state: 'in-progress', stability: 7 })}
+          badgeTier="silver"
+        />
+      );
+
+      const animationOverlay = container.querySelector('[data-tier-animation]');
+      expect(animationOverlay).not.toBeInTheDocument();
+    });
+
+    it('does not render animation overlay for gold tier', () => {
+      const { container } = render(
+        <SubconceptNode
+          node={makeNode({ state: 'mastered', stability: 30 })}
+          badgeTier="gold"
+        />
+      );
+
+      const animationOverlay = container.querySelector('[data-tier-animation]');
+      expect(animationOverlay).not.toBeInTheDocument();
+    });
+
+    it('does not render animation overlay for locked tier', () => {
+      const { container } = render(
+        <SubconceptNode
+          node={makeNode({ state: 'locked' })}
+          badgeTier="locked"
+        />
+      );
+
+      const animationOverlay = container.querySelector('[data-tier-animation]');
+      expect(animationOverlay).not.toBeInTheDocument();
+    });
+
+    it('does not render animation overlay when no badgeTier provided', () => {
+      const { container } = render(
+        <SubconceptNode node={makeNode({ state: 'available' })} />
+      );
+
+      const animationOverlay = container.querySelector('[data-tier-animation]');
+      expect(animationOverlay).not.toBeInTheDocument();
+    });
+
+    it('uses motion.button component for animation capabilities', () => {
+      const { container } = render(
+        <SubconceptNode
+          node={makeNode({ state: 'available' })}
+          badgeTier="available"
+        />
+      );
+
+      // motion.button should render a button element
+      const button = screen.getByRole('button');
+      expect(button).toBeInTheDocument();
+      // The button should be inside the wrapper div
+      expect(container.querySelector('[data-badge-tier]')).toContainElement(button);
     });
   });
 });
