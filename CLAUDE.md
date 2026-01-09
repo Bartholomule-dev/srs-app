@@ -18,7 +18,7 @@
 
 A gamified web platform for practicing code syntax through spaced repetition. Target users are AI-assisted developers who want to maintain their programming fundamentals.
 
-**Current Status:** Skill Tree Visualization Complete - Dashboard now shows visual skill tree with 54 subconcept nodes across 10 concepts. Four node states (locked, available, in-progress, mastered) based on FSRS stability (>=7 days = mastered). Interactive tooltips, SVG dependency lines, staggered animations. Next: Gamification (achievements, points, leaderboards).
+**Current Status:** Phase 3 Gamification Complete - Full gamification system with session scoring, streak multipliers (1.0-1.2x), freeze tokens, contribution graph, badge tiers (Bronze→Platinum), and 18 achievements. All server-side via Supabase RPC. Next: Onboarding flow, additional languages.
 
 ---
 
@@ -530,6 +530,7 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 24. ✅ Exercise-List.md Auto-Generation - Created `scripts/generate-exercise-list.ts` to generate Exercise-List.md from YAML source of truth. Audit found documentation claimed 383 exercises but YAML only had 353. Script parses all YAML, computes counts, detects duplicates, generates Obsidian-formatted markdown with "AUTO-GENERATED: DO NOT EDIT" header. Commands: `pnpm generate:exercise-list`, `pnpm generate:exercise-list:obsidian`. Created `docs/plans/exercise-backlog.md` for future exercise ideas.
 25. ✅ Skill Tree Progress Visualization - Visual skill tree on dashboard showing all 54 subconcepts as connected nodes organized by 10 concepts. Four node states (locked, available, in-progress, mastered) based on FSRS stability threshold (>=7 days). useSkillTree hook for data fetching, buildSkillTreeData for transformation. Components: SkillTree (main), ConceptCluster, SubconceptNode, DependencyLines (SVG bezier curves). Horizontal scroll, Framer Motion animations, tooltips with state info. Design doc: `docs/plans/2026-01-07-skill-tree-progress-design.md`.
 26. ✅ Premium Curriculum Restructure - Multi-AI analysis (Claude, Gemini, Codex) restructured curriculum for optimal learning flow. Split control-flow into `conditionals` and `loops` concepts. 11 concepts, 65 subconcepts (was 10/54). Reordered concept dependencies: conditionals before collections, imports earlier, relaxed error-handling prereqs. Added 157 new exercises (510 total). New subconcepts: if-elif-else, match-case, == vs is, while-loops, nested-loops. All exercises reviewed for pedagogical quality. Design docs: `docs/plans/2026-01-08-premium-curriculum-restructure.md`, `docs/plans/2026-01-08-premium-curriculum-enhancements.md`.
+27. ✅ Phase 3 Gamification System - Hybrid Loop gamification with points, streaks, achievements. Session Scoring: Base (10) + quality (0-5) + modifiers (no-hint +3, first-attempt +2, speed 0-5) + streak multiplier (1.0-1.2x), 500/day cap. Streak System: Freeze tokens (earn every 7 days, max 2, auto-apply on missed day). Contribution Graph: GitHub-style 52-week grid with intensity levels. Skill Tree Badges: Bronze (1d) → Silver (7d) → Gold (30d) → Platinum (90d) based on FSRS stability. Achievements: 18 achievements across habit/mastery/completionist categories. All server-side via Supabase RPC (calculate_attempt_points, update_streak, get_contribution_history, check_achievements). Components: PointsAnimation, StreakFlame, ContributionGraph, AchievementCard, AchievementToast, AchievementsPage. ~250 new tests, 1913 total. Design doc: `docs/plans/2026-01-08-phase3-gamification-implementation.md`.
 
 ## Phase 2.7: Exercise Variety (Complete)
 
@@ -565,7 +566,8 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 ## Next Steps
 
 1. **Onboarding:** Integrate ExperienceLevelSelector into user flow
-2. **Gamification:** Achievements system, points, leaderboards
-3. **Languages:** JavaScript/TypeScript exercises
-4. **More Dynamic Exercises:** Continue migrating static exercises to use generators
+2. **Languages:** JavaScript/TypeScript exercises
+3. **More Dynamic Exercises:** Continue migrating static exercises to use generators
+4. **Leaderboards:** Daily/weekly/all-time rankings (deferred from Phase 3)
+5. **Social Features:** Friends, challenges (deferred from Phase 3)
 
