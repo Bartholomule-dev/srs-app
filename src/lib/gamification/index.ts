@@ -34,3 +34,12 @@ export {
   CONTRIBUTION_THRESHOLDS,
   CONTRIBUTION_COLORS,
 } from './contribution';
+
+// Badge tier types and utilities
+export type { BadgeTier } from './badges';
+export {
+  getBadgeTier,
+  BADGE_THRESHOLDS,
+  BADGE_STYLES,
+  shouldCelebrateTierUp,
+} from './badges';
