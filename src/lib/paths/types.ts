@@ -17,6 +17,8 @@ export interface Beat {
   exercise: string;
   /** Human-readable title for this step */
   title: string;
+  /** Optional exercise slugs for side-quests (bonus exercises for this beat) */
+  sideQuests?: string[];
 }
 
 /**
@@ -155,4 +157,6 @@ export interface SkinnedCard {
   beatTitle: string | null;
   /** Context text from skin for this exercise */
   context: string | null;
+  /** True if this is a side-quest exercise, not the main beat */
+  isSideQuest: boolean;
 }

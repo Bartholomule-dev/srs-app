@@ -6,6 +6,7 @@ import {
   getPathIndex,
   clearPathIndexCache,
 } from '@/lib/paths/loader';
+import type { Beat, SkinnedCard } from '@/lib/paths/types';
 
 describe('Path Loader', () => {
   beforeAll(() => {
@@ -19,7 +20,7 @@ describe('Path Loader', () => {
       expect(blueprints.length).toBeGreaterThanOrEqual(1);
       const cliApp = blueprints.find(b => b.id === 'collection-cli-app');
       expect(cliApp).toBeDefined();
-      expect(cliApp?.beats.length).toBe(8);
+      expect(cliApp?.beats.length).toBe(20);
     });
 
     it('validates blueprint structure', async () => {
@@ -209,6 +210,144 @@ describe('Path Loader', () => {
           expect(Array.isArray(skin.blueprints)).toBe(true);
         }
       }
+    });
+  });
+
+  describe('Side-quests', () => {
+    it('Beat interface accepts optional sideQuests array', () => {
+      const beat: Beat = {
+        beat: 1,
+        title: 'Test',
+        exercise: 'list-create-empty',
+        sideQuests: ['variable-assign-string', 'variable-assign-int'],
+      };
+      expect(beat.sideQuests).toHaveLength(2);
+      expect(beat.sideQuests).toContain('variable-assign-string');
+      expect(beat.sideQuests).toContain('variable-assign-int');
+    });
+
+    it('Beat interface works without sideQuests', () => {
+      const beat: Beat = {
+        beat: 1,
+        title: 'Test',
+        exercise: 'list-create-empty',
+      };
+      expect(beat.sideQuests).toBeUndefined();
+    });
+
+    it('SkinnedCard has isSideQuest flag', () => {
+      const card: SkinnedCard = {
+        exerciseSlug: 'test',
+        skinId: 'task-manager',
+        blueprintId: 'collection-cli-app',
+        beat: 1,
+        totalBeats: 8,
+        beatTitle: 'Test',
+        context: 'hint',
+        isSideQuest: false,
+      };
+      expect(card.isSideQuest).toBe(false);
+
+      const sideQuestCard: SkinnedCard = {
+        exerciseSlug: 'side-quest-test',
+        skinId: 'task-manager',
+        blueprintId: 'collection-cli-app',
+        beat: 1,
+        totalBeats: 8,
+        beatTitle: 'Test',
+        context: 'hint',
+        isSideQuest: true,
+      };
+      expect(sideQuestCard.isSideQuest).toBe(true);
+    });
+
+    it('buildPathIndex indexes side-quest exercises to blueprints', () => {
+      const blueprints = [
+        {
+          id: 'test-blueprint',
+          title: 'Test Blueprint',
+          description: 'Test',
+          difficulty: 'beginner' as const,
+          concepts: ['test'],
+          beats: [
+            {
+              beat: 1,
+              title: 'Main Beat',
+              exercise: 'main-exercise',
+              sideQuests: ['side-quest-1', 'side-quest-2'],
+            },
+          ],
+        },
+      ];
+      const skins: any[] = [];
+
+      const index = buildPathIndex(blueprints, skins);
+
+      // Main exercise should be indexed
+      const mainRefs = index.exerciseToBlueprints.get('main-exercise');
+      expect(mainRefs).toBeDefined();
+      expect(mainRefs).toHaveLength(1);
+      expect(mainRefs?.[0].blueprintId).toBe('test-blueprint');
+      expect(mainRefs?.[0].beat).toBe(1);
+
+      // Side-quest exercises should be indexed with same beat context
+      const sq1Refs = index.exerciseToBlueprints.get('side-quest-1');
+      expect(sq1Refs).toBeDefined();
+      expect(sq1Refs).toHaveLength(1);
+      expect(sq1Refs?.[0].blueprintId).toBe('test-blueprint');
+      expect(sq1Refs?.[0].beat).toBe(1);
+      expect(sq1Refs?.[0].beatTitle).toBe('Main Beat');
+
+      const sq2Refs = index.exerciseToBlueprints.get('side-quest-2');
+      expect(sq2Refs).toBeDefined();
+      expect(sq2Refs).toHaveLength(1);
+    });
+
+    it('buildPathIndex indexes side-quest exercises to compatible skins', () => {
+      const blueprints = [
+        {
+          id: 'test-blueprint',
+          title: 'Test Blueprint',
+          description: 'Test',
+          difficulty: 'beginner' as const,
+          concepts: ['test'],
+          beats: [
+            {
+              beat: 1,
+              title: 'Main Beat',
+              exercise: 'main-exercise',
+              sideQuests: ['side-quest-1'],
+            },
+          ],
+        },
+      ];
+      const skins = [
+        {
+          id: 'test-skin',
+          title: 'Test Skin',
+          icon: '🧪',
+          blueprints: ['test-blueprint'],
+          vars: {
+            list_name: 'items',
+            item_singular: 'item',
+            item_plural: 'items',
+            item_examples: ['a', 'b'],
+            record_keys: ['name'],
+          },
+          contexts: {},
+        },
+      ];
+
+      const index = buildPathIndex(blueprints, skins);
+
+      // Both main and side-quest exercises should map to the skin
+      const mainSkins = index.exerciseToSkins.get('main-exercise');
+      expect(mainSkins).toBeDefined();
+      expect(mainSkins).toContain('test-skin');
+
+      const sqSkins = index.exerciseToSkins.get('side-quest-1');
+      expect(sqSkins).toBeDefined();
+      expect(sqSkins).toContain('test-skin');
     });
   });
 });

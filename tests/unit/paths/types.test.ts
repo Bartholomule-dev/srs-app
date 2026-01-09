@@ -190,11 +190,13 @@ describe('Path Types', () => {
         totalBeats: 8,
         beatTitle: 'Create storage',
         context: 'Every task manager needs somewhere to store tasks.',
+        isSideQuest: false,
       };
 
       expect(card.beat).toBe(1);
       expect(card.skinId).toBe('task-manager');
       expect(card.context).toBe('Every task manager needs somewhere to store tasks.');
+      expect(card.isSideQuest).toBe(false);
     });
 
     it('allows null values for non-path exercises', () => {
@@ -206,11 +208,28 @@ describe('Path Types', () => {
         totalBeats: null,
         beatTitle: null,
         context: null,
+        isSideQuest: false,
       };
 
       expect(card.skinId).toBeNull();
       expect(card.blueprintId).toBeNull();
       expect(card.beat).toBeNull();
+      expect(card.isSideQuest).toBe(false);
+    });
+
+    it('marks side-quest exercises', () => {
+      const sideQuestCard: SkinnedCard = {
+        exerciseSlug: 'bonus-exercise',
+        skinId: 'task-manager',
+        blueprintId: 'collection-cli-app',
+        beat: 1,
+        totalBeats: 8,
+        beatTitle: 'Create storage',
+        context: 'Bonus challenge for this beat.',
+        isSideQuest: true,
+      };
+
+      expect(sideQuestCard.isSideQuest).toBe(true);
     });
   });
 

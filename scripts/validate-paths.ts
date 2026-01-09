@@ -82,7 +82,8 @@ async function main() {
       const bpExerciseSlugs = bp.beats.map(b => b.exercise);
       const uniqueSlugs = new Set(bpExerciseSlugs);
       if (uniqueSlugs.size !== bpExerciseSlugs.length) {
-        console.error(`  ✗ Blueprint ${bp.id}: duplicate exercise slugs`);
+        const duplicates = bpExerciseSlugs.filter((slug, index) => bpExerciseSlugs.indexOf(slug) !== index);
+        console.error(`  ✗ Blueprint ${bp.id}: duplicate exercises: ${[...new Set(duplicates)].join(', ')}`);
         errors++;
       }
       // Check that all exercises exist in exercise YAML files
@@ -90,6 +91,15 @@ async function main() {
         if (!exerciseSlugs.has(beat.exercise)) {
           console.error(`  ✗ Blueprint ${bp.id}: exercise '${beat.exercise}' (beat ${beat.beat}) not found in exercises/`);
           errors++;
+        }
+        // Validate side-quest exercises exist
+        if (beat.sideQuests) {
+          for (const sideQuest of beat.sideQuests) {
+            if (!exerciseSlugs.has(sideQuest)) {
+              console.error(`  ✗ Blueprint ${bp.id} beat ${beat.beat}: side-quest exercise '${sideQuest}' not found in exercises/`);
+              errors++;
+            }
+          }
         }
       }
     }

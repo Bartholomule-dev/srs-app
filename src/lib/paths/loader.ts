@@ -77,6 +77,7 @@ export function buildPathIndex(blueprints: Blueprint[], skins: Skin[]): PathInde
 
     // Map exercises to blueprint refs
     for (const beat of bp.beats) {
+      // Index main exercise
       const existing = index.exerciseToBlueprints.get(beat.exercise) ?? [];
       existing.push({
         blueprintId: bp.id,
@@ -85,6 +86,20 @@ export function buildPathIndex(blueprints: Blueprint[], skins: Skin[]): PathInde
         beatTitle: beat.title,
       });
       index.exerciseToBlueprints.set(beat.exercise, existing);
+
+      // Index side-quest exercises (same beat context)
+      if (beat.sideQuests) {
+        for (const sideQuestSlug of beat.sideQuests) {
+          const sqExisting = index.exerciseToBlueprints.get(sideQuestSlug) ?? [];
+          sqExisting.push({
+            blueprintId: bp.id,
+            beat: beat.beat,
+            totalBeats: bp.beats.length,
+            beatTitle: beat.title,
+          });
+          index.exerciseToBlueprints.set(sideQuestSlug, sqExisting);
+        }
+      }
     }
   }
 
@@ -103,11 +118,23 @@ export function buildPathIndex(blueprints: Blueprint[], skins: Skin[]): PathInde
         if (!bp) continue;
 
         for (const beat of bp.beats) {
+          // Index main exercise
           const existing = index.exerciseToSkins.get(beat.exercise) ?? [];
           if (!existing.includes(skin.id)) {
             existing.push(skin.id);
           }
           index.exerciseToSkins.set(beat.exercise, existing);
+
+          // Index side-quest exercises
+          if (beat.sideQuests) {
+            for (const sideQuestSlug of beat.sideQuests) {
+              const sqExisting = index.exerciseToSkins.get(sideQuestSlug) ?? [];
+              if (!sqExisting.includes(skin.id)) {
+                sqExisting.push(skin.id);
+              }
+              index.exerciseToSkins.set(sideQuestSlug, sqExisting);
+            }
+          }
         }
       }
     }

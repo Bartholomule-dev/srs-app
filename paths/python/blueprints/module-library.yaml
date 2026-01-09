@@ -1,0 +1,52 @@
+# paths/python/blueprints/module-library.yaml
+
+id: module-library
+title: "Build a Reusable Module"
+description: "Design a well-structured, reusable Python module with clean APIs, data models, and robust error handling"
+difficulty: advanced
+concepts: [modules-files, functions, oop, error-handling]
+
+beats:
+  # Act 1: Module Setup - imports, main guard, file handling
+  - beat: 1
+    exercise: import-from
+    title: "Import dependencies"
+  - beat: 2
+    exercise: main-guard-basic
+    title: "Add main guard"
+  - beat: 3
+    exercise: context-intro
+    title: "Handle resources safely"
+
+  # Act 2: API Functions - building the public interface
+  - beat: 4
+    exercise: define-function
+    title: "Define API function"
+  - beat: 5
+    exercise: default-param-simple
+    title: "Add sensible defaults"
+  - beat: 6
+    exercise: typehint-param
+    title: "Type parameters"
+  - beat: 7
+    exercise: typehint-return
+    title: "Document return types"
+
+  # Act 3: Data Structures - classes and models
+  - beat: 8
+    exercise: define-class
+    title: "Create data model"
+  - beat: 9
+    exercise: init-method
+    title: "Initialize instances"
+  - beat: 10
+    exercise: instance-attribute
+    title: "Store state"
+
+  # Act 4: Robustness - error handling for production
+  - beat: 11
+    exercise: custom-exception
+    title: "Define custom errors"
+  - beat: 12
+    exercise: try-except-basic
+    title: "Handle failures gracefully"

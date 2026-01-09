@@ -78,6 +78,7 @@ export function usePathContext(): UsePathContextReturn {
           totalBeats: null,
           beatTitle: null,
           context: null,
+          isSideQuest: false,
         };
       }
 

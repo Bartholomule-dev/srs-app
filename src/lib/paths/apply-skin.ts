@@ -24,6 +24,18 @@ export function applySkinContext(
   const skin = skinId ? index.skins.get(skinId) : null;
   const context = skin?.contexts[exerciseSlug] ?? null;
 
+  // Check if this exercise is a side-quest in the referenced blueprint
+  let isSideQuest = false;
+  if (bpRef) {
+    const blueprint = index.blueprints.get(bpRef.blueprintId);
+    if (blueprint) {
+      const beat = blueprint.beats.find(b => b.beat === bpRef.beat);
+      if (beat && beat.sideQuests?.includes(exerciseSlug)) {
+        isSideQuest = true;
+      }
+    }
+  }
+
   return {
     exerciseSlug,
     skinId,
@@ -32,6 +44,7 @@ export function applySkinContext(
     totalBeats: bpRef?.totalBeats ?? null,
     beatTitle: bpRef?.beatTitle ?? null,
     context,
+    isSideQuest,
   };
 }
 

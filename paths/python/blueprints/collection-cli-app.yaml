@@ -2,32 +2,99 @@
 
 id: collection-cli-app
 title: "Build a CLI Collection App"
-description: "Learn to store, display, and persist data through building a practical command-line application"
+description: "Build a complete command-line application from scratch - create storage, get user input, display items, add validation, and save your data to files."
 difficulty: beginner
-concepts: [collections, loops, modules-files]
+concepts: [foundations, collections, loops, conditionals, functions, error-handling, modules-files]
 
 beats:
+  # ============================================
+  # Act 1: Setup & Storage (Beats 1-5)
+  # ============================================
   - beat: 1
     exercise: list-create-empty
-    title: "Create storage"
+    title: "Initialize storage"
+
   - beat: 2
+    exercise: input-string
+    title: "Get user input"
+
+  - beat: 3
     exercise: list-append-dynamic
     title: "Add entries"
-  - beat: 3
-    exercise: list-in-check
-    title: "Prevent duplicates"
+
   - beat: 4
+    exercise: list-in-check
+    title: "Check for duplicates"
+
+  - beat: 5
     exercise: dict-create-values
     title: "Store richer data"
-  - beat: 5
-    exercise: for-loop-list
-    title: "Display items"
+
+  # ============================================
+  # Act 2: Display & Iteration (Beats 6-10)
+  # ============================================
   - beat: 6
-    exercise: enumerate-basic
-    title: "Number items"
+    exercise: for-loop-list
+    title: "Display all items"
+
   - beat: 7
+    exercise: enumerate-basic
+    title: "Number the items"
+
+  - beat: 8
+    exercise: f-string-basic
+    title: "Format output nicely"
+
+  - beat: 9
+    exercise: list-sorted
+    title: "Sort the display"
+
+  - beat: 10
     exercise: list-comp-filter-dynamic
     title: "Filter results"
-  - beat: 8
+
+  # ============================================
+  # Act 3: Logic & Validation (Beats 11-15)
+  # ============================================
+  - beat: 11
+    exercise: if-else-basic
+    title: "Add basic checks"
+
+  - beat: 12
+    exercise: elif-grade
+    title: "Handle multiple cases"
+
+  - beat: 13
+    exercise: try-except-basic
+    title: "Catch errors"
+
+  - beat: 14
+    exercise: except-specific
+    title: "Handle specific errors"
+
+  - beat: 15
+    exercise: finally-basic
+    title: "Ensure cleanup"
+
+  # ============================================
+  # Act 4: Organization & Persistence (Beats 16-20)
+  # ============================================
+  - beat: 16
+    exercise: define-function
+    title: "Create a helper function"
+
+  - beat: 17
+    exercise: default-param-simple
+    title: "Add default arguments"
+
+  - beat: 18
     exercise: context-intro
     title: "Save to file"
+
+  - beat: 19
+    exercise: pathlib-intro
+    title: "Use modern paths"
+
+  - beat: 20
+    exercise: main-guard-basic
+    title: "Add main guard"

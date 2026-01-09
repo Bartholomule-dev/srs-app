@@ -23,6 +23,7 @@
     "validate:curriculum": "npx tsx scripts/validate-curriculum.ts",
     "validate:dynamic": "npx tsx scripts/validate-dynamic-exercises.ts",
     "validate:paths": "npx tsx scripts/validate-paths.ts",
+    "coverage:blueprints": "npx tsx scripts/blueprint-coverage.ts",
     "generate:paths": "npx tsx scripts/generate-path-index.ts",
     "validate:all": "pnpm validate:exercises && pnpm validate:curriculum && pnpm validate:dynamic && pnpm validate:paths",
     "generate:exercise-list": "npx tsx scripts/generate-exercise-list.ts",

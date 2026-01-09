@@ -1,0 +1,70 @@
+# paths/python/blueprints/data-processor.yaml
+
+id: data-processor
+title: "Build a Data Processor"
+description: "Build a log parsing and data cleaning pipeline that reads, transforms, and aggregates data"
+difficulty: intermediate
+concepts: [strings, loops, comprehensions, numbers-booleans, modules-files, error-handling]
+
+beats:
+  # Act 1: Setup - read file, string basics, split/strip
+  - beat: 1
+    exercise: context-intro
+    title: "Open the data file"
+  - beat: 2
+    exercise: file-read-lines
+    title: "Read all lines"
+  - beat: 3
+    exercise: string-strip
+    title: "Clean whitespace"
+  - beat: 4
+    exercise: string-split
+    title: "Split into fields"
+
+  # Act 2: Parse - slicing, int conversion, dict building
+  - beat: 5
+    exercise: string-slicing-dynamic
+    title: "Extract substrings"
+  - beat: 6
+    exercise: convert-int-fill
+    title: "Convert to numbers"
+  - beat: 7
+    exercise: dict-comp-intro
+    title: "Build record dict"
+  - beat: 8
+    exercise: for-loop-list
+    title: "Process each record"
+  - beat: 9
+    exercise: enumerate-basic
+    title: "Track line numbers"
+
+  # Act 3: Transform - comprehensions, filter, map operations
+  - beat: 10
+    exercise: list-comp-basic
+    title: "Transform values"
+  - beat: 11
+    exercise: list-comp-conditional
+    title: "Filter invalid data"
+  - beat: 12
+    exercise: generator-exp-intro
+    title: "Stream large files"
+  - beat: 13
+    exercise: dict-comp-zip
+    title: "Combine columns"
+
+  # Act 4: Output - aggregation (sum, len, min/max), write results, error handling
+  - beat: 14
+    exercise: generator-exp-sum
+    title: "Sum values"
+  - beat: 15
+    exercise: string-length
+    title: "Count records"
+  - beat: 16
+    exercise: try-except-basic
+    title: "Handle bad data"
+  - beat: 17
+    exercise: except-specific
+    title: "Catch parse errors"
+  - beat: 18
+    exercise: file-open-write
+    title: "Write results"

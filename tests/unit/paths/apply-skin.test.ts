@@ -64,6 +64,7 @@ describe('applySkinContext', () => {
       totalBeats: 2,
       beatTitle: 'Step 1',
       context: 'Context for exercise A',
+      isSideQuest: false,
     });
   });
 
@@ -106,6 +107,24 @@ describe('applySkinContext', () => {
     expect(result.blueprintId).toBeNull();
     expect(result.beat).toBeNull();
     expect(result.context).toBeNull();
+    expect(result.isSideQuest).toBe(false);
+  });
+
+  it('marks side-quest exercises correctly', () => {
+    const index = createMockIndex();
+    // Add a side-quest exercise to the blueprint
+    const blueprint = index.blueprints.get('bp-1')!;
+    blueprint.beats[0].sideQuests = ['side-quest-ex'];
+    // Add the side-quest to the exercise index
+    index.exerciseToBlueprints.set('side-quest-ex', [
+      { blueprintId: 'bp-1', beat: 1, totalBeats: 2, beatTitle: 'Step 1' },
+    ]);
+
+    const result = applySkinContext('side-quest-ex', 'task-manager', index);
+
+    expect(result.isSideQuest).toBe(true);
+    expect(result.beat).toBe(1);
+    expect(result.blueprintId).toBe('bp-1');
   });
 });
 
