@@ -1,6 +1,23 @@
 // tests/component/session/SessionSummary.test.tsx
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+
+// Mock supabase client before importing components that use it
+vi.mock('@/lib/supabase/client', () => ({
+  createClient: () => ({
+    rpc: vi.fn().mockResolvedValue({ data: null, error: null }),
+    from: vi.fn().mockReturnThis(),
+    select: vi.fn().mockReturnThis(),
+    eq: vi.fn().mockResolvedValue({ data: [], error: null }),
+  }),
+  supabase: {
+    rpc: vi.fn().mockResolvedValue({ data: null, error: null }),
+    from: vi.fn().mockReturnThis(),
+    select: vi.fn().mockReturnThis(),
+    eq: vi.fn().mockResolvedValue({ data: [], error: null }),
+  },
+}));
+
 import { SessionSummary } from '@/components/session';
 import type { SessionStats } from '@/lib/session';
 

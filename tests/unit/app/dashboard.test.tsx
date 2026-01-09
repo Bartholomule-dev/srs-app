@@ -26,6 +26,7 @@ vi.mock('@/components', () => ({
       {loading ? 'Loading contributions...' : 'Contribution Graph'}
     </div>
   ),
+  RecentAchievements: () => <div data-testid="recent-achievements">Recent Achievements</div>,
 }));
 
 const mockUseAuth = vi.fn();
