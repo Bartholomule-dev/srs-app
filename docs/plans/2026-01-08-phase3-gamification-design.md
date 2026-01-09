@@ -3,8 +3,8 @@
 > Hybrid Loop gamification system combining immediate session rewards with long-term mastery progression.
 
 **Date:** 2026-01-08
-**Status:** Approved
-**Multi-AI Input:** Codex + Gemini consulted for recommendations
+**Status:** Approved (revised after multi-AI review)
+**Multi-AI Input:** Codex + Gemini consulted for recommendations AND review
 
 ---
 
@@ -45,12 +45,14 @@ Quality Bonus (based on FSRS rating):
 Modifiers:
   - No hint used: +3 pts
   - First attempt (no retry): +2 pts
-  - Speed bonus (mastered subconcepts only): +1-5 pts based on response time
+  - Speed bonus (mastered subconcepts only, stability ≥30 days): +1-5 pts based on response time
 
 Streak Multiplier (applied to session total):
   - 7+ day streak: 1.1x
   - 14+ day streak: 1.15x
   - 30+ day streak: 1.2x
+
+Daily Cap: 500 points (applied AFTER streak multiplier)
 ```
 
 ### Display
@@ -59,13 +61,21 @@ Streak Multiplier (applied to session total):
 - Dashboard shows "Today's Points" and "Weekly Points"
 
 ### Anti-Gaming Measures
-- Speed bonus ONLY available on mastered subconcepts (stability ≥7 days)
-- Points capped at ~500/day to prevent grinding
+- Speed bonus ONLY available on mastered subconcepts (stability ≥30 days, raised from 7)
+- Points capped at 500/day AFTER multiplier to prevent grinding
 - Repeated wrong answers on same exercise don't earn points
+- Points computed server-side via RPC (cannot be spoofed)
+
+### Server-Side Computation
+Points are calculated via Supabase RPC function `calculate_attempt_points()`:
+- Client sends attempt data (exercise_id, is_correct, used_hint, response_time_ms, rating)
+- Server computes points using authoritative streak/stability data
+- Returns points_earned, which is stored in `exercise_attempts`
 
 ### Storage
 - Add `points_earned` column to `exercise_attempts` table
-- Compute daily/weekly totals via queries (no separate table needed initially)
+- Daily/weekly totals computed via RPC `get_points_summary(start_date, end_date)`
+- NO `total_points` on profiles (avoids dual source of truth)
 
 ---
 
@@ -88,33 +98,55 @@ GitHub-style grid showing practice consistency over time.
 - Collapsible/expandable (default expanded on desktop, collapsed on mobile)
 - Hover tooltip shows: date, cards reviewed, accuracy that day
 
-### Data Source
-- Query `exercise_attempts` grouped by date
-- Computed client-side from existing data (no new tables)
-- Cache in React Query with 5-minute stale time
+### Data Source (Server-Side RPC)
+**Critical:** Do NOT compute client-side. Use Supabase RPC function:
+
+```sql
+-- get_contribution_history(start_date, end_date, user_timezone)
+-- Returns: [{ date: '2026-01-01', count: 12, accuracy: 85 }, ...]
+```
+
+- Aggregation done in PostgreSQL (efficient for large datasets)
+- Returns lightweight JSON array
+- "Cards reviewed" = attempts where `is_correct IS NOT NULL` (excludes teaching cards)
 
 ### Component
 - `ContributionGraph.tsx` in `src/components/stats/`
 - Responsive: full year on desktop, 3 months on mobile
 - Current streak highlighted with subtle glow on recent consecutive days
+- Cache in React Query with 5-minute stale time
 
 ---
 
 ## 3. Streak System (with Grace)
 
 ### Core Mechanics
-- Streak increments when user completes at least 1 exercise in a calendar day (user's local timezone)
+- Streak increments when user completes at least 1 graded exercise in a calendar day
+- Calendar day determined by user's timezone (stored with each attempt)
 - Streak resets to 0 after missing a day (unless protected by freeze)
 
+### Timezone Handling
+- Store `timezone_offset_minutes` with each `exercise_attempt`
+- Server computes "activity day" using: `created_at AT TIME ZONE offset`
+- Streak logic runs server-side via RPC `update_streak()`
+- Handles DST transitions correctly by using offset at time of activity
+
 ### Streak Protection ("Freeze")
-- Users earn 1 freeze per 7-day streak (max 2 stored)
+- Users earn 1 freeze per 7-day streak milestone (max 2 stored)
 - If a day is missed and user has a freeze, it auto-applies
 - Freeze usage shown in streak display: "🔥 14 days (1 freeze used)"
 - Freezes don't stack infinitely - cap at 2 to maintain accountability
 
+### Multi-Day Gap Handling
+When user returns after multiple missed days:
+- If `days_missed <= available_freezes`: consume freezes, preserve streak
+- If `days_missed > available_freezes`: reset streak to 0, **keep unused freezes** (save for future)
+- Example: 3 days missed with 2 freezes → streak resets, 2 freezes preserved
+
 ### Freeze Earning Rules
 - Earned only once per 7-day milestone (not retroactive)
 - `last_freeze_earned_at` prevents farming
+- Milestones: 7, 14, 21, 28... (every 7 days)
 
 ### Display
 - Dashboard: "🔥 14 day streak" with flame animation at milestones (7, 14, 30, 60, 100)
@@ -124,6 +156,8 @@ GitHub-style grid showing practice consistency over time.
 ### Storage
 - `profiles.streak_freezes` (integer, default 0, max 2)
 - `profiles.last_freeze_earned_at` (timestamp)
+- `profiles.last_activity_date` (date, in user's timezone)
+- `exercise_attempts.timezone_offset_minutes` (integer)
 
 ---
 
@@ -164,13 +198,15 @@ Based on FSRS stability (how long until the next review is due):
 
 | Slug | Name | Requirement | Icon |
 |------|------|-------------|------|
-| `first-steps` | First Steps | Complete first exercise | 👣 |
+| `first-steps` | First Steps | Complete first graded exercise | 👣 |
 | `week-warrior` | Week Warrior | 7-day streak | 🔥 |
 | `fortnight-fighter` | Fortnight Fighter | 14-day streak | ⚔️ |
 | `monthly-master` | Monthly Master | 30-day streak | 🏆 |
-| `perfect-day` | Perfect Day | 100% accuracy in a session (min 10 cards) | ⭐ |
-| `early-bird` | Early Bird | Practice before 6am (local time) | 🌅 |
-| `night-owl` | Night Owl | Practice after midnight (local time) | 🦉 |
+| `perfect-day` | Perfect Day | 100% first-attempt accuracy in a session (min 10 graded cards) | ⭐ |
+| `early-bird` | Early Bird | Practice between 05:00-07:59 (local time) | 🌅 |
+| `night-owl` | Night Owl | Practice between 00:00-04:59 (local time) | 🦉 |
+
+**Note:** Early Bird and Night Owl are mutually exclusive time windows (no overlap).
 
 ### Mastery Achievements
 
@@ -181,17 +217,23 @@ Based on FSRS stability (how long until the next review is due):
 | `gold-standard` | Gold Standard | First Gold badge | 🥇 |
 | `platinum-club` | Platinum Club | First Platinum badge | 💎 |
 | `concept-master` | Concept Master | Master all subconcepts in any concept | 👑 |
-| `pythonista` | Pythonista | Master ALL Python subconcepts | 🐍 |
+| `pythonista` | Pythonista | Master ALL Python subconcepts (65 total) | 🐍 |
 
 ### Completionist Achievements
 
 | Slug | Name | Requirement | Icon |
 |------|------|-------------|------|
-| `century` | Century | 100 exercises completed | 💯 |
-| `half-k` | Half K | 500 exercises completed | 🎯 |
-| `thousand-strong` | Thousand Strong | 1000 exercises completed | 🏅 |
-| `explorer` | Explorer | Try all 3 exercise types | 🧭 |
+| `century` | Century | 100 graded exercises completed | 💯 |
+| `half-k` | Half K | 500 graded exercises completed | 🎯 |
+| `thousand-strong` | Thousand Strong | 1000 graded exercises completed | 🏅 |
+| `explorer` | Explorer | Try all 3 exercise types (write, fill-in, predict) | 🧭 |
 | `well-rounded` | Well Rounded | Complete exercises in all 11 concepts | 🌐 |
+
+### Explicit Definitions
+- **"Graded exercise"**: An attempt where `is_correct IS NOT NULL` (excludes teaching cards)
+- **"First-attempt accuracy"**: `correct_first_try / total_graded_cards` (retries don't count)
+- **"Completed"**: At least one correct attempt on that exercise
+- **"Master"**: All subconcepts at Gold tier or higher (stability ≥ 30 days)
 
 ### Display
 - Achievements page accessible from dashboard
@@ -211,9 +253,11 @@ CREATE TABLE achievement_definitions (
   slug TEXT PRIMARY KEY,
   name TEXT NOT NULL,
   description TEXT NOT NULL,
-  category TEXT NOT NULL,  -- 'habit', 'mastery', 'completionist'
+  category TEXT NOT NULL CHECK (category IN ('habit', 'mastery', 'completionist')),
   icon TEXT,
   sort_order INTEGER DEFAULT 0,
+  -- Flexible requirements (e.g., {"streak": 7}, {"count": 100})
+  metadata JSONB DEFAULT '{}',
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -248,78 +292,129 @@ CREATE POLICY "Anyone can view achievement definitions"
 ### Modified Tables
 
 ```sql
--- profiles: add streak freeze support and total points
-ALTER TABLE profiles ADD COLUMN streak_freezes INTEGER DEFAULT 0;
+-- profiles: add streak freeze support
+ALTER TABLE profiles ADD COLUMN streak_freezes INTEGER DEFAULT 0
+  CHECK (streak_freezes >= 0 AND streak_freezes <= 2);
 ALTER TABLE profiles ADD COLUMN last_freeze_earned_at TIMESTAMPTZ;
-ALTER TABLE profiles ADD COLUMN total_points INTEGER DEFAULT 0;
+ALTER TABLE profiles ADD COLUMN last_activity_date DATE;
 
--- exercise_attempts: add points earned
-ALTER TABLE exercise_attempts ADD COLUMN points_earned INTEGER DEFAULT 0;
+-- exercise_attempts: add points and timezone
+ALTER TABLE exercise_attempts ADD COLUMN points_earned INTEGER DEFAULT 0
+  CHECK (points_earned >= 0);
+ALTER TABLE exercise_attempts ADD COLUMN timezone_offset_minutes INTEGER;
+```
+
+**Note:** No `total_points` on profiles. Compute from `exercise_attempts` via RPC to avoid dual source of truth.
+
+### RPC Functions
+
+```sql
+-- Calculate points for an attempt (called on submit)
+CREATE FUNCTION calculate_attempt_points(
+  p_user_id UUID,
+  p_is_correct BOOLEAN,
+  p_rating INTEGER,
+  p_used_hint BOOLEAN,
+  p_is_first_attempt BOOLEAN,
+  p_response_time_ms INTEGER,
+  p_subconcept_stability FLOAT
+) RETURNS INTEGER;
+
+-- Get contribution graph data
+CREATE FUNCTION get_contribution_history(
+  p_user_id UUID,
+  p_start_date DATE,
+  p_end_date DATE
+) RETURNS JSON;
+
+-- Get points summary
+CREATE FUNCTION get_points_summary(
+  p_user_id UUID,
+  p_start_date DATE,
+  p_end_date DATE
+) RETURNS JSON;
+
+-- Update streak (called after session)
+CREATE FUNCTION update_streak(
+  p_user_id UUID,
+  p_activity_date DATE
+) RETURNS JSON;
+
+-- Check and unlock achievements (idempotent)
+CREATE FUNCTION check_achievements(
+  p_user_id UUID
+) RETURNS JSON;
 ```
 
 ---
 
 ## 7. Technical Architecture
 
-### Event Flow
+### Event Flow (Server-Side)
 
 ```
 ┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
-│ Exercise Submit │────▶│ Record Attempt   │────▶│ Check Achieve-  │
-│ (practice page) │     │ (points_earned)  │     │ ments (async)   │
+│ Exercise Submit │────▶│ RPC: record      │────▶│ RPC: check      │
+│ (practice page) │     │ attempt + points │     │ achievements    │
 └─────────────────┘     └──────────────────┘     └─────────────────┘
-                                                          │
-                                                          ▼
-                                                 ┌─────────────────┐
-                                                 │ Unlock if met   │
-                                                 │ (insert + toast)│
-                                                 └─────────────────┘
+                                │                         │
+                                ▼                         ▼
+                        ┌──────────────────┐     ┌─────────────────┐
+                        │ RPC: update      │     │ Return unlocks  │
+                        │ streak           │     │ (toast in UI)   │
+                        └──────────────────┘     └─────────────────┘
 ```
+
+**Key principle:** All gamification logic runs server-side via Supabase RPC functions. Client cannot spoof points, streaks, or achievements.
 
 ### Key Files
 
 | File | Purpose |
 |------|---------|
-| `src/lib/gamification/points.ts` | `calculatePoints()` formula |
-| `src/lib/gamification/achievements.ts` | Achievement rules + `checkAchievements()` |
-| `src/lib/gamification/streaks.ts` | Streak logic + freeze handling |
+| `src/lib/gamification/points.ts` | Client-side display helpers (not calculation) |
+| `src/lib/gamification/achievements.ts` | Achievement type definitions |
+| `src/lib/gamification/streaks.ts` | Streak display helpers |
 | `src/lib/hooks/useAchievements.ts` | Fetch user achievements, listen for unlocks |
-| `src/lib/hooks/useContributionGraph.ts` | Fetch + transform daily activity data |
+| `src/lib/hooks/useContributionGraph.ts` | Fetch via RPC, transform for display |
+| `src/lib/hooks/usePoints.ts` | Fetch points summary via RPC |
 | `src/components/stats/ContributionGraph.tsx` | GitHub-style grid |
 | `src/components/gamification/AchievementToast.tsx` | Unlock notification |
 | `src/components/gamification/AchievementCard.tsx` | Display single achievement |
+| `supabase/functions/gamification.sql` | All RPC functions |
 
 ### Achievement Check Strategy
-- Run `checkAchievements()` after each session ends (not per-answer)
-- Pass context: `{ streak, totalExercises, sessionAccuracy, timeOfDay, badgeTiers, conceptsCompleted }`
-- Check all rules, unlock any newly satisfied
-- Non-blocking: don't slow down the session flow
+- Run `check_achievements()` RPC after each session ends
+- RPC is **idempotent** - safe to call multiple times, only unlocks once
+- Can also run on dashboard load to "catch up" any missed unlocks
+- Returns list of newly unlocked achievements for toast display
 
 ### Caching
-- Achievements: cache in React Query, invalidate on unlock
+- Achievements: cache in React Query, invalidate on session end
 - Contribution graph: 5-minute stale time
-- Points totals: recompute on dashboard load
+- Points totals: recompute on dashboard load via RPC
 
 ---
 
 ## 8. Implementation Phases
 
 ### Phase 3.1: Foundation (Core Loop)
-- Points system (`calculatePoints`, add to exercise attempts)
+- Database migrations (new tables, modified columns, RPC functions)
+- Points calculation RPC + integration with exercise submit
 - Points display in session feedback + session summary
 - Dashboard "Today's Points" stat card
-- Update streak logic with freeze tokens
+- Streak RPC with freeze logic
 - Freeze earning + auto-apply on missed day
 
 ### Phase 3.2: Visualization
-- Contribution graph component
+- Contribution graph RPC function
+- ContributionGraph component
 - Dashboard integration (below stats grid)
 - Skill tree badge tiers (Bronze/Silver/Gold/Platinum visuals)
 - Badge tier celebrations (confetti on first Gold, etc.)
 
 ### Phase 3.3: Achievements
-- Database tables + seed achievement definitions
-- Achievement engine (`checkAchievements`)
+- Seed achievement definitions
+- Achievement check RPC function
 - Achievements page (grid of locked/unlocked)
 - Achievement toast notifications
 - Dashboard "Recent achievements" section
@@ -329,6 +424,42 @@ ALTER TABLE exercise_attempts ADD COLUMN points_earned INTEGER DEFAULT 0;
 - Mobile responsiveness for contribution graph
 - Achievement sharing (optional - generate image?)
 - Tune point values based on real usage
+- Add "Repair Stats" admin function to recalculate if needed
+
+---
+
+## Multi-AI Review Summary
+
+### Review Conducted: 2026-01-08
+
+**Codex Assessment:** "Needs work" → Issues addressed
+**Gemini Assessment:** "Approved with modifications" → Modifications applied
+
+### Critical Issues Resolved
+
+| Issue | Resolution |
+|-------|------------|
+| Client-side achievement evaluation (spoofable) | Moved to server-side Supabase RPC |
+| Contribution graph performance | Created RPC function, not client-side |
+| Timezone/streak day detection | Store timezone_offset with attempts |
+| Points cap vs multiplier ambiguity | Cap applies AFTER multiplier (clarified) |
+
+### Edge Cases Defined
+
+| Edge Case | Decision |
+|-----------|----------|
+| Multi-day gap with insufficient freezes | Reset streak, preserve unused freezes |
+| Early Bird + Night Owl overlap | Mutually exclusive windows (00:00-04:59 vs 05:00-07:59) |
+| Perfect Day accuracy definition | First-attempt accuracy only |
+| Speed bonus threshold | Raised to stability ≥30 days (was 7) |
+
+### Schema Improvements Applied
+
+- Added `metadata JSONB` to achievement_definitions for flexible requirements
+- Added `CHECK` constraints on streak_freezes and points_earned
+- Added `timezone_offset_minutes` to exercise_attempts
+- Removed `total_points` from profiles (compute from attempts)
+- Added `last_activity_date` to profiles for streak logic
 
 ---
 
@@ -339,18 +470,21 @@ ALTER TABLE exercise_attempts ADD COLUMN points_earned INTEGER DEFAULT 0;
 - Streak forgiveness (grace days/tokens)
 - Event-driven architecture for achievements
 - Precomputed aggregates for performance
+- **Server-side validation for integrity**
 
 ### Gemini Emphasized
 - GitHub-style contribution graph (developers love it)
 - "Flow state" protection (quiet notifications)
 - Unlockable IDE themes as rewards (deferred)
 - League-based leaderboards when ready (deferred)
+- **RPC for contribution graph performance**
 
 ### Both Agreed On
 - Points system as foundation
 - Defer social/friends features
 - Don't reward speed too heavily
 - Decouple achievement logic from core SRS code
+- **Server-side computation prevents gaming**
 
 ---
 
