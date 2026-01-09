@@ -26,3 +26,11 @@ export {
   formatPoints,
   type PointsCalculationInput,
 } from './points';
+
+// Contribution graph
+export type { ContributionDay, ContributionLevel } from './contribution';
+export {
+  getContributionLevel,
+  CONTRIBUTION_THRESHOLDS,
+  CONTRIBUTION_COLORS,
+} from './contribution';
