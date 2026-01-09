@@ -11,3 +11,5 @@ export { useSkillTree } from './useSkillTree';
 export type { UseSkillTreeReturn } from './useSkillTree';
 export { usePoints } from './usePoints';
 export type { UsePointsReturn } from './usePoints';
+export { useContributionGraph } from './useContributionGraph';
+export type { UseContributionGraphReturn } from './useContributionGraph';
