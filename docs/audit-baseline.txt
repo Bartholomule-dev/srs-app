@@ -1,0 +1,37 @@
+=== Blueprint Coverage Audit ===
+Generated: Fri Jan  9 10:31:16 MST 2026
+
+Total exercises:
+510
+
+Exercises with generator:
+97
+
+Exercises with Mustache templates:
+10
+
+Exercises per concept:
+  collections: 77
+  comprehensions: 33
+  conditionals: 27
+  error-handling: 25
+  foundations: 49
+  functions: 55
+  loops: 76
+  modules-files: 36
+  numbers-booleans: 47
+  oop: 34
+  strings: 51
+
+Current blueprints:
+collection-cli-app.yaml
+
+Current skins:
+game-inventory.yaml
+playlist-app.yaml
+recipe-book.yaml
+shopping-cart.yaml
+task-manager.yaml
+
+Exercises in blueprints:
+8
