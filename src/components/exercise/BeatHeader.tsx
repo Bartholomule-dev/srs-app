@@ -29,6 +29,7 @@ export function BeatHeader({
   if (!beat && showQuickDrill) {
     return (
       <div
+        data-testid="beat-header"
         className={cn(
           'flex items-center gap-2 text-sm text-[var(--text-secondary)] mb-4',
           'px-3 py-2 rounded-lg bg-[var(--bg-surface-1)]',
@@ -48,6 +49,7 @@ export function BeatHeader({
 
   return (
     <div
+      data-testid="beat-header"
       className={cn(
         'flex items-center gap-2 text-sm text-[var(--text-secondary)] mb-4',
         'px-3 py-2 rounded-lg bg-[var(--bg-surface-1)]',

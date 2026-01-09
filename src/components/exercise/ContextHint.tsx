@@ -17,6 +17,7 @@ export function ContextHint({ context, className }: ContextHintProps) {
 
   return (
     <div
+      data-testid="context-hint"
       className={cn(
         'text-sm text-[var(--text-secondary)] italic mb-4',
         'px-3 py-2 rounded-lg bg-[var(--bg-surface-1)] border-l-2 border-[var(--accent-primary)]',
