@@ -137,4 +137,144 @@ describe('SubconceptNode', () => {
       expect(node).toHaveFocus();
     });
   });
+
+  describe('badge tiers', () => {
+    it('renders locked badge tier with muted ring styling', () => {
+      render(
+        <SubconceptNode
+          node={makeNode({ state: 'locked' })}
+          badgeTier="locked"
+        />
+      );
+
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('ring-bg-surface-2');
+      expect(button).toHaveClass('bg-bg-surface-2');
+    });
+
+    it('renders available badge tier with accent ring', () => {
+      render(
+        <SubconceptNode
+          node={makeNode({ state: 'available' })}
+          badgeTier="available"
+        />
+      );
+
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('ring-accent-primary/30');
+      expect(button).toHaveClass('bg-bg-surface-1');
+    });
+
+    it('renders bronze badge tier with amber ring', () => {
+      render(
+        <SubconceptNode
+          node={makeNode({ state: 'in-progress', stability: 2 })}
+          badgeTier="bronze"
+        />
+      );
+
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('ring-amber-600');
+      expect(button).toHaveClass('bg-amber-900/20');
+    });
+
+    it('renders silver badge tier with slate ring and glow', () => {
+      render(
+        <SubconceptNode
+          node={makeNode({ state: 'in-progress', stability: 7 })}
+          badgeTier="silver"
+        />
+      );
+
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('ring-slate-300');
+      expect(button).toHaveClass('bg-slate-600/20');
+      // Check for glow effect
+      expect(button.className).toContain('shadow-[0_0_8px');
+    });
+
+    it('renders gold badge tier with yellow ring and glow', () => {
+      render(
+        <SubconceptNode
+          node={makeNode({ state: 'mastered', stability: 30 })}
+          badgeTier="gold"
+        />
+      );
+
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('ring-yellow-400');
+      expect(button).toHaveClass('bg-yellow-700/20');
+      // Check for glow effect
+      expect(button.className).toContain('shadow-[0_0_12px');
+    });
+
+    it('renders platinum badge tier with cyan ring and glow', () => {
+      render(
+        <SubconceptNode
+          node={makeNode({ state: 'mastered', stability: 90 })}
+          badgeTier="platinum"
+        />
+      );
+
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('ring-cyan-300');
+      expect(button).toHaveClass('bg-cyan-700/20');
+      // Check for glow effect
+      expect(button.className).toContain('shadow-[0_0_16px');
+    });
+
+    it('uses default state styling when no badgeTier provided', () => {
+      render(<SubconceptNode node={makeNode({ state: 'available' })} />);
+
+      const button = screen.getByRole('button');
+      // Should use original state-based styling, not badge tier
+      expect(button).toHaveClass('border-[var(--accent-primary)]');
+    });
+
+    it('badge tier overrides default state styling when provided', () => {
+      render(
+        <SubconceptNode
+          node={makeNode({ state: 'available' })}
+          badgeTier="bronze"
+        />
+      );
+
+      const button = screen.getByRole('button');
+      // Should use badge tier styling, not state-based styling
+      expect(button).toHaveClass('ring-amber-600');
+      // Should NOT have the default available state border
+      expect(button).not.toHaveClass('border-[var(--accent-primary)]');
+    });
+
+    it.each([
+      ['silver', 'shadow-[0_0_8px'],
+      ['gold', 'shadow-[0_0_12px'],
+      ['platinum', 'shadow-[0_0_16px'],
+    ] as const)(
+      'applies glow effect for %s tier',
+      (tier: 'silver' | 'gold' | 'platinum', expectedGlow: string) => {
+        render(
+          <SubconceptNode
+            node={makeNode({ state: 'mastered' })}
+            badgeTier={tier}
+          />
+        );
+
+        const button = screen.getByRole('button');
+        expect(button.className).toContain(expectedGlow);
+      }
+    );
+
+    it('does not apply glow for bronze tier', () => {
+      render(
+        <SubconceptNode
+          node={makeNode({ state: 'in-progress' })}
+          badgeTier="bronze"
+        />
+      );
+
+      const button = screen.getByRole('button');
+      expect(button.className).not.toContain('shadow-[0_0_');
+    });
+  });
 });

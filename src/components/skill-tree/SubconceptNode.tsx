@@ -6,10 +6,14 @@ import { cn } from '@/lib/utils';
 import { ANIMATION_BUDGET } from '@/lib/motion';
 import type { SkillTreeNode, SubconceptState } from '@/lib/skill-tree/types';
 import { MASTERY_REPS } from '@/lib/skill-tree/types';
+import type { BadgeTier } from '@/lib/gamification/badges';
+import { BADGE_STYLES } from '@/lib/gamification/badges';
 
 interface SubconceptNodeProps {
   node: SkillTreeNode;
   prereqNames?: Record<string, string>;
+  /** Optional badge tier to override default state styling */
+  badgeTier?: BadgeTier;
   className?: string;
 }
 
@@ -65,9 +69,23 @@ function getTooltipContent(
   }
 }
 
+/**
+ * Get the badge tier style classes
+ */
+function getBadgeTierStyles(badgeTier: BadgeTier): string {
+  const styles = BADGE_STYLES[badgeTier];
+  return cn(
+    'ring-2',
+    styles.ring,
+    styles.bg,
+    styles.glow
+  );
+}
+
 export function SubconceptNode({
   node,
   prereqNames,
+  badgeTier,
   className,
 }: SubconceptNodeProps) {
   const [showTooltip, setShowTooltip] = useState(false);
@@ -82,6 +100,11 @@ export function SubconceptNode({
 
   const { title, subtitle } = getTooltipContent(node, prereqNames);
 
+  // Determine styling: badge tier overrides state styling when provided
+  const nodeStyles = badgeTier
+    ? getBadgeTierStyles(badgeTier)
+    : stateStyles[node.state];
+
   return (
     <div className="relative w-12 h-12 rounded-full">
       <motion.button
@@ -90,7 +113,7 @@ export function SubconceptNode({
         className={cn(
           'w-12 h-12 rounded-full transition-all',
           'focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:ring-offset-2 focus:ring-offset-[var(--bg-surface-1)]',
-          stateStyles[node.state],
+          nodeStyles,
           className
         )}
         onMouseEnter={handleMouseEnter}
