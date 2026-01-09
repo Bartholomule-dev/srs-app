@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import type { PathIndex, SkinnedCard } from '@/lib/paths/types';
-import { getPathIndex } from '@/lib/paths/loader';
+import { getPathIndex } from '@/lib/paths/client-loader';
 import { selectSkin } from '@/lib/paths/selector';
 import { applySkinContext } from '@/lib/paths/apply-skin';
 

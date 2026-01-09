@@ -2,7 +2,7 @@
 
 id: task-manager
 title: "Task Manager"
-icon: "check"
+icon: "\u2705"
 blueprints: [collection-cli-app]
 
 vars:
@@ -24,5 +24,5 @@ contexts:
   dict-create-values: "Tasks need more than just a name - add status too."
   for-loop-list: "Display all tasks so the user can see what's pending."
   enumerate-basic: "Number the tasks so users can reference them."
-  list-comp-filter: "Show only incomplete tasks."
+  list-comp-filter-dynamic: "Show only incomplete tasks."
   context-intro: "Save tasks to a file so they persist between sessions."

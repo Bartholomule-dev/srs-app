@@ -34,7 +34,11 @@ function createMockIndex(): PathIndex {
   return {
     blueprints: new Map(),
     skins: new Map(skins.map(s => [s.id, s])),
-    exerciseToBlueprints: new Map(),
+    // Map exercises to blueprints so selectSkinForExercises groups them correctly
+    exerciseToBlueprints: new Map([
+      ['list-create-empty', [{ blueprintId: 'collection-cli-app', beat: 1, totalBeats: 2, beatTitle: 'Create storage' }]],
+      ['list-append-dynamic', [{ blueprintId: 'collection-cli-app', beat: 2, totalBeats: 2, beatTitle: 'Add entries' }]],
+    ]),
     exerciseToSkins: new Map([
       ['list-create-empty', ['task-manager', 'shopping-cart', 'playlist-app']],
       ['list-append-dynamic', ['task-manager', 'shopping-cart']],

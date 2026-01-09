@@ -1,0 +1,358 @@
+{
+  "blueprints": {
+    "collection-cli-app": {
+      "id": "collection-cli-app",
+      "title": "Build a CLI Collection App",
+      "description": "Learn to store, display, and persist data through building a practical command-line application",
+      "difficulty": "beginner",
+      "concepts": [
+        "collections",
+        "loops",
+        "modules-files"
+      ],
+      "beats": [
+        {
+          "beat": 1,
+          "exercise": "list-create-empty",
+          "title": "Create storage"
+        },
+        {
+          "beat": 2,
+          "exercise": "list-append-dynamic",
+          "title": "Add entries"
+        },
+        {
+          "beat": 3,
+          "exercise": "list-in-check",
+          "title": "Prevent duplicates"
+        },
+        {
+          "beat": 4,
+          "exercise": "dict-create-values",
+          "title": "Store richer data"
+        },
+        {
+          "beat": 5,
+          "exercise": "for-loop-list",
+          "title": "Display items"
+        },
+        {
+          "beat": 6,
+          "exercise": "enumerate-basic",
+          "title": "Number items"
+        },
+        {
+          "beat": 7,
+          "exercise": "list-comp-filter-dynamic",
+          "title": "Filter results"
+        },
+        {
+          "beat": 8,
+          "exercise": "context-intro",
+          "title": "Save to file"
+        }
+      ]
+    }
+  },
+  "skins": {
+    "game-inventory": {
+      "id": "game-inventory",
+      "title": "Game Inventory",
+      "icon": "🎮",
+      "blueprints": [
+        "collection-cli-app"
+      ],
+      "vars": {
+        "list_name": "inventory",
+        "item_singular": "item",
+        "item_plural": "items",
+        "item_examples": [
+          "health potion",
+          "iron sword",
+          "magic ring",
+          "leather armor",
+          "gold coins"
+        ],
+        "record_keys": [
+          "name",
+          "quantity",
+          "weight"
+        ]
+      },
+      "contexts": {
+        "list-create-empty": "Create the player's empty inventory.",
+        "list-append-dynamic": "Pick up an item and add it to inventory.",
+        "list-in-check": "Check if the player already has this item.",
+        "dict-create-values": "Track item properties like quantity and weight.",
+        "for-loop-list": "Display all items in the player's inventory.",
+        "enumerate-basic": "Number items for the use/drop menu.",
+        "list-comp-filter-dynamic": "Show only items that can be equipped.",
+        "context-intro": "Save the game state to continue later."
+      }
+    },
+    "playlist-app": {
+      "id": "playlist-app",
+      "title": "Playlist App",
+      "icon": "🎵",
+      "blueprints": [
+        "collection-cli-app"
+      ],
+      "vars": {
+        "list_name": "playlist",
+        "item_singular": "song",
+        "item_plural": "songs",
+        "item_examples": [
+          "Bohemian Rhapsody",
+          "Stairway to Heaven",
+          "Hotel California",
+          "Imagine",
+          "Sweet Child O Mine"
+        ],
+        "record_keys": [
+          "title",
+          "artist",
+          "duration"
+        ]
+      },
+      "contexts": {
+        "list-create-empty": "Create an empty playlist for the user.",
+        "list-append-dynamic": "Add a song to the playlist.",
+        "list-in-check": "Check if a song is already in the playlist.",
+        "dict-create-values": "Store song details like artist and duration.",
+        "for-loop-list": "Display all songs in the playlist.",
+        "enumerate-basic": "Number songs for easy selection.",
+        "list-comp-filter-dynamic": "Find songs by a specific artist.",
+        "context-intro": "Save the playlist to a file."
+      }
+    },
+    "recipe-book": {
+      "id": "recipe-book",
+      "title": "Recipe Book",
+      "icon": "📖",
+      "blueprints": [
+        "collection-cli-app"
+      ],
+      "vars": {
+        "list_name": "recipes",
+        "item_singular": "recipe",
+        "item_plural": "recipes",
+        "item_examples": [
+          "spaghetti carbonara",
+          "chicken curry",
+          "chocolate cake",
+          "caesar salad",
+          "beef stew"
+        ],
+        "record_keys": [
+          "name",
+          "servings",
+          "time_minutes"
+        ]
+      },
+      "contexts": {
+        "list-create-empty": "Start your recipe book with an empty collection.",
+        "list-append-dynamic": "Add a new recipe to your collection.",
+        "list-in-check": "Check if you already have this recipe.",
+        "dict-create-values": "Store recipe details like servings and prep time.",
+        "for-loop-list": "List all your saved recipes.",
+        "enumerate-basic": "Number recipes for quick selection.",
+        "list-comp-filter-dynamic": "Find quick recipes under 30 minutes.",
+        "context-intro": "Save your recipe book to disk."
+      }
+    },
+    "shopping-cart": {
+      "id": "shopping-cart",
+      "title": "Shopping Cart",
+      "icon": "🛒",
+      "blueprints": [
+        "collection-cli-app"
+      ],
+      "vars": {
+        "list_name": "cart",
+        "item_singular": "item",
+        "item_plural": "items",
+        "item_examples": [
+          "coffee",
+          "milk",
+          "bread",
+          "eggs",
+          "cheese"
+        ],
+        "record_keys": [
+          "name",
+          "quantity",
+          "price"
+        ]
+      },
+      "contexts": {
+        "list-create-empty": "Start with an empty shopping cart for the user.",
+        "list-append-dynamic": "Add an item the customer wants to buy.",
+        "list-in-check": "Check if an item is already in the cart before adding.",
+        "dict-create-values": "Track item details like quantity and price.",
+        "for-loop-list": "Display all items in the cart.",
+        "enumerate-basic": "Number items so the user can remove by number.",
+        "list-comp-filter-dynamic": "Show only items above a certain price.",
+        "context-intro": "Save the cart to resume shopping later."
+      }
+    },
+    "task-manager": {
+      "id": "task-manager",
+      "title": "Task Manager",
+      "icon": "✅",
+      "blueprints": [
+        "collection-cli-app"
+      ],
+      "vars": {
+        "list_name": "tasks",
+        "item_singular": "task",
+        "item_plural": "tasks",
+        "item_examples": [
+          "buy groceries",
+          "call mom",
+          "email boss",
+          "finish report",
+          "schedule meeting"
+        ],
+        "record_keys": [
+          "title",
+          "done",
+          "priority"
+        ]
+      },
+      "contexts": {
+        "list-create-empty": "Every task manager needs somewhere to store tasks.",
+        "list-append-dynamic": "Add a new task the user typed in.",
+        "list-in-check": "Check if a task already exists before adding it.",
+        "dict-create-values": "Tasks need more than just a name - add status too.",
+        "for-loop-list": "Display all tasks so the user can see what's pending.",
+        "enumerate-basic": "Number the tasks so users can reference them.",
+        "list-comp-filter-dynamic": "Show only incomplete tasks.",
+        "context-intro": "Save tasks to a file so they persist between sessions."
+      }
+    }
+  },
+  "exerciseToBlueprints": {
+    "list-create-empty": [
+      {
+        "blueprintId": "collection-cli-app",
+        "beat": 1,
+        "totalBeats": 8,
+        "beatTitle": "Create storage"
+      }
+    ],
+    "list-append-dynamic": [
+      {
+        "blueprintId": "collection-cli-app",
+        "beat": 2,
+        "totalBeats": 8,
+        "beatTitle": "Add entries"
+      }
+    ],
+    "list-in-check": [
+      {
+        "blueprintId": "collection-cli-app",
+        "beat": 3,
+        "totalBeats": 8,
+        "beatTitle": "Prevent duplicates"
+      }
+    ],
+    "dict-create-values": [
+      {
+        "blueprintId": "collection-cli-app",
+        "beat": 4,
+        "totalBeats": 8,
+        "beatTitle": "Store richer data"
+      }
+    ],
+    "for-loop-list": [
+      {
+        "blueprintId": "collection-cli-app",
+        "beat": 5,
+        "totalBeats": 8,
+        "beatTitle": "Display items"
+      }
+    ],
+    "enumerate-basic": [
+      {
+        "blueprintId": "collection-cli-app",
+        "beat": 6,
+        "totalBeats": 8,
+        "beatTitle": "Number items"
+      }
+    ],
+    "list-comp-filter-dynamic": [
+      {
+        "blueprintId": "collection-cli-app",
+        "beat": 7,
+        "totalBeats": 8,
+        "beatTitle": "Filter results"
+      }
+    ],
+    "context-intro": [
+      {
+        "blueprintId": "collection-cli-app",
+        "beat": 8,
+        "totalBeats": 8,
+        "beatTitle": "Save to file"
+      }
+    ]
+  },
+  "exerciseToSkins": {
+    "list-create-empty": [
+      "game-inventory",
+      "playlist-app",
+      "recipe-book",
+      "shopping-cart",
+      "task-manager"
+    ],
+    "list-append-dynamic": [
+      "game-inventory",
+      "playlist-app",
+      "recipe-book",
+      "shopping-cart",
+      "task-manager"
+    ],
+    "list-in-check": [
+      "game-inventory",
+      "playlist-app",
+      "recipe-book",
+      "shopping-cart",
+      "task-manager"
+    ],
+    "dict-create-values": [
+      "game-inventory",
+      "playlist-app",
+      "recipe-book",
+      "shopping-cart",
+      "task-manager"
+    ],
+    "for-loop-list": [
+      "game-inventory",
+      "playlist-app",
+      "recipe-book",
+      "shopping-cart",
+      "task-manager"
+    ],
+    "enumerate-basic": [
+      "game-inventory",
+      "playlist-app",
+      "recipe-book",
+      "shopping-cart",
+      "task-manager"
+    ],
+    "list-comp-filter-dynamic": [
+      "game-inventory",
+      "playlist-app",
+      "recipe-book",
+      "shopping-cart",
+      "task-manager"
+    ],
+    "context-intro": [
+      "game-inventory",
+      "playlist-app",
+      "recipe-book",
+      "shopping-cart",
+      "task-manager"
+    ]
+  }
+}

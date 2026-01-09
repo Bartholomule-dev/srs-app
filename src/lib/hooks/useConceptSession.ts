@@ -29,10 +29,11 @@ import {
 } from '@/lib/session';
 import { getSubconceptDefinition, getAllSubconcepts } from '@/lib/curriculum';
 import { createEmptyFSRSCard } from '@/lib/srs/fsrs/adapter';
-import { getPathIndex } from '@/lib/paths/loader';
+import { getPathIndex } from '@/lib/paths/client-loader';
 import { groupByBlueprint, sortByBeat } from '@/lib/paths/grouping';
 import { selectSkinForExercises } from '@/lib/paths/selector';
 import { applySkinContextBatch } from '@/lib/paths/apply-skin';
+import { updateRecentSkins } from '@/lib/paths/update-recent-skins';
 import type { SkinnedCard, PathIndex } from '@/lib/paths/types';
 
 /** Limit on teaching pairs (new subconcepts with teaching content) per session */
@@ -443,6 +444,24 @@ export function useConceptSession(): UseConceptSessionReturn {
             // Build the map with original card indices
             for (let i = 0; i < exerciseCardsInfo.length; i++) {
               skinnedMap.set(exerciseCardsInfo[i].index, skinnedInfo[i]);
+            }
+
+            // Persist skin usage to profile for recency tracking
+            // Collect unique skins used in this session (in order of first use)
+            const usedSkins: string[] = [];
+            for (const skin of selectedSkins) {
+              if (skin?.id && !usedSkins.includes(skin.id)) {
+                usedSkins.push(skin.id);
+              }
+            }
+            // Update profile's recent_skins (non-blocking)
+            if (usedSkins.length > 0) {
+              let currentRecentSkins = recentSkins;
+              for (const skinId of usedSkins) {
+                updateRecentSkins(userId, currentRecentSkins, skinId)
+                  .then(updated => { currentRecentSkins = updated; })
+                  .catch(() => { /* Non-fatal */ });
+              }
             }
           }
         } catch (skinError) {

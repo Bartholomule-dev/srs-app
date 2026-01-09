@@ -2,7 +2,7 @@
 
 id: recipe-book
 title: "Recipe Book"
-icon: "book-open"
+icon: "\U0001F4D6"
 blueprints: [collection-cli-app]
 
 vars:
@@ -24,5 +24,5 @@ contexts:
   dict-create-values: "Store recipe details like servings and prep time."
   for-loop-list: "List all your saved recipes."
   enumerate-basic: "Number recipes for quick selection."
-  list-comp-filter: "Find quick recipes under 30 minutes."
+  list-comp-filter-dynamic: "Find quick recipes under 30 minutes."
   context-intro: "Save your recipe book to disk."

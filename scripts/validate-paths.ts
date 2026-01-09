@@ -1,6 +1,49 @@
 // scripts/validate-paths.ts
 // Validates blueprint and skin YAML files for the path system
+import { readdir, readFile } from 'fs/promises';
+import { join } from 'path';
+import yaml from 'js-yaml';
 import { loadBlueprints, loadSkins } from '../src/lib/paths/loader';
+
+const EXERCISES_DIR = join(process.cwd(), 'exercises', 'python');
+
+interface ExerciseEntry {
+  slug: string;
+  [key: string]: unknown;
+}
+
+interface ExerciseFile {
+  exercises: ExerciseEntry[];
+}
+
+/**
+ * Load all exercise slugs from the exercises YAML files
+ */
+async function loadExerciseSlugs(): Promise<Set<string>> {
+  const slugs = new Set<string>();
+
+  try {
+    const files = await readdir(EXERCISES_DIR);
+    const yamlFiles = files.filter(f => f.endsWith('.yaml') || f.endsWith('.yml'));
+
+    for (const file of yamlFiles) {
+      const content = await readFile(join(EXERCISES_DIR, file), 'utf-8');
+      const data = yaml.load(content) as ExerciseFile;
+
+      if (data?.exercises && Array.isArray(data.exercises)) {
+        for (const ex of data.exercises) {
+          if (ex.slug) {
+            slugs.add(ex.slug);
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('  ⚠ Could not load exercises for validation:', (err as Error).message);
+  }
+
+  return slugs;
+}
 
 async function main() {
   console.log('Validating paths...\n');
@@ -8,6 +51,10 @@ async function main() {
   let errors = 0;
 
   try {
+    // Load exercise slugs for validation
+    const exerciseSlugs = await loadExerciseSlugs();
+    console.log(`✓ Loaded ${exerciseSlugs.size} exercise slugs for validation`);
+
     // Load and validate blueprints
     const blueprints = await loadBlueprints();
     console.log(`✓ Loaded ${blueprints.length} blueprints`);
@@ -32,11 +79,18 @@ async function main() {
         }
       }
       // Check for duplicate exercises within a blueprint
-      const exerciseSlugs = bp.beats.map(b => b.exercise);
-      const uniqueSlugs = new Set(exerciseSlugs);
-      if (uniqueSlugs.size !== exerciseSlugs.length) {
+      const bpExerciseSlugs = bp.beats.map(b => b.exercise);
+      const uniqueSlugs = new Set(bpExerciseSlugs);
+      if (uniqueSlugs.size !== bpExerciseSlugs.length) {
         console.error(`  ✗ Blueprint ${bp.id}: duplicate exercise slugs`);
         errors++;
+      }
+      // Check that all exercises exist in exercise YAML files
+      for (const beat of bp.beats) {
+        if (!exerciseSlugs.has(beat.exercise)) {
+          console.error(`  ✗ Blueprint ${bp.id}: exercise '${beat.exercise}' (beat ${beat.beat}) not found in exercises/`);
+          errors++;
+        }
       }
     }
 

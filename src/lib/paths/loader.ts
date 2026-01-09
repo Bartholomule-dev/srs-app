@@ -1,3 +1,5 @@
+// Server-only module - uses Node.js fs
+// For client-side code, use client-loader.ts instead
 import { readdir, readFile } from 'fs/promises';
 import { join } from 'path';
 import yaml from 'js-yaml';

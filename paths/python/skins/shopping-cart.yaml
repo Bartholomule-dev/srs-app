@@ -2,7 +2,7 @@
 
 id: shopping-cart
 title: "Shopping Cart"
-icon: "shopping-cart"
+icon: "\U0001F6D2"
 blueprints: [collection-cli-app]
 
 vars:
@@ -24,5 +24,5 @@ contexts:
   dict-create-values: "Track item details like quantity and price."
   for-loop-list: "Display all items in the cart."
   enumerate-basic: "Number items so the user can remove by number."
-  list-comp-filter: "Show only items above a certain price."
+  list-comp-filter-dynamic: "Show only items above a certain price."
   context-intro: "Save the cart to resume shopping later."

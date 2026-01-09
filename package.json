@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "pnpm generate:paths && next build",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
@@ -23,6 +23,7 @@
     "validate:curriculum": "npx tsx scripts/validate-curriculum.ts",
     "validate:dynamic": "npx tsx scripts/validate-dynamic-exercises.ts",
     "validate:paths": "npx tsx scripts/validate-paths.ts",
+    "generate:paths": "npx tsx scripts/generate-path-index.ts",
     "validate:all": "pnpm validate:exercises && pnpm validate:curriculum && pnpm validate:dynamic && pnpm validate:paths",
     "generate:exercise-list": "npx tsx scripts/generate-exercise-list.ts",
     "generate:exercise-list:obsidian": "npx tsx scripts/generate-exercise-list.ts --obsidian \"/home/brett/GoogleDrive/Obsidian Vault\""

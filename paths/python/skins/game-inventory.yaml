@@ -2,7 +2,7 @@
 
 id: game-inventory
 title: "Game Inventory"
-icon: "gamepad-2"
+icon: "\U0001F3AE"
 blueprints: [collection-cli-app]
 
 vars:
@@ -24,5 +24,5 @@ contexts:
   dict-create-values: "Track item properties like quantity and weight."
   for-loop-list: "Display all items in the player's inventory."
   enumerate-basic: "Number items for the use/drop menu."
-  list-comp-filter: "Show only items that can be equipped."
+  list-comp-filter-dynamic: "Show only items that can be equipped."
   context-intro: "Save the game state to continue later."

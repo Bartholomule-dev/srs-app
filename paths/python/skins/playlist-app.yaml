@@ -2,7 +2,7 @@
 
 id: playlist-app
 title: "Playlist App"
-icon: "music"
+icon: "\U0001F3B5"
 blueprints: [collection-cli-app]
 
 vars:
@@ -24,5 +24,5 @@ contexts:
   dict-create-values: "Store song details like artist and duration."
   for-loop-list: "Display all songs in the playlist."
   enumerate-basic: "Number songs for easy selection."
-  list-comp-filter: "Find songs by a specific artist."
+  list-comp-filter-dynamic: "Find songs by a specific artist."
   context-intro: "Save the playlist to a file."

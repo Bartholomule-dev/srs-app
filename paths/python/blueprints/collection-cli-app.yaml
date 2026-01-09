@@ -26,7 +26,7 @@ beats:
     exercise: enumerate-basic
     title: "Number items"
   - beat: 7
-    exercise: list-comp-filter
+    exercise: list-comp-filter-dynamic
     title: "Filter results"
   - beat: 8
     exercise: context-intro
