@@ -5,6 +5,7 @@ import Mustache from 'mustache';
 import { createSeed } from './seed';
 import { getGenerator } from './index';
 import type { RenderedExerciseMetadata, VariantMap } from './types';
+import type { SkinVars } from '@/lib/paths/types';
 
 // Disable Mustache's HTML escaping (we're not rendering to HTML)
 Mustache.escape = (text: string) => text;
@@ -32,28 +33,66 @@ export interface RenderableExercise {
 export type RenderedExercise<T extends RenderableExercise> = T & RenderedExerciseMetadata;
 
 /**
+ * Helper to render all template fields of an exercise with given params.
+ */
+function renderWithParams<T extends RenderableExercise>(
+  exercise: T,
+  params: Record<string, unknown>
+): RenderedExercise<T> {
+  const rendered: RenderedExercise<T> = {
+    ...exercise,
+    prompt: Mustache.render(exercise.prompt, params),
+    expectedAnswer: Mustache.render(exercise.expectedAnswer, params),
+    acceptedSolutions: exercise.acceptedSolutions.map((s) => Mustache.render(s, params)),
+  };
+
+  // Render hints through Mustache if present
+  if (exercise.hints) {
+    rendered.hints = exercise.hints.map((h) => Mustache.render(h, params));
+  }
+
+  // Render optional fields if present
+  if (exercise.code) {
+    rendered.code = Mustache.render(exercise.code, params);
+  }
+  if (exercise.template) {
+    rendered.template = Mustache.render(exercise.template, params);
+  }
+
+  return rendered;
+}
+
+/**
  * Render a parameterized exercise by interpolating templates.
  *
- * Static exercises (no generator field) pass through unchanged.
+ * Static exercises (no generator field) pass through unchanged unless skinVars provided.
  * Dynamic exercises have their templates rendered with generated params.
+ * When skinVars are provided, they are merged with generator params (generator takes precedence).
  *
  * @param exercise - Exercise to render (may have generator field)
  * @param userId - User ID for seed generation
  * @param dueDate - Due date for seed generation
+ * @param skinVars - Optional skin variables for Mustache templating
  * @returns Exercise with rendered templates and metadata
  */
 export function renderExercise<T extends RenderableExercise>(
   exercise: T,
   userId: string,
-  dueDate: Date
+  dueDate: Date,
+  skinVars?: SkinVars
 ): RenderedExercise<T> {
-  // Static exercises pass through unchanged
-  if (!exercise.generator) {
+  // Static exercises with no skinVars pass through unchanged
+  if (!exercise.generator && !skinVars) {
     return exercise as RenderedExercise<T>;
   }
 
-  // Look up generator
-  const generator = getGenerator(exercise.generator);
+  // If only skinVars (no generator), render with skin variables
+  if (!exercise.generator && skinVars) {
+    return renderWithParams(exercise, skinVars);
+  }
+
+  // Look up generator (we know exercise.generator exists at this point)
+  const generator = getGenerator(exercise.generator!);
   if (!generator) {
     console.warn(`Unknown generator: ${exercise.generator} for exercise ${exercise.slug}`);
     return exercise as RenderedExercise<T>;
@@ -61,7 +100,9 @@ export function renderExercise<T extends RenderableExercise>(
 
   // Generate parameters from seed
   const seed = createSeed(userId, exercise.slug, dueDate);
-  const params = generator.generate(seed);
+  const generatorParams = generator.generate(seed);
+  // Merge skinVars with generator params (generator takes precedence)
+  const params = skinVars ? { ...skinVars, ...generatorParams } : generatorParams;
 
   // Check if generator returned a variant selection
   const variantName = typeof params.variant === 'string' ? params.variant : undefined;
@@ -110,7 +151,8 @@ export function renderExercise<T extends RenderableExercise>(
 export function renderExercises<T extends RenderableExercise>(
   exercises: T[],
   userId: string,
-  dueDate: Date
+  dueDate: Date,
+  skinVars?: SkinVars
 ): RenderedExercise<T>[] {
-  return exercises.map((e) => renderExercise(e, userId, dueDate));
+  return exercises.map((e) => renderExercise(e, userId, dueDate, skinVars));
 }

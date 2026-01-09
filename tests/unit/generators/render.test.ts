@@ -2,6 +2,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderExercise, type RenderableExercise } from '@/lib/generators/render';
 import { registerGenerator, type Generator } from '@/lib/generators';
+import type { SkinVars } from '@/lib/paths/types';
 
 // Mock generator for testing
 const mockGenerator: Generator = {
@@ -150,5 +151,123 @@ describe('renderExercise', () => {
 
     // Seeds should differ
     expect(result1._seed).not.toBe(result2._seed);
+  });
+});
+
+describe('renderExercise with skin', () => {
+  it('merges skin vars into template params', () => {
+    const exercise: RenderableExercise = {
+      slug: 'list-create-empty',
+      prompt: 'Create an empty list called {{list_name}}',
+      expectedAnswer: '{{list_name}} = []',
+      acceptedSolutions: [],
+    };
+
+    const skinVars: SkinVars = {
+      list_name: 'tasks',
+      item_singular: 'task',
+      item_plural: 'tasks',
+      item_examples: ['buy groceries'],
+      record_keys: ['title', 'done'],
+    };
+
+    const result = renderExercise(exercise, 'user-1', new Date(), skinVars);
+
+    expect(result.prompt).toBe('Create an empty list called tasks');
+    expect(result.expectedAnswer).toBe('tasks = []');
+  });
+
+  it('returns exercise unchanged when no skin vars and no generator', () => {
+    const exercise: RenderableExercise = {
+      slug: 'static-exercise',
+      prompt: 'Static prompt',
+      expectedAnswer: 'static',
+      acceptedSolutions: [],
+    };
+
+    const result = renderExercise(exercise, 'user-1', new Date());
+
+    expect(result.prompt).toBe('Static prompt');
+    expect(result.expectedAnswer).toBe('static');
+  });
+
+  it('renders all template fields with skin vars', () => {
+    const exercise: RenderableExercise = {
+      slug: 'skinned-exercise',
+      prompt: 'Add a {{item_singular}} to {{list_name}}',
+      expectedAnswer: '{{list_name}}.append("{{item_singular}}")',
+      acceptedSolutions: ['{{list_name}} += ["{{item_singular}}"]'],
+      hints: ['Use {{list_name}}.append()'],
+      code: '{{list_name}} = []',
+      template: '{{list_name}}.___("{{item_singular}}")',
+    };
+
+    const skinVars: SkinVars = {
+      list_name: 'playlist',
+      item_singular: 'song',
+      item_plural: 'songs',
+      item_examples: ['Bohemian Rhapsody'],
+      record_keys: ['title', 'artist'],
+    };
+
+    const result = renderExercise(exercise, 'user-1', new Date(), skinVars);
+
+    expect(result.prompt).toBe('Add a song to playlist');
+    expect(result.expectedAnswer).toBe('playlist.append("song")');
+    expect(result.acceptedSolutions).toEqual(['playlist += ["song"]']);
+    expect(result.hints).toEqual(['Use playlist.append()']);
+    expect(result.code).toBe('playlist = []');
+    expect(result.template).toBe('playlist.___("song")');
+  });
+
+  it('generator params override skin vars on collision', () => {
+    const exercise: RenderableExercise = {
+      slug: 'collision-test',
+      generator: 'test-render-gen',
+      prompt: 'Name is {{name}}, start is {{start}}',
+      expectedAnswer: '{{name}}',
+      acceptedSolutions: [],
+    };
+
+    const skinVars: SkinVars = {
+      list_name: 'items',
+      item_singular: 'item',
+      item_plural: 'items',
+      item_examples: ['example'],
+      record_keys: ['key'],
+      name: 'from-skin', // This should be overridden by generator
+      start: '999', // This should be overridden by generator
+    };
+
+    const result = renderExercise(exercise, 'user-1', new Date('2026-01-15'), skinVars);
+
+    // Generator produces { start: 2, end: 6, name: 'test' }
+    // Generator params should override skin vars
+    expect(result.prompt).toBe('Name is test, start is 2');
+    expect(result.expectedAnswer).toBe('test');
+  });
+
+  it('combines skin vars with generator params', () => {
+    const exercise: RenderableExercise = {
+      slug: 'combined-test',
+      generator: 'test-render-gen',
+      prompt: '{{list_name}}[{{start}}:{{end}}]',
+      expectedAnswer: '{{list_name}}[{{start}}:{{end}}]',
+      acceptedSolutions: [],
+    };
+
+    const skinVars: SkinVars = {
+      list_name: 'tasks',
+      item_singular: 'task',
+      item_plural: 'tasks',
+      item_examples: ['example'],
+      record_keys: ['key'],
+    };
+
+    const result = renderExercise(exercise, 'user-1', new Date('2026-01-15'), skinVars);
+
+    // Generator provides start/end, skin provides list_name
+    expect(result.prompt).toBe('tasks[2:6]');
+    expect(result.expectedAnswer).toBe('tasks[2:6]');
   });
 });
