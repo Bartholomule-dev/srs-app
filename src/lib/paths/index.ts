@@ -8,3 +8,4 @@ export * from './utils';
 export * from './update-recent-skins';
 export * from './render-skin-vars';
 export * from './grouping';
+export * from './apply-skin';
