@@ -29,6 +29,11 @@ import {
 } from '@/lib/session';
 import { getSubconceptDefinition, getAllSubconcepts } from '@/lib/curriculum';
 import { createEmptyFSRSCard } from '@/lib/srs/fsrs/adapter';
+import { getPathIndex } from '@/lib/paths/loader';
+import { groupByBlueprint, sortByBeat } from '@/lib/paths/grouping';
+import { selectSkinForExercises } from '@/lib/paths/selector';
+import { applySkinContextBatch } from '@/lib/paths/apply-skin';
+import type { SkinnedCard, PathIndex } from '@/lib/paths/types';
 
 /** Limit on teaching pairs (new subconcepts with teaching content) per session */
 const TEACHING_PAIRS_LIMIT = 5;
@@ -67,6 +72,10 @@ export interface UseConceptSessionReturn {
    * Used to prevent one-shot "Easy" ratings on first exposure.
    */
   currentReps: number;
+  /** Blueprint/skin context for all cards (keyed by card index) */
+  skinnedCards: Map<number, SkinnedCard>;
+  /** Blueprint/skin context for the current card */
+  currentSkinnedCard: SkinnedCard | null;
 }
 
 function createInitialStats(): SessionStats {
@@ -124,6 +133,8 @@ export function useConceptSession(): UseConceptSessionReturn {
   const [sessionTypeHistory, setSessionTypeHistory] = useState<ExerciseType[]>([]);
   // Track start time for response time calculation
   const [cardStartTime, setCardStartTime] = useState<number>(Date.now());
+  // Blueprint/skin context for each card (keyed by card index)
+  const [skinnedCards, setSkinnedCards] = useState<Map<number, SkinnedCard>>(new Map());
 
   const currentCard = cards[currentIndex] ?? null;
   const isComplete =
@@ -133,6 +144,12 @@ export function useConceptSession(): UseConceptSessionReturn {
     () => cards.map((c) => c.type),
     [cards]
   );
+
+  // Get current skinned card (blueprint/skin context for current card)
+  const currentSkinnedCard = useMemo(() => {
+    if (currentIndex === null) return null;
+    return skinnedCards.get(currentIndex) ?? null;
+  }, [currentIndex, skinnedCards]);
 
   // Fetch all exercises on mount
   useEffect(() => {
@@ -234,6 +251,52 @@ export function useConceptSession(): UseConceptSessionReturn {
 
       // Store type history for session state
       setSessionTypeHistory(typeHistory);
+
+      // === Step 1.5: Apply blueprint grouping and beat ordering to review cards ===
+      // This groups exercises from the same blueprint together and sorts by beat order
+      let pathIndex: PathIndex | null = null;
+      try {
+        pathIndex = await getPathIndex();
+
+        // Get exercise slugs from review cards
+        const exerciseSlugs = reviewCards.map(c => c.exercise.slug);
+
+        // Group exercises by blueprint
+        const groups = groupByBlueprint(exerciseSlugs, pathIndex);
+
+        // Sort each group by beat order and collect in new order
+        const orderedSlugs: string[] = [];
+        for (const group of groups) {
+          const sorted = sortByBeat(group.exercises, group.blueprintId, pathIndex);
+          orderedSlugs.push(...sorted);
+        }
+
+        // Reorder the review cards to match the sorted slugs
+        const slugToCardAndProgress = new Map(
+          reviewCards.map((c, i) => [c.exercise.slug, { card: c, progress: reviewProgressMap[i] }])
+        );
+
+        // Build reordered arrays
+        const reorderedCards: ReviewSessionCard[] = [];
+        const reorderedProgressMap: SubconceptProgress[] = [];
+        for (const slug of orderedSlugs) {
+          const entry = slugToCardAndProgress.get(slug);
+          if (entry) {
+            reorderedCards.push(entry.card);
+            reorderedProgressMap.push(entry.progress);
+          }
+        }
+
+        // Replace arrays with reordered versions
+        reviewCards.length = 0;
+        reviewCards.push(...reorderedCards);
+        reviewProgressMap.length = 0;
+        reviewProgressMap.push(...reorderedProgressMap);
+      } catch (pathError) {
+        // Path loading failed - continue with original order
+        // This is non-fatal; exercises work without blueprint grouping
+        console.warn('Failed to load path index for blueprint grouping:', pathError);
+      }
 
       // === Step 2: Identify NEW subconcepts (no progress row) ===
       // Query ALL subconcept progress (not just due) to find truly new subconcepts
@@ -349,8 +412,49 @@ export function useConceptSession(): UseConceptSessionReturn {
       // Calculate exercise count (practice + review, NOT teaching)
       const exerciseCount = sessionCards.filter(c => c.type !== 'teaching').length;
 
+      // === Step 6: Build skinned cards map for blueprint/skin context ===
+      // This provides context text and blueprint position for each card
+      const skinnedMap = new Map<number, SkinnedCard>();
+      if (pathIndex) {
+        try {
+          // Get slugs from all non-teaching cards
+          const exerciseCardsInfo: { index: number; slug: string }[] = [];
+          for (let i = 0; i < sessionCards.length; i++) {
+            const card = sessionCards[i];
+            if (card.type !== 'teaching') {
+              exerciseCardsInfo.push({ index: i, slug: card.exercise.slug });
+            }
+          }
+
+          if (exerciseCardsInfo.length > 0) {
+            const slugs = exerciseCardsInfo.map(info => info.slug);
+            const recentSkins = profile?.recentSkins ?? [];
+
+            // Select skins (tries to use same skin for exercises in same blueprint)
+            const selectedSkins = selectSkinForExercises(slugs, recentSkins, pathIndex);
+
+            // Apply skin context to get SkinnedCard objects
+            const skinnedInfo = applySkinContextBatch(
+              slugs,
+              selectedSkins.map(s => s?.id ?? null),
+              pathIndex
+            );
+
+            // Build the map with original card indices
+            for (let i = 0; i < exerciseCardsInfo.length; i++) {
+              skinnedMap.set(exerciseCardsInfo[i].index, skinnedInfo[i]);
+            }
+          }
+        } catch (skinError) {
+          // Skin selection failed - continue without skin context
+          // This is non-fatal; exercises work without skins
+          console.warn('Failed to apply skin context:', skinError);
+        }
+      }
+
       setCards(sessionCards);
       setCardProgressMap(progressMap);
+      setSkinnedCards(skinnedMap);
       setCurrentIndex(0);
       setStats({
         total: exerciseCount, // Only count exercises, not teaching cards
@@ -506,6 +610,7 @@ export function useConceptSession(): UseConceptSessionReturn {
   const retry = useCallback(() => {
     setSessionInitialized(false); // Allow session to rebuild
     setSessionTypeHistory([]); // Reset type history for new session
+    setSkinnedCards(new Map()); // Clear skinned cards for new session
     setFetchKey((k) => k + 1);
     refetchSRS();
   }, [refetchSRS]);
@@ -526,5 +631,7 @@ export function useConceptSession(): UseConceptSessionReturn {
     endSession,
     retry,
     currentReps,
+    skinnedCards,
+    currentSkinnedCard,
   };
 }

@@ -69,6 +69,11 @@ vi.mock('@/lib/stats', () => ({
   updateProfileStats: (...args: unknown[]) => mockUpdateProfileStats(...args),
 }));
 
+// Mock paths loader - return empty index to skip path processing in tests
+vi.mock('@/lib/paths/loader', () => ({
+  getPathIndex: vi.fn().mockRejectedValue(new Error('Test: paths not available')),
+}));
+
 // Mock Supabase client - inline to avoid hoisting issues
 vi.mock('@/lib/supabase/client', () => {
   const mockExercisesDb = [
@@ -279,6 +284,29 @@ describe('useConceptSession', () => {
       });
 
       expect(mockRefetch).toHaveBeenCalled();
+    });
+  });
+
+  describe('skinnedCards', () => {
+    it('returns skinnedCards Map', async () => {
+      const { result } = renderHook(() => useConceptSession(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      expect(result.current.skinnedCards).toBeInstanceOf(Map);
+    });
+
+    it('returns currentSkinnedCard (null when no path data)', async () => {
+      const { result } = renderHook(() => useConceptSession(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // With paths mocked to reject, currentSkinnedCard should be null
+      expect(result.current.currentSkinnedCard).toBeNull();
     });
   });
 });
