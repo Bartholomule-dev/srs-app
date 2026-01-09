@@ -10,8 +10,8 @@ const makeCluster = (overrides: Partial<SkillTreeCluster> = {}): SkillTreeCluste
   description: 'Variables, operators, expressions',
   tier: 1,
   subconcepts: [
-    { slug: 'variables', name: 'Variables', concept: 'foundations', state: 'mastered', stability: 10, reps: 3, prereqs: [] },
-    { slug: 'operators', name: 'Operators', concept: 'foundations', state: 'available', stability: null, reps: 0, prereqs: ['variables'] },
+    { slug: 'variables', name: 'Variables', concept: 'foundations', state: 'mastered', badgeTier: 'silver', stability: 10, reps: 3, prereqs: [] },
+    { slug: 'operators', name: 'Operators', concept: 'foundations', state: 'available', badgeTier: 'available', stability: null, reps: 0, prereqs: ['variables'] },
   ],
   masteredCount: 1,
   totalCount: 2,

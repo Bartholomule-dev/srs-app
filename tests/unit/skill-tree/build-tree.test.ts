@@ -2,6 +2,7 @@
 import { describe, it, expect } from 'vitest';
 import { buildSkillTreeData } from '@/lib/skill-tree/build-tree';
 import { MASTERY_STABILITY_FAST, MASTERY_STABILITY_STANDARD, MASTERY_REPS } from '@/lib/skill-tree/types';
+import { BADGE_THRESHOLDS } from '@/lib/gamification/badges';
 import type { SubconceptProgress, ConceptSlug } from '@/lib/curriculum/types';
 
 describe('buildSkillTreeData', () => {
@@ -149,5 +150,132 @@ describe('buildSkillTreeData', () => {
     const variables = foundations?.subconcepts.find((s) => s.slug === 'variables');
 
     expect(variables?.stability).toBeNull();
+  });
+
+  describe('badge tier calculation', () => {
+    it('returns "locked" badge tier when prerequisites not met', () => {
+      const result = buildSkillTreeData([]); // No progress
+
+      const foundations = result.clusters.find((c) => c.slug === 'foundations');
+      // operators requires variables, which is not mastered
+      const operators = foundations?.subconcepts.find((s) => s.slug === 'operators');
+
+      expect(operators?.state).toBe('locked');
+      expect(operators?.badgeTier).toBe('locked');
+    });
+
+    it('returns "available" badge tier when prereqs met but no stability', () => {
+      const result = buildSkillTreeData([]);
+
+      const foundations = result.clusters.find((c) => c.slug === 'foundations');
+      // variables has no prereqs, so it's available
+      const variables = foundations?.subconcepts.find((s) => s.slug === 'variables');
+
+      expect(variables?.state).toBe('available');
+      expect(variables?.badgeTier).toBe('available');
+    });
+
+    it('returns "available" badge tier when stability is 0', () => {
+      const progress = [makeProgress('variables', 'foundations', 0)];
+
+      const result = buildSkillTreeData(progress);
+      const foundations = result.clusters.find((c) => c.slug === 'foundations');
+      const variables = foundations?.subconcepts.find((s) => s.slug === 'variables');
+
+      expect(variables?.badgeTier).toBe('available');
+    });
+
+    it('returns "bronze" badge tier for stability >= 1 day', () => {
+      const progress = [makeProgress('variables', 'foundations', BADGE_THRESHOLDS.bronze)];
+
+      const result = buildSkillTreeData(progress);
+      const foundations = result.clusters.find((c) => c.slug === 'foundations');
+      const variables = foundations?.subconcepts.find((s) => s.slug === 'variables');
+
+      expect(variables?.badgeTier).toBe('bronze');
+    });
+
+    it('returns "bronze" badge tier for stability of 6 days', () => {
+      const progress = [makeProgress('variables', 'foundations', 6)];
+
+      const result = buildSkillTreeData(progress);
+      const foundations = result.clusters.find((c) => c.slug === 'foundations');
+      const variables = foundations?.subconcepts.find((s) => s.slug === 'variables');
+
+      expect(variables?.badgeTier).toBe('bronze');
+    });
+
+    it('returns "silver" badge tier for stability >= 7 days', () => {
+      const progress = [makeProgress('variables', 'foundations', BADGE_THRESHOLDS.silver)];
+
+      const result = buildSkillTreeData(progress);
+      const foundations = result.clusters.find((c) => c.slug === 'foundations');
+      const variables = foundations?.subconcepts.find((s) => s.slug === 'variables');
+
+      expect(variables?.badgeTier).toBe('silver');
+    });
+
+    it('returns "silver" badge tier for stability of 29 days', () => {
+      const progress = [makeProgress('variables', 'foundations', 29)];
+
+      const result = buildSkillTreeData(progress);
+      const foundations = result.clusters.find((c) => c.slug === 'foundations');
+      const variables = foundations?.subconcepts.find((s) => s.slug === 'variables');
+
+      expect(variables?.badgeTier).toBe('silver');
+    });
+
+    it('returns "gold" badge tier for stability >= 30 days', () => {
+      const progress = [makeProgress('variables', 'foundations', BADGE_THRESHOLDS.gold)];
+
+      const result = buildSkillTreeData(progress);
+      const foundations = result.clusters.find((c) => c.slug === 'foundations');
+      const variables = foundations?.subconcepts.find((s) => s.slug === 'variables');
+
+      expect(variables?.badgeTier).toBe('gold');
+    });
+
+    it('returns "gold" badge tier for stability of 89 days', () => {
+      const progress = [makeProgress('variables', 'foundations', 89)];
+
+      const result = buildSkillTreeData(progress);
+      const foundations = result.clusters.find((c) => c.slug === 'foundations');
+      const variables = foundations?.subconcepts.find((s) => s.slug === 'variables');
+
+      expect(variables?.badgeTier).toBe('gold');
+    });
+
+    it('returns "platinum" badge tier for stability >= 90 days', () => {
+      const progress = [makeProgress('variables', 'foundations', BADGE_THRESHOLDS.platinum)];
+
+      const result = buildSkillTreeData(progress);
+      const foundations = result.clusters.find((c) => c.slug === 'foundations');
+      const variables = foundations?.subconcepts.find((s) => s.slug === 'variables');
+
+      expect(variables?.badgeTier).toBe('platinum');
+    });
+
+    it('returns "platinum" badge tier for stability of 365 days', () => {
+      const progress = [makeProgress('variables', 'foundations', 365)];
+
+      const result = buildSkillTreeData(progress);
+      const foundations = result.clusters.find((c) => c.slug === 'foundations');
+      const variables = foundations?.subconcepts.find((s) => s.slug === 'variables');
+
+      expect(variables?.badgeTier).toBe('platinum');
+    });
+
+    it('ignores stability when prereqs not met (returns locked)', () => {
+      // operators requires variables to be mastered
+      const progress = [makeProgress('operators', 'foundations', 100)];
+
+      const result = buildSkillTreeData(progress);
+      const foundations = result.clusters.find((c) => c.slug === 'foundations');
+      const operators = foundations?.subconcepts.find((s) => s.slug === 'operators');
+
+      // operators state is locked because variables prereq is not met
+      expect(operators?.state).toBe('locked');
+      expect(operators?.badgeTier).toBe('locked');
+    });
   });
 });

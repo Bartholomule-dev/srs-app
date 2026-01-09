@@ -1,6 +1,7 @@
 // src/lib/skill-tree/build-tree.ts
 import curriculum from '@/lib/curriculum/python.json';
 import type { SubconceptProgress } from '@/lib/curriculum/types';
+import { getBadgeTier } from '@/lib/gamification/badges';
 import {
   getSubconceptState,
   type SkillTreeData,
@@ -55,6 +56,11 @@ export function buildSkillTreeData(progress: SubconceptProgress[]): SkillTreeDat
       const prog = progressMap.get(slug);
       const state = getSubconceptState(slug, progressMap, def?.prereqs ?? []);
 
+      // Derive prerequisite status from state (locked means prereqs not met)
+      const prereqsMet = state !== 'locked';
+      const stability = prog?.stability ?? 0;
+      const badgeTier = getBadgeTier({ stability, prereqsMet });
+
       totalSubconcepts++;
       if (state === 'mastered') {
         totalMastered++;
@@ -65,6 +71,7 @@ export function buildSkillTreeData(progress: SubconceptProgress[]): SkillTreeDat
         name: def?.name ?? slug,
         concept: concept.slug,
         state,
+        badgeTier,
         stability: prog?.stability ?? null,
         reps: prog?.reps ?? 0,
         prereqs: def?.prereqs ?? [],

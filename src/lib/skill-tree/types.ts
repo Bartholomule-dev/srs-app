@@ -1,4 +1,5 @@
 import type { SubconceptProgress } from '@/lib/curriculum/types';
+import type { BadgeTier } from '@/lib/gamification/badges';
 
 /**
  * Visual states for subconcept nodes in the skill tree
@@ -38,6 +39,7 @@ export interface SkillTreeNode {
   name: string;
   concept: string;
   state: SubconceptState;
+  badgeTier: BadgeTier; // Badge tier derived from stability
   stability: number | null; // FSRS stability in days
   reps: number; // Number of successful reviews
   prereqs: string[];

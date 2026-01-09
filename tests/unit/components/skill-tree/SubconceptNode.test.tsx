@@ -10,6 +10,7 @@ const makeNode = (overrides: Partial<SkillTreeNode> = {}): SkillTreeNode => ({
   name: 'Variables',
   concept: 'foundations',
   state: 'available',
+  badgeTier: 'available',
   stability: null,
   reps: 0,
   prereqs: [],
