@@ -13,6 +13,8 @@ import { PredictOutputExercise } from './PredictOutputExercise';
 import { ExercisePrompt } from './ExercisePrompt';
 import { HintButton } from './HintButton';
 import { ExerciseFeedback } from './ExerciseFeedback';
+import { BeatHeader } from './BeatHeader';
+import { ContextHint } from './ContextHint';
 
 type Phase = 'answering' | 'feedback';
 
@@ -24,9 +26,31 @@ interface ExerciseCardProps {
    * Used to prevent one-shot "Easy" ratings on first exposure.
    */
   currentReps?: number;
+  /** Skin icon emoji for blueprint context display */
+  skinIcon?: string | null;
+  /** Blueprint title for context display */
+  blueprintTitle?: string | null;
+  /** Current beat number in the blueprint */
+  beat?: number | null;
+  /** Total number of beats in the blueprint */
+  totalBeats?: number | null;
+  /** Title of the current beat */
+  beatTitle?: string | null;
+  /** Skin-provided context hint for the exercise */
+  context?: string | null;
 }
 
-export function ExerciseCard({ exercise, onComplete, currentReps }: ExerciseCardProps) {
+export function ExerciseCard({
+  exercise,
+  onComplete,
+  currentReps,
+  skinIcon,
+  blueprintTitle,
+  beat,
+  totalBeats,
+  beatTitle,
+  context,
+}: ExerciseCardProps) {
   const { pyodide, loading: pyodideLoading, loadPyodide } = usePyodide();
 
   const [phase, setPhase] = useState<Phase>('answering');
@@ -187,6 +211,15 @@ export function ExerciseCard({ exercise, onComplete, currentReps }: ExerciseCard
               transition={{ duration: 0.2 }}
               className="space-y-6"
             >
+              <BeatHeader
+                skinIcon={skinIcon ?? null}
+                blueprintTitle={blueprintTitle ?? null}
+                beat={beat ?? null}
+                totalBeats={totalBeats ?? null}
+                beatTitle={beatTitle ?? null}
+              />
+              <ContextHint context={context ?? null} />
+
               <ExercisePrompt
                 category={exercise.category}
                 language={exercise.language}
