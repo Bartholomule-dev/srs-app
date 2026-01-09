@@ -12,8 +12,12 @@ interface ContributionGraphProps {
   loading: boolean;
   /** Collapse on mobile (show only on md+) */
   collapsedMobile?: boolean;
-  /** Show compact 3-month view on mobile instead of hiding */
+  /** Show compact view on mobile instead of hiding */
   compactMobile?: boolean;
+  /** Number of weeks to show on mobile (default: 13 = ~3 months) */
+  mobileWeeks?: number;
+  /** Collapse month labels on mobile to show fewer labels (default: true) */
+  collapsedLabels?: boolean;
   className?: string;
 }
 
@@ -53,8 +57,10 @@ function generateDateGrid(weekCount: number = WEEKS): string[][] {
 
 /**
  * Get month labels for the graph header
+ * @param dateGrid - The date grid to extract month labels from
+ * @param collapsed - If true, limit to max 4 labels
  */
-function getMonthLabels(dateGrid: string[][]): { month: string; week: number }[] {
+function getMonthLabels(dateGrid: string[][], collapsed: boolean = false): { month: string; week: number }[] {
   const labels: { month: string; week: number }[] = [];
   let lastMonth = -1;
 
@@ -67,6 +73,12 @@ function getMonthLabels(dateGrid: string[][]): { month: string; week: number }[]
     }
   }
 
+  // If collapsed, show only every Nth label to limit to max 4
+  if (collapsed && labels.length > 4) {
+    const step = Math.ceil(labels.length / 4);
+    return labels.filter((_, index) => index % step === 0).slice(0, 4);
+  }
+
   return labels;
 }
 
@@ -75,6 +87,8 @@ export function ContributionGraph({
   loading,
   collapsedMobile = false,
   compactMobile = true,
+  mobileWeeks = MOBILE_WEEKS,
+  collapsedLabels = true,
   className,
 }: ContributionGraphProps) {
   // Create lookup map for day data
@@ -86,13 +100,13 @@ export function ContributionGraph({
     return map;
   }, [days]);
 
-  // Full 52-week grid for desktop
+  // Full 52-week grid for desktop (never collapse labels)
   const fullDateGrid = useMemo(() => generateDateGrid(WEEKS), []);
-  const fullMonthLabels = useMemo(() => getMonthLabels(fullDateGrid), [fullDateGrid]);
+  const fullMonthLabels = useMemo(() => getMonthLabels(fullDateGrid, false), [fullDateGrid]);
 
-  // Compact 13-week grid for mobile
-  const mobileGrid = useMemo(() => generateDateGrid(MOBILE_WEEKS), []);
-  const mobileMonthLabels = useMemo(() => getMonthLabels(mobileGrid), [mobileGrid]);
+  // Compact grid for mobile (use collapsedLabels prop)
+  const mobileGrid = useMemo(() => generateDateGrid(mobileWeeks), [mobileWeeks]);
+  const mobileMonthLabels = useMemo(() => getMonthLabels(mobileGrid, collapsedLabels), [mobileGrid, collapsedLabels]);
 
   if (loading) {
     return (
@@ -120,6 +134,7 @@ export function ContributionGraph({
           <span
             key={`${month}-${i}`}
             className="flex-shrink-0"
+            data-month-label={month}
             style={{ marginLeft: i === 0 ? 0 : `${(week - (monthLabels[i - 1]?.week ?? 0)) * 12 - 20}px` }}
           >
             {month}
@@ -204,15 +219,21 @@ export function ContributionGraph({
       data-contribution-graph
     >
       {/* Desktop: Full 52-week view */}
-      <div className={cn(
-        compactMobile ? 'hidden md:block' : 'block'
-      )}>
+      <div
+        className={cn(
+          compactMobile ? 'hidden md:block' : 'block'
+        )}
+        data-testid="desktop-graph"
+      >
         {renderGrid(fullDateGrid, fullMonthLabels)}
       </div>
 
-      {/* Mobile: Compact 13-week (3 month) view */}
+      {/* Mobile: Compact view (configurable weeks) */}
       {compactMobile && (
-        <div className="md:hidden overflow-x-auto">
+        <div
+          className="md:hidden overflow-x-auto"
+          data-testid="mobile-graph"
+        >
           {renderGrid(mobileGrid, mobileMonthLabels, true)}
         </div>
       )}

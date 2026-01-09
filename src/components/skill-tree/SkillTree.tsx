@@ -9,6 +9,12 @@ import type { SkillTreeCluster } from '@/lib/skill-tree/types';
 
 interface SkillTreeProps {
   className?: string;
+  /**
+   * Enable virtualization for large skill trees.
+   * Currently a stub - full implementation with react-window is deferred.
+   * When enabled, only visible nodes will be rendered for better performance.
+   */
+  virtualize?: boolean;
 }
 
 interface Position {
@@ -29,7 +35,11 @@ function groupByTier(
   return groups;
 }
 
-export function SkillTree({ className }: SkillTreeProps) {
+export function SkillTree({ className, virtualize }: SkillTreeProps) {
+  // Note: virtualize prop is currently a stub. Full implementation
+  // with react-window deferred due to complexity of handling
+  // dynamic cluster layouts and dependency lines.
+  void virtualize; // Explicitly mark as intentionally unused
   const { data, loading, error } = useSkillTree();
   const containerRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<Map<string, HTMLElement>>(new Map());

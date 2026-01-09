@@ -54,3 +54,7 @@ export {
   getAllAchievementSlugs,
   getAchievement,
 } from './achievements';
+
+// React Query caching utilities
+export type { GamificationQueryType } from './query-keys';
+export { gamificationQueryKeys, getStaleTime } from './query-keys';

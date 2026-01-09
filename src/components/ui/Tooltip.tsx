@@ -5,6 +5,7 @@ import {
   useContext,
   useState,
   useCallback,
+  useEffect,
   useRef,
   cloneElement,
   isValidElement,
@@ -85,6 +86,8 @@ export interface TooltipTriggerProps extends HTMLAttributes<HTMLSpanElement> {
   asChild?: boolean;
 }
 
+const LONG_PRESS_DELAY = 500;
+
 export function TooltipTrigger({
   children,
   className,
@@ -95,14 +98,20 @@ export function TooltipTrigger({
   onBlur,
   onClick,
   onTouchStart,
+  onTouchEnd,
+  onTouchMove,
   ...props
 }: TooltipTriggerProps & {
   onClick?: (e: React.MouseEvent<HTMLElement>) => void;
   onTouchStart?: (e: React.TouchEvent<HTMLElement>) => void;
+  onTouchEnd?: (e: React.TouchEvent<HTMLElement>) => void;
+  onTouchMove?: (e: React.TouchEvent<HTMLElement>) => void;
 }) {
   const { open, setOpen, delayDuration } = useTooltipContext();
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const touchTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const isTouchRef = useRef(false);
+  const triggerRef = useRef<HTMLElement | null>(null);
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
     // Skip hover on touch devices
@@ -128,20 +137,68 @@ export function TooltipTrigger({
     onBlur?.(e as React.FocusEvent<HTMLSpanElement>);
   };
 
-  // Touch support: tap to toggle tooltip
-  const handleTouchStart = (e: React.TouchEvent<HTMLElement>) => {
+  // Cancel long press timer
+  const cancelLongPress = useCallback(() => {
+    if (touchTimeoutRef.current) {
+      clearTimeout(touchTimeoutRef.current);
+      touchTimeoutRef.current = undefined;
+    }
+  }, []);
+
+  // Touch support: long press (500ms) to show tooltip
+  const handleTouchStart = useCallback((e: React.TouchEvent<HTMLElement>) => {
     isTouchRef.current = true;
+    triggerRef.current = e.currentTarget;
+
+    // Start long press timer
+    cancelLongPress();
+    touchTimeoutRef.current = setTimeout(() => {
+      setOpen(true);
+    }, LONG_PRESS_DELAY);
+
     onTouchStart?.(e);
-  };
+  }, [cancelLongPress, setOpen, onTouchStart]);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent<HTMLElement>) => {
+    // Cancel long press if released early
+    cancelLongPress();
+    onTouchEnd?.(e);
+  }, [cancelLongPress, onTouchEnd]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent<HTMLElement>) => {
+    // Cancel long press on scroll/move
+    cancelLongPress();
+    onTouchMove?.(e);
+  }, [cancelLongPress, onTouchMove]);
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    // On touch devices, toggle tooltip on tap
-    if (isTouchRef.current) {
-      e.preventDefault();
-      setOpen(!open);
-    }
+    // Don't toggle on tap - we use long press for touch
     onClick?.(e);
   };
+
+  // Handle outside touch to dismiss tooltip
+  useEffect(() => {
+    if (!open || !isTouchRef.current) return;
+
+    const handleOutsideTouch = (e: TouchEvent) => {
+      const trigger = triggerRef.current;
+      if (trigger && !trigger.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('touchstart', handleOutsideTouch);
+    return () => {
+      document.removeEventListener('touchstart', handleOutsideTouch);
+    };
+  }, [open, setOpen]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      cancelLongPress();
+    };
+  }, [cancelLongPress]);
 
   const triggerProps = {
     onMouseEnter: handleMouseEnter,
@@ -149,6 +206,8 @@ export function TooltipTrigger({
     onFocus: handleFocus,
     onBlur: handleBlur,
     onTouchStart: handleTouchStart,
+    onTouchEnd: handleTouchEnd,
+    onTouchMove: handleTouchMove,
     onClick: handleClick,
     ...props,
   };

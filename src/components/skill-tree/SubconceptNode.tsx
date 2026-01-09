@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback, useId } from 'react';
+import { useState, useRef, useCallback, useId, useEffect, memo } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import type { TargetAndTransition } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -10,11 +10,37 @@ import { MASTERY_REPS } from '@/lib/skill-tree/types';
 import type { BadgeTier } from '@/lib/gamification/badges';
 import { BADGE_STYLES } from '@/lib/gamification/badges';
 
+/** Tier order for determining upgrades */
+const TIER_ORDER: BadgeTier[] = ['locked', 'available', 'bronze', 'silver', 'gold', 'platinum'];
+
+/** Duration for tier transition animation in ms */
+const TIER_TRANSITION_DURATION = 500;
+
+/**
+ * Custom hook to track previous value (usePrevious pattern)
+ * Uses state to avoid accessing refs during render (React 19 compatible)
+ */
+function usePrevious<T>(value: T): T | undefined {
+  const [[prev, current], setPrevCurrent] = useState<[T | undefined, T]>([
+    undefined,
+    value,
+  ]);
+
+  // If the incoming value differs from what we stored, update state
+  if (current !== value) {
+    setPrevCurrent([current, value]);
+  }
+
+  return prev;
+}
+
 interface SubconceptNodeProps {
   node: SkillTreeNode;
   prereqNames?: Record<string, string>;
   /** Optional badge tier to override default state styling */
   badgeTier?: BadgeTier;
+  /** Callback when tier upgrades, passes (oldTier, newTier) */
+  onTierUp?: (oldTier: BadgeTier, newTier: BadgeTier) => void;
   className?: string;
 }
 
@@ -133,17 +159,46 @@ function getTierAnimation(
   return undefined;
 }
 
-export function SubconceptNode({
+function SubconceptNodeBase({
   node,
   prereqNames,
   badgeTier,
+  onTierUp,
   className,
 }: SubconceptNodeProps) {
   const [showTooltip, setShowTooltip] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const nodeRef = useRef<HTMLButtonElement>(null);
   const tooltipId = useId();
   const reduceMotion = useReducedMotion();
+
+  // Track previous tier to detect upgrades
+  const prevTier = usePrevious(badgeTier);
+
+  // Detect tier upgrades and fire callback
+  useEffect(() => {
+    if (prevTier === undefined || badgeTier === undefined) return;
+    if (prevTier === badgeTier) return;
+
+    const oldIndex = TIER_ORDER.indexOf(prevTier);
+    const newIndex = TIER_ORDER.indexOf(badgeTier);
+
+    // Only fire on tier upgrade (not downgrade)
+    if (newIndex > oldIndex) {
+      // Schedule state update asynchronously to avoid cascading renders
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional async scheduling for animation
+      queueMicrotask(() => setIsTransitioning(true));
+      onTierUp?.(prevTier, badgeTier);
+
+      // Clear transition state after animation completes
+      const timer = setTimeout(() => {
+        setIsTransitioning(false);
+      }, TIER_TRANSITION_DURATION);
+
+      return () => clearTimeout(timer);
+    }
+  }, [badgeTier, prevTier, onTierUp]);
 
   const handleMouseEnter = useCallback(() => {
     // Skip hover on touch devices
@@ -176,9 +231,17 @@ export function SubconceptNode({
   // Get tier-specific animation
   const tierAnimation = getTierAnimation(badgeTier, reduceMotion);
 
+  // Determine if this is platinum tier
+  const isPlatinum = badgeTier === 'platinum';
+
   return (
     // Container: min-w-[44px] min-h-[44px] ensures touch target meets 44x44px accessibility guidelines
-    <div className="relative min-w-[44px] min-h-[44px] flex items-center justify-center" data-badge-tier={badgeTier}>
+    <div
+      className="relative min-w-[44px] min-h-[44px] flex items-center justify-center"
+      data-badge-tier={badgeTier}
+      data-tier-transitioning={isTransitioning ? 'true' : undefined}
+      data-platinum={isPlatinum ? 'true' : undefined}
+    >
       <motion.button
         ref={nodeRef}
         type="button"
@@ -242,3 +305,9 @@ export function SubconceptNode({
     </div>
   );
 }
+
+/**
+ * Memoized SubconceptNode component to prevent unnecessary re-renders
+ * when parent components update but this node's props remain unchanged.
+ */
+export const SubconceptNode = memo(SubconceptNodeBase);
