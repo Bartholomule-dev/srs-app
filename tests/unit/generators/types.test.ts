@@ -44,3 +44,19 @@ describe('Generator types', () => {
     expect(minimalConstruct.feedback).toBeUndefined();
   });
 });
+
+describe('GeneratorParams with skin vars', () => {
+  it('accepts skin variables alongside generated params', () => {
+    const params: GeneratorParams = {
+      a: 5,
+      b: 10,
+      // Skin vars
+      list_name: 'tasks',
+      item_singular: 'task',
+      item_examples: ['buy groceries', 'call mom'],
+    };
+
+    expect(params.list_name).toBe('tasks');
+    expect(params.item_examples).toContain('buy groceries');
+  });
+});
