@@ -23,6 +23,7 @@ interface BlueprintStats {
   id: string;
   title: string;
   beatCount: number;
+  sideQuestCount: number;
   concepts: string[];
 }
 
@@ -81,14 +82,25 @@ async function main() {
   const blueprintStats: BlueprintStats[] = [];
 
   for (const bp of blueprints) {
+    let sideQuestCount = 0;
     for (const beat of bp.beats) {
+      // Count main beat exercise
       coveredExercises.add(beat.exercise);
+
+      // Count side-quest exercises
+      if (beat.sideQuests) {
+        for (const sideQuestSlug of beat.sideQuests) {
+          coveredExercises.add(sideQuestSlug);
+          sideQuestCount++;
+        }
+      }
     }
 
     blueprintStats.push({
       id: bp.id,
       title: bp.title,
       beatCount: bp.beats.length,
+      sideQuestCount,
       concepts: bp.concepts,
     });
   }
@@ -118,7 +130,7 @@ async function main() {
   for (const stat of blueprintStats) {
     console.log(`  ${stat.id}`);
     console.log(`    Title: ${stat.title}`);
-    console.log(`    Beats: ${stat.beatCount}`);
+    console.log(`    Beats: ${stat.beatCount}${stat.sideQuestCount > 0 ? ` (+${stat.sideQuestCount} side-quests)` : ''}`);
     console.log(`    Concepts: ${stat.concepts.join(', ')}`);
     console.log();
   }

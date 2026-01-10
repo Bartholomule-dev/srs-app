@@ -1,0 +1,84 @@
+# paths/python/skins/log-analyzer.yaml
+
+id: log-analyzer
+title: "Log Analyzer"
+icon: "📊"
+blueprints: [data-transformer]
+
+vars:
+  list_name: logs
+  item_singular: log
+  item_plural: logs
+  item_examples:
+    - "INFO: Started"
+    - "ERROR: Failed"
+    - "WARN: Timeout"
+    - "DEBUG: Value=42"
+    - "INFO: Complete"
+  record_keys: ["level", "message", "timestamp", "source"]
+  attr_key_1: level
+  attr_key_2: message
+  id_var: log_id
+  filename: analysis.json
+  filetype: json
+  user_role: analyst
+  status_var: processed
+  action_verb: analyze
+  entity_name: LogEntry
+
+dataPack:
+  list_sample: ["INFO", "ERROR", "WARN", "DEBUG"]
+  dict_sample:
+    level: "ERROR"
+    message: "Connection failed"
+    timestamp: 1704067200
+    source: "api"
+  records_sample:
+    - { level: "INFO", message: "Started", count: 150 }
+    - { level: "ERROR", message: "Failed", count: 23 }
+    - { level: "WARN", message: "Slow", count: 45 }
+  string_samples:
+    - "Processing logs..."
+    - "Found 23 errors"
+    - "Analysis complete"
+    - "Generating report"
+
+contexts:
+  # List Comprehensions
+  list-comp-basic: "Extract log levels from entries."
+  list-comp-for-fill: "Complete the comprehension loop."
+  list-comp-predict: "Predict transformed output."
+  list-comp-conditional: "Filter only error logs."
+  list-comp-if-fill: "Complete the filter condition."
+  list-comp-filter-predict: "Predict filtered results."
+  list-comp-transform-dynamic: "Transform log messages."
+  list-comp-filter-dynamic: "Dynamic log filtering."
+  list-comp-write-transform-dynamic: "Write transformation."
+  list-comp-ternary: "Categorize log severity."
+  nested-comp: "Nested log extraction."
+  nested-comp-predict: "Predict nested result."
+  active-users-integrated: "Filter active log sources."
+  error-code-extractor-integrated: "Extract error codes."
+
+  # Dict & Set Comprehensions
+  dict-comp-intro: "Create level-to-count mapping."
+  dict-comp-predict-intro: "Predict dict result."
+  dict-comp-colon-fill: "Complete dict comprehension."
+  dict-comp-basic: "Build log summary dict."
+  dict-comp-predict: "Predict summary output."
+  dict-comp-dynamic: "Dynamic dict building."
+  dict-comp-zip: "Zip levels and counts."
+  dict-comp-write-dynamic: "Write dict comprehension."
+  set-comp-intro: "Get unique log levels."
+  set-comp-predict-intro: "Predict unique set."
+  set-comp-basic: "Extract unique sources."
+  set-comp-brace-fill: "Complete set syntax."
+
+  # Generators
+  generator-exp-intro: "Stream large log files."
+  generator-exp-basic: "Basic log generator."
+  generator-predict-lazy: "Predict lazy evaluation."
+  generator-exp-sum: "Count total entries."
+  generator-countdown: "Countdown log processor."
+  generator-evens: "Filter even timestamps."
+  generator-fibonacci: "Generate sequence IDs."

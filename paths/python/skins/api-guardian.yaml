@@ -1,0 +1,76 @@
+# paths/python/skins/api-guardian.yaml
+
+id: api-guardian
+title: "API Guardian"
+icon: "🛡️"
+blueprints: [error-handler]
+
+vars:
+  list_name: requests
+  item_singular: request
+  item_plural: requests
+  item_examples:
+    - "GET /users"
+    - "POST /login"
+    - "DELETE /session"
+    - "PUT /profile"
+    - "PATCH /settings"
+  record_keys: ["method", "path", "status", "error"]
+  attr_key_1: method
+  attr_key_2: status
+  id_var: request_id
+  filename: error_log.json
+  filetype: json
+  user_role: guardian
+  status_var: protected
+  action_verb: guard
+  entity_name: Request
+
+dataPack:
+  list_sample: [200, 400, 401, 500]
+  dict_sample:
+    method: "POST"
+    path: "/api/login"
+    status: 401
+    error: "Unauthorized"
+  records_sample:
+    - { path: "/users", status: 200, error: null }
+    - { path: "/login", status: 401, error: "Invalid token" }
+    - { path: "/data", status: 500, error: "Server error" }
+  string_samples:
+    - "Request failed"
+    - "Auth error"
+    - "Rate limited"
+    - "Connection timeout"
+
+contexts:
+  # Basic Exception Handling
+  try-except-basic: "Wrap API call in try block."
+  try-keyword-fill: "Complete the try syntax."
+  try-except-predict: "Predict exception handling."
+  except-specific: "Catch ConnectionError."
+  except-keyword-fill: "Complete except clause."
+  except-type-predict: "Predict which exception catches."
+  except-as: "Access error message."
+  exception-as-predict: "Predict error access."
+  exception-catch-dynamic: "Dynamic exception catching."
+  exception-type-predict-dynamic: "Predict exception type."
+
+  # Raising Exceptions
+  raise-intro: "Raise on invalid request."
+  raise-keyword-fill: "Complete the raise."
+  raise-exception: "Raise specific error type."
+  raise-custom-message: "Include error details."
+  raise-from: "Chain API errors."
+  reraise: "Re-raise after logging."
+  custom-exception: "Create APIError class."
+
+  # Finally & Else
+  finally-basic: "Close connection in finally."
+  finally-cleanup: "Cleanup API resources."
+  finally-with-except: "Handle and cleanup."
+  finally-return: "Return with cleanup."
+  finally-flow-predict-dynamic: "Predict finally flow."
+  finally-exception-propagation: "Propagate through finally."
+  finally-trace-dynamic: "Trace exception flow."
+  else-clause: "Log success in else."

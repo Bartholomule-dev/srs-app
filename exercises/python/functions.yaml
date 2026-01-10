@@ -7,8 +7,8 @@ exercises:
     objective: "Define a basic function using the def keyword"
     title: Define Function
     difficulty: 1
-    prompt: Define a function called greet that takes a name parameter
-    expected_answer: "def greet(name):"
+    prompt: Define a function called {{action_verb}}_{{item_singular}} that takes a {{item_singular}} parameter
+    expected_answer: "def {{action_verb}}_{{item_singular}}({{item_singular}}):"
     hints:
       - Start with the def keyword
       - End the line with a colon like if statements
@@ -24,10 +24,10 @@ exercises:
     objective: "Write a function that returns a computed value"
     title: Function with Return
     difficulty: 2
-    prompt: Define a function add that takes a and b, returns their sum
+    prompt: Define a function get_{{item_singular}} that takes {{id_var}}, returns the {{item_singular}}
     expected_answer: |
-      def add(a, b):
-          return a + b
+      def get_{{item_singular}}({{id_var}}):
+          return {{item_singular}}
     hints:
       - Use return to send back a value
       - The body is indented under the def line
@@ -50,8 +50,8 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: invocation
-    prompt: Call function add with arguments 5 and 3 (positional)
-    expected_answer: "add(5, 3)"
+    prompt: Call function get_{{item_singular}} with argument 1 (positional)
+    expected_answer: "get_{{item_singular}}(1)"
     hints:
       - Arguments are separated by commas
       - Order matters for positional args
@@ -67,11 +67,11 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: invocation
-    prompt: Call greet with name="Alice" as a keyword argument
-    expected_answer: 'greet(name="Alice")'
+    prompt: Call {{action_verb}}_{{item_singular}} with {{item_singular}}="{{item_example}}" as a keyword argument
+    expected_answer: '{{action_verb}}_{{item_singular}}({{item_singular}}="{{item_example}}")'
     accepted_solutions:
-      - 'greet(name="Alice")'
-      - "greet(name='Alice')"
+      - '{{action_verb}}_{{item_singular}}({{item_singular}}="{{item_example}}")'
+      - "{{action_verb}}_{{item_singular}}({{item_singular}}='{{item_example}}')"
     hints:
       - Use name=value syntax
       - The parameter name goes before the equals sign
@@ -87,11 +87,11 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: invocation
-    prompt: Call connect with "localhost" positional, port=8080 keyword
-    expected_answer: 'connect("localhost", port=8080)'
+    prompt: Call add_{{item_singular}} with "{{item_example}}" positional, {{status_var}}=True keyword
+    expected_answer: 'add_{{item_singular}}("{{item_example}}", {{status_var}}=True)'
     accepted_solutions:
-      - 'connect("localhost", port=8080)'
-      - "connect('localhost', port=8080)"
+      - 'add_{{item_singular}}("{{item_example}}", {{status_var}}=True)'
+      - "add_{{item_singular}}('{{item_example}}', {{status_var}}=True)"
     hints:
       - Positional arguments come first
       - Keyword arguments follow positional ones
@@ -101,8 +101,8 @@ exercises:
     objective: "Use **kwargs to accept variable keyword arguments"
     title: Keyword Arguments
     difficulty: 3
-    prompt: Define a function config that accepts any keyword arguments
-    expected_answer: "def config(**kwargs):"
+    prompt: Define a function configure_{{item_singular}} that accepts any keyword arguments
+    expected_answer: "def configure_{{item_singular}}(**kwargs):"
     hints:
       - Use **kwargs (double asterisk) for keyword arguments
       - kwargs becomes a dictionary of name=value pairs
@@ -125,8 +125,8 @@ exercises:
     prereqs: [foundations]
     type: write
     pattern: definition
-    prompt: Define a function called say_hello with no parameters
-    expected_answer: "def say_hello():"
+    prompt: Define a function called show_{{list_name}} with no parameters
+    expected_answer: "def show_{{list_name}}():"
     hints:
       - Empty parentheses () for no parameters
       - Still need the parentheses even with no args
@@ -142,11 +142,11 @@ exercises:
     prereqs: [functions.fn-basics]
     type: write
     pattern: invocation
-    prompt: Call function greet with argument "Alice"
-    expected_answer: greet("Alice")
+    prompt: Call function get_{{item_singular}} with argument "{{item_example}}"
+    expected_answer: 'get_{{item_singular}}("{{item_example}}")'
     accepted_solutions:
-      - 'greet("Alice")'
-      - "greet('Alice')"
+      - 'get_{{item_singular}}("{{item_example}}")'
+      - "get_{{item_singular}}('{{item_example}}')"
     hints:
       - Function name followed by parentheses
       - Arguments go inside the parentheses
@@ -162,8 +162,8 @@ exercises:
     prereqs: [functions.fn-basics]
     type: write
     pattern: definition
-    prompt: Return both x and y from a function (tuple return)
-    expected_answer: return x, y
+    prompt: Return both {{attr_key_1}} and {{attr_key_2}} from a function (tuple return)
+    expected_answer: return {{attr_key_1}}, {{attr_key_2}}
     hints:
       - Comma-separated values become a tuple
       - Caller can unpack with a, b = func()
@@ -180,11 +180,11 @@ exercises:
     prereqs: [functions.arguments]
     type: write
     pattern: definition
-    prompt: Define func(a, *, b) where b must be passed as keyword
-    expected_answer: "def func(a, *, b):"
+    prompt: Define {{action_verb}}_{{item_singular}}({{id_var}}, *, {{status_var}}) where {{status_var}} must be passed as keyword
+    expected_answer: "def {{action_verb}}_{{item_singular}}({{id_var}}, *, {{status_var}}):"
     hints:
       - "Bare '*' separates positional from keyword-only params"
-      - "Call with func(1, b=2), not func(1, 2)"
+      - "Call with {{action_verb}}_{{item_singular}}(1, {{status_var}}=True), not {{action_verb}}_{{item_singular}}(1, True)"
     tags: [functions, arguments, keyword-only]
 
   - slug: positional-only-args
@@ -197,8 +197,8 @@ exercises:
     prereqs: [functions.arguments]
     type: write
     pattern: definition
-    prompt: Define func(a, /, b) where a must be passed positionally
-    expected_answer: "def func(a, /, b):"
+    prompt: Define get_{{item_singular}}({{id_var}}, /, {{attr_key_1}}) where {{id_var}} must be passed positionally
+    expected_answer: "def get_{{item_singular}}({{id_var}}, /, {{attr_key_1}}):"
     hints:
       - / separates positional-only from other params
       - Python 3.8+ feature
@@ -215,8 +215,12 @@ exercises:
     prereqs: [functions.fn-basics]
     type: write
     pattern: definition
-    prompt: Create a lambda that doubles its input x
-    expected_answer: "lambda x: x * 2"
+    prompt: Create a lambda that doubles the {{item_singular}}_count input
+    expected_answer: "lambda {{item_singular}}_count: {{item_singular}}_count * 2"
+    accepted_solutions:
+      - "lambda {{item_singular}}_count: {{item_singular}}_count * 2"
+      - "lambda x: x * 2"
+      - "lambda n: n * 2"
     hints:
       - "Format is: lambda args: expression"
       - No def keyword, no return keyword needed
@@ -232,8 +236,12 @@ exercises:
     prereqs: [functions.lambda]
     type: write
     pattern: definition
-    prompt: Create a lambda that adds two numbers x and y
-    expected_answer: "lambda x, y: x + y"
+    prompt: Create a lambda that adds {{attr_key_1}} and {{attr_key_2}} values together
+    expected_answer: "lambda {{attr_key_1}}, {{attr_key_2}}: {{attr_key_1}} + {{attr_key_2}}"
+    accepted_solutions:
+      - "lambda {{attr_key_1}}, {{attr_key_2}}: {{attr_key_1}} + {{attr_key_2}}"
+      - "lambda a, b: a + b"
+      - "lambda x, y: x + y"
     hints:
       - Multiple args separated by comma before the colon
       - Expression after colon is the return value
@@ -249,14 +257,14 @@ exercises:
     prereqs: [functions.lambda]
     type: write
     pattern: definition
-    prompt: Create a lambda that returns "even" if x is even, "odd" otherwise
-    expected_answer: 'lambda x: "even" if x % 2 == 0 else "odd"'
+    prompt: Create a lambda that returns "{{status_var}}" if is_{{status_var}} is True, "pending" otherwise
+    expected_answer: 'lambda is_{{status_var}}: "{{status_var}}" if is_{{status_var}} else "pending"'
     accepted_solutions:
-      - 'lambda x: "even" if x % 2 == 0 else "odd"'
-      - "lambda x: 'even' if x % 2 == 0 else 'odd'"
+      - 'lambda is_{{status_var}}: "{{status_var}}" if is_{{status_var}} else "pending"'
+      - "lambda is_{{status_var}}: '{{status_var}}' if is_{{status_var}} else 'pending'"
     hints:
       - "Use ternary: value_if_true if condition else value_if_false"
-      - Use modulo (%) to check even/odd
+      - Boolean variables don't need == True comparison
     tags: [functions, lambda, conditional]
 
   - slug: sorted-key-lambda
@@ -270,8 +278,12 @@ exercises:
     type: write
     pattern: construction
     targets: [lambda, lists]
-    prompt: Sort list of tuples by second element using lambda
-    expected_answer: "sorted(items, key=lambda x: x[1])"
+    prompt: Sort {{list_name}} by second element ({{attr_key_2}}) using lambda
+    expected_answer: "sorted({{list_name}}, key=lambda x: x[1])"
+    accepted_solutions:
+      - "sorted({{list_name}}, key=lambda x: x[1])"
+      - "sorted({{list_name}}, key=lambda item: item[1])"
+      - "sorted({{list_name}}, key=lambda t: t[1])"
     hints:
       - Use key parameter
       - Lambda extracts sort key
@@ -333,8 +345,8 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: declaration
-    prompt: Declare counter as a global variable inside a function
-    expected_answer: global counter
+    prompt: Declare {{item_singular}}_count as a global variable inside a function
+    expected_answer: global {{item_singular}}_count
     hints:
       - Use global keyword
       - Declares that variable refers to module-level scope
@@ -350,8 +362,8 @@ exercises:
     prereqs: [functions.scope]
     type: write
     pattern: declaration
-    prompt: Access outer function variable x from inner function using nonlocal
-    expected_answer: nonlocal x
+    prompt: Access outer function variable {{item_singular}}_count from inner function using nonlocal
+    expected_answer: nonlocal {{item_singular}}_count
     hints:
       - nonlocal for enclosing scope
       - Not global, not local
@@ -368,8 +380,8 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: definition
-    prompt: Define greet(name) with name typed as str
-    expected_answer: "def greet(name: str):"
+    prompt: Define get_{{item_singular}}({{attr_key_1}}) with {{attr_key_1}} typed as str
+    expected_answer: "def get_{{item_singular}}({{attr_key_1}}: str):"
     hints:
       - "Use : type after parameter"
       - Type hints are optional but improve IDE support
@@ -385,8 +397,8 @@ exercises:
     prereqs: [functions.typehints]
     type: write
     pattern: definition
-    prompt: Define add(a, b) returning int
-    expected_answer: "def add(a, b) -> int:"
+    prompt: Define count_{{list_name}}({{list_name}}) returning int
+    expected_answer: "def count_{{list_name}}({{list_name}}) -> int:"
     hints:
       - Use -> type before colon
       - Return type annotation comes after parameters
@@ -402,11 +414,14 @@ exercises:
     prereqs: [functions.typehints]
     type: write
     pattern: definition
-    prompt: Define process(items) with items typed as list[int]
-    expected_answer: "def process(items: list[int]):"
+    prompt: Define process_{{list_name}}({{list_name}}) with {{list_name}} typed as list[str]
+    expected_answer: "def process_{{list_name}}({{list_name}}: list[str]):"
+    accepted_solutions:
+      - "def process_{{list_name}}({{list_name}}: list[str]):"
+      - "def process_{{list_name}}({{list_name}}: List[str]):"
     hints:
       - Generic types use []
-      - Python 3.9+ allows list[int] directly
+      - Python 3.9+ allows list[str] directly
     tags: [functions, typehints, generic]
 
   - slug: typehint-optional
@@ -419,11 +434,11 @@ exercises:
     prereqs: [functions.typehints]
     type: write
     pattern: definition
-    prompt: Define find(name) with name typed as str or None
-    expected_answer: "def find(name: str | None):"
+    prompt: Define find_{{item_singular}}({{attr_key_1}}) with {{attr_key_1}} typed as str or None
+    expected_answer: "def find_{{item_singular}}({{attr_key_1}}: str | None):"
     accepted_solutions:
-      - "def find(name: str | None):"
-      - "def find(name: Optional[str]):"
+      - "def find_{{item_singular}}({{attr_key_1}}: str | None):"
+      - "def find_{{item_singular}}({{attr_key_1}}: Optional[str]):"
     hints:
       - Use | None for optional
       - Or Optional[type]
@@ -440,8 +455,8 @@ exercises:
     type: write
     pattern: definition
     targets: [typehints, lambda]
-    prompt: Define apply(func) where func is a callable taking int and returning int
-    expected_answer: "def apply(func: Callable[[int], int]):"
+    prompt: Define {{action_verb}}_{{item_singular}}(func) where func is a callable taking int and returning int
+    expected_answer: "def {{action_verb}}_{{item_singular}}(func: Callable[[int], int]):"
     hints:
       - Callable[[args], return]
       - Import from typing
@@ -458,11 +473,8 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: definition
-    prompt: Define function greet with name parameter defaulting to "World"
-    expected_answer: 'def greet(name="World"):'
-    accepted_solutions:
-      - 'def greet(name="World"):'
-      - "def greet(name='World'):"
+    prompt: Define function get_{{item_singular}} with {{id_var}} parameter defaulting to 1
+    expected_answer: "def get_{{item_singular}}({{id_var}}=1):"
     hints:
       - Use = to set the default value
       - Default goes after the parameter name
@@ -478,11 +490,8 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: definition
-    prompt: Define greet(name, greeting="Hello") with a default greeting
-    expected_answer: 'def greet(name, greeting="Hello"):'
-    accepted_solutions:
-      - 'def greet(name, greeting="Hello"):'
-      - "def greet(name, greeting='Hello'):"
+    prompt: Define add_{{item_singular}}({{item_singular}}, {{status_var}}=False) with a default status
+    expected_answer: "def add_{{item_singular}}({{item_singular}}, {{status_var}}=False):"
     hints:
       - Default values use =
       - Put defaults after required params
@@ -498,8 +507,11 @@ exercises:
     prereqs: [functions.defaults]
     type: write
     pattern: definition
-    prompt: Define connect(host, port=8080, timeout=30) with two defaults
-    expected_answer: "def connect(host, port=8080, timeout=30):"
+    prompt: Define create_{{item_singular}}({{attr_key_1}}, {{attr_key_2}}="medium", {{status_var}}=False) with two defaults
+    expected_answer: 'def create_{{item_singular}}({{attr_key_1}}, {{attr_key_2}}="medium", {{status_var}}=False):'
+    accepted_solutions:
+      - 'def create_{{item_singular}}({{attr_key_1}}, {{attr_key_2}}="medium", {{status_var}}=False):'
+      - "def create_{{item_singular}}({{attr_key_1}}, {{attr_key_2}}='medium', {{status_var}}=False):"
     hints:
       - Multiple defaults follow same pattern
       - Required params come first
@@ -515,8 +527,8 @@ exercises:
     prereqs: [functions.defaults]
     type: write
     pattern: definition
-    prompt: Define append_to(item, target=None) with None as default
-    expected_answer: "def append_to(item, target=None):"
+    prompt: Define add_{{item_singular}}({{item_singular}}, {{list_name}}=None) with None as default
+    expected_answer: "def add_{{item_singular}}({{item_singular}}, {{list_name}}=None):"
     hints:
       - None is safe default for mutables
       - Check for None inside function
@@ -551,8 +563,8 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: definition
-    prompt: Define a function sum_all that accepts any number of positional arguments
-    expected_answer: "def sum_all(*args):"
+    prompt: Define a function combine_{{list_name}} that accepts any number of positional arguments
+    expected_answer: "def combine_{{list_name}}(*args):"
     hints:
       - Use * before parameter name
       - args is a tuple inside function
@@ -568,8 +580,8 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: definition
-    prompt: Define a function build_config that accepts any keyword arguments
-    expected_answer: "def build_config(**kwargs):"
+    prompt: Define a function build_{{item_singular}} that accepts any keyword arguments
+    expected_answer: "def build_{{item_singular}}(**kwargs):"
     hints:
       - Use ** before parameter name
       - kwargs is a dict inside function
@@ -585,8 +597,8 @@ exercises:
     prereqs: [functions.args-kwargs]
     type: write
     pattern: definition
-    prompt: Define a function wrapper that accepts any positional and keyword arguments
-    expected_answer: "def wrapper(*args, **kwargs):"
+    prompt: Define a function {{action_verb}}_{{item_singular}} that accepts any positional and keyword arguments
+    expected_answer: "def {{action_verb}}_{{item_singular}}(*args, **kwargs):"
     hints:
       - "*args comes before **kwargs"
       - Order is required, *args, **kwargs
@@ -621,8 +633,8 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Fill in the keyword that defines a function
-    template: "___ greet(name):"
+    prompt: Fill in the keyword that defines a function for {{action_verb}}ing {{item_plural}}
+    template: "___ {{action_verb}}_{{item_singular}}({{item_singular}}):"
     expected_answer: "def"
     hints:
       - Keyword that starts function definition
@@ -640,10 +652,10 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Fill in the keyword that returns a value from a function
+    prompt: Fill in the keyword that returns the {{item_singular}} from the function
     template: |
-      def add(a, b):
-          ___ a + b
+      def get_{{item_singular}}({{id_var}}):
+          ___ {{item_singular}}
     expected_answer: "return"
     hints:
       - Keyword to send value back to caller
@@ -661,8 +673,8 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Fill in the keyword for an anonymous function
-    template: "double = ___ x: x * 2"
+    prompt: Fill in the keyword for an anonymous function to double the {{item_singular}}_count
+    template: "double_{{item_singular}} = ___ {{item_singular}}_count: {{item_singular}}_count * 2"
     expected_answer: "lambda"
     hints:
       - Keyword for anonymous functions
@@ -680,8 +692,8 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Fill in the operator that assigns a default value
-    template: 'def greet(name, greeting___"Hello"):'
+    prompt: Fill in the operator that assigns a default value to {{status_var}}
+    template: 'def add_{{item_singular}}({{item_singular}}, {{status_var}}___False):'
     expected_answer: "="
     hints:
       - Assignment operator for defaults
@@ -699,8 +711,8 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Fill in the prefix for variable positional arguments
-    template: "def sum_all(___args):"
+    prompt: Fill in the prefix for variable positional arguments when combining {{item_plural}}
+    template: "def combine_{{list_name}}(___args):"
     expected_answer: "*"
     hints:
       - Single asterisk for positional args
@@ -718,8 +730,8 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Fill in the prefix for variable keyword arguments
-    template: "def config(___kwargs):"
+    prompt: Fill in the prefix for variable keyword arguments when building a {{item_singular}}
+    template: "def build_{{item_singular}}(___kwargs):"
     expected_answer: "**"
     hints:
       - Double asterisk for keyword args
@@ -737,15 +749,15 @@ exercises:
     prereqs: [fn-basics]
     type: predict
     pattern: invocation
-    prompt: What does this code print?
+    prompt: What does this function addition code print?
     code: |
-      def add(a, b):
-          return a + b
-      print(add(3, 4))
+      def add_{{item_plural}}({{attr_key_1}}, {{attr_key_2}}):
+          return {{attr_key_1}} + {{attr_key_2}}
+      print(add_{{item_plural}}(3, 4))
     expected_answer: "7"
     hints:
-      - Function returns sum of arguments
-      - add(3, 4) computes 3 + 4
+      - Function returns sum of {{item_singular}} arguments
+      - add_{{item_plural}}(3, 4) computes 3 + 4
     tags: [functions, return, predict]
 
   - slug: default-param-predict
@@ -758,15 +770,15 @@ exercises:
     prereqs: [functions.defaults]
     type: predict
     pattern: invocation
-    prompt: What does this code print?
+    prompt: What does this default parameter code print?
     code: |
-      def greet(name, greeting="Hello"):
-          return f"{greeting}, {name}!"
-      print(greet("Alice"))
-    expected_answer: "Hello, Alice!"
+      def {{action_verb}}_{{item_singular}}({{item_singular}}_name, {{status_var}}="{{item_example}}"):
+          return f"{{{status_var}}}, {{{item_singular}}_name}!"
+      print({{action_verb}}_{{item_singular}}("User"))
+    expected_answer: "{{item_example}}, User!"
     hints:
       - Default value is used when not provided
-      - Only name is passed, so greeting uses its default
+      - Only {{item_singular}}_name is passed, so {{status_var}} uses its default
     tags: [functions, defaults, predict]
 
   - slug: lambda-predict
@@ -779,14 +791,14 @@ exercises:
     prereqs: [functions.lambda]
     type: predict
     pattern: invocation
-    prompt: What does this code print?
+    prompt: What does this lambda expression print?
     code: |
-      double = lambda x: x * 2
-      print(double(5))
+      double_{{item_singular}} = lambda {{item_singular}}_count: {{item_singular}}_count * 2
+      print(double_{{item_singular}}(5))
     expected_answer: "10"
     hints:
-      - Lambda multiplies input by 2
-      - double(5) evaluates 5 * 2
+      - Lambda multiplies {{item_singular}}_count by 2
+      - double_{{item_singular}}(5) evaluates 5 * 2
     tags: [functions, lambda, predict]
 
   - slug: scope-predict
@@ -799,20 +811,20 @@ exercises:
     prereqs: [functions.scope]
     type: predict
     pattern: scope
-    prompt: What does this code print?
+    prompt: What does this variable scope code print?
     code: |
-      x = 10
-      def foo():
-          x = 20
-          print(x)
-      foo()
-      print(x)
+      {{item_singular}}_count = 10
+      def {{action_verb}}_{{item_singular}}():
+          {{item_singular}}_count = 20
+          print({{item_singular}}_count)
+      {{action_verb}}_{{item_singular}}()
+      print({{item_singular}}_count)
     expected_answer: |
       20
       10
     hints:
-      - Local x shadows global x inside function
-      - Global x is unchanged after function returns
+      - Local {{item_singular}}_count shadows global inside function
+      - Global {{item_singular}}_count is unchanged after function returns
     tags: [functions, scope, predict]
 
   - slug: args-predict
@@ -825,15 +837,15 @@ exercises:
     prereqs: [functions.args-kwargs]
     type: predict
     pattern: invocation
-    prompt: What does this code print?
+    prompt: What does this *args code print?
     code: |
-      def show(*args):
+      def count_{{item_plural}}(*args):
           print(len(args))
-      show(1, 2, 3, 4)
+      count_{{item_plural}}(1, 2, 3, 4)
     expected_answer: "4"
     hints:
-      - args is a tuple of all positional arguments
-      - 4 arguments were passed to show()
+      - args is a tuple of all {{item_singular}} arguments
+      - 4 {{item_plural}} were passed to count_{{item_plural}}()
     tags: [functions, args, predict]
 
   - slug: mutable-default-predict
@@ -846,18 +858,18 @@ exercises:
     prereqs: [functions.defaults]
     type: predict
     pattern: gotcha
-    prompt: What does this code print?
+    prompt: What does this mutable default code print?
     code: |
-      def add_item(item, items=[]):
-          items.append(item)
-          return items
-      print(add_item(1))
-      print(add_item(2))
+      def add_{{item_singular}}({{item_singular}}, {{list_name}}=[]):
+          {{list_name}}.append({{item_singular}})
+          return {{list_name}}
+      print(add_{{item_singular}}(1))
+      print(add_{{item_singular}}(2))
     expected_answer: |
       [1]
       [1, 2]
     hints:
-      - Mutable defaults are shared between calls
+      - Mutable defaults are shared between {{item_singular}} calls
       - This is a common Python gotcha
     tags: [functions, mutable, gotcha, predict]
 

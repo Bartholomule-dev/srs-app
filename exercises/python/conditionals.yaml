@@ -5,8 +5,8 @@ category: conditionals
 exercises:
   # --- If-Else Subconcept ---
   - slug: if-else-basic
-    objective: Implement a service health check with pass/fail status
-    title: Health Check Status
+    objective: Implement conditional logic with pass/fail status
+    title: Status Check
     difficulty: 1
     concept: conditionals
     subconcept: if-else
@@ -14,31 +14,31 @@ exercises:
     prereqs: [comparisons]
     type: write
     pattern: branching
-    prompt: Write an if-else that prints "healthy" if response_time < 200, otherwise "degraded"
+    prompt: 'Write an if-else that prints "{{item_singular}} {{status_var}}" if {{status_var}} is True, otherwise "{{item_singular}} pending"'
     expected_answer: |
-      if response_time < 200:
-          print("healthy")
+      if {{status_var}}:
+          print("{{item_singular}} {{status_var}}")
       else:
-          print("degraded")
+          print("{{item_singular}} pending")
     accepted_solutions:
       - |
-        if response_time < 200:
-            print("healthy")
+        if {{status_var}}:
+            print("{{item_singular}} {{status_var}}")
         else:
-            print("degraded")
+            print("{{item_singular}} pending")
       - |
-        if response_time < 200:
-            print('healthy')
+        if {{status_var}}:
+            print('{{item_singular}} {{status_var}}')
         else:
-            print('degraded')
+            print('{{item_singular}} pending')
     hints:
       - if condition followed by colon
       - else also needs a colon
-    tags: [if, else, monitoring]
+    tags: [if, else]
 
   - slug: if-statement
-    objective: Write a feature flag guard clause
-    title: Feature Flag Check
+    objective: Write a guard clause to check status
+    title: Status Guard Check
     difficulty: 1
     concept: conditionals
     subconcept: if-else
@@ -46,28 +46,25 @@ exercises:
     prereqs: [comparisons]
     type: write
     pattern: branching
-    prompt: Write an if statement that prints "Feature enabled" if feature_enabled is True
+    prompt: Write an if statement that prints "{{entity_name}} found" if {{item_singular}} is truthy
     expected_answer: |
-      if feature_enabled:
-          print("Feature enabled")
+      if {{item_singular}}:
+          print("{{entity_name}} found")
     accepted_solutions:
       - |
-        if feature_enabled:
-            print("Feature enabled")
+        if {{item_singular}}:
+            print("{{entity_name}} found")
       - |
-        if feature_enabled:
-            print('Feature enabled')
-      - |
-        if feature_enabled == True:
-            print("Feature enabled")
+        if {{item_singular}}:
+            print('{{entity_name}} found')
     hints:
-      - Booleans can be checked directly
+      - Variables can be checked directly for truthiness
       - Don't forget the colon
-    tags: [if, feature-flag]
+    tags: [if, guard]
 
   - slug: if-membership
-    objective: Implement role-based access control with membership check
-    title: RBAC Permission Check
+    objective: Check if an item exists in a collection
+    title: Membership Check
     difficulty: 2
     concept: conditionals
     subconcept: if-else
@@ -75,21 +72,21 @@ exercises:
     prereqs: [if-else]
     type: write
     pattern: branching
-    prompt: Check if "admin" is in the user_roles list and print "Access granted"
+    prompt: Check if "{{item_example}}" is in the {{list_name}} list and print "{{entity_name}} exists"
     expected_answer: |
-      if "admin" in user_roles:
-          print("Access granted")
+      if "{{item_example}}" in {{list_name}}:
+          print("{{entity_name}} exists")
     accepted_solutions:
       - |
-        if "admin" in user_roles:
-            print("Access granted")
+        if "{{item_example}}" in {{list_name}}:
+            print("{{entity_name}} exists")
       - |
-        if 'admin' in user_roles:
-            print('Access granted')
+        if '{{item_example}}' in {{list_name}}:
+            print('{{entity_name}} exists')
     hints:
       - Use 'in' operator for membership
-      - Common pattern for RBAC checks
-    tags: [if, membership, rbac, security]
+      - Common pattern for checking existence
+    tags: [if, membership]
 
   - slug: if-not-condition
     objective: Use negation in conditional logic
@@ -101,20 +98,20 @@ exercises:
     prereqs: [if-else]
     type: write
     pattern: branching
-    prompt: Print "Empty cart" if the cart list is empty
+    prompt: Print "Empty {{list_name}}" if the {{list_name}} list is empty
     expected_answer: |
-      if not cart:
-          print("Empty cart")
+      if not {{list_name}}:
+          print("Empty {{list_name}}")
     accepted_solutions:
       - |
-        if not cart:
-            print("Empty cart")
+        if not {{list_name}}:
+            print("Empty {{list_name}}")
       - |
-        if not cart:
-            print('Empty cart')
+        if not {{list_name}}:
+            print('Empty {{list_name}}')
       - |
-        if len(cart) == 0:
-            print("Empty cart")
+        if len({{list_name}}) == 0:
+            print("Empty {{list_name}}")
     hints:
       - Empty lists are falsy in Python
       - Use 'not' for negation
@@ -131,10 +128,10 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: branching
-    prompt: Fill in the character that ends the if condition
+    prompt: Fill in the character that ends the {{item_singular}} check condition
     template: |
-      if temperature > 30___
-          print("Hot day!")
+      if {{item_singular}}_count > 30___
+          print("High {{item_singular}} count!")
     expected_answer: ":"
     hints:
       - What ends the if condition line?
@@ -152,12 +149,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: branching
-    prompt: Fill in the keyword for the alternative case
+    prompt: Fill in the keyword for the alternative {{item_singular}} case
     template: |
-      if logged_in:
-          show_dashboard()
+      if is_{{status_var}}:
+          {{action_verb}}_{{item_singular}}()
       ___:
-          show_login()
+          show_{{item_singular}}_error()
     expected_answer: "else"
     hints:
       - What keyword handles the alternative case?
@@ -174,14 +171,14 @@ exercises:
     prereqs: [if-else]
     type: predict
     pattern: branching
-    prompt: What does this code print?
+    prompt: What does this if-else code print?
     code: |
-      price = 150
-      if price > 100:
-          print("Expensive")
+      {{item_singular}}_count = 150
+      if {{item_singular}}_count > 100:
+          print("High")
       else:
-          print("Affordable")
-    expected_answer: "Expensive"
+          print("Normal")
+    expected_answer: "High"
     hints:
       - 150 > 100 is True
       - True condition executes first block
@@ -197,11 +194,11 @@ exercises:
     prereqs: [if-else]
     type: predict
     pattern: branching
-    prompt: What does this code print?
+    prompt: What does this truthiness check print?
     code: |
-      items = []
-      if items:
-          print("Has items")
+      {{list_name}} = []
+      if {{list_name}}:
+          print("Has {{item_plural}}")
       else:
           print("Empty")
     expected_answer: "Empty"
@@ -222,20 +219,39 @@ exercises:
     type: write
     pattern: branching
     prompt: |
-      Assign grade based on score:
+      Assign {{item_singular}}_grade based on {{item_singular}}_score:
       90+ = "A", 80+ = "B", 70+ = "C", else "F"
     expected_answer: |
-      if score >= 90:
-          grade = "A"
-      elif score >= 80:
-          grade = "B"
-      elif score >= 70:
-          grade = "C"
+      if {{item_singular}}_score >= 90:
+          {{item_singular}}_grade = "A"
+      elif {{item_singular}}_score >= 80:
+          {{item_singular}}_grade = "B"
+      elif {{item_singular}}_score >= 70:
+          {{item_singular}}_grade = "C"
       else:
-          grade = "F"
+          {{item_singular}}_grade = "F"
+    accepted_solutions:
+      - |
+        if {{item_singular}}_score >= 90:
+            {{item_singular}}_grade = "A"
+        elif {{item_singular}}_score >= 80:
+            {{item_singular}}_grade = "B"
+        elif {{item_singular}}_score >= 70:
+            {{item_singular}}_grade = "C"
+        else:
+            {{item_singular}}_grade = "F"
+      - |
+        if {{item_singular}}_score >= 90:
+            {{item_singular}}_grade = 'A'
+        elif {{item_singular}}_score >= 80:
+            {{item_singular}}_grade = 'B'
+        elif {{item_singular}}_score >= 70:
+            {{item_singular}}_grade = 'C'
+        else:
+            {{item_singular}}_grade = 'F'
     hints:
-      - Check highest threshold first
-      - Each elif checks progressively lower scores
+      - Check highest {{item_singular}} threshold first
+      - Each elif checks progressively lower {{item_singular}} scores
     tags: [elif, branching, grading]
 
   - slug: elif-http-status
@@ -295,12 +311,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: branching
-    prompt: Fill in the keyword for an additional condition branch
+    prompt: Fill in the keyword for an additional {{item_singular}} condition branch
     template: |
-      if x > 10:
-          print("Large")
-      ___ x > 5:
-          print("Medium")
+      if {{item_singular}}_count > 10:
+          print("Many {{item_plural}}")
+      ___ {{item_singular}}_count > 5:
+          print("Some {{item_plural}}")
     expected_answer: "elif"
     hints:
       - Combines else and if
@@ -317,16 +333,16 @@ exercises:
     prereqs: [elif-chains]
     type: predict
     pattern: branching
-    prompt: What does this code print?
+    prompt: What does this elif grading code print?
     code: |
-      score = 85
-      if score >= 70:
-          grade = "C"
-      elif score >= 80:
-          grade = "B"
-      elif score >= 90:
-          grade = "A"
-      print(grade)
+      {{item_singular}}_score = 85
+      if {{item_singular}}_score >= 70:
+          {{item_singular}}_grade = "C"
+      elif {{item_singular}}_score >= 80:
+          {{item_singular}}_grade = "B"
+      elif {{item_singular}}_score >= 90:
+          {{item_singular}}_grade = "A"
+      print({{item_singular}}_grade)
     expected_answer: "C"
     hints:
       - Conditions checked top to bottom
@@ -343,14 +359,14 @@ exercises:
     prereqs: [elif-chains]
     type: predict
     pattern: branching
-    prompt: What does this code print?
+    prompt: What does this elif threshold code print?
     code: |
-      value = 100
-      if value > 50:
+      {{item_singular}}_value = 100
+      if {{item_singular}}_value > 50:
           print("A")
-      elif value > 75:
+      elif {{item_singular}}_value > 75:
           print("B")
-      elif value > 90:
+      elif {{item_singular}}_value > 90:
           print("C")
     expected_answer: "A"
     hints:
@@ -369,11 +385,11 @@ exercises:
     prereqs: [if-else]
     type: write
     pattern: expression
-    prompt: Set status_color to "green" if is_healthy else "red" using ternary
-    expected_answer: status_color = "green" if is_healthy else "red"
+    prompt: Set {{item_singular}}_status to "{{status_var}}" if is_{{status_var}} else "pending" using ternary
+    expected_answer: '{{item_singular}}_status = "{{status_var}}" if is_{{status_var}} else "pending"'
     accepted_solutions:
-      - status_color = "green" if is_healthy else "red"
-      - status_color = 'green' if is_healthy else 'red'
+      - '{{item_singular}}_status = "{{status_var}}" if is_{{status_var}} else "pending"'
+      - "{{item_singular}}_status = '{{status_var}}' if is_{{status_var}} else 'pending'"
     hints:
       - Format is value_if_true if condition else value_if_false
       - Common pattern for dashboard indicators
@@ -401,8 +417,8 @@ exercises:
     tags: [ternary, max, expression]
 
   - slug: ternary-default
-    objective: Provide a fallback display name when user hasn't set one
-    title: Fallback Display Name
+    objective: Provide a fallback value when variable hasn't been set
+    title: Fallback Value
     difficulty: 2
     concept: conditionals
     subconcept: ternary
@@ -410,15 +426,15 @@ exercises:
     prereqs: [ternary]
     type: write
     pattern: expression
-    prompt: Set display_name to username if username exists, else "Anonymous"
-    expected_answer: display_name = username if username else "Anonymous"
+    prompt: Set display_{{item_singular}} to {{item_singular}} if {{item_singular}} exists, else "Unknown"
+    expected_answer: 'display_{{item_singular}} = {{item_singular}} if {{item_singular}} else "Unknown"'
     accepted_solutions:
-      - display_name = username if username else "Anonymous"
-      - display_name = username if username else 'Anonymous'
+      - 'display_{{item_singular}} = {{item_singular}} if {{item_singular}} else "Unknown"'
+      - "display_{{item_singular}} = {{item_singular}} if {{item_singular}} else 'Unknown'"
     hints:
-      - Truthy check on username
+      - Truthy check on {{item_singular}}
       - Empty string or None would use fallback
-    tags: [ternary, default, user-profile]
+    tags: [ternary, default, fallback]
 
   - slug: ternary-fill
     objective: Complete the ternary syntax
@@ -431,11 +447,11 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: expression
-    prompt: Fill in the keyword that provides the alternative value
-    template: 'status = "online" if connected ___ "offline"'
+    prompt: Fill in the keyword that provides the alternative {{item_singular}} value
+    template: '{{item_singular}}_status = "{{status_var}}" if is_{{status_var}} ___ "pending"'
     expected_answer: "else"
     hints:
-      - What separates the two possible values?
+      - What separates the two possible {{item_singular}} values?
       - Keyword that provides the alternative
     tags: [ternary, fill-in]
 
@@ -449,15 +465,15 @@ exercises:
     prereqs: [ternary]
     type: predict
     pattern: expression
-    prompt: What does this code print?
+    prompt: What does this ternary expression print?
     code: |
-      balance = 50
-      status = "low" if balance < 100 else "ok"
-      print(status)
+      {{item_singular}}_count = 50
+      {{item_singular}}_status = "low" if {{item_singular}}_count < 100 else "ok"
+      print({{item_singular}}_status)
     expected_answer: "low"
     hints:
       - 50 < 100 is True
-      - True returns the first value
+      - True returns the first {{item_singular}} value
     tags: [ternary, predict]
 
   - slug: ternary-nested-predict
@@ -470,11 +486,11 @@ exercises:
     prereqs: [ternary]
     type: predict
     pattern: expression
-    prompt: What does this code print?
+    prompt: What does this nested ternary expression print?
     code: |
-      score = 85
-      grade = "A" if score >= 90 else "B" if score >= 80 else "C"
-      print(grade)
+      {{item_singular}}_score = 85
+      {{item_singular}}_grade = "A" if {{item_singular}}_score >= 90 else "B" if {{item_singular}}_score >= 80 else "C"
+      print({{item_singular}}_grade)
     expected_answer: "B"
     hints:
       - 85 >= 90 is False
@@ -643,15 +659,15 @@ exercises:
     pattern: idiomatic
     prompt: Which is more Pythonic? What does Option B print?
     code: |
-      items = []
+      {{list_name}} = []
 
       # Option A (verbose)
-      if len(items) > 0:
-          print("Has items")
+      if len({{list_name}}) > 0:
+          print("Has {{item_plural}}")
 
       # Option B (Pythonic)
-      if items:
-          print("Has items")
+      if {{list_name}}:
+          print("Has {{item_plural}}")
       else:
           print("Empty")
     expected_answer: "Empty"
@@ -670,17 +686,17 @@ exercises:
     prereqs: [if-else, identity]
     type: write
     pattern: idiomatic
-    prompt: Check if result is None the Pythonic way
+    prompt: Check if {{item_singular}} is None the Pythonic way
     expected_answer: |
-      if result is None:
-          print("No result")
+      if {{item_singular}} is None:
+          print("No {{item_singular}}")
     accepted_solutions:
       - |
-        if result is None:
-            print("No result")
+        if {{item_singular}} is None:
+            print("No {{item_singular}}")
       - |
-        if result is None:
-            print('No result')
+        if {{item_singular}} is None:
+            print('No {{item_singular}}')
     hints:
       - Use 'is' for None checks, not ==
       - is checks identity, == checks equality

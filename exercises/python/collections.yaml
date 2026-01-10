@@ -14,11 +14,14 @@ exercises:
     prereqs: [foundations]
     type: write
     pattern: construction
-    prompt: Create an empty list called items
-    expected_answer: items = []
+    prompt: Create an empty list called {{list_name}}
+    expected_answer: "{{list_name}} = []"
+    accepted_solutions:
+      - "{{list_name}} = []"
+      - "{{list_name}} = list()"
     hints:
       - Use empty square brackets []
-      - Assign to the variable name items
+      - Assign to the variable name {{list_name}}
     tags: [lists, creation, beginner]
 
   - slug: list-create-values
@@ -31,11 +34,15 @@ exercises:
     prereqs: [foundations]
     type: write
     pattern: construction
-    prompt: Create a list with values 1, 2, 3
-    expected_answer: "[1, 2, 3]"
+    prompt: Create a list called {{list_name}} containing "{{item_example}}", "default", "test"
+    expected_answer: '{{list_name}} = ["{{item_example}}", "default", "test"]'
+    accepted_solutions:
+      - '{{list_name}} = ["{{item_example}}", "default", "test"]'
+      - "{{list_name}} = ['{{item_example}}', 'default', 'test']"
     hints:
-      - Use square brackets
-      - Separate with commas
+      - Use square brackets for {{item_plural}}
+      - Assign to {{list_name}} with = operator
+      - Separate values with commas
     tags: [lists, creation, beginner]
 
   - slug: list-in-check
@@ -48,8 +55,11 @@ exercises:
     prereqs: [collections.lists]
     type: write
     pattern: query
-    prompt: Check if value 5 is in list items
-    expected_answer: 5 in items
+    prompt: Check if "{{item_example}}" is in {{list_name}}
+    expected_answer: '"{{item_example}}" in {{list_name}}'
+    accepted_solutions:
+      - '"{{item_example}}" in {{list_name}}'
+      - "'{{item_example}}' in {{list_name}}"
     hints:
       - Use the 'in' keyword between value and list
       - Returns True if found, False otherwise
@@ -65,11 +75,14 @@ exercises:
     prereqs: [collections.lists]
     type: write
     pattern: mutation
-    prompt: Extend list a with elements from list b
-    expected_answer: a.extend(b)
+    prompt: Extend {{list_name}} with {{item_plural}} from new_{{item_plural}}
+    expected_answer: "{{list_name}}.extend(new_{{item_plural}})"
+    accepted_solutions:
+      - "{{list_name}}.extend(new_{{item_plural}})"
+      - "{{list_name}} += new_{{item_plural}}"
     hints:
       - Use the extend() method
-      - Adds all elements from b to a
+      - Adds all {{item_plural}} from new_{{item_plural}} to {{list_name}}
     tags: [lists, extend, mutation]
 
   # Static list-insert removed - covered by list-insert-dynamic
@@ -84,11 +97,11 @@ exercises:
     prereqs: [collections.lists]
     type: write
     pattern: mutation
-    prompt: Remove and return the element at index 2 from list items
-    expected_answer: items.pop(2)
+    prompt: Remove and return the {{item_singular}} at index 2 from {{list_name}}
+    expected_answer: "{{list_name}}.pop(2)"
     hints:
       - Use pop() with the index as argument
-      - pop() both removes and returns the element
+      - pop() both removes and returns the {{item_singular}}
     tags: [lists, pop, mutation]
 
   - slug: list-index
@@ -101,14 +114,14 @@ exercises:
     prereqs: [collections.lists]
     type: write
     pattern: query
-    prompt: Find the index of value "apple" in list items
-    expected_answer: items.index("apple")
+    prompt: Find the index of "{{item_example}}" in {{list_name}}
+    expected_answer: '{{list_name}}.index("{{item_example}}")'
     accepted_solutions:
-      - 'items.index("apple")'
-      - "items.index('apple')"
+      - '{{list_name}}.index("{{item_example}}")'
+      - "{{list_name}}.index('{{item_example}}')"
     hints:
-      - Use the index() method with the value to find
-      - Returns the first position where the value is found
+      - Use the index() method with the {{item_singular}} to find
+      - Returns the first position where the {{item_singular}} is found
     tags: [lists, index, query]
 
   - slug: list-count
@@ -121,10 +134,13 @@ exercises:
     prereqs: [collections.lists]
     type: write
     pattern: query
-    prompt: Count occurrences of value 5 in list items
-    expected_answer: items.count(5)
+    prompt: Count occurrences of "{{item_example}}" in {{list_name}}
+    expected_answer: '{{list_name}}.count("{{item_example}}")'
+    accepted_solutions:
+      - '{{list_name}}.count("{{item_example}}")'
+      - "{{list_name}}.count('{{item_example}}')"
     hints:
-      - Use the count() method with the value to count
+      - Use the count() method with the {{item_singular}} to count
       - Returns 0 if not found, otherwise the count
     tags: [lists, count, query]
 
@@ -138,8 +154,8 @@ exercises:
     prereqs: [collections.lists]
     type: write
     pattern: mutation
-    prompt: Sort list items in place
-    expected_answer: items.sort()
+    prompt: Sort {{list_name}} in place
+    expected_answer: "{{list_name}}.sort()"
     hints:
       - Use the sort() method
       - Modifies the list in place
@@ -155,8 +171,8 @@ exercises:
     prereqs: [collections.lists]
     type: write
     pattern: construction
-    prompt: Return a sorted copy of list items without modifying it
-    expected_answer: sorted(items)
+    prompt: Return a sorted copy of {{list_name}} without modifying it
+    expected_answer: "sorted({{list_name}})"
     hints:
       - Use sorted() function
       - Returns new list
@@ -172,8 +188,8 @@ exercises:
     prereqs: [collections.lists]
     type: write
     pattern: mutation
-    prompt: Reverse list items in place
-    expected_answer: items.reverse()
+    prompt: Reverse {{list_name}} in place
+    expected_answer: "{{list_name}}.reverse()"
     hints:
       - Use the reverse() method on the list
       - Modifies the list in place (returns None)
@@ -190,10 +206,15 @@ exercises:
     prereqs: [foundations]
     type: write
     pattern: construction
-    prompt: Create a tuple with values 1, 2, 3
-    expected_answer: (1, 2, 3)
+    prompt: Create a {{item_singular}} tuple called {{item_singular}}_data with values 1, 2, 3
+    expected_answer: "{{item_singular}}_data = (1, 2, 3)"
+    accepted_solutions:
+      - "{{item_singular}}_data = (1, 2, 3)"
+      - "{{item_singular}}_data = (1,2,3)"
+      - "{{item_singular}}_data = 1, 2, 3"
     hints:
-      - Use parentheses
+      - Use parentheses for {{item_plural}}
+      - Assign to {{item_singular}}_data with = operator
       - Separate with commas
     tags: [tuples, creation, beginner]
 
@@ -207,10 +228,13 @@ exercises:
     prereqs: [collections.tuples]
     type: write
     pattern: construction
-    prompt: Create a tuple with single element 5 (note the syntax)
+    prompt: Create a single-{{item_singular}} tuple with element 5 (note the syntax)
     expected_answer: (5,)
+    accepted_solutions:
+      - (5,)
+      - "5,"
     hints:
-      - Need trailing comma for single element
+      - Need trailing comma for single {{item_singular}}
       - (5) is just the number 5
     tags: [tuples, creation, edge]
 
@@ -224,8 +248,8 @@ exercises:
     prereqs: [collections.tuples]
     type: write
     pattern: assignment
-    prompt: Unpack tuple point = (3, 4) into variables x and y
-    expected_answer: x, y = point
+    prompt: Unpack tuple {{item_singular}}_coords = (3, 4) into variables {{attr_key_1}} and {{attr_key_2}}
+    expected_answer: "{{attr_key_1}}, {{attr_key_2}} = {{item_singular}}_coords"
     hints:
       - Variables go on left, tuple on right of =
       - Number of variables must match tuple length
@@ -241,10 +265,10 @@ exercises:
     prereqs: [collections.tuples]
     type: write
     pattern: indexing
-    prompt: Get the second element of tuple t
-    expected_answer: t[1]
+    prompt: Get the second {{item_singular}} from tuple {{item_singular}}_data
+    expected_answer: "{{item_singular}}_data[1]"
     hints:
-      - Indices start at 0, so second element is index 1
+      - Indices start at 0, so second {{item_singular}} is index 1
       - Use square brackets like lists
     tags: [tuples, indexing, access]
 
@@ -259,8 +283,11 @@ exercises:
     prereqs: [foundations]
     type: write
     pattern: construction
-    prompt: Create an empty dictionary called data
-    expected_answer: data = {}
+    prompt: Create an empty dictionary called {{item_singular}}_data
+    expected_answer: "{{item_singular}}_data = {}"
+    accepted_solutions:
+      - "{{item_singular}}_data = {}"
+      - "{{item_singular}}_data = dict()"
     hints:
       - Use empty curly braces {}
       - Not the same as empty set (use set() for empty set)
@@ -276,14 +303,15 @@ exercises:
     prereqs: [foundations]
     type: write
     pattern: construction
-    prompt: Create a dict with key "name" and value "Alice"
-    expected_answer: '{"name": "Alice"}'
+    prompt: |
+      Create a dict called {{item_singular}}_info with key "{{attr_key_1}}" and value "{{item_example}}".
+    expected_answer: '{{item_singular}}_info = {"{{attr_key_1}}": "{{item_example}}"}'
     accepted_solutions:
-      - '{"name": "Alice"}'
-      - "{'name': 'Alice'}"
+      - '{{item_singular}}_info = {"{{attr_key_1}}": "{{item_example}}"}'
+      - "{{item_singular}}_info = {'{{attr_key_1}}': '{{item_example}}'}"
     hints:
-      - Use curly braces
-      - "Format is key: value"
+      - "Use curly braces with key: value inside"
+      - Assign the dict to the variable name
     tags: [dicts, creation, beginner]
 
   - slug: dict-bracket-access
@@ -296,11 +324,11 @@ exercises:
     prereqs: [collections.dicts]
     type: write
     pattern: indexing
-    prompt: Get the value for key "name" from dict d
-    expected_answer: d["name"]
+    prompt: Get the value for key "{{attr_key_1}}" from {{item_singular}}
+    expected_answer: '{{item_singular}}["{{attr_key_1}}"]'
     accepted_solutions:
-      - 'd["name"]'
-      - "d['name']"
+      - '{{item_singular}}["{{attr_key_1}}"]'
+      - "{{item_singular}}['{{attr_key_1}}']"
     hints:
       - Use square brackets with the key inside
       - Raises KeyError if key doesn't exist
@@ -316,14 +344,16 @@ exercises:
     prereqs: [collections.dicts]
     type: write
     pattern: query
-    prompt: Get value for key "age" from dict d, returning 0 if not found
-    expected_answer: d.get("age", 0)
+    prompt: Get value for key "{{attr_key_2}}" from {{item_singular}}, returning None if not found
+    expected_answer: '{{item_singular}}.get("{{attr_key_2}}")'
     accepted_solutions:
-      - 'd.get("age", 0)'
-      - "d.get('age', 0)"
+      - '{{item_singular}}.get("{{attr_key_2}}")'
+      - "{{item_singular}}.get('{{attr_key_2}}')"
+      - '{{item_singular}}.get("{{attr_key_2}}", None)'
+      - "{{item_singular}}.get('{{attr_key_2}}', None)"
     hints:
       - Use get() method
-      - Second arg is default
+      - Default is None when not specified
     tags: [dicts, get, safe-access]
 
   - slug: dict-set-item
@@ -336,11 +366,11 @@ exercises:
     prereqs: [collections.dicts]
     type: write
     pattern: mutation
-    prompt: Set the key "age" to value 25 in dict d
-    expected_answer: d["age"] = 25
+    prompt: Set the key "{{attr_key_1}}" to value "{{item_example}}" in {{item_singular}}
+    expected_answer: '{{item_singular}}["{{attr_key_1}}"] = "{{item_example}}"'
     accepted_solutions:
-      - 'd["age"] = 25'
-      - "d['age'] = 25"
+      - '{{item_singular}}["{{attr_key_1}}"] = "{{item_example}}"'
+      - "{{item_singular}}['{{attr_key_1}}'] = '{{item_example}}'"
     hints:
       - Assignment with square brackets
       - Creates key if it doesn't exist
@@ -356,8 +386,9 @@ exercises:
     prereqs: [collections.dicts]
     type: write
     pattern: query
-    prompt: Get all keys from dict d
-    expected_answer: d.keys()
+    prompt: |
+      Write an expression that returns all keys from {{item_singular}}.
+    expected_answer: "{{item_singular}}.keys()"
     hints:
       - Use the keys() method
       - Returns a view object of all keys
@@ -373,8 +404,9 @@ exercises:
     prereqs: [collections.dicts]
     type: write
     pattern: query
-    prompt: Get all values from dict d
-    expected_answer: d.values()
+    prompt: |
+      Write an expression that returns all values from {{item_singular}}.
+    expected_answer: "{{item_singular}}.values()"
     hints:
       - Use the values() method
       - Returns a view object of all values
@@ -390,8 +422,8 @@ exercises:
     prereqs: [collections.dicts]
     type: write
     pattern: query
-    prompt: Get all key-value pairs from dict d as tuples
-    expected_answer: d.items()
+    prompt: Get all key-value pairs from {{item_singular}} as tuples
+    expected_answer: "{{item_singular}}.items()"
     hints:
       - Use the items() method
       - Returns (key, value) pairs
@@ -407,11 +439,11 @@ exercises:
     prereqs: [collections.dicts]
     type: write
     pattern: mutation
-    prompt: Remove and return the value for key "name" from dict d
-    expected_answer: d.pop("name")
+    prompt: Remove and return the value for key "{{attr_key_1}}" from {{item_singular}}
+    expected_answer: '{{item_singular}}.pop("{{attr_key_1}}")'
     accepted_solutions:
-      - 'd.pop("name")'
-      - "d.pop('name')"
+      - '{{item_singular}}.pop("{{attr_key_1}}")'
+      - "{{item_singular}}.pop('{{attr_key_1}}')"
     hints:
       - Use the pop() method
       - Pop removes the key and returns its value
@@ -427,14 +459,16 @@ exercises:
     prereqs: [collections.dicts]
     type: write
     pattern: query
-    prompt: Check if key "name" exists in dict d
-    expected_answer: '"name" in d'
+    prompt: |
+      Write an expression that checks if key "{{attr_key_1}}" exists in {{item_singular}}.
+      The expression should evaluate to True or False.
+    expected_answer: '"{{attr_key_1}}" in {{item_singular}}'
     accepted_solutions:
-      - '"name" in d'
-      - "'name' in d"
+      - '"{{attr_key_1}}" in {{item_singular}}'
+      - "'{{attr_key_1}}' in {{item_singular}}"
     hints:
-      - Use 'in' keyword
-      - Checks keys not values
+      - Use the 'in' keyword
+      - Checks keys, not values
     tags: [dicts, membership, check]
 
   # --- Sets Subconcept ---
@@ -448,11 +482,17 @@ exercises:
     prereqs: [foundations]
     type: write
     pattern: construction
-    prompt: Create a set with values 1, 2, 3
-    expected_answer: "{1, 2, 3}"
+    prompt: Create a set called {{item_singular}}_ids with values 1, 2, 3
+    expected_answer: "{{item_singular}}_ids = {1, 2, 3}"
+    accepted_solutions:
+      - "{{item_singular}}_ids = {1, 2, 3}"
+      - "{{item_singular}}_ids = {1,2,3}"
+      - "{{item_singular}}_ids = {2, 1, 3}"
+      - "{{item_singular}}_ids = {3, 2, 1}"
     hints:
-      - Use curly braces
-      - Similar to dict but no colons
+      - Use curly braces for {{item_singular}} sets
+      - Assign to {{item_singular}}_ids with = operator
+      - Similar to dict but no colons for {{item_plural}}
     tags: [sets, creation, beginner]
 
   - slug: set-add
@@ -465,11 +505,14 @@ exercises:
     prereqs: [collections.sets]
     type: write
     pattern: mutation
-    prompt: Add value 5 to set s
-    expected_answer: s.add(5)
+    prompt: Add "{{item_example}}" to set {{item_singular}}_ids
+    expected_answer: '{{item_singular}}_ids.add("{{item_example}}")'
+    accepted_solutions:
+      - '{{item_singular}}_ids.add("{{item_example}}")'
+      - "{{item_singular}}_ids.add('{{item_example}}')"
     hints:
-      - Use the add() method
-      - Sets only store unique values
+      - Use the add() method for {{item_plural}}
+      - Sets only store unique {{item_singular}} values
     tags: [sets, add, mutation]
 
   - slug: set-remove
@@ -482,11 +525,14 @@ exercises:
     prereqs: [collections.sets]
     type: write
     pattern: mutation
-    prompt: Remove value 5 from set s (raises error if not found)
-    expected_answer: s.remove(5)
+    prompt: Remove "{{item_example}}" from set {{item_singular}}_ids (raises error if not found)
+    expected_answer: '{{item_singular}}_ids.remove("{{item_example}}")'
+    accepted_solutions:
+      - '{{item_singular}}_ids.remove("{{item_example}}")'
+      - "{{item_singular}}_ids.remove('{{item_example}}')"
     hints:
-      - Use the remove() method
-      - Use discard() if you want to avoid KeyError
+      - Use the remove() method for {{item_plural}}
+      - Use discard() if you want to avoid {{item_singular}} KeyError
     tags: [sets, remove, mutation]
 
   - slug: set-discard
@@ -499,11 +545,14 @@ exercises:
     prereqs: [collections.sets]
     type: write
     pattern: mutation
-    prompt: Remove value 5 from set s if present (no error if not found)
-    expected_answer: s.discard(5)
+    prompt: Remove "{{item_example}}" from set {{item_singular}}_ids if present (no error if not found)
+    expected_answer: '{{item_singular}}_ids.discard("{{item_example}}")'
+    accepted_solutions:
+      - '{{item_singular}}_ids.discard("{{item_example}}")'
+      - "{{item_singular}}_ids.discard('{{item_example}}')"
     hints:
-      - Use the discard() method
-      - Safer than remove()
+      - Use the discard() method for {{item_plural}}
+      - Safer than remove() for {{item_singular}} operations
     tags: [sets, discard, mutation]
 
   - slug: set-union
@@ -516,13 +565,13 @@ exercises:
     prereqs: [collections.sets]
     type: write
     pattern: construction
-    prompt: Get the union of sets a and b
+    prompt: Get the union of {{item_singular}} sets a and b
     expected_answer: a | b
     accepted_solutions:
       - a | b
       - a.union(b)
     hints:
-      - Use | operator
+      - Use | operator for {{item_plural}}
       - Or union() method
     tags: [sets, union, operation]
 
@@ -536,14 +585,14 @@ exercises:
     prereqs: [collections.sets]
     type: write
     pattern: construction
-    prompt: Get the intersection of sets a and b
+    prompt: Get the intersection of {{item_singular}} sets a and b
     expected_answer: a & b
     accepted_solutions:
       - a & b
       - a.intersection(b)
     hints:
-      - Use & operator
-      - Elements in both sets
+      - Use & operator for {{item_plural}}
+      - "{{item_singular}} elements in both sets"
     tags: [sets, intersection, operation]
 
   - slug: set-difference
@@ -556,14 +605,14 @@ exercises:
     prereqs: [collections.sets]
     type: write
     pattern: construction
-    prompt: Get elements in set a but not in set b
+    prompt: Get {{item_plural}} in set a but not in set b
     expected_answer: a - b
     accepted_solutions:
       - a - b
       - a.difference(b)
     hints:
-      - Use - operator
-      - Or use difference() method
+      - Use - operator for {{item_singular}} difference
+      - Or use difference() method for {{item_plural}}
     tags: [sets, difference, operation]
 
   # --- Unpacking Subconcept ---
@@ -577,14 +626,14 @@ exercises:
     prereqs: [collections.tuples]
     type: write
     pattern: assignment
-    prompt: Unpack the tuple point = (3, 5) into variables x and y
+    prompt: Unpack the {{item_singular}} tuple point = (3, 5) into variables x and y
     expected_answer: "x, y = point"
     accepted_solutions:
       - "x, y = point"
       - "(x, y) = point"
     hints:
-      - Variables on the left, tuple on the right
-      - Number of variables must match tuple length
+      - "{{item_singular}} variables on the left, tuple on the right"
+      - Number of {{item_singular}} variables must match tuple length
     tags: [unpacking, intro, tuples]
 
   - slug: unpacking-list-intro
@@ -597,11 +646,11 @@ exercises:
     prereqs: [collections.lists]
     type: write
     pattern: assignment
-    prompt: Unpack colors = ["red", "green", "blue"] into variables a, b, c
-    expected_answer: "a, b, c = colors"
+    prompt: Unpack {{list_name}} = ["red", "green", "blue"] into variables a, b, c
+    expected_answer: "a, b, c = {{list_name}}"
     hints:
-      - Same syntax as tuple unpacking
-      - Works with any iterable
+      - Same syntax as tuple unpacking for {{item_plural}}
+      - Works with any {{item_singular}} iterable
     tags: [unpacking, intro, lists]
 
   - slug: unpacking-swap-intro
@@ -614,11 +663,11 @@ exercises:
     prereqs: [collections.unpacking]
     type: write
     pattern: assignment
-    prompt: Swap the values of variables a and b using unpacking (one line)
+    prompt: Swap the {{item_singular}} values of variables a and b using unpacking (one line)
     expected_answer: "a, b = b, a"
     hints:
-      - Python evaluates the right side first
-      - No temp variable needed
+      - Python evaluates the right side first for {{item_plural}}
+      - No temp {{item_singular}} variable needed
     tags: [unpacking, intro, swap]
 
   - slug: star-unpack
@@ -631,11 +680,11 @@ exercises:
     prereqs: [collections.lists, collections.tuples]
     type: write
     pattern: assignment
-    prompt: Unpack first element to a, rest to remaining from list [1, 2, 3, 4]
+    prompt: Unpack first {{item_singular}} to a, rest to remaining from list [1, 2, 3, 4]
     expected_answer: a, *remaining = [1, 2, 3, 4]
     hints:
-      - Use * for rest elements
-      - remaining will be [2, 3, 4]
+      - Use * for rest {{item_plural}}
+      - remaining will contain the other {{item_plural}}
     tags: [unpacking, star, advanced]
 
   - slug: unpack-function-args
@@ -648,11 +697,11 @@ exercises:
     prereqs: [collections.lists]
     type: write
     pattern: construction
-    prompt: Call function func with list args unpacked as positional arguments
-    expected_answer: func(*args)
+    prompt: Call {{action_verb}}_{{item_singular}} with list args unpacked as positional arguments
+    expected_answer: "{{action_verb}}_{{item_singular}}(*args)"
     hints:
-      - Use * to unpack list
-      - Turns [1, 2, 3] into func(1, 2, 3)
+      - Use * to unpack {{item_singular}} list
+      - Turns [1, 2, 3] into {{action_verb}}_{{item_singular}}(1, 2, 3)
     tags: [unpacking, function, splat]
 
   - slug: unpack-dict-kwargs
@@ -665,11 +714,11 @@ exercises:
     prereqs: [collections.dicts]
     type: write
     pattern: construction
-    prompt: Call function func with dict kwargs unpacked as keyword arguments
-    expected_answer: func(**kwargs)
+    prompt: Call {{action_verb}}_{{item_singular}} with dict kwargs unpacked as keyword arguments
+    expected_answer: "{{action_verb}}_{{item_singular}}(**kwargs)"
     hints:
-      - Use ** to unpack dict
-      - 'Turns {"a": 1} into func(a=1)'
+      - Use ** to unpack {{item_singular}} dict
+      - 'Turns {"{{attr_key_1}}": 1} into {{action_verb}}_{{item_singular}}({{attr_key_1}}=1)'
     tags: [unpacking, function, kwargs]
 
   # --- Mutability Subconcept ---
@@ -679,20 +728,20 @@ exercises:
     difficulty: 2
     concept: collections
     subconcept: mutability
-    level: intro
+    level: edge
     prereqs: [collections.lists, fn-basics]
     type: write
     pattern: definition
-    prompt: Define append_to(item, target=None) avoiding mutable default
+    prompt: Define append_{{item_singular}}({{item_singular}}, target=None) avoiding mutable default
     expected_answer: |
-      def append_to(item, target=None):
+      def append_{{item_singular}}({{item_singular}}, target=None):
           if target is None:
               target = []
-          target.append(item)
+          target.append({{item_singular}})
           return target
     hints:
-      - Never use [] or {} as default
-      - Use None and create inside function
+      - Never use [] or {} as default for {{item_plural}}
+      - Use None and create {{item_singular}} list inside function
     tags: [mutability, lists, functions]
 
   - slug: list-aliasing
@@ -705,11 +754,11 @@ exercises:
     prereqs: [collections.lists]
     type: write
     pattern: assignment
-    prompt: Create list b that references the same list as a (not a copy)
-    expected_answer: b = a
+    prompt: Create {{item_singular}}_copy that references the same list as {{list_name}} (not a copy)
+    expected_answer: "{{item_singular}}_copy = {{list_name}}"
     hints:
-      - Simple assignment creates an alias
-      - Both names point to same object
+      - Simple assignment creates an alias for {{item_plural}}
+      - Both {{item_singular}} names point to same object
     tags: [mutability, lists, aliasing]
 
   - slug: shallow-copy-method
@@ -722,11 +771,11 @@ exercises:
     prereqs: [collections.lists, collections.mutability]
     type: write
     pattern: construction
-    prompt: Create a shallow copy of list items using the copy method
-    expected_answer: items.copy()
+    prompt: Create a shallow copy of {{list_name}} using the copy method
+    expected_answer: "{{list_name}}.copy()"
     hints:
       - Use the .copy() method
-      - Returns a new list with same elements
+      - Returns a new list with same {{item_plural}}
     tags: [mutability, lists, copy]
 
   - slug: shallow-copy-constructor
@@ -739,8 +788,8 @@ exercises:
     prereqs: [collections.lists, collections.mutability]
     type: write
     pattern: construction
-    prompt: Create a shallow copy of list items using the list constructor
-    expected_answer: list(items)
+    prompt: Create a shallow copy of {{list_name}} using the list constructor
+    expected_answer: "list({{list_name}})"
     hints:
       - Pass list to list() constructor
       - Creates new list from existing
@@ -756,8 +805,8 @@ exercises:
     prereqs: [lists, mutability, imports]
     type: write
     pattern: construction
-    prompt: Create a deep copy of nested list items using copy module
-    expected_answer: copy.deepcopy(items)
+    prompt: Create a deep copy of nested {{list_name}} using copy module
+    expected_answer: "copy.deepcopy({{list_name}})"
     hints:
       - Import copy module first
       - Use copy.deepcopy() for nested structures
@@ -773,14 +822,16 @@ exercises:
     prereqs: [collections.lists, collections.mutability]
     type: write
     pattern: mutation
-    prompt: Extend list items in place with [4, 5] (don't reassign)
-    expected_answer: items.extend([4, 5])
+    prompt: Extend {{list_name}} in place with more {{item_plural}} (don't reassign)
+    expected_answer: '{{list_name}}.extend(["{{item_example}}"])'
     accepted_solutions:
-      - items.extend([4, 5])
-      - items += [4, 5]
+      - '{{list_name}}.extend(["{{item_example}}"])'
+      - "{{list_name}}.extend(['{{item_example}}'])"
+      - '{{list_name}} += ["{{item_example}}"]'
+      - "{{list_name}} += ['{{item_example}}']"
     hints:
       - Use extend() or += for in-place
-      - Reassigning items = items + [4, 5] creates new list
+      - Reassigning creates a new list
     tags: [mutability, lists, in-place]
 
   - slug: tuple-immutability
@@ -793,11 +844,11 @@ exercises:
     prereqs: [collections.tuples, collections.mutability]
     type: write
     pattern: construction
-    prompt: Create new tuple by concatenating t with (4, 5) since tuples are immutable
+    prompt: Create new {{item_singular}} tuple by concatenating t with (4, 5) since tuples are immutable
     expected_answer: t + (4, 5)
     hints:
-      - Cannot modify tuple in place
-      - Must create new tuple via concatenation
+      - Cannot modify {{item_singular}} tuple in place
+      - Must create new {{item_singular}} tuple via concatenation
     tags: [mutability, tuples, immutable]
 
   - slug: dict-mutable-values
@@ -810,14 +861,14 @@ exercises:
     prereqs: [collections.dicts, collections.lists, collections.mutability]
     type: write
     pattern: mutation
-    prompt: Append value 3 to the list stored at key "nums" in dict d
-    expected_answer: d["nums"].append(3)
+    prompt: Append {{item_singular}} ID 3 to the list stored at key "{{attr_key_1}}" in dict d
+    expected_answer: 'd["{{attr_key_1}}"].append(3)'
     accepted_solutions:
-      - 'd["nums"].append(3)'
-      - "d['nums'].append(3)"
+      - 'd["{{attr_key_1}}"].append(3)'
+      - "d['{{attr_key_1}}'].append(3)"
     hints:
-      - Access the list first with d["nums"]
-      - Then call append on that list
+      - Access the {{item_singular}} list first with d["{{attr_key_1}}"]
+      - Then call append on that {{item_plural}} list
     tags: [mutability, dicts, lists]
 
   # --- Fill-in Exercises ---
@@ -832,11 +883,11 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: construction
-    prompt: Fill in the opening bracket for a list
-    template: "items = ___1, 2, 3]"
+    prompt: Fill in the opening bracket for a {{item_singular}} list
+    template: "{{list_name}} = ___1, 2, 3]"
     expected_answer: "["
     hints:
-      - Opening bracket for lists
+      - Opening bracket for {{item_plural}} lists
       - Lists use square brackets []
     tags: [lists, syntax, fill-in]
 
@@ -851,11 +902,11 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: construction
-    prompt: Fill in the opening brace for a dict
-    template: 'data = ___"name": "Alice"}'
+    prompt: Fill in the opening brace for a {{item_singular}} dict
+    template: '{{item_singular}}_data = ___"{{attr_key_1}}": "{{item_example}}"}'
     expected_answer: "{"
     hints:
-      - Opening brace for dicts
+      - Opening brace for {{item_singular}} dicts
       - Dicts use curly braces {}
     tags: [dicts, syntax, fill-in]
 
@@ -870,11 +921,11 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: query
-    prompt: Fill in the membership operator
-    template: "5 ___ items"
+    prompt: Fill in the {{item_singular}} membership operator
+    template: '"{{item_example}}" ___ {{list_name}}'
     expected_answer: "in"
     hints:
-      - Membership test operator
+      - "{{item_singular}} membership test operator"
       - Returns True or False
     tags: [collections, in, fill-in]
 
@@ -889,17 +940,17 @@ exercises:
     prereqs: [collections.lists]
     type: predict
     pattern: mutation
-    prompt: What does this code print?
+    prompt: What does this list append code print?
     code: |
-      items = [1, 2]
-      items.append(3)
-      print(items)
+      {{list_name}} = [1, 2]
+      {{list_name}}.append(3)
+      print({{list_name}})
     expected_answer: "[1, 2, 3]"
     accepted_solutions:
       - "[1, 2, 3]"
       - "[1,2,3]"
     hints:
-      - append adds to the end
+      - append adds {{item_singular}} to the end
       - Modifies the list in place
     tags: [lists, append, predict]
 
@@ -913,14 +964,14 @@ exercises:
     prereqs: [collections.dicts]
     type: predict
     pattern: lookup
-    prompt: What does this code print?
+    prompt: What does this dict.get() code print?
     code: |
-      d = {"a": 1}
-      print(d.get("b", 0))
+      {{item_singular}}_data = {"{{attr_key_1}}": 1}
+      print({{item_singular}}_data.get("{{attr_key_2}}", 0))
     expected_answer: "0"
     hints:
-      - get returns default if key missing
-      - Key "b" is not in the dict
+      - get returns default if {{item_singular}} key missing
+      - Key "{{attr_key_2}}" is not in the dict
     tags: [dicts, get, predict]
 
   - slug: set-union-predict
@@ -933,11 +984,11 @@ exercises:
     prereqs: [collections.sets]
     type: predict
     pattern: construction
-    prompt: What does this code print?
+    prompt: What does this set union code print?
     code: |
-      a = {1, 2}
-      b = {2, 3}
-      print(a | b)
+      {{item_singular}}_set_a = {1, 2}
+      {{item_singular}}_set_b = {2, 3}
+      print({{item_singular}}_set_a | {{item_singular}}_set_b)
     expected_answer: "{1, 2, 3}"
     accepted_solutions:
       - "{1, 2, 3}"
@@ -953,7 +1004,7 @@ exercises:
       - "{3, 2, 1}"
       - "{3,2,1}"
     hints:
-      - Union combines unique elements
+      - Union combines unique {{item_plural}}
       - Duplicates (like 2) appear only once
     tags: [sets, union, predict]
 
@@ -1216,11 +1267,12 @@ exercises:
     type: write
     pattern: indexing
     generator: nested-access
-    prompt: "Given {{varName}} = {{dataStr}}, write code to access the value {{result}}"
+    prompt: |
+      Given {{varName}} = {{dataStr}}, write an expression to access the value {{result}}.
     expected_answer: "{{accessExpr}}"
     hints:
       - "This is a {{description}}"
-      - "Combine bracket notation for dict keys and list indices"
+      - "Chain bracket notation: dict keys use strings, list indices use integers"
     tags: [collections, nested, dynamic]
 
   # --- Dynamic Tuple Exercises ---
@@ -1316,20 +1368,35 @@ exercises:
     prereqs: [dicts]
     type: write
     pattern: iteration
-    prompt: Write a for loop that prints each key-value pair from a dict called user
+    prompt: |
+      Write a for loop that prints each key and value from a dict called {{item_singular}}_data.
+      Use .items() to get both. Each print should output: key value
     expected_answer: |
-      for key, value in user.items():
+      for key, value in {{item_singular}}_data.items():
           print(key, value)
     accepted_solutions:
       - |
-        for key, value in user.items():
+        for key, value in {{item_singular}}_data.items():
             print(key, value)
       - |
-        for k, v in user.items():
+        for k, v in {{item_singular}}_data.items():
             print(k, v)
+      - |
+        for name, val in {{item_singular}}_data.items():
+            print(name, val)
+      - |
+        for item, value in {{item_singular}}_data.items():
+            print(item, value)
+      - |
+        for x, y in {{item_singular}}_data.items():
+            print(x, y)
+      - |
+        for a, b in {{item_singular}}_data.items():
+            print(a, b)
     hints:
-      - .items() returns key-value tuples
-      - Unpack with two variables in the for
+      - .items() returns key-value pairs as tuples
+      - Unpack into two loop variables
+      - "print(key, value) outputs them space-separated"
     tags: [dicts, iteration, items]
 
   - slug: dict-keys-loop
@@ -1342,20 +1409,37 @@ exercises:
     prereqs: [dicts]
     type: write
     pattern: iteration
-    prompt: Write a for loop that prints each key from a dict called config
+    prompt: |
+      Write a for loop that prints each key from a dict called {{item_singular}}_config.
+      Print one key per line.
     expected_answer: |
-      for key in config:
+      for key in {{item_singular}}_config:
           print(key)
     accepted_solutions:
       - |
-        for key in config:
+        for key in {{item_singular}}_config:
             print(key)
       - |
-        for key in config.keys():
+        for key in {{item_singular}}_config.keys():
             print(key)
+      - |
+        for k in {{item_singular}}_config:
+            print(k)
+      - |
+        for k in {{item_singular}}_config.keys():
+            print(k)
+      - |
+        for name in {{item_singular}}_config:
+            print(name)
+      - |
+        for item in {{item_singular}}_config:
+            print(item)
+      - |
+        for x in {{item_singular}}_config:
+            print(x)
     hints:
-      - Iterating a dict directly gives keys
-      - .keys() is optional but explicit
+      - Iterating a dict directly gives you its keys
+      - .keys() is optional but makes intent explicit
     tags: [dicts, iteration, keys]
 
   - slug: dict-values-loop
@@ -1368,13 +1452,37 @@ exercises:
     prereqs: [dicts]
     type: write
     pattern: iteration
-    prompt: Write a for loop that prints each value from a dict called scores
+    prompt: |
+      Write a for loop that prints each value from a dict called {{item_singular}}_scores.
+      Print one value per line.
     expected_answer: |
-      for score in scores.values():
-          print(score)
+      for value in {{item_singular}}_scores.values():
+          print(value)
+    accepted_solutions:
+      - |
+        for value in {{item_singular}}_scores.values():
+            print(value)
+      - |
+        for val in {{item_singular}}_scores.values():
+            print(val)
+      - |
+        for v in {{item_singular}}_scores.values():
+            print(v)
+      - |
+        for score in {{item_singular}}_scores.values():
+            print(score)
+      - |
+        for x in {{item_singular}}_scores.values():
+            print(x)
+      - |
+        for item in {{item_singular}}_scores.values():
+            print(item)
+      - |
+        for num in {{item_singular}}_scores.values():
+            print(num)
     hints:
-      - .values() returns only the values
-      - Use when you don't need the keys
+      - .values() returns only the values, not the keys
+      - Use when you don't need to know which key each value belongs to
     tags: [dicts, iteration, values]
 
   - slug: dict-items-fill
@@ -1388,12 +1496,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: iteration
-    prompt: Fill in the method that returns key-value pairs
-    template: "for key, value in data.___():"
+    prompt: Fill in the method that returns key-value pairs as tuples.
+    template: "for key, value in {{item_singular}}_data.___():"
     expected_answer: "items"
     hints:
-      - Which method returns key-value pairs?
-      - Returns tuples of (key, value)
+      - This method returns tuples of (key, value)
+      - Starts with 'i'
     tags: [dicts, items, fill-in]
 
   - slug: dict-values-fill
@@ -1407,17 +1515,17 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: iteration
-    prompt: Fill in the method that returns only values
-    template: "for val in data.___():"
+    prompt: Fill in the method that returns only the values from the dictionary.
+    template: "for val in {{item_singular}}_data.___():"
     expected_answer: "values"
     hints:
-      - Which method returns just the values?
-      - Ignores the keys
+      - This method ignores the keys entirely
+      - Starts with 'v'
     tags: [dicts, values, fill-in]
 
   - slug: dict-iteration-predict
-    objective: Predict dict iteration output
-    title: Dict Iteration Predict
+    objective: Predict what iterating over a dict directly produces
+    title: Dict Iteration Output
     difficulty: 2
     concept: collections
     subconcept: dict-iteration
@@ -1425,22 +1533,23 @@ exercises:
     prereqs: [dict-iteration]
     type: predict
     pattern: iteration
-    prompt: What does this code print?
+    prompt: What does this code print when iterating over the dict?
     code: |
-      d = {"a": 1, "b": 2}
-      for k in d:
-          print(k)
+      {{item_singular}}_info = {"{{attr_key_1}}": 100, "{{attr_key_2}}": 200, "status": "active"}
+      for item in {{item_singular}}_info:
+          print(item)
     expected_answer: |
-      a
-      b
+      {{attr_key_1}}
+      {{attr_key_2}}
+      status
     hints:
-      - Direct iteration gives keys
-      - Dictionary maintains insertion order (Python 3.7+)
+      - Iterating over a dict directly yields its keys, not values
+      - Python 3.7+ preserves insertion order
     tags: [dicts, iteration, predict]
 
   - slug: dict-items-predict
-    objective: Predict items() iteration output
-    title: Dict Items Predict
+    objective: Predict items() iteration with f-string formatting
+    title: Dict Items Output
     difficulty: 2
     concept: collections
     subconcept: dict-iteration
@@ -1448,18 +1557,18 @@ exercises:
     prereqs: [dict-iteration]
     type: predict
     pattern: iteration
-    prompt: What does this code print?
+    prompt: What does this .items() iteration code print?
     code: |
-      prices = {"apple": 1.50, "banana": 0.75}
-      for item, price in prices.items():
-          print(f"{item}: ${price}")
+      {{item_singular}}_data = {"alpha": 10, "beta": 20}
+      for key, val in {{item_singular}}_data.items():
+          print(f"{key}={val}")
     expected_answer: |
-      apple: $1.5
-      banana: $0.75
+      alpha=10
+      beta=20
     hints:
-      - items() gives (key, value) tuples
-      - f-string formats the output
-    tags: [dicts, items, predict]
+      - .items() yields (key, value) tuples
+      - The f-string formats each pair as key=value
+    tags: [dicts, items, predict, f-string]
 
   - slug: dict-sum-values
     objective: Sum all values in a dictionary
@@ -1471,37 +1580,62 @@ exercises:
     prereqs: [dict-iteration]
     type: write
     pattern: accumulator
-    prompt: Calculate the sum of all values in a dict called totals
-    expected_answer: sum(totals.values())
+    prompt: |
+      Write an expression that evaluates to the sum of all values in {{item_singular}}_totals.
+      Use the sum() function with .values().
+    expected_answer: "sum({{item_singular}}_totals.values())"
+    accepted_solutions:
+      - "sum({{item_singular}}_totals.values())"
     hints:
-      - .values() gives an iterable of values
-      - sum() works on any iterable of numbers
+      - .values() gives you an iterable of all the values
+      - sum() can take any iterable of numbers
     tags: [dicts, values, sum]
 
   - slug: dict-find-key
-    objective: Find a key by its value
+    objective: Write a function to find a dictionary key by its value
     title: Find Key by Value
     difficulty: 3
     concept: collections
     subconcept: dict-iteration
     level: edge
-    prereqs: [dict-iteration]
+    prereqs: [dict-iteration, functions.define]
     type: write
     pattern: search
-    prompt: Find the key with value "admin" in a dict called roles (return None if not found)
+    prompt: |
+      Write a function called find_key that takes a dict and a target value.
+      Return the first key whose value matches target, or None if not found.
     expected_answer: |
-      for key, value in roles.items():
-          if value == "admin":
-              break
+      def find_key(d, target):
+          for key, value in d.items():
+              if value == target:
+                  return key
+          return None
     accepted_solutions:
       - |
-        for key, value in roles.items():
-            if value == "admin":
-                break
-      - next((k for k, v in roles.items() if v == "admin"), None)
+        def find_key(d, target):
+            for key, value in d.items():
+                if value == target:
+                    return key
+            return None
+      - |
+        def find_key(d, target):
+            for k, v in d.items():
+                if v == target:
+                    return k
+            return None
+      - |
+        def find_key(d, target):
+            return next((k for k, v in d.items() if v == target), None)
+      - |
+        def find_key(d, target):
+            for key in d:
+                if d[key] == target:
+                    return key
+            return None
     hints:
-      - Need to check each value
-      - Use items() to access both key and value
-    tags: [dicts, search, edge]
+      - Use .items() to access both keys and values
+      - Return immediately when you find a match
+      - Return None after the loop if nothing matched
+    tags: [dicts, search, functions, edge]
 
   # --- Debug Exercises (Pitfall Subconcepts) ---

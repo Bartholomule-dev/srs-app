@@ -11,42 +11,81 @@ beats:
   - beat: 1
     exercise: import-from
     title: "Import dependencies"
+    sideQuests:
+      - import-module
+      - import-alias
+
   - beat: 2
     exercise: main-guard-basic
     title: "Add main guard"
+    sideQuests:
+      - name-main-predict
+      - import-multiple-basic
+
   - beat: 3
     exercise: context-intro
     title: "Handle resources safely"
+    sideQuests:
+      - context-manager-multiple
+      - context-manager-open
 
   # Act 2: API Functions - building the public interface
   - beat: 4
     exercise: define-function
     title: "Define API function"
+    sideQuests:
+      - function-return
+      - function-multiple-return
+
   - beat: 5
     exercise: default-param-simple
     title: "Add sensible defaults"
+    sideQuests:
+      - default-param-multiple
+      - default-param-none
+
   - beat: 6
     exercise: typehint-param
     title: "Type parameters"
+    sideQuests:
+      - typehint-return
+
   - beat: 7
     exercise: typehint-return
     title: "Document return types"
+    sideQuests:
+      - typehint-param
 
   # Act 3: Data Structures - classes and models
   - beat: 8
     exercise: define-class
     title: "Create data model"
+    sideQuests:
+      - class-keyword-fill
+
   - beat: 9
     exercise: init-method
     title: "Initialize instances"
+    sideQuests:
+      - init-self-fill
+
   - beat: 10
     exercise: instance-attribute
     title: "Store state"
+    sideQuests:
+      - instance-attribute-predict
 
   # Act 4: Robustness - error handling for production
   - beat: 11
     exercise: custom-exception
     title: "Define custom errors"
+    sideQuests:
+      - raise-exception
+
   - beat: 12
     exercise: try-except-basic
     title: "Handle failures gracefully"
+    sideQuests:
+      - except-specific
+      - finally-basic
+      - reraise

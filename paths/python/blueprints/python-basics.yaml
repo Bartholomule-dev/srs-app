@@ -1,0 +1,133 @@
+# paths/python/blueprints/python-basics.yaml
+
+id: python-basics
+title: "Build Your First Python Script"
+description: "Learn Python fundamentals from variables to imports while building a simple interactive script"
+difficulty: beginner
+concepts: [foundations, numbers-booleans, conditionals]
+
+beats:
+  # ============================================
+  # Act 1: Variables & Assignment (Beats 1-4)
+  # ============================================
+  - beat: 1
+    exercise: assign-variable
+    title: "Store your first value"
+    sideQuests:
+      - variable-assign-fill
+      - variable-predict-assign
+
+  - beat: 2
+    exercise: assign-number
+    title: "Store numbers"
+    sideQuests:
+      - variable-naming-fill
+      - variable-predict-reassign
+
+  - beat: 3
+    exercise: multiple-assignment
+    title: "Multiple assignments"
+    sideQuests:
+      - swap-variables
+
+  - beat: 4
+    exercise: print-variable
+    title: "Display values"
+    sideQuests:
+      - print-string
+      - io-print-fill
+      - io-predict-print-concat
+
+  # ============================================
+  # Act 2: Operators (Beats 5-8)
+  # ============================================
+  - beat: 5
+    exercise: floor-division-dynamic
+    title: "Integer division"
+    sideQuests:
+      - operator-addition-fill
+      - operator-floor-division-fill
+      - operator-predict-floor
+
+  - beat: 6
+    exercise: modulo-dynamic
+    title: "Remainder operator"
+    sideQuests:
+      - operator-predict-modulo
+
+  - beat: 7
+    exercise: exponentiation-dynamic
+    title: "Powers and exponents"
+    sideQuests:
+      - augmented-assignment-dynamic
+      - operator-precedence-dynamic
+
+  - beat: 8
+    exercise: operator-expression-predict-dynamic
+    title: "Expression evaluation"
+    sideQuests:
+      - operator-parentheses-dynamic
+
+  # ============================================
+  # Act 3: Boolean Logic (Beats 9-12)
+  # ============================================
+  - beat: 9
+    exercise: boolean-and
+    title: "AND logic"
+    sideQuests:
+      - expression-and-fill
+      - expression-predict-and
+
+  - beat: 10
+    exercise: boolean-or
+    title: "OR logic"
+    sideQuests:
+      - expression-predict-or
+
+  - beat: 11
+    exercise: boolean-not
+    title: "NOT logic"
+    sideQuests:
+      - expression-not-fill
+
+  - beat: 12
+    exercise: ternary-expression
+    title: "Conditional expression"
+    sideQuests:
+      - comparison-chaining
+
+  # ============================================
+  # Act 4: Input/Output & Imports (Beats 13-16)
+  # ============================================
+  - beat: 13
+    exercise: input-string
+    title: "Get user input"
+    sideQuests:
+      - io-input-fill
+      - input-to-int
+
+  - beat: 14
+    exercise: print-fstring
+    title: "Format output"
+    sideQuests:
+      - print-sep
+      - io-predict-print-sep
+
+  - beat: 15
+    exercise: import-math
+    title: "Import modules"
+    sideQuests:
+      - import-fill-import
+      - import-predict-pi
+
+  - beat: 16
+    exercise: import-from-math
+    title: "Import specific functions"
+    sideQuests:
+      - import-math-sqrt
+      - import-fill-from
+      - import-predict-ceil
+      - import-random-choice
+      - import-datetime
+      - import-multiple-basic
+      - import-as-alias

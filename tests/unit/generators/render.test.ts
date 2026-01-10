@@ -177,6 +177,55 @@ describe('renderExercise with skin', () => {
     expect(result.expectedAnswer).toBe('tasks = []');
   });
 
+  it('derives item_example from item_examples array', () => {
+    const exercise: RenderableExercise = {
+      slug: 'list-in-check',
+      prompt: 'Check if "{{item_example}}" is in {{list_name}}',
+      expectedAnswer: '"{{item_example}}" in {{list_name}}',
+      acceptedSolutions: [],
+    };
+
+    const skinVars: SkinVars = {
+      list_name: 'tasks',
+      item_singular: 'task',
+      item_plural: 'tasks',
+      item_examples: ['buy groceries', 'call mom', 'email boss'],
+      record_keys: ['title', 'done'],
+    };
+
+    const result = renderExercise(exercise, 'user-1', new Date(), skinVars);
+
+    // item_example should be derived from item_examples (deterministic per slug)
+    expect(result.prompt).toMatch(/Check if "(buy groceries|call mom|email boss)" is in tasks/);
+    expect(result.expectedAnswer).toMatch(/"(buy groceries|call mom|email boss)" in tasks/);
+    // Should be deterministic - same slug always gets same item
+    const result2 = renderExercise(exercise, 'user-2', new Date(), skinVars);
+    expect(result.prompt).toBe(result2.prompt);
+  });
+
+  it('handles empty item_examples array gracefully', () => {
+    const exercise: RenderableExercise = {
+      slug: 'empty-examples',
+      prompt: 'Example: {{item_example}}',
+      expectedAnswer: '{{item_example}}',
+      acceptedSolutions: [],
+    };
+
+    const skinVars: SkinVars = {
+      list_name: 'items',
+      item_singular: 'item',
+      item_plural: 'items',
+      item_examples: [], // Empty array
+      record_keys: [],
+    };
+
+    const result = renderExercise(exercise, 'user-1', new Date(), skinVars);
+
+    // With empty array, {{item_example}} should remain unrendered
+    expect(result.prompt).toBe('Example: ');
+    expect(result.expectedAnswer).toBe('');
+  });
+
   it('returns exercise unchanged when no skin vars and no generator', () => {
     const exercise: RenderableExercise = {
       slug: 'static-exercise',

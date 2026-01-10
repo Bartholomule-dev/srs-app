@@ -5,8 +5,8 @@ category: foundations
 exercises:
   # --- Variables Subconcept ---
   - slug: assign-variable
-    objective: Initialize a configuration variable with proper string assignment
-    title: Config Variable
+    objective: Initialize a string variable with proper assignment
+    title: String Variable
     difficulty: 1
     concept: foundations
     subconcept: variables
@@ -14,19 +14,19 @@ exercises:
     prereqs: []
     type: write
     pattern: assignment
-    prompt: Initialize a configuration variable called environment and set it to "production"
-    expected_answer: environment = "production"
+    prompt: Create a variable called {{item_singular}} and set it to "{{item_example}}"
+    expected_answer: '{{item_singular}} = "{{item_example}}"'
     accepted_solutions:
-      - 'environment = "production"'
-      - "environment = 'production'"
+      - '{{item_singular}} = "{{item_example}}"'
+      - "{{item_singular}} = '{{item_example}}'"
     hints:
       - Use the = operator to assign
       - Put strings in quotes
-    tags: [variables, assignment, config]
+    tags: [variables, assignment]
 
-  - slug: assign-number
-    objective: Store a numeric configuration value in a variable
-    title: Port Assignment
+  - slug: assign-number-dynamic
+    objective: Store a numeric value in a variable
+    title: Number Variable
     difficulty: 1
     concept: foundations
     subconcept: variables
@@ -34,16 +34,17 @@ exercises:
     prereqs: []
     type: write
     pattern: assignment
-    prompt: Create a variable called port and assign it the value 8080
-    expected_answer: port = 8080
+    generator: arithmetic-values
+    prompt: Create a variable called {{item_singular}}_count and assign it the value {{x}}
+    expected_answer: "{{item_singular}}_count = {{x}}"
     hints:
       - Numbers don't need quotes
       - Use = for assignment
-    tags: [variables, assignment, config]
+    tags: [variables, assignment, dynamic]
 
   - slug: multiple-assignment
-    objective: Use tuple unpacking to initialize multiple config values at once
-    title: Multiple Config Values
+    objective: Use tuple unpacking to initialize multiple values at once
+    title: Multiple Values
     difficulty: 2
     concept: foundations
     subconcept: variables
@@ -51,19 +52,19 @@ exercises:
     prereqs: [variables]
     type: write
     pattern: assignment
-    prompt: Assign "localhost", 5432, "mydb" to variables host, port, database in one line
-    expected_answer: host, port, database = "localhost", 5432, "mydb"
+    prompt: Assign "{{item_example}}", 1, True to variables {{item_singular}}, {{item_singular}}_id, {{status_var}} in one line
+    expected_answer: '{{item_singular}}, {{item_singular}}_id, {{status_var}} = "{{item_example}}", 1, True'
     accepted_solutions:
-      - 'host, port, database = "localhost", 5432, "mydb"'
-      - "host, port, database = 'localhost', 5432, 'mydb'"
+      - '{{item_singular}}, {{item_singular}}_id, {{status_var}} = "{{item_example}}", 1, True'
+      - "{{item_singular}}, {{item_singular}}_id, {{status_var}} = '{{item_example}}', 1, True"
     hints:
       - Separate variables with commas
       - Match the number of values
-    tags: [variables, assignment, unpacking, config]
+    tags: [variables, assignment, unpacking]
 
   - slug: swap-variables
-    objective: Swap two variable values using Pythonic tuple unpacking (e.g., rotating API keys)
-    title: Key Rotation
+    objective: Swap two variable values using Pythonic tuple unpacking
+    title: Swap Values
     difficulty: 2
     concept: foundations
     subconcept: variables
@@ -71,12 +72,15 @@ exercises:
     prereqs: [variables]
     type: write
     pattern: swap
-    prompt: Swap the values of primary_key and backup_key in one line
-    expected_answer: primary_key, backup_key = backup_key, primary_key
+    prompt: Swap the values of current_{{item_singular}} and next_{{item_singular}} in one line
+    expected_answer: "current_{{item_singular}}, next_{{item_singular}} = next_{{item_singular}}, current_{{item_singular}}"
+    accepted_solutions:
+      - "current_{{item_singular}}, next_{{item_singular}} = next_{{item_singular}}, current_{{item_singular}}"
+      - "next_{{item_singular}}, current_{{item_singular}} = current_{{item_singular}}, next_{{item_singular}}"
     hints:
       - Python allows simultaneous assignment
       - No temp variable needed
-    tags: [variables, swap, security]
+    tags: [variables, swap]
 
   # --- Operators Subconcept ---
   # Static add-numbers removed - covered by int-addition-dynamic
@@ -136,11 +140,13 @@ exercises:
     type: write
     pattern: assignment
     generator: arithmetic-values
-    prompt: Add {{y}} to x using augmented assignment
-    expected_answer: "x += {{y}}"
+    prompt: Add {{y}} to {{item_singular}}_count using augmented assignment (+=)
+    expected_answer: "{{item_singular}}_count += {{y}}"
+    accepted_solutions:
+      - "{{item_singular}}_count += {{y}}"
     hints:
       - Use += for add-and-assign
-      - Equivalent to x = x + value
+      - Equivalent to {{item_singular}}_count = {{item_singular}}_count + value
     tags: [operators, assignment, augmented, dynamic]
 
   - slug: comparison-chaining
@@ -153,8 +159,13 @@ exercises:
     prereqs: [operators]
     type: write
     pattern: comparison
-    prompt: Check if x is between 0 and 10 (exclusive) using chained comparison
-    expected_answer: 0 < x < 10
+    prompt: Check if {{item_singular}}_count is between 0 and 10 (exclusive) using chained comparison
+    expected_answer: 0 < {{item_singular}}_count < 10
+    accepted_solutions:
+      - 0 < {{item_singular}}_count < 10
+      - (0 < {{item_singular}}_count) and ({{item_singular}}_count < 10)
+      - 0 < {{item_singular}}_count and {{item_singular}}_count < 10
+      - "{{item_singular}}_count > 0 and {{item_singular}}_count < 10"
     hints:
       - Python allows chaining comparisons
       - No need for 'and'
@@ -171,8 +182,11 @@ exercises:
     prereqs: []
     type: write
     pattern: logical
-    prompt: Write a boolean expression that is True only when both a > 0 and b > 0
-    expected_answer: a > 0 and b > 0
+    prompt: Write a boolean expression that is True only when both has_{{attr_key_1}} and has_{{attr_key_2}} are True
+    expected_answer: has_{{attr_key_1}} and has_{{attr_key_2}}
+    accepted_solutions:
+      - has_{{attr_key_1}} and has_{{attr_key_2}}
+      - has_{{attr_key_2}} and has_{{attr_key_1}}
     hints:
       - Use the 'and' keyword
       - Both conditions must be true
@@ -188,8 +202,11 @@ exercises:
     prereqs: []
     type: write
     pattern: logical
-    prompt: Write a boolean expression that is True when either x equals 0 or y equals 0
-    expected_answer: x == 0 or y == 0
+    prompt: Write a boolean expression that is True when either is_{{status_var}} or is_{{attr_key_1}} is True
+    expected_answer: is_{{status_var}} or is_{{attr_key_1}}
+    accepted_solutions:
+      - is_{{status_var}} or is_{{attr_key_1}}
+      - is_{{attr_key_1}} or is_{{status_var}}
     hints:
       - Use the 'or' keyword
       - Either condition can be true
@@ -205,11 +222,11 @@ exercises:
     prereqs: []
     type: write
     pattern: logical
-    prompt: Write an expression that checks if x is not equal to 5
-    expected_answer: x != 5
+    prompt: Write an expression that checks if {{item_singular}}_count is not equal to 0
+    expected_answer: "{{item_singular}}_count != 0"
     accepted_solutions:
-      - x != 5
-      - not x == 5
+      - "{{item_singular}}_count != 0"
+      - "not {{item_singular}}_count == 0"
     hints:
       - Use != for not equal
       - Or use 'not' with ==
@@ -225,14 +242,14 @@ exercises:
     prereqs: [expressions]
     type: write
     pattern: conditional
-    prompt: Write a ternary expression that returns "even" if x is even, "odd" otherwise
-    expected_answer: '"even" if x % 2 == 0 else "odd"'
+    prompt: Write a ternary expression that returns "{{status_var}}" if is_{{status_var}} is True, "pending" otherwise
+    expected_answer: '"{{status_var}}" if is_{{status_var}} else "pending"'
     accepted_solutions:
-      - '"even" if x % 2 == 0 else "odd"'
-      - "'even' if x % 2 == 0 else 'odd'"
+      - '"{{status_var}}" if is_{{status_var}} else "pending"'
+      - "'{{status_var}}' if is_{{status_var}} else 'pending'"
     hints:
       - Format is value_if_true if condition else value_if_false
-      - Use x % 2 == 0 to check even
+      - Boolean variables don't need == True comparison
     tags: [expressions, ternary, conditional]
 
   # --- IO Subconcept ---
@@ -246,11 +263,11 @@ exercises:
     prereqs: []
     type: write
     pattern: output
-    prompt: Print the string "Hello, World!"
-    expected_answer: print("Hello, World!")
+    prompt: Print the string "Welcome to {{entity_name}} Manager!"
+    expected_answer: 'print("Welcome to {{entity_name}} Manager!")'
     accepted_solutions:
-      - 'print("Hello, World!")'
-      - "print('Hello, World!')"
+      - 'print("Welcome to {{entity_name}} Manager!")'
+      - "print('Welcome to {{entity_name}} Manager!')"
     hints:
       - Use the print() function
       - Put the string in quotes
@@ -266,8 +283,8 @@ exercises:
     prereqs: []
     type: write
     pattern: output
-    prompt: Print the value of the variable message
-    expected_answer: print(message)
+    prompt: Print the value of the variable {{item_singular}}
+    expected_answer: "print({{item_singular}})"
     hints:
       - Use print() with the variable name
       - No quotes around variable name
@@ -283,11 +300,11 @@ exercises:
     prereqs: []
     type: write
     pattern: input
-    prompt: 'Get input from user with the prompt "Enter name: " and store in variable name'
-    expected_answer: 'name = input("Enter name: ")'
+    prompt: 'Get input from user with the prompt "Enter {{item_singular}}: " and store in variable {{item_singular}}'
+    expected_answer: '{{item_singular}} = input("Enter {{item_singular}}: ")'
     accepted_solutions:
-      - 'name = input("Enter name: ")'
-      - "name = input('Enter name: ')"
+      - '{{item_singular}} = input("Enter {{item_singular}}: ")'
+      - "{{item_singular}} = input('Enter {{item_singular}}: ')"
     hints:
       - Use the input() function
       - Assign result to variable
@@ -303,11 +320,11 @@ exercises:
     prereqs: [io]
     type: write
     pattern: output
-    prompt: Use an f-string to print a greeting that includes the variable name, like "Hello, Alice!"
-    expected_answer: print(f"Hello, {name}!")
+    prompt: 'Use an f-string to print "Processing {{item_singular}}: " followed by the variable {{item_singular}}'
+    expected_answer: 'print(f"Processing {{item_singular}}: {{{item_singular}}}")'
     accepted_solutions:
-      - 'print(f"Hello, {name}!")'
-      - "print(f'Hello, {name}!')"
+      - 'print(f"Processing {{item_singular}}: {{{item_singular}}}")'
+      - "print(f'Processing {{item_singular}}: {{{item_singular}}}')"
     hints:
       - Prefix string with f
       - Use {variable} for interpolation
@@ -323,11 +340,11 @@ exercises:
     prereqs: [io]
     type: write
     pattern: output
-    prompt: Print a, b, c separated by dashes using sep parameter
-    expected_answer: print(a, b, c, sep="-")
+    prompt: Print {{item_singular}}_id, {{item_singular}}_name, {{item_singular}}_status separated by dashes using sep parameter
+    expected_answer: print({{item_singular}}_id, {{item_singular}}_name, {{item_singular}}_status, sep="-")
     accepted_solutions:
-      - 'print(a, b, c, sep="-")'
-      - "print(a, b, c, sep='-')"
+      - 'print({{item_singular}}_id, {{item_singular}}_name, {{item_singular}}_status, sep="-")'
+      - "print({{item_singular}}_id, {{item_singular}}_name, {{item_singular}}_status, sep='-')"
     hints:
       - Use sep= parameter in print()
       - Default separator is space
@@ -344,14 +361,12 @@ exercises:
     type: write
     pattern: input
     targets: [io, conversion]
-    prompt: Get a number from the user and store it as an integer in a variable called age
-    expected_answer: 'age = int(input("Enter age: "))'
+    prompt: Get a number from the user and store it as an integer in a variable called {{item_singular}}_count
+    expected_answer: '{{item_singular}}_count = int(input("Enter {{item_singular}} count: "))'
     accepted_solutions:
-      - 'age = int(input("Enter age: "))'
-      - "age = int(input('Enter age: '))"
-      - 'age = int(input("Age: "))'
-      - "age = int(input('Age: '))"
-      - age = int(input())
+      - '{{item_singular}}_count = int(input("Enter {{item_singular}} count: "))'
+      - "{{item_singular}}_count = int(input('Enter {{item_singular}} count: '))"
+      - "{{item_singular}}_count = int(input())"
     hints:
       - Wrap input() in int() to convert the string to a number
       - input() always returns a string, so conversion is needed for math
@@ -367,36 +382,38 @@ exercises:
     level: intro
     prereqs: []
     pattern: assignment
+    generator: arithmetic-values
     objective: Complete variable assignment syntax
-    prompt: Fill in the assignment operator
-    template: "answer ___ 42"
+    prompt: Fill in the assignment operator to set the {{item_singular}}_count
+    template: "{{item_singular}}_count ___ {{x}}"
     blank_position: 0
     expected_answer: "="
     accepted_solutions: ["="]
     hints:
       - What operator assigns a value to a variable?
       - Not == which is for comparison
-    tags: [variables, assignment]
+    tags: [variables, assignment, dynamic]
 
-  - slug: variable-naming-fill
-    title: Variable Naming
+  - slug: variable-underscore-fill
+    title: Snake Case Separator
     type: fill-in
     difficulty: 2
     concept: foundations
     subconcept: variables
     level: practice
-    prereqs: []
+    prereqs: [variables]
     pattern: assignment
-    objective: Use valid Python variable naming
-    prompt: Fill in one of these common snake_case prefixes for the variable name (user_, item_, total_)
-    template: "___count = 10"
+    generator: arithmetic-values
+    objective: Use the underscore separator in snake_case variable names
+    prompt: Fill in the separator character used in snake_case variable names
+    template: "{{item_singular}}___count = {{x}}"
     blank_position: 0
-    expected_answer: "user_"
-    accepted_solutions: ["user_", "item_", "total_"]
+    expected_answer: "_"
+    accepted_solutions: ["_"]
     hints:
       - Python convention uses lowercase with underscores (snake_case)
-      - Use user_, item_, or total_ as the prefix
-    tags: [variables, naming]
+      - What character separates words in {{item_singular}}_count?
+    tags: [variables, naming, snake_case, dynamic]
 
   - slug: operator-addition-fill
     title: Addition Operator
@@ -408,8 +425,8 @@ exercises:
     prereqs: [variables]
     pattern: arithmetic
     objective: Use the addition operator
-    prompt: Fill in the operator to add x and y
-    template: "result = x ___ y"
+    prompt: Fill in the operator to calculate total {{item_plural}}
+    template: "total_{{item_plural}} = current_{{item_plural}} ___ new_{{item_plural}}"
     blank_position: 0
     expected_answer: "+"
     accepted_solutions: ["+"]
@@ -428,14 +445,14 @@ exercises:
     prereqs: [variables]
     pattern: arithmetic
     objective: Use floor division operator
-    prompt: Fill in the operator for integer division (discards remainder)
-    template: "result = 17 ___ 5  # result is 3"
+    prompt: Fill in the operator for integer division when calculating {{item_plural}} per page
+    template: "{{item_plural}}_per_page = total_{{item_plural}} ___ pages  # discards remainder"
     blank_position: 0
     expected_answer: "//"
     accepted_solutions: ["//"]
     hints:
       - Floor division uses two forward slashes
-      - 17 // 5 = 3 (17 = 5*3 + 2)
+      - Discards the remainder
     tags: [operators, arithmetic]
 
   - slug: expression-and-fill
@@ -449,7 +466,7 @@ exercises:
     pattern: logical
     objective: Use the logical AND operator
     prompt: Fill in the logical operator that requires both conditions to be true
-    template: "is_valid = has_name ___ has_email"
+    template: "is_valid = has_{{attr_key_1}} ___ has_{{attr_key_2}}"
     blank_position: 0
     expected_answer: "and"
     accepted_solutions: ["and"]
@@ -469,7 +486,7 @@ exercises:
     pattern: logical
     objective: Use the logical NOT operator
     prompt: Fill in the operator that inverts a boolean value
-    template: "is_invalid = ___ is_valid"
+    template: "is_invalid = ___ is_{{status_var}}"
     blank_position: 0
     expected_answer: "not"
     accepted_solutions: ["not"]
@@ -488,14 +505,14 @@ exercises:
     prereqs: [variables]
     pattern: output
     objective: Use the print function
-    prompt: Fill in the function that outputs text to the console
-    template: "___(\"Hello, World!\")"
+    prompt: Fill in the function that outputs {{item_singular}} info to the console
+    template: "___(\"{{entity_name}}: {{item_example}}\")"
     blank_position: 0
     expected_answer: "print"
     accepted_solutions: ["print"]
     hints:
       - Which function outputs text to the console?
-      - Standard way to display information in Python
+      - Standard way to display {{item_singular}} information in Python
     tags: [io, print]
 
   - slug: io-input-fill
@@ -508,13 +525,13 @@ exercises:
     prereqs: [variables]
     pattern: input
     objective: Use the input function
-    prompt: Fill in the function that reads text from the user
-    template: "name = ___(\"Enter your name: \")"
+    prompt: Fill in the function that reads {{item_singular}} name from the user
+    template: "{{item_singular}}_name = ___(\"Enter {{item_singular}} name: \")"
     blank_position: 0
     expected_answer: "input"
     accepted_solutions: ["input"]
     hints:
-      - Which function reads text from the user?
+      - Which function reads {{item_singular}} text from the user?
       - Returns whatever the user types (as a string)
     tags: [io, input]
 
@@ -529,14 +546,14 @@ exercises:
     prereqs: []
     pattern: assignment
     objective: Predict variable value after assignment
-    prompt: What does this code print?
+    prompt: What does this variable assignment code print?
     code: |
-      x = 10
-      print(x)
+      {{item_singular}}_count = 10
+      print({{item_singular}}_count)
     expected_answer: "10"
     accepted_solutions: []
     hints:
-      - Variables store the value assigned to them
+      - Variables store the {{item_singular}} value assigned to them
       - print() displays the stored value
     tags: [variables, assignment]
 
@@ -550,15 +567,15 @@ exercises:
     prereqs: []
     pattern: assignment
     objective: Predict value after reassignment
-    prompt: What does this code print?
+    prompt: What does this variable reassignment code print?
     code: |
-      x = 5
-      x = 10
-      print(x)
+      {{item_singular}}_count = 5
+      {{item_singular}}_count = 10
+      print({{item_singular}}_count)
     expected_answer: "10"
     accepted_solutions: []
     hints:
-      - Variables can be reassigned to new values
+      - "{{item_plural}} can be reassigned to new values"
       - The most recent assignment is what matters
     tags: [variables, assignment]
 
@@ -572,15 +589,15 @@ exercises:
     prereqs: [variables]
     pattern: arithmetic
     objective: Predict modulo operation result
-    prompt: What does this code print?
+    prompt: What does this modulo operation code print?
     code: |
-      result = 17 % 5
-      print(result)
+      {{item_singular}}_remainder = 17 % 5
+      print({{item_singular}}_remainder)
     expected_answer: "2"
     accepted_solutions: []
     hints:
-      - Modulo returns the remainder of division
-      - 17 = 5*3 + 2, so 17 % 5 = 2
+      - Modulo returns the remainder of {{item_singular}} division
+      - "17 = 5*3 + 2, so 17 % 5 = 2"
     tags: [operators, arithmetic]
 
   - slug: operator-predict-floor
@@ -593,15 +610,15 @@ exercises:
     prereqs: [variables]
     pattern: arithmetic
     objective: Predict floor division result
-    prompt: What does this code print?
+    prompt: What does this floor division code print?
     code: |
-      result = 17 // 5
-      print(result)
+      {{item_plural}}_per_group = 17 // 5
+      print({{item_plural}}_per_group)
     expected_answer: "3"
     accepted_solutions: []
     hints:
-      - Floor division discards the remainder
-      - 17 // 5 = 3 (not 3.4)
+      - Floor division discards the {{item_singular}} remainder
+      - "17 // 5 = 3 (not 3.4)"
     tags: [operators, arithmetic]
 
   - slug: expression-predict-and
@@ -614,14 +631,14 @@ exercises:
     prereqs: [operators]
     pattern: logical
     objective: Predict boolean AND result
-    prompt: What does this code print?
+    prompt: What does this boolean AND code print?
     code: |
-      result = True and False
-      print(result)
+      is_{{status_var}} = True and False
+      print(is_{{status_var}})
     expected_answer: "False"
     accepted_solutions: []
     hints:
-      - AND requires both values to be True
+      - AND requires both {{item_singular}} conditions to be True
       - True AND False = False
     tags: [expressions, boolean]
 
@@ -635,14 +652,14 @@ exercises:
     prereqs: [operators]
     pattern: logical
     objective: Predict boolean OR result
-    prompt: What does this code print?
+    prompt: What does this boolean OR code print?
     code: |
-      result = True or False
-      print(result)
+      has_{{attr_key_1}} = True or False
+      print(has_{{attr_key_1}})
     expected_answer: "True"
     accepted_solutions: []
     hints:
-      - OR returns True if either value is True
+      - OR returns True if either {{item_singular}} value is True
       - True OR False = True
     tags: [expressions, boolean]
 
@@ -656,11 +673,11 @@ exercises:
     prereqs: [variables]
     pattern: output
     objective: Predict print output with multiple arguments
-    prompt: What does this code print?
+    prompt: What does this code print when processing a {{item_singular}}?
     code: |
-      name = "Alice"
-      print("Hello", name)
-    expected_answer: "Hello Alice"
+      {{item_singular}} = "{{item_example}}"
+      print("Processing", {{item_singular}})
+    expected_answer: "Processing {{item_example}}"
     accepted_solutions: []
     hints:
       - print() separates arguments with spaces
@@ -677,13 +694,13 @@ exercises:
     prereqs: [variables]
     pattern: output
     objective: Predict print output with custom separator
-    prompt: What does this code print?
+    prompt: What does this print() with custom separator output?
     code: |
-      print("a", "b", "c", sep="-")
-    expected_answer: "a-b-c"
+      print("{{item_example}}", "{{attr_key_1}}", "{{attr_key_2}}", sep="-")
+    expected_answer: "{{item_example}}-{{attr_key_1}}-{{attr_key_2}}"
     accepted_solutions: []
     hints:
-      - The sep parameter changes what goes between arguments
+      - The sep parameter changes what goes between {{item_plural}}
       - Default sep is a single space
     tags: [io, print]
 
@@ -728,44 +745,6 @@ exercises:
       - "Evaluate step by step following precedence rules"
     tags: [operators, precedence, dynamic, predict]
 
-  - slug: operator-expression-predict-dynamic
-    objective: Trace through an arithmetic expression with precedence
-    title: Dynamic Expression Evaluation
-    difficulty: 2
-    concept: foundations
-    subconcept: expressions
-    level: practice
-    prereqs: [operators]
-    type: predict
-    pattern: arithmetic
-    generator: operator-chain
-    prompt: "What is the result of: {{expression}}"
-    code: "{{code}}"
-    expected_answer: "{{resultStr}}"
-    hints:
-      - "Tip: {{description}}"
-      - "Work through operations in order of precedence"
-    tags: [operators, expressions, dynamic, predict]
-
-  - slug: operator-parentheses-dynamic
-    objective: Understand how parentheses affect evaluation order
-    title: Dynamic Parentheses Priority
-    difficulty: 2
-    concept: foundations
-    subconcept: expressions
-    level: practice
-    prereqs: [expressions]
-    type: predict
-    pattern: arithmetic
-    generator: operator-chain
-    prompt: "Evaluate: {{expression}}"
-    code: "{{code}}"
-    expected_answer: "{{resultStr}}"
-    hints:
-      - "Parentheses are always evaluated first"
-      - "{{description}}"
-    tags: [operators, parentheses, dynamic, predict]
-
   # --- Basic Imports Subconcept ---
   - slug: import-math
     objective: Import the math module to use mathematical functions
@@ -777,14 +756,14 @@ exercises:
     prereqs: [variables]
     type: write
     pattern: import
-    prompt: Import the math module
+    prompt: Import the math module to calculate {{item_singular}} values
     expected_answer: import math
     hints:
-      - Use the import keyword
-      - math is a built-in module
+      - Use the import keyword for {{item_singular}} calculations
+      - math is a built-in module for {{item_plural}}
     tags: [imports, math, module]
 
-  - slug: import-math-sqrt
+  - slug: import-math-sqrt-dynamic
     objective: Use a function from an imported module
     title: Use Math Function
     difficulty: 1
@@ -794,12 +773,13 @@ exercises:
     prereqs: [imports-basic]
     type: write
     pattern: import
-    prompt: Calculate the square root of 16 using math.sqrt
-    expected_answer: math.sqrt(16)
+    generator: arithmetic-values
+    prompt: Calculate the square root of {{x}} using math.sqrt
+    expected_answer: math.sqrt({{x}})
     hints:
       - Access module functions with dot notation
-      - module.function(arguments)
-    tags: [imports, math, sqrt]
+      - module.function(argument) pattern
+    tags: [imports, math, sqrt, dynamic]
 
   - slug: import-from-math
     objective: Import a specific function from a module
@@ -811,11 +791,11 @@ exercises:
     prereqs: [imports-basic]
     type: write
     pattern: import
-    prompt: Import only the sqrt function from the math module
+    prompt: Import only the sqrt function from the math module for {{item_singular}} calculations
     expected_answer: from math import sqrt
     hints:
-      - Use from ... import syntax
-      - Then you can use sqrt() directly
+      - Use from ... import syntax for {{item_singular}} functions
+      - Then you can use sqrt() directly on {{item_plural}}
     tags: [imports, from, math]
 
   - slug: import-random-choice
@@ -828,10 +808,10 @@ exercises:
     prereqs: [imports-basic]
     type: write
     pattern: invocation
-    prompt: Given that random is already imported, select a random item from a list called colors
-    expected_answer: random.choice(colors)
+    prompt: Given that random is already imported, select a random {{item_singular}} from the list {{list_name}}
+    expected_answer: random.choice({{list_name}})
     hints:
-      - random.choice() picks one item from a sequence
+      - random.choice() picks one {{item_singular}} from a sequence
       - Pass the list as the argument
     tags: [imports, random, choice]
 
@@ -847,6 +827,10 @@ exercises:
     pattern: invocation
     prompt: Given that datetime is already imported, get today's date
     expected_answer: datetime.date.today()
+    accepted_solutions:
+      - datetime.date.today()
+      - datetime.datetime.today().date()
+      - datetime.datetime.now().date()
     hints:
       - datetime module has a date class
       - date.today() returns current date
@@ -863,12 +847,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: import
-    prompt: Fill in the keyword for selective imports
+    prompt: Fill in the keyword for selective imports when {{action_verb}}ing {{item_plural}}
     template: "___ math import pi"
     expected_answer: "from"
     hints:
-      - What keyword starts a selective import?
-      - Syntax is ___ module import name
+      - What keyword starts a selective {{item_singular}} import?
+      - Syntax is ___ module import name for {{item_plural}}
     tags: [imports, from, fill-in]
 
   - slug: import-fill-import
@@ -882,12 +866,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: import
-    prompt: Fill in the keyword that imports a module
+    prompt: Fill in the keyword that imports a module for {{item_singular}} data
     template: "___ json"
     expected_answer: "import"
     hints:
-      - Which keyword loads a module?
-      - Brings in external functionality
+      - Which keyword loads a module for {{item_plural}}?
+      - Brings in external {{item_singular}} functionality
     tags: [imports, import, fill-in]
 
   - slug: import-predict-pi
@@ -900,14 +884,14 @@ exercises:
     prereqs: [imports-basic]
     type: predict
     pattern: import
-    prompt: What does this code print? (to 2 decimal places)
+    prompt: What does this math.pi code print? (to 2 decimal places)
     code: |
       import math
       print(round(math.pi, 2))
     expected_answer: "3.14"
     hints:
-      - math.pi is the mathematical constant π
-      - round(x, 2) rounds to 2 decimal places
+      - math.pi is the mathematical constant π for {{item_singular}} calculations
+      - round(x, 2) rounds {{item_plural}} to 2 decimal places
     tags: [imports, math, pi, predict]
 
   - slug: import-predict-ceil
@@ -920,14 +904,14 @@ exercises:
     prereqs: [imports-basic]
     type: predict
     pattern: import
-    prompt: What does this code print?
+    prompt: What does this math.ceil() code print?
     code: |
       import math
       print(math.ceil(4.2))
     expected_answer: "5"
     hints:
-      - ceil() rounds UP to the nearest integer
-      - Always rounds toward positive infinity
+      - ceil() rounds UP {{item_singular}} count to nearest integer
+      - Always rounds {{item_plural}} toward positive infinity
     tags: [imports, math, ceil, predict]
 
   - slug: import-multiple-basic
@@ -940,14 +924,14 @@ exercises:
     prereqs: [imports-basic]
     type: write
     pattern: import
-    prompt: Import both sqrt and pi from the math module in one line
+    prompt: Import both sqrt and pi from the math module for {{item_singular}} calculations
     expected_answer: from math import sqrt, pi
     accepted_solutions:
       - from math import sqrt, pi
       - from math import pi, sqrt
     hints:
-      - Separate multiple imports with commas
-      - from module import a, b
+      - Separate multiple {{item_singular}} imports with commas
+      - from module import a, b when {{action_verb}}ing {{item_plural}}
     tags: [imports, from, multiple]
 
   - slug: import-as-alias
@@ -960,9 +944,9 @@ exercises:
     prereqs: [imports-basic]
     type: write
     pattern: import
-    prompt: Import the datetime module as dt
+    prompt: Import the datetime module as dt for {{item_singular}} tracking
     expected_answer: import datetime as dt
     hints:
-      - Use 'as' to create an alias
-      - Common for modules with long names
+      - Use 'as' to create an alias for {{item_singular}} dates
+      - Common for modules with long {{item_plural}} names
     tags: [imports, alias, as]

@@ -1,0 +1,119 @@
+# paths/python/blueprints/oop-entity.yaml
+
+id: oop-entity
+title: "Build an OOP Entity System"
+description: "Build a class hierarchy with inheritance, properties, and class methods to model entities"
+difficulty: intermediate
+concepts: [oop, functions, collections, error-handling]
+
+beats:
+  # ============================================
+  # Act 1: Basic Classes (Beats 1-4)
+  # ============================================
+  - beat: 1
+    exercise: define-class
+    title: "Define the base entity"
+    sideQuests:
+      - class-keyword-fill
+
+  - beat: 2
+    exercise: init-method
+    title: "Initialize entities"
+    sideQuests:
+      - init-self-fill
+
+  - beat: 3
+    exercise: instance-attribute
+    title: "Store entity data"
+    sideQuests:
+      - instance-attribute-predict
+
+  - beat: 4
+    exercise: instance-method
+    title: "Add entity behavior"
+    sideQuests:
+      - method-call-predict
+      - method-call-dynamic
+      - instance-method-write-dynamic
+
+  # ============================================
+  # Act 2: Inheritance (Beats 5-8)
+  # ============================================
+  - beat: 5
+    exercise: inheritance-basic
+    title: "Create a subclass"
+    sideQuests:
+      - inheritance-predict
+      - inheritance-isinstance
+
+  - beat: 6
+    exercise: inheritance-super-init
+    title: "Call parent constructor"
+    sideQuests:
+      - super-fill
+      - inheritance-issubclass
+
+  - beat: 7
+    exercise: inheritance-override-method
+    title: "Override a method"
+    sideQuests:
+      - inheritance-override-dynamic
+      - inheritance-predict-dynamic
+
+  - beat: 8
+    exercise: inheritance-super-method
+    title: "Extend parent behavior"
+    sideQuests:
+      - super-fill
+
+  # ============================================
+  # Act 3: Properties (Beats 9-11)
+  # ============================================
+  - beat: 9
+    exercise: property-getter
+    title: "Add a read property"
+    sideQuests:
+      - property-return
+      - property-readonly
+
+  - beat: 10
+    exercise: property-setter
+    title: "Add a write property"
+    sideQuests:
+      - property-setter-validation
+
+  - beat: 11
+    exercise: property-deleter
+    title: "Add property cleanup"
+    sideQuests:
+      - classmethod-basic
+
+  # ============================================
+  # Act 4: Class Methods & Static (Beats 12-15)
+  # ============================================
+  - beat: 12
+    exercise: classmethod-basic
+    title: "Add a class method"
+    sideQuests:
+      - classmethod-cls-parameter
+      - classmethod-call
+
+  - beat: 13
+    exercise: classmethod-factory
+    title: "Factory method pattern"
+    sideQuests:
+      - api-response-model-integrated
+      - health-check-dataclass-integrated
+
+  - beat: 14
+    exercise: staticmethod-basic
+    title: "Add a static helper"
+    sideQuests:
+      - staticmethod-vs-classmethod
+
+  - beat: 15
+    exercise: custom-exception
+    title: "Create custom errors"
+    sideQuests:
+      - raise-exception
+      - try-except-basic

@@ -49,39 +49,85 @@ dataPack:
     - "Item acquired!"
 
 contexts:
-  # Collection exercises
+  # Setup & Storage
   list-create-empty: "Every adventurer needs an inventory to carry their loot."
+  list-create-values: "Start with basic adventuring gear."
+  tuple-create: "Store immutable item properties like (id, rarity)."
   list-append-dynamic: "Add a newly found item to your inventory."
+  list-extend-method: "Add multiple items from a treasure chest."
+  list-insert-dynamic: "Insert an item at a specific slot position."
   list-in-check: "Check if you already have this item before picking it up."
+  list-count: "Count how many potions you have."
+  list-index: "Find the position of your sword in inventory."
   dict-create-values: "Items have stats like damage and rarity."
+  dict-create-empty: "Create an empty equipment slots dictionary."
+  dict-get-default: "Get item stats, defaulting to 0 if not found."
+  dict-set-item: "Equip an item to a specific slot."
+  input-string: "Get the player's command."
+  print-string: "Display a message to the player."
+  print-variable: "Show the item's description."
 
-  # Loop exercises
+  # Display & Iteration
   for-loop-list: "Display all items in your inventory."
+  for-loop-string: "Display each character in the item name."
+  for-loop-range: "Process inventory slots by position."
   enumerate-basic: "Number your items so you can select them by index."
+  enumerate-start: "Number items starting from 1 for user display."
+  zip-basic: "Combine item names with their damage values."
+  f-string-basic: "Format item display with name and stats."
+  f-string-expression: "Show calculated damage with modifiers."
+  string-format: "Format the quest log message."
+  list-sorted: "Display items sorted by name."
+  list-sort: "Sort inventory by item value."
+  list-reverse: "Show items in reverse order, newest first."
+  sorted-reverse: "Get items sorted by damage, highest first."
   while-loop-basic: "Keep fighting until the enemy is defeated."
-
-  # Comprehension exercises
   list-comp-filter-dynamic: "Filter your inventory to show only rare items."
   list-comp-basic: "Create a list of item names from your inventory."
-  dict-comp-basic: "Create a lookup table of item names to damage values."
+  list-comp-conditional: "Get all items with damage above threshold."
 
-  # File exercises
-  context-intro: "Save your inventory to a file so progress persists."
-  file-read-basic: "Load your saved game from a file."
-  file-write-basic: "Write your current stats to the save file."
-
-  # Error handling
-  try-except-basic: "Handle the case where the save file doesn't exist."
-  try-except-specific: "Catch the error when an item slot is empty."
-
-  # Functions
-  function-basic: "Create a function to calculate total inventory weight."
-  function-args: "Create a function that adds an item with a given quantity."
-
-  # Conditionals
+  # Logic & Validation
   if-else-basic: "Check if the player has enough gold to buy an item."
-  elif-chain: "Determine item quality: legendary, rare, or common."
+  if-only: "Check if inventory is empty."
+  boolean-and: "Check if item is rare AND unequipped."
+  boolean-or: "Check if player is dead OR fled battle."
+  elif-grade: "Determine item quality: legendary, rare, or common."
+  elif-http-status: "Handle different quest completion states."
+  match-case-basic: "Handle different player commands."
+  try-except-basic: "Handle the case where the save file doesn't exist."
+  raise-intro: "Raise an error for invalid item operations."
+  raise-exception: "Raise ItemNotFound when item doesn't exist."
+  except-specific: "Catch the error when an item slot is empty."
+  except-multi: "Handle both FileNotFound and PermissionError."
+  try-else: "Run code only when save succeeded."
+  finally-basic: "Always release the file lock after saving."
+  try-except-finally: "Complete save handling with cleanup."
+  reraise: "Re-raise after logging the game error."
+
+  # Organization & Persistence
+  define-function: "Create a function to calculate total inventory weight."
+  function-return: "Return the calculated damage value."
+  return-none: "Return None when item is consumed."
+  default-param-simple: "Add item with default quantity 1."
+  default-param-intro: "Define optional item properties."
+  default-param-multiple: "Multiple defaults for item creation."
+  context-intro: "Save your inventory to a file so progress persists."
+  file-open-write: "Write save game to disk."
+  file-read-lines: "Load saved game data."
+  pathlib-intro: "Use Path objects for save file management."
+  pathlib-check-exists: "Check if save file exists."
+  pathlib-create-path: "Create path to the saves directory."
+  pathlib-join-paths: "Join paths for backup saves."
+  main-guard-basic: "Only start game when run directly."
+  import-from: "Import game utility functions."
+  import-module: "Import the game engine module."
+
+  # Comprehensions
+  dict-comp-basic: "Create a lookup table of item names to damage values."
+  dict-comp-intro: "Build a dict of item properties."
 
   # OOP
-  class-basic: "Create an Item class to represent inventory items."
-  class-method: "Add a method to calculate item value based on rarity."
+  define-class: "Create an Item class to represent inventory items."
+  init-method: "Initialize item with name and stats."
+  instance-attribute: "Store item damage as an instance attribute."
+  custom-exception: "Create a custom GameError exception."

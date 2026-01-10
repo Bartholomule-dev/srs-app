@@ -1,0 +1,120 @@
+# paths/python/blueprints/file-manager.yaml
+
+id: file-manager
+title: "Build a File Manager"
+description: "Create a file management utility with reading, writing, path handling, and proper resource management"
+difficulty: intermediate
+concepts: [modules-files, error-handling, strings, functions]
+
+beats:
+  # ============================================
+  # Act 1: Imports (Beats 1-3)
+  # ============================================
+  - beat: 1
+    exercise: import-module
+    title: "Import modules"
+    sideQuests:
+      - import-keyword-fill
+
+  - beat: 2
+    exercise: import-from
+    title: "Import specific functions"
+    sideQuests:
+      - from-import-fill
+      - import-multiple
+
+  - beat: 3
+    exercise: import-alias
+    title: "Use import aliases"
+
+  # ============================================
+  # Act 2: Reading Files (Beats 4-7)
+  # ============================================
+  - beat: 4
+    exercise: file-open-read
+    title: "Open files for reading"
+    sideQuests:
+      - with-keyword-fill
+
+  - beat: 5
+    exercise: file-read-all
+    title: "Read entire file"
+    sideQuests:
+      - file-read-predict
+      - file-read-dynamic
+
+  - beat: 6
+    exercise: file-read-lines
+    title: "Read line by line"
+    sideQuests:
+      - file-read-line
+
+  - beat: 7
+    exercise: context-manager-open
+    title: "Use context managers"
+    sideQuests:
+      - context-intro
+      - file-context-dynamic
+      - context-manager-multiple
+
+  # ============================================
+  # Act 3: Writing Files (Beats 8-10)
+  # ============================================
+  - beat: 8
+    exercise: file-open-write
+    title: "Open files for writing"
+    sideQuests:
+      - file-write-mode-dynamic
+
+  - beat: 9
+    exercise: file-write-text
+    title: "Write content"
+    sideQuests:
+      - file-writelines
+
+  - beat: 10
+    exercise: file-open-append
+    title: "Append to files"
+
+  # ============================================
+  # Act 4: Path Handling (Beats 11-14)
+  # ============================================
+  - beat: 11
+    exercise: pathlib-intro
+    title: "Introduce pathlib"
+    sideQuests:
+      - pathlib-create-path
+
+  - beat: 12
+    exercise: pathlib-join-paths
+    title: "Join paths"
+    sideQuests:
+      - path-join-predict
+      - path-join-dynamic
+
+  - beat: 13
+    exercise: pathlib-get-parent
+    title: "Get parent directory"
+    sideQuests:
+      - path-parent-dynamic
+      - path-stem-dynamic
+      - path-suffix-dynamic
+
+  - beat: 14
+    exercise: pathlib-check-exists
+    title: "Check file exists"
+
+  # ============================================
+  # Act 5: Main Guard (Beats 15-16)
+  # ============================================
+  - beat: 15
+    exercise: main-guard-basic
+    title: "Add main guard"
+    sideQuests:
+      - name-main-predict
+
+  - beat: 16
+    exercise: main-guard-call-main
+    title: "Call main function"
+    sideQuests:
+      - main-guard-with-definition

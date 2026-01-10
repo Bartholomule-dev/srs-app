@@ -1,0 +1,102 @@
+# paths/python/skins/markdown-editor.yaml
+
+id: markdown-editor
+title: "Markdown Editor"
+icon: "📝"
+blueprints: [text-formatter]
+
+vars:
+  list_name: documents
+  item_singular: document
+  item_plural: documents
+  item_examples:
+    - "README.md"
+    - "notes.md"
+    - "draft.md"
+    - "changelog.md"
+    - "guide.md"
+  record_keys: ["title", "content", "author", "date"]
+  attr_key_1: title
+  attr_key_2: content
+  id_var: doc_id
+  filename: output.md
+  filetype: markdown
+  user_role: editor
+  status_var: formatted
+  action_verb: format
+  entity_name: Document
+
+dataPack:
+  list_sample: ["# Heading", "**bold**", "*italic*", "`code`"]
+  dict_sample:
+    title: "My Document"
+    content: "Hello world"
+    author: "user"
+    created: "2024-01-15"
+  records_sample:
+    - { title: "README", content: "Welcome", format: "md" }
+    - { title: "Notes", content: "Ideas", format: "txt" }
+    - { title: "Draft", content: "WIP", format: "md" }
+  string_samples:
+    - "# Welcome to Markdown"
+    - "This is **bold** text"
+    - "A `code` snippet"
+    - "---"
+
+contexts:
+  # String Basics
+  string-length: "Count characters in the document title."
+  string-len-fill: "Complete the length check."
+  string-predict-len: "Predict the title length."
+  string-concatenate: "Combine heading and content."
+  string-concat-fill: "Complete the concatenation."
+  string-predict-concat: "Predict the combined result."
+  string-repeat: "Create a separator line."
+  string-index-dynamic: "Access a character in the title."
+  string-index-first-fill: "Get the first character."
+  string-index-last-fill: "Get the last character."
+  string-predict-index: "Predict the character access."
+  string-negative-index: "Access from end of title."
+  string-second-last: "Get the second-to-last char."
+  string-predict-negative: "Predict negative index."
+  string-slicing-dynamic: "Extract part of the content."
+  string-slice-start: "Get the beginning of text."
+  string-slice-end: "Get the end of text."
+  string-slice-start-fill: "Complete the start slice."
+  string-slice-end-fill: "Complete the end slice."
+
+  # String Transforms
+  string-predict-slice: "Predict the slice result."
+  string-slice-advanced-dynamic: "Complex content slicing."
+  string-slice-step-dynamic: "Slice with step."
+  string-reverse: "Reverse the text."
+  string-predict-reverse: "Predict reversed result."
+  string-reverse-dynamic: "Dynamic text reversal."
+  string-every-other: "Get alternating characters."
+  string-upper: "Convert to uppercase heading."
+  string-upper-fill: "Complete the uppercase."
+  string-predict-upper: "Predict uppercase result."
+  string-lower: "Convert to lowercase."
+  string-strip: "Remove whitespace from input."
+  string-strip-fill: "Complete the strip."
+  string-replace: "Replace markdown syntax."
+  string-predict-replace: "Predict replacement."
+  string-split: "Split content into lines."
+  string-join: "Join lines back together."
+  string-find: "Find markdown marker."
+  string-startswith: "Check if heading starts with #."
+
+  # F-Strings
+  f-string-basic: "Format document title."
+  fstring-basic-fill: "Complete the f-string."
+  fstring-predict-basic: "Predict f-string output."
+  fstring-variable-dynamic: "Dynamic title formatting."
+  fstring-expression: "Embed word count expression."
+  fstring-expression-fill: "Complete the expression."
+  fstring-predict-expr: "Predict expression result."
+  fstring-greeting-dynamic: "Generate document header."
+  fstring-write-dynamic: "Write the f-string."
+  fstring-format-number: "Format page numbers."
+  fstring-padding: "Pad line numbers."
+  string-method-dynamic: "Apply string method."
+  string-slice-from-end-dynamic: "Get ending of content."

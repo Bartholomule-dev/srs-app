@@ -1,0 +1,162 @@
+# paths/python/blueprints/data-store.yaml
+
+id: data-store
+title: "Build a Data Store"
+description: "Create an in-memory data store with lists, dictionaries, sets and proper data management"
+difficulty: intermediate
+concepts: [collections, loops, functions, error-handling]
+
+beats:
+  # ============================================
+  # Act 1: Lists (Beats 1-5)
+  # ============================================
+  - beat: 1
+    exercise: list-create-empty
+    title: "Initialize empty store"
+    sideQuests:
+      - list-create-values
+      - list-bracket-fill
+
+  - beat: 2
+    exercise: list-append-dynamic
+    title: "Add items to store"
+    sideQuests:
+      - list-append-predict
+      - list-extend-method
+
+  - beat: 3
+    exercise: list-indexing-dynamic
+    title: "Access items by index"
+    sideQuests:
+      - list-access-index-dynamic
+      - list-negative-index-dynamic
+      - list-index
+
+  - beat: 4
+    exercise: list-pop-dynamic
+    title: "Remove items"
+    sideQuests:
+      - list-pop-index
+      - list-insert-dynamic
+
+  - beat: 5
+    exercise: list-slice-write-dynamic
+    title: "Slice data"
+    sideQuests:
+      - list-len-dynamic
+      - list-method-predict-dynamic
+
+  # ============================================
+  # Act 2: Dictionaries (Beats 6-10)
+  # ============================================
+  - beat: 6
+    exercise: dict-create-values
+    title: "Create record store"
+    sideQuests:
+      - dict-create-empty
+      - dict-brace-fill
+
+  - beat: 7
+    exercise: dict-set-item
+    title: "Add/update records"
+    sideQuests:
+      - dict-bracket-access
+      - dict-access-dynamic
+
+  - beat: 8
+    exercise: dict-get-default
+    title: "Safe record access"
+    sideQuests:
+      - dict-get-predict
+      - dict-in-check
+
+  - beat: 9
+    exercise: dict-pop
+    title: "Remove records"
+    sideQuests:
+      - dict-keys-method
+      - dict-values
+      - dict-items
+
+  - beat: 10
+    exercise: dict-items-loop
+    title: "Iterate records"
+    sideQuests:
+      - dict-keys-loop
+      - dict-values-loop
+      - dict-items-fill
+      - dict-values-fill
+
+  # ============================================
+  # Act 3: Sets & Tuples (Beats 11-14)
+  # ============================================
+  - beat: 11
+    exercise: set-create
+    title: "Create unique collection"
+    sideQuests:
+      - set-add
+      - set-remove
+      - set-discard
+
+  - beat: 12
+    exercise: set-union
+    title: "Combine sets"
+    sideQuests:
+      - set-union-predict
+      - set-intersection
+      - set-difference
+      - set-operation-dynamic
+      - set-operation-write-dynamic
+
+  - beat: 13
+    exercise: tuple-create
+    title: "Create immutable records"
+    sideQuests:
+      - tuple-single
+      - tuple-index
+      - tuple-index-dynamic
+
+  - beat: 14
+    exercise: tuple-unpack
+    title: "Unpack tuples"
+    sideQuests:
+      - tuple-unpack-dynamic
+      - tuple-immutability
+
+  # ============================================
+  # Act 4: Advanced Patterns (Beats 15-18)
+  # ============================================
+  - beat: 15
+    exercise: unpacking-intro
+    title: "Unpack data"
+    sideQuests:
+      - unpacking-list-intro
+      - unpacking-swap-intro
+      - star-unpack
+      - unpack-function-args
+      - unpack-dict-kwargs
+
+  - beat: 16
+    exercise: dict-iteration-predict
+    title: "Predict iteration"
+    sideQuests:
+      - dict-items-predict
+      - dict-sum-values
+      - dict-find-key
+
+  - beat: 17
+    exercise: nested-access-predict-dynamic
+    title: "Nested data access"
+    sideQuests:
+      - nested-access-write-dynamic
+      - dict-mutable-values
+
+  - beat: 18
+    exercise: shallow-copy-method
+    title: "Copy data safely"
+    sideQuests:
+      - shallow-copy-constructor
+      - deep-copy
+      - list-aliasing
+      - mutate-vs-reassign
+      - mutable-default-trap

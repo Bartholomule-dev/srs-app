@@ -7,15 +7,15 @@ exercises:
     objective: Write a basic try-except block to catch any exception
     title: Try Except Basic
     difficulty: 2
-    prompt: Write a complete try-except structure with pass in both blocks
+    prompt: Write a complete try-except structure to safely {{action_verb}} a {{item_singular}} (use pass in both blocks)
     expected_answer: |
       try:
           pass
       except:
           pass
     hints:
-      - Use try and except keywords
-      - Code that might fail goes in try block
+      - Use try and except keywords for {{item_singular}} safety
+      - Code that might fail when {{action_verb}}ing {{item_plural}} goes in try block
     tags: [exceptions, try, intermediate]
     concept: error-handling
     subconcept: try-except
@@ -25,15 +25,15 @@ exercises:
     pattern: handling
 
   - slug: except-specific
-    objective: Handle database connection failures with specific exception
-    title: Database Connection Error
+    objective: Handle lookup failures with specific exception
+    title: Key Not Found Error
     difficulty: 2
-    prompt: Catch a ConnectionError exception (common for database/network failures)
-    expected_answer: "except ConnectionError:"
+    prompt: Catch a KeyError exception when the {{item_singular}} key doesn't exist in the {{list_name}}
+    expected_answer: "except KeyError:"
     hints:
       - Put exception type after the except keyword
-      - Specific exceptions prevent catching unrelated errors
-    tags: [exceptions, database, network]
+      - Specific exceptions prevent catching unrelated {{item_singular}} errors
+    tags: [exceptions, key-error]
     concept: error-handling
     subconcept: try-except
     level: intro
@@ -43,18 +43,18 @@ exercises:
 
   - slug: raise-exception
     domains: [web, general]
-    objective: Raise a validation error when user input fails business rules
+    objective: Raise a validation error when input fails rules
     title: Validation Error
     difficulty: 2
-    prompt: Raise a ValueError with message "Invalid email format"
-    expected_answer: raise ValueError("Invalid email format")
+    prompt: Raise a ValueError with message "Invalid {{item_singular}}"
+    expected_answer: 'raise ValueError("Invalid {{item_singular}}")'
     accepted_solutions:
-      - raise ValueError("Invalid email format")
-      - raise ValueError('Invalid email format')
+      - 'raise ValueError("Invalid {{item_singular}}")'
+      - "raise ValueError('Invalid {{item_singular}}')"
     hints:
       - Use the raise keyword
       - Descriptive messages help debugging
-    tags: [exceptions, validation, api]
+    tags: [exceptions, validation]
     concept: error-handling
     subconcept: raising
     level: practice
@@ -66,11 +66,15 @@ exercises:
     objective: Catch an exception and bind it to a variable using the as keyword
     title: Except with Alias
     difficulty: 2
-    prompt: Catch Exception and assign it to variable e
-    expected_answer: "except Exception as e:"
+    prompt: Write an except clause that catches Exception and binds it to a variable named error
+    expected_answer: "except Exception as error:"
+    accepted_solutions:
+      - "except Exception as error:"
+      - "except Exception as e:"
+      - "except Exception as err:"
     hints:
-      - Use 'as' to bind exception to a variable name
-      - Allows access to exception message with str(e)
+      - Use 'as' to bind the exception to a variable name
+      - Allows access to error message with str(error)
     tags: [exceptions, alias, intermediate]
     concept: error-handling
     subconcept: try-except
@@ -90,11 +94,11 @@ exercises:
     prereqs: [error-handling.try-except]
     type: write
     pattern: handling
-    prompt: Write a finally block that always runs
+    prompt: Write a finally block to always save the {{list_name}} state after {{action_verb}}ing {{item_plural}}
     expected_answer: "finally:"
     hints:
-      - finally runs whether exception occurs or not
-      - Use for cleanup code (closing files, etc.)
+      - finally runs whether {{item_singular}} exception occurs or not
+      - Use for cleanup code (saving {{list_name}}, closing files)
     tags: [exceptions, finally, cleanup]
 
   - slug: finally-cleanup
@@ -107,13 +111,13 @@ exercises:
     prereqs: [error-handling.finally]
     type: write
     pattern: handling
-    prompt: Close a file object f in a finally block
+    prompt: Close the {{filename}} file object f in a finally block after {{action_verb}}ing {{item_plural}}
     expected_answer: |
       finally:
           f.close()
     hints:
-      - finally ensures cleanup happens
-      - Even if exception occurs
+      - finally ensures {{item_singular}} cleanup happens
+      - Even if {{item_singular}} exception occurs
     tags: [exceptions, finally, cleanup]
 
   - slug: finally-with-except
@@ -126,7 +130,7 @@ exercises:
     prereqs: [error-handling.finally]
     type: write
     pattern: handling
-    prompt: Write a complete try-except-finally structure with pass in each block
+    prompt: Write a complete try-except-finally structure to safely {{action_verb}} {{item_singular}} with pass in each block
     expected_answer: |
       try:
           pass
@@ -135,8 +139,8 @@ exercises:
       finally:
           pass
     hints:
-      - finally comes after except
-      - All three blocks together
+      - finally comes after except when {{action_verb}}ing {{item_plural}}
+      - All three blocks together for complete {{item_singular}} handling
     tags: [exceptions, finally, complete]
 
   - slug: finally-return
@@ -149,20 +153,20 @@ exercises:
     prereqs: [error-handling.finally]
     type: predict
     pattern: handling
-    prompt: What gets printed?
+    prompt: What gets printed when {{action_verb}}ing the {{item_singular}}?
     code: |
-      def test():
+      def {{action_verb}}_{{item_singular}}():
           try:
-              return "try"
+              return "{{status_var}}"
           finally:
-              print("finally")
-      result = test()
+              print("cleanup")
+      result = {{action_verb}}_{{item_singular}}()
       print(result)
     expected_answer: |
-      finally
-      try
+      cleanup
+      {{status_var}}
     hints:
-      - finally runs before function actually returns
+      - finally runs before {{action_verb}}_{{item_singular}} actually returns
       - Return value is held until finally completes
     tags: [exceptions, finally, return]
 
@@ -176,18 +180,18 @@ exercises:
     prereqs: [error-handling.finally]
     type: predict
     pattern: handling
-    prompt: What gets printed before the error?
+    prompt: What gets printed before the {{item_singular}} error?
     code: |
       try:
-          print("try")
-          raise ValueError("error")
+          print("{{action_verb}}ing")
+          raise ValueError("Invalid {{item_singular}}")
       finally:
-          print("finally")
+          print("cleanup")
     expected_answer: |
-      try
-      finally
+      {{action_verb}}ing
+      cleanup
     hints:
-      - finally runs before exception propagates
+      - finally runs before {{item_singular}} exception propagates
       - Exception continues after finally completes
     tags: [exceptions, finally, propagation]
 
@@ -201,13 +205,13 @@ exercises:
     prereqs: [error-handling.try-except]
     type: write
     pattern: handling
-    prompt: Write an else block that runs when no exception is raised
+    prompt: Write an else block that runs when {{item_singular}} {{action_verb}} succeeds (no exception)
     expected_answer: |
       else:
           pass
     hints:
-      - else comes between except and finally
-      - Runs only if no exception
+      - else comes between except and finally when {{action_verb}}ing {{item_plural}}
+      - Runs only if no {{item_singular}} exception occurs
     tags: [exceptions, else, control]
 
   # --- Additional Raising Exercises ---
@@ -221,13 +225,13 @@ exercises:
     prereqs: [try-except]
     type: write
     pattern: handling
-    prompt: Raise a generic Exception
+    prompt: Raise a generic Exception when {{action_verb}}ing {{item_singular}} fails
     expected_answer: "raise Exception()"
     accepted_solutions:
       - "raise Exception()"
       - "raise Exception"
     hints:
-      - Use the raise keyword
+      - Use the raise keyword for {{item_singular}} errors
       - Exception is the base exception class
     tags: [exceptions, raise, intro]
 
@@ -241,14 +245,14 @@ exercises:
     prereqs: [error-handling.try-except]
     type: write
     pattern: handling
-    prompt: Raise a ValueError with message "Age must be positive"
-    expected_answer: raise ValueError("Age must be positive")
+    prompt: Raise a ValueError when {{item_singular}} with message "{{entity_name}} not found"
+    expected_answer: 'raise ValueError("{{entity_name}} not found")'
     accepted_solutions:
-      - 'raise ValueError("Age must be positive")'
-      - "raise ValueError('Age must be positive')"
+      - 'raise ValueError("{{entity_name}} not found")'
+      - "raise ValueError('{{entity_name}} not found')"
     hints:
-      - Pass message string to exception constructor
-      - Good messages describe what went wrong
+      - Pass {{item_singular}} message string to exception constructor
+      - Good messages describe what {{item_singular}} went wrong
     tags: [exceptions, raise, message]
 
   - slug: raise-from
@@ -261,11 +265,11 @@ exercises:
     prereqs: [error-handling.raising]
     type: write
     pattern: handling
-    prompt: Raise RuntimeError from an existing exception e
-    expected_answer: raise RuntimeError("Failed") from e
+    prompt: Raise RuntimeError with message "Failed to {{action_verb}} {{item_singular}}" from an existing exception e
+    expected_answer: 'raise RuntimeError("Failed to {{action_verb}} {{item_singular}}") from e'
     accepted_solutions:
-      - 'raise RuntimeError("Failed") from e'
-      - "raise RuntimeError('Failed') from e"
+      - 'raise RuntimeError("Failed to {{action_verb}} {{item_singular}}") from e'
+      - "raise RuntimeError('Failed to {{action_verb}} {{item_singular}}') from e"
     hints:
       - Use 'from' to chain exceptions
       - Preserves original traceback
@@ -281,11 +285,11 @@ exercises:
     prereqs: [error-handling.raising]
     type: write
     pattern: handling
-    prompt: Re-raise the current exception after logging it
+    prompt: Re-raise the current exception after logging the {{item_singular}} {{action_verb}} error
     expected_answer: raise
     hints:
-      - Bare 'raise' re-raises current exception
-      - Preserves original traceback
+      - Bare 'raise' re-raises current {{item_singular}} exception
+      - Preserves original {{item_singular}} traceback
     tags: [exceptions, raise, reraise]
 
   - slug: custom-exception
@@ -298,11 +302,11 @@ exercises:
     prereqs: [error-handling.raising, oop.inheritance]
     type: write
     pattern: definition
-    prompt: Define a custom exception class ValidationError that inherits from Exception
-    expected_answer: "class ValidationError(Exception):"
+    prompt: Define a custom exception class {{entity_name}}Error for {{item_singular}} operations that inherits from Exception
+    expected_answer: "class {{entity_name}}Error(Exception):"
     hints:
-      - Inherit from Exception
-      - Can add custom attributes if needed
+      - Inherit from Exception for {{item_singular}} errors
+      - Can add custom {{item_singular}} attributes if needed
     tags: [exceptions, custom, class]
 
   # --- Fill-in Exercises ---
@@ -317,10 +321,10 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: handling
-    prompt: Fill in the keyword that starts error handling
+    prompt: Fill in the keyword that starts error handling for {{action_verb}}ing {{item_singular}}
     template: |
       ___:
-          risky_operation()
+          {{action_verb}}_{{item_singular}}()
     expected_answer: "try"
     hints:
       - Keyword that starts exception handling block
@@ -338,12 +342,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: handling
-    prompt: Fill in the keyword that catches an exception
+    prompt: Fill in the keyword that catches an invalid {{item_singular}} exception
     template: "___ ValueError:"
     expected_answer: "except"
     hints:
-      - Keyword that catches exceptions
-      - Comes after the try block
+      - Keyword that catches {{item_singular}} exceptions
+      - Comes after the try block when {{action_verb}}ing {{item_plural}}
     tags: [exceptions, except, fill-in]
 
   - slug: raise-keyword-fill
@@ -357,12 +361,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: handling
-    prompt: Fill in the keyword that throws an exception
-    template: '___ ValueError("Invalid")'
+    prompt: Fill in the keyword that throws an exception for invalid {{item_singular}}
+    template: '___ ValueError("Invalid {{item_singular}}")'
     expected_answer: "raise"
     hints:
-      - Keyword to throw an exception
-      - Stops normal execution flow
+      - Keyword to throw a {{item_singular}} exception
+      - Stops normal {{action_verb}} execution flow
     tags: [exceptions, raise, fill-in]
 
   # --- Predict Exercises ---
@@ -400,18 +404,18 @@ exercises:
     prereqs: [error-handling.try-except]
     type: predict
     pattern: handling
-    prompt: What does this code print?
+    prompt: What does this try-except code print?
     code: |
       try:
-          x = 1 / 0
+          {{item_singular}}_count = 1 / 0
       except ValueError:
-          print("value error")
+          print("invalid {{item_singular}}")
       except ZeroDivisionError:
-          print("zero division")
-    expected_answer: "zero division"
+          print("zero {{item_plural}}")
+    expected_answer: "zero {{item_plural}}"
     hints:
       - 1/0 raises ZeroDivisionError, not ValueError
-      - The matching except block is executed
+      - The matching {{item_singular}} except block is executed
     tags: [exceptions, except, predict]
 
   - slug: exception-as-predict
@@ -424,16 +428,16 @@ exercises:
     prereqs: [error-handling.try-except]
     type: predict
     pattern: handling
-    prompt: What does this code print?
+    prompt: What does this try-except code print?
     code: |
       try:
-          raise ValueError("oops")
+          raise ValueError("Invalid {{item_singular}}")
       except ValueError as e:
           print(e)
-    expected_answer: "oops"
+    expected_answer: "Invalid {{item_singular}}"
     hints:
-      - "'as e' captures the exception object"
-      - str(e) or print(e) shows the message
+      - "'as e' captures the {{item_singular}} exception object"
+      - str(e) or print(e) shows the {{item_singular}} message
     tags: [exceptions, as, predict]
 
   # --- Dynamic Exception Exercises ---

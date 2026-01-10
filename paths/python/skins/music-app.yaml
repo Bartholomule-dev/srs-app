@@ -49,39 +49,85 @@ dataPack:
     - "Repeat mode on"
 
 contexts:
-  # Collection exercises
+  # Setup & Storage
   list-create-empty: "Every music app needs a playlist to store tracks."
+  list-create-values: "Initialize playlist with favorite tracks."
+  tuple-create: "Store immutable track data like (artist, album)."
   list-append-dynamic: "Add a track to the current playlist."
+  list-extend-method: "Add tracks from another playlist."
+  list-insert-dynamic: "Insert a track at a specific position."
   list-in-check: "Check if a track is already in the playlist."
+  list-count: "Count how many times this song appears."
+  list-index: "Find the position of a specific track."
   dict-create-values: "Tracks have metadata like artist and duration."
+  dict-create-empty: "Create empty track metadata dictionary."
+  dict-get-default: "Get track duration, defaulting to 0."
+  dict-set-item: "Update track's play count."
+  input-string: "Get the track title from user."
+  print-string: "Display 'Now playing...' message."
+  print-variable: "Show the current track name."
 
-  # Loop exercises
+  # Display & Iteration
   for-loop-list: "Display all tracks in the playlist."
+  for-loop-string: "Display each character in the track title."
+  for-loop-range: "Process playlist by track position."
   enumerate-basic: "Number tracks so users can select by position."
+  enumerate-start: "Number tracks starting from 1."
+  zip-basic: "Combine track titles with their durations."
+  f-string-basic: "Format 'Now playing: Title by Artist'."
+  f-string-expression: "Show remaining playback time."
+  string-format: "Format track metadata display."
+  list-sorted: "Display tracks sorted alphabetically."
+  list-sort: "Sort playlist by duration."
+  list-reverse: "Show playlist in reverse order."
+  sorted-reverse: "Get tracks sorted by play count, highest first."
   while-loop-basic: "Keep playing tracks until the playlist ends."
-
-  # Comprehension exercises
   list-comp-filter-dynamic: "Filter to show only tracks by a specific artist."
   list-comp-basic: "Create a list of track titles from the playlist."
-  dict-comp-basic: "Create a lookup table of track titles to durations."
+  list-comp-conditional: "Get all tracks longer than 3 minutes."
 
-  # File exercises
-  context-intro: "Save the playlist so it persists between sessions."
-  file-read-basic: "Load your saved playlist from a file."
-  file-write-basic: "Write the current playlist to a file."
-
-  # Error handling
-  try-except-basic: "Handle the case where the playlist file is missing."
-  try-except-specific: "Catch the error when trying to play an empty playlist."
-
-  # Functions
-  function-basic: "Create a function to calculate total playlist duration."
-  function-args: "Create a function that adds a track with a given artist."
-
-  # Conditionals
+  # Logic & Validation
   if-else-basic: "Check if a track is longer than 5 minutes."
-  elif-chain: "Categorize track length: short, medium, or long."
+  if-only: "Check if playlist is empty."
+  boolean-and: "Check if track is by artist AND under 5 min."
+  boolean-or: "Check if track is rock OR pop genre."
+  elif-grade: "Categorize track length: short, medium, or long."
+  elif-http-status: "Handle different playback states."
+  match-case-basic: "Handle player commands (play, pause, skip)."
+  try-except-basic: "Handle the case where the playlist file is missing."
+  raise-intro: "Raise error for invalid track format."
+  raise-exception: "Raise TrackNotFound when track is missing."
+  except-specific: "Catch the error when trying to play an empty playlist."
+  except-multi: "Handle FileNotFound and PermissionError."
+  try-else: "Run code only when playback started."
+  finally-basic: "Always stop audio stream when done."
+  try-except-finally: "Complete playback handling with cleanup."
+  reraise: "Re-raise after logging playback error."
+
+  # Organization & Persistence
+  define-function: "Create a function to calculate total playlist duration."
+  function-return: "Return the formatted duration string."
+  return-none: "Return None when track is removed."
+  default-param-simple: "Add track with default play count 0."
+  default-param-intro: "Define optional track metadata."
+  default-param-multiple: "Multiple defaults for track creation."
+  context-intro: "Save the playlist so it persists between sessions."
+  file-open-write: "Write playlist to disk."
+  file-read-lines: "Load saved playlist data."
+  pathlib-intro: "Use Path objects for playlist files."
+  pathlib-check-exists: "Check if playlist file exists."
+  pathlib-create-path: "Create path to playlists directory."
+  pathlib-join-paths: "Join paths for backup playlists."
+  main-guard-basic: "Only start player when run directly."
+  import-from: "Import audio processing utilities."
+  import-module: "Import the music player module."
+
+  # Comprehensions
+  dict-comp-basic: "Create a lookup table of track titles to durations."
+  dict-comp-intro: "Build a dict of track metadata."
 
   # OOP
-  class-basic: "Create a Track class to represent songs."
-  class-method: "Add a method to format track duration as mm:ss."
+  define-class: "Create a Track class to represent songs."
+  init-method: "Initialize track with title and artist."
+  instance-attribute: "Store track duration as an instance attribute."
+  custom-exception: "Create a custom PlaybackError exception."

@@ -11,60 +11,130 @@ beats:
   - beat: 1
     exercise: context-intro
     title: "Open the data file"
+    sideQuests:
+      - context-manager-multiple
+      - file-open-read
+
   - beat: 2
     exercise: file-read-lines
     title: "Read all lines"
+    sideQuests:
+      - file-read-all
+      - file-read-line
+
   - beat: 3
     exercise: string-strip
     title: "Clean whitespace"
+    sideQuests:
+      - string-lower
+      - string-upper
+
   - beat: 4
     exercise: string-split
     title: "Split into fields"
+    sideQuests:
+      - string-join
+      - string-replace
 
   # Act 2: Parse - slicing, int conversion, dict building
   - beat: 5
     exercise: string-slicing-dynamic
     title: "Extract substrings"
+    sideQuests:
+      - string-slice-start
+      - string-slice-end
+      - string-slice-step-dynamic
+
   - beat: 6
     exercise: convert-int-fill
     title: "Convert to numbers"
+    sideQuests:
+      - convert-str-fill
+      - conversion-predict-dynamic
+
   - beat: 7
     exercise: dict-comp-intro
     title: "Build record dict"
+    sideQuests:
+      - dict-comp-basic
+      - dict-create-values
+
   - beat: 8
     exercise: for-loop-list
     title: "Process each record"
+    sideQuests:
+      - for-loop-string
+      - dict-items-loop
+
   - beat: 9
     exercise: enumerate-basic
     title: "Track line numbers"
+    sideQuests:
+      - enumerate-start-dynamic
+      - reversed-enumerate
 
   # Act 3: Transform - comprehensions, filter, map operations
   - beat: 10
     exercise: list-comp-basic
     title: "Transform values"
+    sideQuests:
+      - list-comp-transform-dynamic
+      - list-comp-filter-predict
+
   - beat: 11
     exercise: list-comp-conditional
     title: "Filter invalid data"
+    sideQuests:
+      - list-comp-filter-dynamic
+      - all-basic
+      - any-basic
+
   - beat: 12
     exercise: generator-exp-intro
     title: "Stream large files"
+    sideQuests:
+      - generator-exp-basic
+      - generator-predict-lazy
+
   - beat: 13
     exercise: dict-comp-zip
     title: "Combine columns"
+    sideQuests:
+      - zip-intro
+      - zip-two-lists
 
   # Act 4: Output - aggregation (sum, len, min/max), write results, error handling
   - beat: 14
     exercise: generator-exp-sum
     title: "Sum values"
+    sideQuests:
+      - list-sum-dynamic
+      - zip-sum-dynamic
+
   - beat: 15
     exercise: string-length
     title: "Count records"
+    sideQuests:
+      - list-len-dynamic
+      - string-len-fill
+
   - beat: 16
     exercise: try-except-basic
     title: "Handle bad data"
+    sideQuests:
+      - except-as
+      - exception-catch-dynamic
+
   - beat: 17
     exercise: except-specific
     title: "Catch parse errors"
+    sideQuests:
+      - except-type-predict
+      - exception-type-predict-dynamic
+
   - beat: 18
     exercise: file-open-write
     title: "Write results"
+    sideQuests:
+      - file-write-text
+      - file-writelines

@@ -1,0 +1,94 @@
+# paths/python/skins/pet-simulator.yaml
+
+id: pet-simulator
+title: "Pet Simulator"
+icon: "🐕"
+blueprints: [oop-entity]
+
+vars:
+  list_name: pets
+  item_singular: pet
+  item_plural: pets
+  item_examples:
+    - "Buddy"
+    - "Max"
+    - "Luna"
+    - "Whiskers"
+    - "Charlie"
+  record_keys: ["name", "species", "age", "health"]
+  attr_key_1: name
+  attr_key_2: health
+  id_var: pet_id
+  filename: pets.json
+  filetype: json
+  user_role: owner
+  status_var: happy
+  action_verb: feed
+  entity_name: Pet
+
+dataPack:
+  list_sample: ["dog", "cat", "bird", "fish"]
+  dict_sample:
+    name: "Buddy"
+    species: "Dog"
+    age: 3
+    health: 100
+  records_sample:
+    - { name: "Buddy", species: "Dog", health: 100 }
+    - { name: "Whiskers", species: "Cat", health: 95 }
+    - { name: "Tweety", species: "Bird", health: 80 }
+  string_samples:
+    - "Your pet is hungry!"
+    - "Pet is happy!"
+    - "Time for a walk!"
+    - "Pet needs attention"
+
+contexts:
+  # Basic Classes
+  define-class: "Create a Pet class to represent your virtual pet."
+  class-keyword-fill: "Use the class keyword to define Pet."
+  init-method: "Initialize a pet with name and species."
+  init-self-fill: "Set up pet attributes in __init__."
+  self-parameter: "Reference the pet instance with self."
+  instance-attribute: "Store the pet's health as an attribute."
+  instance-attribute-predict: "Predict the pet's attribute value."
+  self-attribute: "Access the pet's name via self."
+  instance-method: "Add a method to feed the pet."
+  method-call-predict: "Predict what pet.feed() returns."
+  method-call-dynamic: "Call the pet's method dynamically."
+  instance-method-write-dynamic: "Write a method to play with the pet."
+
+  # Inheritance
+  inheritance-basic: "Create a Dog class that inherits from Pet."
+  inheritance-predict: "Predict what Dog inherits from Pet."
+  inheritance-isinstance: "Check if buddy is an instance of Pet."
+  inheritance-super-init: "Call Pet's __init__ from Dog."
+  super-fill: "Use super() to call parent method."
+  inheritance-issubclass: "Check if Dog is a subclass of Pet."
+  inheritance-override-method: "Override the speak() method in Dog."
+  inheritance-override-dynamic: "Write an overridden method."
+  inheritance-predict-dynamic: "Predict inherited behavior."
+  inheritance-super-method: "Extend parent's behavior in subclass."
+  method-resolution-order: "Understand Pet → Dog method lookup."
+
+  # Properties
+  property-getter: "Add a health property with a getter."
+  property-return: "Return the pet's health level."
+  property-readonly: "Make species a read-only property."
+  property-setter: "Add a setter to validate health changes."
+  property-setter-validation: "Validate health is between 0-100."
+  property-deleter: "Clean up when pet is released."
+
+  # Class Methods & Static
+  classmethod-basic: "Add a class method to count all pets."
+  classmethod-cls-parameter: "Use cls to access Pet class."
+  classmethod-call: "Call the class method on Pet."
+  classmethod-factory: "Create a Pet from a dictionary."
+  api-response-model-integrated: "Parse pet data from API response."
+  staticmethod-basic: "Add a static method for age calculation."
+  staticmethod-vs-classmethod: "Understand when to use each."
+
+  # Error Handling
+  custom-exception: "Create a PetError for invalid operations."
+  raise-exception: "Raise PetError when health is negative."
+  try-except-basic: "Handle errors when feeding a pet."

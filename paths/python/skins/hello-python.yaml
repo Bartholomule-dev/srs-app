@@ -1,0 +1,102 @@
+# paths/python/skins/hello-python.yaml
+
+id: hello-python
+title: "Hello Python"
+icon: "🐍"
+blueprints: [python-basics]
+
+vars:
+  list_name: values
+  item_singular: value
+  item_plural: values
+  item_examples:
+    - "42"
+    - "hello"
+    - "3.14"
+    - "True"
+    - "name"
+  record_keys: ["name", "age", "score", "active"]
+  attr_key_1: name
+  attr_key_2: age
+  id_var: user_id
+  filename: data.txt
+  filetype: text
+  user_role: learner
+  status_var: learning
+  action_verb: practice
+  entity_name: Variable
+
+dataPack:
+  list_sample: [10, 20, 30, 40]
+  dict_sample:
+    name: "Alice"
+    age: 25
+    score: 95.5
+    active: true
+  records_sample:
+    - { name: "Alice", score: 95 }
+    - { name: "Bob", score: 87 }
+    - { name: "Charlie", score: 92 }
+  string_samples:
+    - "Hello, World!"
+    - "Welcome to Python"
+    - "Keep learning!"
+    - "Great job!"
+
+contexts:
+  # Variables & Assignment
+  assign-variable: "Store your username."
+  variable-assign-fill: "Complete the assignment."
+  variable-predict-assign: "Predict the stored value."
+  assign-number: "Store your age."
+  variable-naming-fill: "Name the variable correctly."
+  variable-predict-reassign: "Predict after reassignment."
+  multiple-assignment: "Assign multiple values at once."
+  swap-variables: "Swap two values."
+  print-variable: "Display your username."
+  print-string: "Print a greeting."
+  io-print-fill: "Complete the print call."
+  io-predict-print-concat: "Predict print output."
+
+  # Operators
+  floor-division-dynamic: "Calculate whole number division."
+  operator-addition-fill: "Complete the addition."
+  operator-floor-division-fill: "Complete floor division."
+  operator-predict-floor: "Predict floor division result."
+  modulo-dynamic: "Find the remainder."
+  operator-predict-modulo: "Predict modulo result."
+  exponentiation-dynamic: "Calculate powers."
+  augmented-assignment-dynamic: "Update with augmented assignment."
+  operator-precedence-dynamic: "Understand operator order."
+  operator-expression-predict-dynamic: "Predict expression result."
+  operator-parentheses-dynamic: "Use parentheses correctly."
+
+  # Boolean Logic
+  boolean-and: "Combine conditions with AND."
+  expression-and-fill: "Complete the AND expression."
+  expression-predict-and: "Predict AND result."
+  boolean-or: "Combine conditions with OR."
+  expression-predict-or: "Predict OR result."
+  boolean-not: "Negate a condition."
+  expression-not-fill: "Complete the NOT expression."
+  ternary-expression: "Conditional in one line."
+  comparison-chaining: "Chain comparisons."
+
+  # Input/Output & Imports
+  input-string: "Get user's name."
+  io-input-fill: "Complete the input call."
+  input-to-int: "Convert input to number."
+  print-fstring: "Format greeting with name."
+  print-sep: "Print with separator."
+  io-predict-print-sep: "Predict separator output."
+  import-math: "Import the math module."
+  import-fill-import: "Complete the import."
+  import-predict-pi: "Predict math.pi value."
+  import-from-math: "Import sqrt function."
+  import-math-sqrt: "Use sqrt function."
+  import-fill-from: "Complete from import."
+  import-predict-ceil: "Predict ceil result."
+  import-random-choice: "Import random choice."
+  import-datetime: "Import datetime."
+  import-multiple-basic: "Import multiple modules."
+  import-as-alias: "Use import alias."

@@ -1,0 +1,124 @@
+# paths/python/blueprints/text-formatter.yaml
+
+id: text-formatter
+title: "Build a Text Formatter"
+description: "Create a text processing utility that cleans, transforms, and formats user input"
+difficulty: beginner
+concepts: [strings, foundations, conditionals, functions]
+
+beats:
+  # ============================================
+  # Act 1: String Basics (Beats 1-5)
+  # ============================================
+  - beat: 1
+    exercise: string-length
+    title: "Measure text length"
+    sideQuests:
+      - string-len-fill
+      - string-predict-len
+
+  - beat: 2
+    exercise: string-concatenate
+    title: "Combine strings"
+    sideQuests:
+      - string-concat-fill
+      - string-predict-concat
+      - string-repeat
+
+  - beat: 3
+    exercise: string-index-dynamic
+    title: "Access characters"
+    sideQuests:
+      - string-index-first-fill
+      - string-index-last-fill
+      - string-predict-index
+
+  - beat: 4
+    exercise: string-negative-index
+    title: "Access from end"
+    sideQuests:
+      - string-second-last
+      - string-predict-negative
+
+  - beat: 5
+    exercise: string-slicing-dynamic
+    title: "Extract substrings"
+    sideQuests:
+      - string-slice-start
+      - string-slice-end
+      - string-slice-start-fill
+      - string-slice-end-fill
+
+  # ============================================
+  # Act 2: String Transforms (Beats 6-10)
+  # ============================================
+  - beat: 6
+    exercise: string-predict-slice
+    title: "Predict slicing results"
+    sideQuests:
+      - string-slice-advanced-dynamic
+      - string-slice-step-dynamic
+
+  - beat: 7
+    exercise: string-reverse
+    title: "Reverse text"
+    sideQuests:
+      - string-predict-reverse
+      - string-reverse-dynamic
+      - string-every-other
+
+  - beat: 8
+    exercise: string-upper
+    title: "Convert to uppercase"
+    sideQuests:
+      - string-upper-fill
+      - string-predict-upper
+      - string-lower
+
+  - beat: 9
+    exercise: string-strip
+    title: "Clean whitespace"
+    sideQuests:
+      - string-strip-fill
+      - string-replace
+      - string-predict-replace
+
+  - beat: 10
+    exercise: string-split
+    title: "Split into parts"
+    sideQuests:
+      - string-join
+      - string-find
+      - string-startswith
+
+  # ============================================
+  # Act 3: F-Strings (Beats 11-14)
+  # ============================================
+  - beat: 11
+    exercise: f-string-basic
+    title: "Format with f-strings"
+    sideQuests:
+      - fstring-basic-fill
+      - fstring-predict-basic
+      - fstring-variable-dynamic
+
+  - beat: 12
+    exercise: fstring-expression
+    title: "Embed expressions"
+    sideQuests:
+      - fstring-expression-fill
+      - fstring-predict-expr
+
+  - beat: 13
+    exercise: fstring-greeting-dynamic
+    title: "Dynamic greetings"
+    sideQuests:
+      - fstring-write-dynamic
+
+  - beat: 14
+    exercise: fstring-format-number
+    title: "Format numbers"
+    sideQuests:
+      - fstring-padding
+      - string-method-dynamic
+      - string-slice-from-end-dynamic

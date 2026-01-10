@@ -1,0 +1,118 @@
+# paths/python/skins/batch-processor.yaml
+
+id: batch-processor
+title: "Batch Processor"
+icon: "⚙️"
+blueprints: [automation-script]
+
+vars:
+  list_name: records
+  item_singular: record
+  item_plural: records
+  item_examples:
+    - "user_001"
+    - "user_002"
+    - "transaction_a"
+    - "log_entry_1"
+    - "batch_item"
+  record_keys: ["id", "status", "timestamp", "data"]
+  attr_key_1: id
+  attr_key_2: status
+  id_var: record_id
+  filename: batch_output.json
+  filetype: json
+  user_role: processor
+  status_var: processed
+  action_verb: process
+  entity_name: Record
+
+dataPack:
+  list_sample: ["pending", "complete", "failed", "retry"]
+  dict_sample:
+    id: "rec_001"
+    status: "pending"
+    timestamp: 1704067200
+    data: "sample"
+  records_sample:
+    - { id: "rec_001", status: "pending", data: "a" }
+    - { id: "rec_002", status: "complete", data: "b" }
+    - { id: "rec_003", status: "failed", data: "c" }
+  string_samples:
+    - "Processing batch..."
+    - "Record complete"
+    - "Batch finished"
+    - "Error in record"
+
+contexts:
+  # Data Loading & Basic Iteration
+  for-loop-list: "Iterate through each record in the batch."
+  for-loop-string: "Process each character in the record ID."
+  for-loop-list-dynamic: "Loop through records dynamically."
+  range-intro: "Generate a sequence of batch indices."
+  range-start-stop: "Create range for specific batch segment."
+  range-step: "Process every nth record."
+  range-negative-step: "Process records in reverse order."
+  enumerate-basic: "Track record number while processing."
+  enumerate-loop: "Number each record for logging."
+  enumerate-start-dynamic: "Start numbering from a specific value."
+  enumerate-keyword: "Use enumerate keyword correctly."
+  zip-intro: "Pair record IDs with their statuses."
+  zip-two-lists: "Combine two data columns."
+  zip-three-lists: "Merge three data sources."
+  zip-unequal-lengths: "Handle mismatched batch sizes."
+  reversed-intro: "Process batch in reverse order."
+  reversed-list: "Reverse the record order."
+  reversed-range: "Count down through batch."
+  reversed-enumerate: "Reverse with position tracking."
+
+  # Control Flow & Filtering
+  break-statement: "Stop processing when error found."
+  break-loop: "Exit loop on critical failure."
+  break-predict: "Predict when loop exits early."
+  break-fill: "Complete the break statement."
+  continue-statement: "Skip invalid records."
+  continue-loop: "Continue to next record."
+  continue-predict: "Predict skip behavior."
+  continue-fill: "Complete the continue statement."
+  while-loop: "Process until batch complete."
+  while-counter-intro: "Count processed records."
+  while-countdown-dynamic: "Countdown remaining records."
+  while-condition-fill: "Complete the while condition."
+  while-true-break: "Run until manually stopped."
+  while-header-intro: "Set up while loop header."
+  while-keyword: "Use while keyword correctly."
+  for-else: "Handle case where no errors found."
+  break-else: "Else clause after break check."
+
+  # Aggregation & Reporting
+  any-basic: "Check if any records failed."
+  any-with-condition: "Check for specific status."
+  any-all-combined: "Combined any/all checks."
+  all-basic: "Verify all records processed."
+  any-all-predict-dynamic: "Predict any/all results."
+  any-all-write-dynamic: "Write any/all expressions."
+  sorted-intro: "Sort records by timestamp."
+  sorted-list: "Get sorted record list."
+  sorted-reverse: "Sort in descending order."
+  sorted-key-len: "Sort by record data length."
+  sorted-key-lambda: "Custom sort by status priority."
+  sorted-key-lambda-tuples: "Sort tuple records."
+  sorted-predict-dynamic: "Predict sort results."
+  sorted-write-dynamic: "Write sort expressions."
+  list-comp-basic: "Extract record IDs."
+  list-comp-conditional: "Filter successful records."
+  list-comp-filter-dynamic: "Dynamic filtering."
+  list-comp-transform-dynamic: "Transform record data."
+
+  # Advanced Patterns
+  generator-exp-intro: "Stream large batches efficiently."
+  generator-exp-basic: "Basic generator for records."
+  generator-exp-sum: "Sum record values lazily."
+  generator-predict-lazy: "Predict lazy evaluation."
+  zip-predict: "Predict paired data results."
+  zip-predict-dynamic: "Dynamic zip predictions."
+  zip-sum-dynamic: "Sum zipped values."
+  for-zip: "Iterate with zip."
+  nested-loop-predict: "Predict nested iteration."
+  nested-comp-predict: "Predict nested comprehension."
+  for-sum-pair-dynamic: "Sum pairs dynamically."

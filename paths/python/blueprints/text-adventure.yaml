@@ -11,51 +11,108 @@ beats:
   - beat: 1
     exercise: dict-create-values
     title: "Create player state"
+    sideQuests:
+      - dict-create-empty
+      - dict-set-item
+
   - beat: 2
     exercise: list-create-empty
     title: "Initialize inventory"
+    sideQuests:
+      - list-create-values
+      - set-create
+
   - beat: 3
     exercise: dict-set-item
     title: "Track current location"
+    sideQuests:
+      - dict-bracket-access
+      - dict-get-default
+
   - beat: 4
     exercise: f-string-basic
     title: "Display player status"
+    sideQuests:
+      - fstring-expression
+      - print-fstring
 
   # Act 2: Commands - Input Parsing and Branching
   - beat: 5
     exercise: string-split
     title: "Parse player command"
+    sideQuests:
+      - string-join
+      - string-strip
+
   - beat: 6
     exercise: string-lower
     title: "Normalize input"
+    sideQuests:
+      - string-upper
+      - string-strip
+
   - beat: 7
     exercise: if-else-basic
     title: "Handle go command"
+    sideQuests:
+      - if-statement
+      - ternary-basic
+
   - beat: 8
     exercise: elif-http-status
     title: "Route multiple commands"
+    sideQuests:
+      - elif-grade
+      - if-elif-else-predict-dynamic
+
   - beat: 9
     exercise: match-case-basic
     title: "Modern command dispatch"
+    sideQuests:
+      - match-case-or
+      - match-case-tuple
 
   # Act 3: Game Logic - Loop and Inventory
   - beat: 10
     exercise: while-true-break
     title: "Create game loop"
+    sideQuests:
+      - while-loop
+      - break-loop
+      - continue-loop
+
   - beat: 11
     exercise: list-in-check
     title: "Check inventory"
+    sideQuests:
+      - dict-in-check
+      - in-operator-fill
+
   - beat: 12
     exercise: list-append-dynamic
     title: "Pick up items"
+    sideQuests:
+      - list-extend-method
+      - set-add
+
   - beat: 13
     exercise: list-pop-index
     title: "Use or drop item"
+    sideQuests:
+      - list-pop-dynamic
+      - dict-pop
 
   # Act 4: Actions - Functions and Extensibility
   - beat: 14
     exercise: define-function
     title: "Define action handler"
+    sideQuests:
+      - function-return
+      - args-intro
+
   - beat: 15
     exercise: function-return
     title: "Process game state"
+    sideQuests:
+      - function-multiple-return
+      - function-return-predict

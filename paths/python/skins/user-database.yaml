@@ -1,0 +1,119 @@
+# paths/python/skins/user-database.yaml
+
+id: user-database
+title: "User Database"
+icon: "🗄️"
+blueprints: [data-store]
+
+vars:
+  list_name: users
+  item_singular: user
+  item_plural: users
+  item_examples:
+    - "alice"
+    - "bob"
+    - "charlie"
+    - "diana"
+    - "eve"
+  record_keys: ["id", "username", "email", "role"]
+  attr_key_1: username
+  attr_key_2: email
+  id_var: user_id
+  filename: users.json
+  filetype: json
+  user_role: admin
+  status_var: active
+  action_verb: query
+  entity_name: User
+
+dataPack:
+  list_sample: ["alice", "bob", "charlie", "diana"]
+  dict_sample:
+    id: 1
+    username: "alice"
+    email: "alice@example.com"
+    role: "admin"
+  records_sample:
+    - { id: 1, username: "alice", role: "admin" }
+    - { id: 2, username: "bob", role: "user" }
+    - { id: 3, username: "charlie", role: "guest" }
+  string_samples:
+    - "User created"
+    - "User not found"
+    - "Access granted"
+    - "Database updated"
+
+contexts:
+  # Lists
+  list-create-empty: "Initialize empty user list."
+  list-create-values: "Create list with initial users."
+  list-bracket-fill: "Complete the list syntax."
+  list-append-dynamic: "Add a new user."
+  list-append-predict: "Predict list after append."
+  list-extend-method: "Add multiple users."
+  list-indexing-dynamic: "Get user by position."
+  list-access-index-dynamic: "Access specific user."
+  list-negative-index-dynamic: "Get last user."
+  list-index: "Find user's position."
+  list-pop-dynamic: "Remove a user."
+  list-pop-index: "Remove user at index."
+  list-insert-dynamic: "Insert user at position."
+  list-slice-write-dynamic: "Get subset of users."
+  list-len-dynamic: "Count total users."
+  list-method-predict-dynamic: "Predict list operation."
+
+  # Dictionaries
+  dict-create-values: "Create user record."
+  dict-create-empty: "Initialize empty record."
+  dict-brace-fill: "Complete dict syntax."
+  dict-set-item: "Update user field."
+  dict-bracket-access: "Access user attribute."
+  dict-access-dynamic: "Get user property."
+  dict-get-default: "Safe attribute access."
+  dict-get-predict: "Predict get result."
+  dict-in-check: "Check if user exists."
+  dict-pop: "Remove user attribute."
+  dict-keys-method: "Get all field names."
+  dict-values: "Get all field values."
+  dict-items: "Get all key-value pairs."
+  dict-items-loop: "Loop through user data."
+  dict-keys-loop: "Loop through field names."
+  dict-values-loop: "Loop through field values."
+  dict-items-fill: "Complete items loop."
+  dict-values-fill: "Complete values access."
+
+  # Sets & Tuples
+  set-create: "Create unique roles set."
+  set-add: "Add new role."
+  set-remove: "Remove role."
+  set-discard: "Safely remove role."
+  set-union: "Combine role sets."
+  set-union-predict: "Predict union result."
+  set-intersection: "Find common roles."
+  set-difference: "Find unique roles."
+  set-operation-dynamic: "Dynamic set operation."
+  tuple-create: "Create immutable user record."
+  tuple-single: "Single-element tuple."
+  tuple-index: "Access tuple element."
+  tuple-index-dynamic: "Dynamic tuple access."
+  tuple-unpack: "Unpack user data."
+  tuple-unpack-dynamic: "Dynamic unpacking."
+  tuple-immutability: "Understand tuple immutability."
+
+  # Advanced Patterns
+  unpacking-intro: "Unpack user fields."
+  unpacking-list-intro: "Unpack from list."
+  unpacking-swap-intro: "Swap two users."
+  star-unpack: "Unpack remaining fields."
+  dict-iteration-predict: "Predict dict iteration."
+  dict-items-predict: "Predict items output."
+  dict-sum-values: "Sum numeric fields."
+  dict-find-key: "Find key by value."
+  nested-access-predict-dynamic: "Access nested user data."
+  nested-access-write-dynamic: "Write nested access."
+  dict-mutable-values: "Handle mutable dict values."
+  shallow-copy-method: "Copy user record."
+  shallow-copy-constructor: "Copy with constructor."
+  deep-copy: "Deep copy nested data."
+  list-aliasing: "Understand list aliasing."
+  mutate-vs-reassign: "Mutate vs reassign."

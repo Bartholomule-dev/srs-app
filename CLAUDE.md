@@ -14,6 +14,22 @@
 
 ---
 
+## Exercise Quality Review
+
+**Exercise List:** `docs/EXERCISES.md` (auto-generated) contains all 510 exercises with a grading rubric.
+
+**Grading Process:** To review exercise quality by subconcept:
+1. Read the rubric in `docs/EXERCISES.md` (8 dimensions + Code Correctness Gate)
+2. Find exercises: `grep "subconcept: <name>" exercises/python/*.yaml`
+3. Grade each exercise against the rubric (max 40 points)
+4. Fix issues, then run `pnpm validate:exercises && pnpm generate:exercise-list:obsidian`
+
+**Rubric Dimensions:** Tr (Transfer), Cg (Cognitive Match), Dd (Decision Depth), Nv (Narrative Versatility), Ad (Answer Determinism), Cc (Coverage Completeness), Id (Idiom Quality), Pc (Prompt Clarity)
+
+**Thresholds:** 35-40 Excellent | 28-34 Good | 20-27 Acceptable | <20 Needs rework
+
+---
+
 ## Project Overview
 
 A gamified web platform for practicing code syntax through spaced repetition. Target users are AI-assisted developers who want to maintain their programming fundamentals.

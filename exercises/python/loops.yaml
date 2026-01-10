@@ -14,10 +14,20 @@ exercises:
     prereqs: [lists]
     type: write
     pattern: iteration
-    prompt: Iterate over a list called products and print each item
+    prompt: Iterate over {{list_name}} and print each {{item_singular}}
     expected_answer: |
-      for product in products:
-          print(product)
+      for {{item_singular}} in {{list_name}}:
+          print({{item_singular}})
+    accepted_solutions:
+      - |
+        for {{item_singular}} in {{list_name}}:
+            print({{item_singular}})
+      - |
+        for item in {{list_name}}:
+            print(item)
+      - |
+        for x in {{list_name}}:
+            print(x)
     hints:
       - Use for x in list syntax
       - Variable name should describe what you're iterating
@@ -33,10 +43,23 @@ exercises:
     prereqs: [for]
     type: write
     pattern: iteration
-    prompt: Iterate over characters in a string called message and print each character
+    prompt: Iterate over characters in a string called {{item_singular}}_name and print each character
     expected_answer: |
-      for char in message:
+      for char in {{item_singular}}_name:
           print(char)
+    accepted_solutions:
+      - |
+        for char in {{item_singular}}_name:
+            print(char)
+      - |
+        for c in {{item_singular}}_name:
+            print(c)
+      - |
+        for letter in {{item_singular}}_name:
+            print(letter)
+      - |
+        for x in {{item_singular}}_name:
+            print(x)
     hints:
       - Strings are iterable
       - Each iteration gives one character
@@ -70,11 +93,11 @@ exercises:
     prereqs: [if-else]
     type: write
     pattern: iteration
-    prompt: Write a while loop that runs while is_running is True
-    expected_answer: "while is_running:"
+    prompt: Write a while loop that runs while is_{{action_verb}}ing is True
+    expected_answer: "while is_{{action_verb}}ing:"
     accepted_solutions:
-      - "while is_running:"
-      - "while is_running == True:"
+      - "while is_{{action_verb}}ing:"
+      - "while is_{{action_verb}}ing == True:"
     hints:
       - While keyword followed by condition, then colon
       - Boolean variables don't need == True
@@ -90,8 +113,8 @@ exercises:
     prereqs: [if-else]
     type: write
     pattern: iteration
-    prompt: Write a while loop that runs while retry_count is less than max_retries
-    expected_answer: "while retry_count < max_retries:"
+    prompt: Write a while loop that runs while {{item_singular}}_count is less than max_{{item_plural}}
+    expected_answer: "while {{item_singular}}_count < max_{{item_plural}}:"
     hints:
       - Use the less-than operator
       - End with a colon
@@ -100,10 +123,10 @@ exercises:
   - slug: while-loop
     objective: "Write a while loop with a conditional expression"
     title: While Loop
-    difficulty: 2
+    difficulty: 1
     concept: loops
     subconcept: while
-    level: practice
+    level: intro
     prereqs: [foundations, for]
     type: write
     pattern: iteration
@@ -142,12 +165,12 @@ exercises:
     prereqs: [for]
     type: write
     pattern: iteration
-    prompt: Write a for loop using enumerate over a list called names
-    expected_answer: "for i, name in enumerate(names):"
+    prompt: Write a for loop using enumerate over {{list_name}}
+    expected_answer: "for i, {{item_singular}} in enumerate({{list_name}}):"
     accepted_solutions:
-      - "for i, name in enumerate(names):"
-      - "for idx, name in enumerate(names):"
-      - "for index, name in enumerate(names):"
+      - "for i, {{item_singular}} in enumerate({{list_name}}):"
+      - "for idx, {{item_singular}} in enumerate({{list_name}}):"
+      - "for index, {{item_singular}} in enumerate({{list_name}}):"
     hints:
       - enumerate() wraps the iterable
       - Unpack into two variables for index and value
@@ -180,8 +203,12 @@ exercises:
     prereqs: [foundations, for]
     type: write
     pattern: iteration
-    prompt: Loop over items with both index and value using enumerate
-    expected_answer: "for i, item in enumerate(items):"
+    prompt: Loop over {{list_name}} with both index and {{item_singular}} using enumerate
+    expected_answer: "for i, {{item_singular}} in enumerate({{list_name}}):"
+    accepted_solutions:
+      - "for i, {{item_singular}} in enumerate({{list_name}}):"
+      - "for idx, {{item_singular}} in enumerate({{list_name}}):"
+      - "for index, {{item_singular}} in enumerate({{list_name}}):"
     hints:
       - enumerate() gives index and value
       - Use tuple unpacking
@@ -190,14 +217,14 @@ exercises:
   - slug: break-statement
     objective: "Use break to exit a loop early based on a condition"
     title: Break Statement
-    difficulty: 2
+    difficulty: 1
     concept: loops
     subconcept: for
-    level: edge
+    level: intro
     prereqs: [foundations, for, while]
     type: write
     pattern: iteration
-    prompt: Write the statement that immediately exits a loop
+    prompt: Write the statement that immediately exits the {{item_singular}} processing loop
     expected_answer: break
     hints:
       - This keyword stops the loop and moves to the code after it
@@ -208,14 +235,14 @@ exercises:
   - slug: continue-statement
     objective: "Use continue to skip the current iteration and proceed to the next"
     title: Continue Statement
-    difficulty: 2
+    difficulty: 1
     concept: loops
     subconcept: for
-    level: edge
+    level: intro
     prereqs: [control-flow.for]
     type: write
     pattern: iteration
-    prompt: Write the statement that skips the rest of the current iteration and moves to the next
+    prompt: Write the statement that skips the current {{item_singular}} and moves to the next
     expected_answer: continue
     hints:
       - This keyword skips to the next loop iteration
@@ -253,8 +280,8 @@ exercises:
     prereqs: [control-flow.for]
     type: write
     pattern: iteration
-    prompt: Loop over two lists a and b simultaneously
-    expected_answer: "for x, y in zip(a, b):"
+    prompt: Loop over {{list_name}} and statuses lists simultaneously using {{item_singular}} and {{status_var}} variables
+    expected_answer: "for {{item_singular}}, {{status_var}} in zip({{list_name}}, statuses):"
     hints:
       - Use zip() to pair elements
       - Unpack with two variables
@@ -306,8 +333,8 @@ exercises:
     prereqs: [control-flow.for]
     type: write
     pattern: iteration
-    prompt: Use zip to iterate over names and ages lists together
-    expected_answer: "for name, age in zip(names, ages):"
+    prompt: Use zip to iterate over {{list_name}} and priorities lists together with {{item_singular}} and {{attr_key_2}}
+    expected_answer: "for {{item_singular}}, {{attr_key_2}} in zip({{list_name}}, priorities):"
     hints:
       - zip() combines iterables
       - Use tuple unpacking
@@ -322,8 +349,8 @@ exercises:
     prereqs: [for]
     type: write
     pattern: iteration
-    prompt: Combine lists names and scores for parallel iteration
-    expected_answer: "zip(names, scores)"
+    prompt: Combine lists {{list_name}} and statuses for parallel iteration
+    expected_answer: "zip({{list_name}}, statuses)"
     hints:
       - zip pairs elements at same positions
       - Pass both lists as arguments
@@ -339,8 +366,8 @@ exercises:
     prereqs: [control-flow.zip]
     type: write
     pattern: iteration
-    prompt: Use zip to iterate over first, middle, and last name lists simultaneously
-    expected_answer: "for f, m, l in zip(first, middle, last):"
+    prompt: Use zip to iterate over {{list_name}}, statuses, and priorities lists simultaneously using {{item_singular}}, {{status_var}}, {{attr_key_2}}
+    expected_answer: "for {{item_singular}}, {{status_var}}, {{attr_key_2}} in zip({{list_name}}, statuses, priorities):"
     hints:
       - zip() can take multiple iterables
       - Unpack all three variables
@@ -356,8 +383,11 @@ exercises:
     prereqs: [control-flow.zip]
     type: write
     pattern: iteration
-    prompt: Import and use zip_longest to handle lists of different lengths with a fillvalue of 0
-    expected_answer: "for a, b in zip_longest(list1, list2, fillvalue=0):"
+    prompt: Import and use zip_longest to handle {{list_name}} and statuses of different lengths with a fillvalue of "pending"
+    expected_answer: 'for {{item_singular}}, {{status_var}} in zip_longest({{list_name}}, statuses, fillvalue="pending"):'
+    accepted_solutions:
+      - 'for {{item_singular}}, {{status_var}} in zip_longest({{list_name}}, statuses, fillvalue="pending"):'
+      - "for {{item_singular}}, {{status_var}} in zip_longest({{list_name}}, statuses, fillvalue='pending'):"
     hints:
       - Import from itertools
       - Use fillvalue parameter for missing values
@@ -374,8 +404,12 @@ exercises:
     prereqs: [control-flow.for]
     type: write
     pattern: iteration
-    prompt: Iterate over items list in reverse order
-    expected_answer: "for item in reversed(items):"
+    prompt: Iterate over {{list_name}} in reverse order
+    expected_answer: "for {{item_singular}} in reversed({{list_name}}):"
+    accepted_solutions:
+      - "for {{item_singular}} in reversed({{list_name}}):"
+      - "for item in reversed({{list_name}}):"
+      - "for x in reversed({{list_name}}):"
     hints:
       - reversed() returns an iterator
       - Works on sequences
@@ -391,11 +425,11 @@ exercises:
     prereqs: [for]
     type: write
     pattern: iteration
-    prompt: Iterate through items list in reverse order
-    expected_answer: "for item in reversed(items):"
+    prompt: Iterate through {{list_name}} in reverse order
+    expected_answer: "for {{item_singular}} in reversed({{list_name}}):"
     accepted_solutions:
-      - "for item in reversed(items):"
-      - "for x in reversed(items):"
+      - "for {{item_singular}} in reversed({{list_name}}):"
+      - "for x in reversed({{list_name}}):"
     hints:
       - reversed() wraps the iterable
       - Original list is not modified
@@ -413,6 +447,11 @@ exercises:
     pattern: iteration
     prompt: Count down from 5 to 1 using reversed and range
     expected_answer: "for i in reversed(range(1, 6)):"
+    accepted_solutions:
+      - "for i in reversed(range(1, 6)):"
+      - "for num in reversed(range(1, 6)):"
+      - "for n in reversed(range(1, 6)):"
+      - "for x in reversed(range(1, 6)):"
     hints:
       - Wrap range() with reversed()
       - range(1, 6) gives 1-5
@@ -428,8 +467,13 @@ exercises:
     prereqs: [reversed, iteration]
     type: write
     pattern: iteration
-    prompt: Iterate over items in reverse while keeping track of original indices
-    expected_answer: "for i, item in reversed(list(enumerate(items))):"
+    prompt: Iterate over {{list_name}} in reverse while keeping track of original indices
+    expected_answer: "for i, {{item_singular}} in reversed(list(enumerate({{list_name}}))):"
+    accepted_solutions:
+      - "for i, {{item_singular}} in reversed(list(enumerate({{list_name}}))):"
+      - "for idx, {{item_singular}} in reversed(list(enumerate({{list_name}}))):"
+      - "for index, {{item_singular}} in reversed(list(enumerate({{list_name}}))):"
+      - "for i, item in reversed(list(enumerate({{list_name}}))):"
     hints:
       - enumerate() then reversed()
       - Convert to list first for reversed()
@@ -446,8 +490,12 @@ exercises:
     prereqs: [control-flow.for]
     type: write
     pattern: iteration
-    prompt: Iterate over items list in sorted order
-    expected_answer: "for item in sorted(items):"
+    prompt: Iterate over {{list_name}} in sorted order
+    expected_answer: "for {{item_singular}} in sorted({{list_name}}):"
+    accepted_solutions:
+      - "for {{item_singular}} in sorted({{list_name}}):"
+      - "for item in sorted({{list_name}}):"
+      - "for x in sorted({{list_name}}):"
     hints:
       - sorted() returns a new sorted list
       - Original list unchanged
@@ -463,12 +511,12 @@ exercises:
     prereqs: [for]
     type: write
     pattern: iteration
-    prompt: Iterate through numbers list in sorted order
-    expected_answer: "for n in sorted(numbers):"
+    prompt: Iterate through {{list_name}} list in sorted order
+    expected_answer: "for {{item_singular}} in sorted({{list_name}}):"
     accepted_solutions:
-      - "for n in sorted(numbers):"
-      - "for num in sorted(numbers):"
-      - "for x in sorted(numbers):"
+      - "for {{item_singular}} in sorted({{list_name}}):"
+      - "for item in sorted({{list_name}}):"
+      - "for x in sorted({{list_name}}):"
     hints:
       - sorted() returns a new sorted list
       - Original list is not modified
@@ -484,8 +532,12 @@ exercises:
     prereqs: [control-flow.sorted]
     type: write
     pattern: iteration
-    prompt: Iterate over numbers in descending (reverse) order
-    expected_answer: "for num in sorted(numbers, reverse=True):"
+    prompt: Iterate over {{list_name}} in descending (reverse) order
+    expected_answer: "for {{item_singular}} in sorted({{list_name}}, reverse=True):"
+    accepted_solutions:
+      - "for {{item_singular}} in sorted({{list_name}}, reverse=True):"
+      - "for item in sorted({{list_name}}, reverse=True):"
+      - "for x in sorted({{list_name}}, reverse=True):"
     hints:
       - Use reverse parameter
       - reverse=True for descending
@@ -501,8 +553,12 @@ exercises:
     prereqs: [control-flow.sorted]
     type: write
     pattern: iteration
-    prompt: Sort words list by string length using the key parameter
-    expected_answer: "for word in sorted(words, key=len):"
+    prompt: Sort {{list_name}} list by string length using the key parameter
+    expected_answer: "for {{item_singular}} in sorted({{list_name}}, key=len):"
+    accepted_solutions:
+      - "for {{item_singular}} in sorted({{list_name}}, key=len):"
+      - "for item in sorted({{list_name}}, key=len):"
+      - "for x in sorted({{list_name}}, key=len):"
     hints:
       - key= specifies sort criteria
       - len function as key
@@ -518,8 +574,13 @@ exercises:
     prereqs: [control-flow.sorted, functions.lambda]
     type: write
     pattern: iteration
-    prompt: Sort a list of tuples by the second element using a lambda
-    expected_answer: "for item in sorted(data, key=lambda x: x[1]):"
+    prompt: Sort a list of {{item_singular}} tuples by the {{attr_key_1}} (second element) using a lambda
+    expected_answer: "for {{item_singular}} in sorted({{list_name}}, key=lambda x: x[1]):"
+    accepted_solutions:
+      - "for {{item_singular}} in sorted({{list_name}}, key=lambda x: x[1]):"
+      - "for item in sorted({{list_name}}, key=lambda x: x[1]):"
+      - "for {{item_singular}} in sorted({{list_name}}, key=lambda t: t[1]):"
+      - "for {{item_singular}} in sorted({{list_name}}, key=lambda item: item[1]):"
     hints:
       - lambda creates inline function
       - x[1] accesses second element
@@ -536,8 +597,12 @@ exercises:
     prereqs: [control-flow.conditionals]
     type: write
     pattern: invocation
-    prompt: Check if any number in nums is greater than 10
-    expected_answer: "any(n > 10 for n in nums)"
+    prompt: Check if any {{item_singular}} in {{list_name}} has {{attr_key_1}} greater than 10
+    expected_answer: "any({{item_singular}}.{{attr_key_1}} > 10 for {{item_singular}} in {{list_name}})"
+    accepted_solutions:
+      - "any({{item_singular}}.{{attr_key_1}} > 10 for {{item_singular}} in {{list_name}})"
+      - "any(item.{{attr_key_1}} > 10 for item in {{list_name}})"
+      - "any(x.{{attr_key_1}} > 10 for x in {{list_name}})"
     hints:
       - any() returns True if any element is truthy
       - Use generator expression inside
@@ -553,8 +618,12 @@ exercises:
     prereqs: [control-flow.conditionals]
     type: write
     pattern: invocation
-    prompt: Check if all numbers in nums are positive (greater than 0)
-    expected_answer: "all(n > 0 for n in nums)"
+    prompt: Check if all {{item_plural}} in {{list_name}} are {{status_var}} (is_{{status_var}} is True)
+    expected_answer: "all({{item_singular}}.is_{{status_var}} for {{item_singular}} in {{list_name}})"
+    accepted_solutions:
+      - "all({{item_singular}}.is_{{status_var}} for {{item_singular}} in {{list_name}})"
+      - "all(item.is_{{status_var}} for item in {{list_name}})"
+      - "all(x.is_{{status_var}} for x in {{list_name}})"
     hints:
       - all() returns True if all elements are truthy
       - Use generator expression inside
@@ -570,13 +639,13 @@ exercises:
     prereqs: [control-flow.any-all]
     type: write
     pattern: invocation
-    prompt: Check if any word in words starts with the letter 'a'
-    expected_answer: "any(word.startswith('a') for word in words)"
+    prompt: Check if any {{item_singular}} in {{list_name}} starts with the letter 'a'
+    expected_answer: "any({{item_singular}}.startswith('a') for {{item_singular}} in {{list_name}})"
     accepted_solutions:
-      - "any(word.startswith('a') for word in words)"
-      - 'any(word.startswith("a") for word in words)'
-      - "any(w.startswith('a') for w in words)"
-      - 'any(w.startswith("a") for w in words)'
+      - "any({{item_singular}}.startswith('a') for {{item_singular}} in {{list_name}})"
+      - 'any({{item_singular}}.startswith("a") for {{item_singular}} in {{list_name}})'
+      - "any(item.startswith('a') for item in {{list_name}})"
+      - 'any(item.startswith("a") for item in {{list_name}})'
     hints:
       - Use startswith() method
       - Generator expression with condition
@@ -592,11 +661,11 @@ exercises:
     prereqs: [control-flow.any-all, control-flow.conditionals]
     type: write
     pattern: conditional
-    prompt: Write an if statement that checks if all items are valid AND any item is priority
-    expected_answer: "if all(item.valid for item in items) and any(item.priority for item in items):"
+    prompt: Write an if statement that checks if all {{item_plural}} are {{status_var}} AND any {{item_singular}} has {{attr_key_1}}
+    expected_answer: "if all({{item_singular}}.is_{{status_var}} for {{item_singular}} in {{list_name}}) and any({{item_singular}}.{{attr_key_1}} for {{item_singular}} in {{list_name}}):"
     accepted_solutions:
-      - "if all(item.valid for item in items) and any(item.priority for item in items):"
-      - "if all(i.valid for i in items) and any(i.priority for i in items):"
+      - "if all({{item_singular}}.is_{{status_var}} for {{item_singular}} in {{list_name}}) and any({{item_singular}}.{{attr_key_1}} for {{item_singular}} in {{list_name}}):"
+      - "if all(item.is_{{status_var}} for item in {{list_name}}) and any(item.{{attr_key_1}} for item in {{list_name}}):"
     hints:
       - Combine with 'and' operator
       - all() for universal check, any() for existence
@@ -614,8 +683,8 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: iteration
-    prompt: Fill in the keyword that starts a for loop
-    template: "___ item in items:"
+    prompt: Fill in the keyword that starts a {{item_singular}} loop
+    template: "___ {{item_singular}} in {{list_name}}:"
     expected_answer: "for"
     hints:
       - Keyword that starts iteration
@@ -633,8 +702,8 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: iteration
-    prompt: Fill in the function that generates a sequence of numbers
-    template: "for i in ___(5):"
+    prompt: Fill in the function that generates a sequence of {{item_singular}} indices
+    template: "for {{item_singular}}_idx in ___(5):"
     expected_answer: "range"
     hints:
       - Built-in function for number sequences
@@ -652,8 +721,8 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: iteration
-    prompt: Fill in the function that provides index and value pairs
-    template: "for i, item in ___(items):"
+    prompt: Fill in the function that provides index and {{item_singular}} pairs
+    template: "for i, {{item_singular}} in ___({{list_name}}):"
     expected_answer: "enumerate"
     hints:
       - Function that provides index with each element
@@ -671,10 +740,10 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: control
-    prompt: Fill in the keyword that exits the loop immediately
+    prompt: Fill in the keyword that exits the {{item_singular}} loop immediately
     template: |
-      for item in items:
-          if item == target:
+      for {{item_singular}} in {{list_name}}:
+          if {{item_singular}} == target_{{item_singular}}:
               ___
     expected_answer: "break"
     hints:
@@ -693,15 +762,15 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: control
-    prompt: Fill in the keyword that skips to the next iteration
+    prompt: Fill in the keyword that skips to the next {{item_singular}}
     template: |
-      for item in items:
-          if item < 0:
+      for {{item_singular}} in {{list_name}}:
+          if {{item_singular}}_{{status_var}} < 0:
               ___
     expected_answer: "continue"
     hints:
       - Keyword to skip rest of current iteration
-      - Loop continues with next item
+      - Loop continues with next {{item_singular}}
     tags: [control-flow, continue, fill-in]
 
   - slug: while-condition-fill
@@ -715,8 +784,8 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: iteration
-    prompt: Fill in the comparison operator for "less than"
-    template: "while count ___ 10:"
+    prompt: Fill in the comparison operator for "{{item_singular}} count less than max"
+    template: "while {{item_singular}}_count ___ max_{{item_plural}}:"
     expected_answer: "<"
     hints:
       - Comparison operator
@@ -734,17 +803,17 @@ exercises:
     prereqs: [control-flow.for]
     type: predict
     pattern: iteration
-    prompt: What does this code print?
+    prompt: What does this range loop print?
     code: |
-      for i in range(3):
-          print(i)
+      for {{item_singular}}_idx in range(3):
+          print({{item_singular}}_idx)
     expected_answer: |
       0
       1
       2
     hints:
       - range(3) produces 0, 1, 2
-      - One number per line
+      - One {{item_singular}} index per line
     tags: [control-flow, range, predict]
 
   - slug: enumerate-predict
@@ -757,16 +826,16 @@ exercises:
     prereqs: [control-flow.for]
     type: predict
     pattern: iteration
-    prompt: What does this code print?
+    prompt: What does this enumerate loop print?
     code: |
-      for i, ch in enumerate("abc"):
-          print(i, ch)
+      for i, {{item_singular}}_char in enumerate("abc"):
+          print(i, {{item_singular}}_char)
     expected_answer: |
       0 a
       1 b
       2 c
     hints:
-      - enumerate provides index and value
+      - enumerate provides index and {{item_singular}} value
       - Index starts at 0 by default
     tags: [control-flow, enumerate, predict]
 
@@ -780,19 +849,19 @@ exercises:
     prereqs: [control-flow.for]
     type: predict
     pattern: control
-    prompt: What does this code print?
+    prompt: What does this loop with break print?
     code: |
-      for i in range(5):
-          if i == 3:
+      for {{item_singular}}_idx in range(5):
+          if {{item_singular}}_idx == 3:
               break
-          print(i)
+          print({{item_singular}}_idx)
     expected_answer: |
       0
       1
       2
     hints:
       - break exits immediately when condition met
-      - i==3 happens before printing 3
+      - "{{item_singular}}_idx==3 happens before printing 3"
     tags: [control-flow, break, predict]
 
   - slug: continue-predict
@@ -805,19 +874,19 @@ exercises:
     prereqs: [control-flow.for]
     type: predict
     pattern: control
-    prompt: What does this code print?
+    prompt: What does this loop with continue print?
     code: |
-      for i in range(5):
-          if i == 2:
+      for {{item_singular}}_idx in range(5):
+          if {{item_singular}}_idx == 2:
               continue
-          print(i)
+          print({{item_singular}}_idx)
     expected_answer: |
       0
       1
       3
       4
     hints:
-      - continue skips current iteration only
+      - continue skips current {{item_singular}} iteration only
       - Loop resumes with next value
     tags: [control-flow, continue, predict]
 
@@ -831,16 +900,16 @@ exercises:
     prereqs: [control-flow.for]
     type: predict
     pattern: iteration
-    prompt: What does this code print?
+    prompt: What does this zip loop print?
     code: |
-      for a, b in zip([1, 2], ["x", "y"]):
-          print(a, b)
+      for {{item_singular}}_id, {{status_var}} in zip([1, 2], ["{{item_example}}", "done"]):
+          print({{item_singular}}_id, {{status_var}})
     expected_answer: |
-      1 x
-      2 y
+      1 {{item_example}}
+      2 done
     hints:
-      - zip pairs elements from both lists
-      - First pair is (1, "x"), second is (2, "y")
+      - zip pairs {{item_plural}} from both lists
+      - First pair is (1, "{{item_example}}"), second is (2, "done")
     tags: [control-flow, zip, predict]
 
   - slug: nested-loop-predict
@@ -853,19 +922,19 @@ exercises:
     prereqs: [control-flow.for]
     type: predict
     pattern: iteration
-    prompt: What does this code print?
+    prompt: What does this nested {{item_singular}} loop print?
     code: |
-      for i in range(2):
-          for j in range(2):
-              print(i, j)
+      for {{item_singular}}_row in range(2):
+          for {{item_singular}}_col in range(2):
+              print({{item_singular}}_row, {{item_singular}}_col)
     expected_answer: |
       0 0
       0 1
       1 0
       1 1
     hints:
-      - Inner loop completes for each outer iteration
-      - 2 x 2 = 4 total print statements
+      - Inner loop completes for each outer {{item_singular}} iteration
+      - 2 x 2 = 4 total {{item_plural}} printed
     tags: [control-flow, nested, predict]
 
   # --- Dynamic Exercises ---
@@ -1391,14 +1460,23 @@ exercises:
     prereqs: [for, while]
     type: write
     pattern: control
-    prompt: Write a for loop that finds the first negative number in numbers and breaks
+    prompt: Write a for loop that finds the first negative {{item_singular}} in {{list_name}} and breaks
     expected_answer: |
-      for num in numbers:
-          if num < 0:
+      for {{item_singular}} in {{list_name}}:
+          if {{item_singular}} < 0:
               break
+    accepted_solutions:
+      - |
+        for {{item_singular}} in {{list_name}}:
+            if {{item_singular}} < 0:
+                break
+      - |
+        for item in {{list_name}}:
+            if item < 0:
+                break
     hints:
-      - break exits the entire loop
-      - Useful for early exit when found
+      - break exits the entire {{item_singular}} loop
+      - Useful for early exit when {{item_singular}} found
     tags: [break, control]
 
   - slug: continue-loop
@@ -1411,15 +1489,26 @@ exercises:
     prereqs: [for, while]
     type: write
     pattern: control
-    prompt: Write a for loop that prints all users except those who are banned (skip banned users)
+    prompt: Write a for loop that prints all {{item_plural}} in {{list_name}} except those that are {{status_var}} (skip {{status_var}} ones)
     expected_answer: |
-      for user in users:
-          if user.is_banned:
+      for {{item_singular}} in {{list_name}}:
+          if {{item_singular}}.is_{{status_var}}:
               continue
-          print(user)
+          print({{item_singular}})
+    accepted_solutions:
+      - |
+        for {{item_singular}} in {{list_name}}:
+            if {{item_singular}}.is_{{status_var}}:
+                continue
+            print({{item_singular}})
+      - |
+        for item in {{list_name}}:
+            if item.is_{{status_var}}:
+                continue
+            print(item)
     hints:
-      - continue skips to next iteration
-      - Avoids deep nesting with else
+      - continue skips to next {{item_singular}} iteration
+      - Avoids deep nesting with else for {{item_plural}}
     tags: [continue, control]
 
   - slug: break-keyword-fill

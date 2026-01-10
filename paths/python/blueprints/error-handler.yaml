@@ -1,0 +1,87 @@
+# paths/python/blueprints/error-handler.yaml
+
+id: error-handler
+title: "Build an Error Handler"
+description: "Create robust error handling with try/except, custom exceptions, and cleanup logic"
+difficulty: intermediate
+concepts: [error-handling, functions, oop]
+
+beats:
+  # ============================================
+  # Act 1: Basic Exception Handling (Beats 1-4)
+  # ============================================
+  - beat: 1
+    exercise: try-except-basic
+    title: "Catch exceptions"
+    sideQuests:
+      - try-keyword-fill
+      - try-except-predict
+
+  - beat: 2
+    exercise: except-specific
+    title: "Catch specific types"
+    sideQuests:
+      - except-keyword-fill
+      - except-type-predict
+
+  - beat: 3
+    exercise: except-as
+    title: "Access exception info"
+    sideQuests:
+      - exception-as-predict
+      - exception-catch-dynamic
+
+  - beat: 4
+    exercise: exception-type-predict-dynamic
+    title: "Predict exception types"
+
+  # ============================================
+  # Act 2: Raising Exceptions (Beats 5-8)
+  # ============================================
+  - beat: 5
+    exercise: raise-intro
+    title: "Raise exceptions"
+    sideQuests:
+      - raise-keyword-fill
+
+  - beat: 6
+    exercise: raise-exception
+    title: "Raise with type"
+    sideQuests:
+      - raise-custom-message
+
+  - beat: 7
+    exercise: raise-from
+    title: "Chain exceptions"
+    sideQuests:
+      - reraise
+
+  - beat: 8
+    exercise: custom-exception
+    title: "Create custom exceptions"
+
+  # ============================================
+  # Act 3: Finally & Else (Beats 9-12)
+  # ============================================
+  - beat: 9
+    exercise: finally-basic
+    title: "Cleanup with finally"
+    sideQuests:
+      - finally-cleanup
+
+  - beat: 10
+    exercise: finally-with-except
+    title: "Finally with except"
+    sideQuests:
+      - finally-return
+      - finally-flow-predict-dynamic
+
+  - beat: 11
+    exercise: finally-exception-propagation
+    title: "Exception propagation"
+    sideQuests:
+      - finally-trace-dynamic
+
+  - beat: 12
+    exercise: else-clause
+    title: "Success with else"

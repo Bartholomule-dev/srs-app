@@ -15,6 +15,7 @@ interface Beat {
   beat: number;
   exercise: string;
   title: string;
+  sideQuests?: string[];
 }
 
 interface Blueprint {
@@ -142,8 +143,9 @@ function buildSerializedIndex(blueprints: Blueprint[], skins: Skin[]): Serialize
   for (const bp of blueprints) {
     index.blueprints[bp.id] = bp;
 
-    // Map exercises to blueprint refs
+    // Map exercises to blueprint refs (main beat exercises and side-quests)
     for (const beat of bp.beats) {
+      // Index main beat exercise
       if (!index.exerciseToBlueprints[beat.exercise]) {
         index.exerciseToBlueprints[beat.exercise] = [];
       }
@@ -153,6 +155,21 @@ function buildSerializedIndex(blueprints: Blueprint[], skins: Skin[]): Serialize
         totalBeats: bp.beats.length,
         beatTitle: beat.title,
       });
+
+      // Index side-quest exercises (same beat context as main exercise)
+      if (beat.sideQuests) {
+        for (const sideQuestSlug of beat.sideQuests) {
+          if (!index.exerciseToBlueprints[sideQuestSlug]) {
+            index.exerciseToBlueprints[sideQuestSlug] = [];
+          }
+          index.exerciseToBlueprints[sideQuestSlug].push({
+            blueprintId: bp.id,
+            beat: beat.beat,
+            totalBeats: bp.beats.length,
+            beatTitle: beat.title,
+          });
+        }
+      }
     }
   }
 
@@ -169,11 +186,24 @@ function buildSerializedIndex(blueprints: Blueprint[], skins: Skin[]): Serialize
         if (!bp) continue;
 
         for (const beat of bp.beats) {
+          // Index main beat exercise
           if (!index.exerciseToSkins[beat.exercise]) {
             index.exerciseToSkins[beat.exercise] = [];
           }
           if (!index.exerciseToSkins[beat.exercise].includes(skin.id)) {
             index.exerciseToSkins[beat.exercise].push(skin.id);
+          }
+
+          // Index side-quest exercises (same skin compatibility as main exercise)
+          if (beat.sideQuests) {
+            for (const sideQuestSlug of beat.sideQuests) {
+              if (!index.exerciseToSkins[sideQuestSlug]) {
+                index.exerciseToSkins[sideQuestSlug] = [];
+              }
+              if (!index.exerciseToSkins[sideQuestSlug].includes(skin.id)) {
+                index.exerciseToSkins[sideQuestSlug].push(skin.id);
+              }
+            }
           }
         }
       }

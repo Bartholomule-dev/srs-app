@@ -1,0 +1,94 @@
+# paths/python/blueprints/form-validator.yaml
+
+id: form-validator
+title: "Build a Form Validator"
+description: "Create validation logic for user input with conditional checks, pattern matching, and error handling"
+difficulty: beginner
+concepts: [conditionals, strings, functions, error-handling]
+
+beats:
+  # ============================================
+  # Act 1: Basic Conditions (Beats 1-4)
+  # ============================================
+  - beat: 1
+    exercise: if-statement
+    title: "Check if input exists"
+    sideQuests:
+      - if-fill-colon
+      - if-predict-basic
+
+  - beat: 2
+    exercise: if-else-basic
+    title: "Valid or invalid"
+    sideQuests:
+      - if-fill-else
+      - if-predict-falsy
+
+  - beat: 3
+    exercise: if-membership
+    title: "Check allowed values"
+    sideQuests:
+      - if-not-condition
+
+  - beat: 4
+    exercise: pythonic-if-empty-check
+    title: "Check empty input"
+    sideQuests:
+      - pythonic-none-check
+      - if-else-order-trap
+
+  # ============================================
+  # Act 2: Multiple Conditions (Beats 5-8)
+  # ============================================
+  - beat: 5
+    exercise: elif-grade
+    title: "Validate score ranges"
+    sideQuests:
+      - elif-fill
+      - elif-predict-order
+
+  - beat: 6
+    exercise: elif-http-status
+    title: "Handle status codes"
+    sideQuests:
+      - elif-predict-fall-through
+
+  - beat: 7
+    exercise: ternary-basic
+    title: "Inline validation"
+    sideQuests:
+      - ternary-fill
+      - ternary-predict
+
+  - beat: 8
+    exercise: ternary-max
+    title: "Clamp values"
+    sideQuests:
+      - ternary-default
+      - ternary-nested-predict
+
+  # ============================================
+  # Act 3: Pattern Matching (Beats 9-11)
+  # ============================================
+  - beat: 9
+    exercise: match-case-basic
+    title: "Match input type"
+    sideQuests:
+      - match-case-fill
+      - match-case-predict
+
+  - beat: 10
+    exercise: match-case-or
+    title: "Match multiple values"
+    sideQuests:
+      - match-case-tuple
+
+  - beat: 11
+    exercise: comparison-chaining
+    title: "Complex conditions"
+    sideQuests:
+      - if-elif-else-predict-dynamic
+      - comparison-predict-chain
+      - if-bool-logic-dynamic
+      - if-elif-chain-trace-dynamic
+      - if-greater-dynamic

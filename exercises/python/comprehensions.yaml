@@ -7,8 +7,13 @@ exercises:
     objective: "Write a basic list comprehension to transform a range into squares"
     title: List Comprehension Basic
     difficulty: 2
-    prompt: Create a list of squares from 1 to 5 using comprehension
-    expected_answer: "[x**2 for x in range(1, 6)]"
+    prompt: Create a list of {{item_singular}}_counts squared from 1 to 5 using comprehension
+    expected_answer: "[{{item_singular}}_count**2 for {{item_singular}}_count in range(1, 6)]"
+    accepted_solutions:
+      - "[{{item_singular}}_count**2 for {{item_singular}}_count in range(1, 6)]"
+      - "[x**2 for x in range(1, 6)]"
+      - "[n**2 for n in range(1, 6)]"
+      - "[i**2 for i in range(1, 6)]"
     hints:
       - "Use [expression for item in iterable] syntax"
       - range(1, 6) gives numbers 1 through 5
@@ -24,8 +29,13 @@ exercises:
     objective: "Create a list comprehension with a filter condition"
     title: List Comprehension Conditional
     difficulty: 2
-    prompt: Create a list of even numbers from 1 to 10 using comprehension
-    expected_answer: "[x for x in range(1, 11) if x % 2 == 0]"
+    prompt: Create a list of {{status_var}} {{item_plural}} (where {{item_singular}}_id is even) from 1 to 10 using comprehension
+    expected_answer: "[{{item_singular}}_id for {{item_singular}}_id in range(1, 11) if {{item_singular}}_id % 2 == 0]"
+    accepted_solutions:
+      - "[{{item_singular}}_id for {{item_singular}}_id in range(1, 11) if {{item_singular}}_id % 2 == 0]"
+      - "[x for x in range(1, 11) if x % 2 == 0]"
+      - "[n for n in range(1, 11) if n % 2 == 0]"
+      - "[i for i in range(1, 11) if i % 2 == 0]"
     hints:
       - Add 'if condition' after the for clause
       - Even numbers have remainder 0 when divided by 2
@@ -48,13 +58,12 @@ exercises:
     prereqs: [comprehensions.list-comp]
     type: write
     pattern: mapping
-    prompt: Create a dict mapping numbers 1-3 to their squares using comprehension
-    expected_answer: "{x: x**2 for x in range(1, 4)}"
+    prompt: Create a dict mapping {{item_singular}}_id (1-3) to {{item_singular}}_count squared using comprehension
+    expected_answer: "{{{item_singular}}_id: {{item_singular}}_id**2 for {{item_singular}}_id in range(1, 4)}"
     accepted_solutions:
-      - "{x: x**2 for x in range(1, 4)}"
-      - "{x: x*x for x in range(1, 4)}"
+      - "{{{item_singular}}_id: {{item_singular}}_id**2 for {{item_singular}}_id in range(1, 4)}"
+      - "{{{item_singular}}_id: {{item_singular}}_id*{{item_singular}}_id for {{item_singular}}_id in range(1, 4)}"
       - "{i: i**2 for i in range(1, 4)}"
-      - "{i: i*i for i in range(1, 4)}"
     hints:
       - "Dict comprehension uses {key: value for ...}"
       - "range(1, 4) gives 1, 2, 3"
@@ -70,8 +79,8 @@ exercises:
     prereqs: [comprehensions.list-comp]
     type: predict
     pattern: mapping
-    prompt: What does this create?
-    code: "{x: x*2 for x in [1, 2, 3]}"
+    prompt: What does this dict comprehension create?
+    code: "{{{item_singular}}_id: {{item_singular}}_id*2 for {{item_singular}}_id in [1, 2, 3]}"
     expected_answer: "{1: 2, 2: 4, 3: 6}"
     accepted_solutions:
       - "{1: 2, 2: 4, 3: 6}"
@@ -79,18 +88,21 @@ exercises:
       - "{1: 2,2: 4,3: 6}"
       - "{1:2,2:4,3:6}"
     hints:
-      - "Each x becomes a key"
-      - "x*2 becomes its value"
+      - "Each {{item_singular}}_id becomes a key"
+      - "{{item_singular}}_id*2 becomes its value"
     tags: [comprehensions, dict, intro, predict]
 
   - slug: dict-comp-basic
     objective: "Write a dictionary comprehension to map keys to computed values"
     title: Dict Comprehension
     difficulty: 3
-    prompt: Create a dict mapping numbers 1-3 to their squares
-    expected_answer: "{x: x**2 for x in range(1, 4)}"
+    prompt: Create a dict mapping {{item_singular}}_id (1-3) to their squares
+    expected_answer: "{{{item_singular}}_id: {{item_singular}}_id**2 for {{item_singular}}_id in range(1, 4)}"
+    accepted_solutions:
+      - "{{{item_singular}}_id: {{item_singular}}_id**2 for {{item_singular}}_id in range(1, 4)}"
+      - "{x: x**2 for x in range(1, 4)}"
     hints:
-      - "Use {key: value for item in iterable}"
+      - "Use {key: value for {{item_singular}} in iterable}"
       - Colon separates key from value (unlike set comp)
     tags: [comprehensions, dicts, advanced]
     concept: comprehensions
@@ -111,11 +123,11 @@ exercises:
     prereqs: [comprehensions.list-comp]
     type: write
     pattern: mapping
-    prompt: Create a set of squares for numbers 1-4 using comprehension
-    expected_answer: "{x**2 for x in range(1, 5)}"
+    prompt: Create a set of unique {{item_singular}}_counts squared for numbers 1-4 using comprehension
+    expected_answer: "{{{item_singular}}_count**2 for {{item_singular}}_count in range(1, 5)}"
     accepted_solutions:
+      - "{{{item_singular}}_count**2 for {{item_singular}}_count in range(1, 5)}"
       - "{x**2 for x in range(1, 5)}"
-      - "{x*x for x in range(1, 5)}"
       - "{i**2 for i in range(1, 5)}"
     hints:
       - "Set comprehension uses {expr for ...} (no colon)"
@@ -132,8 +144,8 @@ exercises:
     prereqs: [comprehensions.set-comp]
     type: predict
     pattern: mapping
-    prompt: What does this create?
-    code: "{x % 3 for x in [1, 2, 3, 4, 5, 6]}"
+    prompt: What does this set comprehension create?
+    code: "{{{item_singular}}_id % 3 for {{item_singular}}_id in [1, 2, 3, 4, 5, 6]}"
     expected_answer: "{0, 1, 2}"
     accepted_solutions:
       - "{0, 1, 2}"
@@ -143,7 +155,7 @@ exercises:
       - "{2, 0, 1}"
       - "{2, 1, 0}"
     hints:
-      - "Sets remove duplicates"
+      - "Sets remove duplicate {{item_plural}}"
       - "1%3=1, 2%3=2, 3%3=0, 4%3=1, 5%3=2, 6%3=0"
     tags: [comprehensions, set, intro, predict]
 
@@ -151,11 +163,16 @@ exercises:
     objective: "Use set comprehension to create a collection of unique values"
     title: Set Comprehension
     difficulty: 3
-    prompt: Create a set of first letters from list of words
-    expected_answer: "{word[0] for word in words}"
+    prompt: Create a set of first letters from list {{list_name}}
+    expected_answer: "{{{item_singular}}[0] for {{item_singular}} in {{list_name}}}"
+    accepted_solutions:
+      - "{{{item_singular}}[0] for {{item_singular}} in {{list_name}}}"
+      - "{x[0] for x in {{list_name}}}"
+      - "{item[0] for item in {{list_name}}}"
+      - "{s[0] for s in {{list_name}}}"
     hints:
       - Use curly braces like dict but without colon
-      - word[0] gets the first character of each word
+      - "{{item_singular}}[0] gets the first character of each {{item_singular}}"
     tags: [comprehensions, sets, advanced]
     concept: comprehensions
     subconcept: set-comp
@@ -168,8 +185,12 @@ exercises:
     objective: "Apply nested loops in a list comprehension to flatten a matrix"
     title: Nested Comprehension
     difficulty: 3
-    prompt: Flatten a 2D list called matrix using comprehension
-    expected_answer: "[item for row in matrix for item in row]"
+    prompt: Flatten a 2D list called {{list_name}}_grid using comprehension
+    expected_answer: "[{{item_singular}} for row in {{list_name}}_grid for {{item_singular}} in row]"
+    accepted_solutions:
+      - "[{{item_singular}} for row in {{list_name}}_grid for {{item_singular}} in row]"
+      - "[x for row in {{list_name}}_grid for x in row]"
+      - "[item for row in {{list_name}}_grid for item in row]"
     hints:
       - Use multiple for clauses
       - Outer loop comes first
@@ -192,8 +213,12 @@ exercises:
     prereqs: [comprehensions.list-comp]
     type: write
     pattern: mapping
-    prompt: Create a generator of squares from 1 to 5
-    expected_answer: (x**2 for x in range(1, 6))
+    prompt: Create a generator of {{item_singular}}_count values squared from 1 to 5
+    expected_answer: "({{item_singular}}_count**2 for {{item_singular}}_count in range(1, 6))"
+    accepted_solutions:
+      - "({{item_singular}}_count**2 for {{item_singular}}_count in range(1, 6))"
+      - "(x**2 for x in range(1, 6))"
+      - "(n**2 for n in range(1, 6))"
     hints:
       - Use parentheses instead of brackets
       - Creates iterator, not list
@@ -209,11 +234,11 @@ exercises:
     prereqs: [list-comp]
     type: write
     pattern: transformation
-    prompt: Create a generator that yields squares of numbers 1-5
-    expected_answer: "(x**2 for x in range(1, 6))"
+    prompt: Create a generator that yields {{attr_key_1}} values squared for numbers 1-5
+    expected_answer: "({{attr_key_1}}**2 for {{attr_key_1}} in range(1, 6))"
     accepted_solutions:
+      - "({{attr_key_1}}**2 for {{attr_key_1}} in range(1, 6))"
       - "(x**2 for x in range(1, 6))"
-      - "(x ** 2 for x in range(1, 6))"
       - "(n**2 for n in range(1, 6))"
     hints:
       - Use parentheses instead of square brackets
@@ -230,8 +255,12 @@ exercises:
     prereqs: [comprehensions.generator-exp]
     type: write
     pattern: aggregation
-    prompt: Sum all squares from 1 to 100 using generator expression
-    expected_answer: sum(x**2 for x in range(1, 101))
+    prompt: Sum all {{item_singular}}_count values squared from 1 to 100 using generator expression
+    expected_answer: "sum({{item_singular}}_count**2 for {{item_singular}}_count in range(1, 101))"
+    accepted_solutions:
+      - "sum({{item_singular}}_count**2 for {{item_singular}}_count in range(1, 101))"
+      - "sum(x**2 for x in range(1, 101))"
+      - "sum(n**2 for n in range(1, 101))"
     hints:
       - No extra parentheses needed inside sum()
       - More memory efficient than sum([...]) with list
@@ -248,8 +277,12 @@ exercises:
     prereqs: [comprehensions.list-comp]
     type: write
     pattern: transformation
-    prompt: Create list replacing negative numbers with 0 from list nums
-    expected_answer: "[x if x >= 0 else 0 for x in nums]"
+    prompt: Create list replacing negative numbers with 0 from list {{list_name}}
+    expected_answer: "[{{item_singular}} if {{item_singular}} >= 0 else 0 for {{item_singular}} in {{list_name}}]"
+    accepted_solutions:
+      - "[{{item_singular}} if {{item_singular}} >= 0 else 0 for {{item_singular}} in {{list_name}}]"
+      - "[x if x >= 0 else 0 for x in {{list_name}}]"
+      - "[n if n >= 0 else 0 for n in {{list_name}}]"
     hints:
       - Expression can be ternary
       - Value comes before 'for'
@@ -266,8 +299,12 @@ exercises:
     prereqs: [comprehensions.dict-comp]
     type: write
     pattern: construction
-    prompt: Create dict from keys list and values list using comprehension
-    expected_answer: "{k: v for k, v in zip(keys, values)}"
+    prompt: Create dict from {{list_name}} list and {{attr_key_1}}_values list using comprehension
+    expected_answer: "{k: v for k, v in zip({{list_name}}, {{attr_key_1}}_values)}"
+    accepted_solutions:
+      - "{k: v for k, v in zip({{list_name}}, {{attr_key_1}}_values)}"
+      - "{key: val for key, val in zip({{list_name}}, {{attr_key_1}}_values)}"
+      - "{x: y for x, y in zip({{list_name}}, {{attr_key_1}}_values)}"
     hints:
       - Use zip() to pair corresponding elements
       - Unpack each pair into k, v in the for clause
@@ -285,8 +322,8 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: mapping
-    prompt: Fill in the keyword that starts the iteration
-    template: "[x * 2 ___ x in range(5)]"
+    prompt: Fill in the keyword that starts the iteration over {{item_plural}}
+    template: "[{{item_singular}}_count * 2 ___ {{item_singular}}_count in range(5)]"
     expected_answer: "for"
     hints:
       - Same keyword used in regular loops
@@ -304,8 +341,8 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: filtering
-    prompt: Fill in the keyword that adds a filter condition
-    template: "[x for x in range(10) ___ x % 2 == 0]"
+    prompt: Fill in the keyword that adds a filter condition for {{status_var}} {{item_plural}}
+    template: "[{{item_singular}} for {{item_singular}} in {{list_name}} ___ {{item_singular}}.is_{{status_var}}]"
     expected_answer: "if"
     hints:
       - Keyword for filtering in comprehension
@@ -323,8 +360,8 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: mapping
-    prompt: Fill in the separator between key and value
-    template: "{x ___ x**2 for x in range(3)}"
+    prompt: Fill in the separator between {{item_singular}}_id and {{item_singular}}_count
+    template: "{{{item_singular}}_id ___ {{item_singular}}_id**2 for {{item_singular}}_id in range(3)}"
     expected_answer: ":"
     hints:
       - Separator between key and value in dicts
@@ -342,12 +379,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: mapping
-    prompt: Fill in the opening brace for a set comprehension
-    template: "___x for x in [1, 1, 2, 2, 3]}"
+    prompt: Fill in the opening brace for a {{item_singular}} set comprehension
+    template: "___{{item_singular}}_id for {{item_singular}}_id in [1, 1, 2, 2, 3]}"
     expected_answer: "{"
     hints:
       - Same as dict but without colon
-      - Creates unique values
+      - Creates unique {{item_plural}}
     tags: [comprehensions, set-comp, fill-in]
 
   # --- Predict Exercises ---
@@ -403,10 +440,10 @@ exercises:
     prereqs: [comprehensions.dict-comp]
     type: predict
     pattern: mapping
-    prompt: What does this code produce?
+    prompt: What does this dict comprehension produce?
     code: |
-      result = {x: x**2 for x in range(3)}
-      print(result)
+      {{item_singular}}_squares = {{{item_singular}}_id: {{item_singular}}_id**2 for {{item_singular}}_id in range(3)}
+      print({{item_singular}}_squares)
     expected_answer: "{0: 0, 1: 1, 2: 4}"
     accepted_solutions:
       - "{0: 0, 1: 1, 2: 4}"
@@ -414,7 +451,7 @@ exercises:
       - "{0: 0,1: 1,2: 4}"
       - "{0:0,1:1,2:4}"
     hints:
-      - Maps each number to its square
+      - Maps each {{item_singular}}_id to its square
       - Keys are 0, 1, 2 and values are 0, 1, 4
     tags: [comprehensions, dict-comp, predict]
 
@@ -428,18 +465,18 @@ exercises:
     prereqs: [comprehensions.list-comp]
     type: predict
     pattern: mapping
-    prompt: What does this code produce?
+    prompt: What does this nested comprehension produce?
     code: |
-      matrix = [[1, 2], [3, 4]]
-      result = [x for row in matrix for x in row]
-      print(result)
+      {{list_name}}_grid = [[1, 2], [3, 4]]
+      {{item_singular}}_values = [{{item_singular}} for row in {{list_name}}_grid for {{item_singular}} in row]
+      print({{item_singular}}_values)
     expected_answer: "[1, 2, 3, 4]"
     accepted_solutions:
       - "[1, 2, 3, 4]"
       - "[1,2,3,4]"
     hints:
-      - Flattens the nested list
-      - Outer loop iterates rows, inner loop iterates elements
+      - Flattens the nested {{item_plural}} list
+      - Outer loop iterates rows, inner loop iterates {{item_plural}}
     tags: [comprehensions, nested, predict]
 
   # --- Dynamic Dict Comprehension Exercises ---
@@ -609,22 +646,22 @@ exercises:
     type: write
     pattern: function
     prompt: |
-      Write a generator function `countdown(n)` that yields numbers from n down to 1.
+      Write a generator function `{{item_singular}}_countdown(n)` that yields numbers from n down to 1.
 
-      countdown(3) should yield 3, 2, 1.
+      {{item_singular}}_countdown(3) should yield 3, 2, 1.
     expected_answer: |
-      def countdown(n):
+      def {{item_singular}}_countdown(n):
           while n > 0:
               yield n
               n -= 1
     accepted_solutions:
       - |
-        def countdown(n):
+        def {{item_singular}}_countdown(n):
             while n > 0:
                 yield n
                 n -= 1
       - |
-        def countdown(n):
+        def {{item_singular}}_countdown(n):
             for i in range(n, 0, -1):
                 yield i
     hints:
@@ -644,20 +681,20 @@ exercises:
     type: write
     pattern: filtering
     prompt: |
-      Write a generator function `evens(n)` that yields even numbers from 2 up to n (inclusive if n is even).
+      Write a generator function `even_{{list_name}}(n)` that yields even numbers from 2 up to n (inclusive if n is even).
 
-      evens(6) should yield 2, 4, 6.
+      even_{{list_name}}(6) should yield 2, 4, 6.
     expected_answer: |
-      def evens(n):
+      def even_{{list_name}}(n):
           for i in range(2, n + 1, 2):
               yield i
     accepted_solutions:
       - |
-        def evens(n):
+        def even_{{list_name}}(n):
             for i in range(2, n + 1, 2):
                 yield i
       - |
-        def evens(n):
+        def even_{{list_name}}(n):
             i = 2
             while i <= n:
                 yield i

@@ -14,10 +14,10 @@ exercises:
     prereqs: [foundations]
     type: write
     pattern: import
-    prompt: Import the math module
+    prompt: Import the math module for {{action_verb}}ing {{item_plural}}
     expected_answer: import math
     hints:
-      - Use import keyword
+      - Use import keyword for {{item_singular}} operations
       - No quotes around module name
     tags: [imports, module, beginner]
 
@@ -31,10 +31,10 @@ exercises:
     prereqs: [modules-files.imports]
     type: write
     pattern: import
-    prompt: Import only sqrt from the math module
+    prompt: Import only sqrt from the math module (for {{item_singular}} calculations)
     expected_answer: from math import sqrt
     hints:
-      - Use from...import syntax
+      - Use from...import syntax for {{item_singular}} operations
       - You can then use sqrt() directly without math prefix
     tags: [imports, from, specific]
 
@@ -48,10 +48,10 @@ exercises:
     prereqs: [modules-files.imports]
     type: write
     pattern: import
-    prompt: Import numpy as np
+    prompt: Import numpy as np (for {{action_verb}}ing {{item_plural}} data)
     expected_answer: import numpy as np
     hints:
-      - Use 'as' for alias
+      - Use 'as' for {{item_singular}} alias
       - Common convention in data science community
     tags: [imports, alias, convention]
 
@@ -65,10 +65,13 @@ exercises:
     prereqs: [modules-files.imports]
     type: write
     pattern: import
-    prompt: Import sin and cos from math
+    prompt: Import sin and cos from math (for {{item_singular}} calculations)
     expected_answer: from math import sin, cos
+    accepted_solutions:
+      - from math import sin, cos
+      - from math import cos, sin
     hints:
-      - Comma-separate imports
+      - Comma-separate {{item_singular}} imports
       - All come after a single 'import' keyword
     tags: [imports, multiple, from]
 
@@ -83,13 +86,13 @@ exercises:
     prereqs: [foundations]
     type: write
     pattern: file
-    prompt: Open file "data.txt" for reading
-    expected_answer: open("data.txt", "r")
+    prompt: Open file "{{filename}}" for reading
+    expected_answer: 'open("{{filename}}", "r")'
     accepted_solutions:
-      - 'open("data.txt", "r")'
-      - "open('data.txt', 'r')"
-      - 'open("data.txt")'
-      - "open('data.txt')"
+      - 'open("{{filename}}", "r")'
+      - "open('{{filename}}', 'r')"
+      - 'open("{{filename}}")'
+      - "open('{{filename}}')"
     hints:
       - Use open() function
       - '"r" is default mode'
@@ -105,11 +108,11 @@ exercises:
     prereqs: [modules-files.reading]
     type: write
     pattern: file
-    prompt: Read entire contents of file object f
+    prompt: Read entire contents of the {{item_singular}} file object f
     expected_answer: f.read()
     hints:
       - Use read() method
-      - Returns all content as a single string
+      - Returns all {{item_singular}} content as a single string
     tags: [files, read, content]
 
   - slug: file-read-lines
@@ -122,11 +125,11 @@ exercises:
     prereqs: [modules-files.reading]
     type: write
     pattern: file
-    prompt: Read all lines from file f as a list
+    prompt: Read all {{item_plural}} from file f as a list
     expected_answer: f.readlines()
     hints:
       - Use readlines() method
-      - Each line becomes a list item with newline included
+      - Each {{item_singular}} becomes a list item with newline included
     tags: [files, read, lines]
 
   - slug: file-read-line
@@ -139,11 +142,11 @@ exercises:
     prereqs: [modules-files.reading]
     type: write
     pattern: file
-    prompt: Read one line from file f
+    prompt: Read one {{item_singular}} from file f
     expected_answer: f.readline()
     hints:
       - Use readline() method
-      - Call again to get the next line
+      - Call again to get the next {{item_singular}}
     tags: [files, read, line]
 
   # --- Writing Subconcept ---
@@ -157,11 +160,11 @@ exercises:
     prereqs: [modules-files.reading]
     type: write
     pattern: file
-    prompt: Open file "output.txt" for writing
-    expected_answer: open("output.txt", "w")
+    prompt: Open file "{{filename}}" for writing
+    expected_answer: 'open("{{filename}}", "w")'
     accepted_solutions:
-      - 'open("output.txt", "w")'
-      - "open('output.txt', 'w')"
+      - 'open("{{filename}}", "w")'
+      - "open('{{filename}}', 'w')"
     hints:
       - Use "w" mode for write
       - "Warning: 'w' mode overwrites existing content"
@@ -177,11 +180,11 @@ exercises:
     prereqs: [modules-files.writing]
     type: write
     pattern: file
-    prompt: Write "Hello" to file object f
-    expected_answer: f.write("Hello")
+    prompt: Write "{{item_example}}" to file object f
+    expected_answer: 'f.write("{{item_example}}")'
     accepted_solutions:
-      - 'f.write("Hello")'
-      - "f.write('Hello')"
+      - 'f.write("{{item_example}}")'
+      - "f.write('{{item_example}}')"
     hints:
       - Use write() method
       - Returns number of characters written
@@ -197,11 +200,11 @@ exercises:
     prereqs: [modules-files.writing]
     type: write
     pattern: file
-    prompt: Open file "log.txt" for appending
-    expected_answer: open("log.txt", "a")
+    prompt: Open file "{{filename}}" for appending
+    expected_answer: 'open("{{filename}}", "a")'
     accepted_solutions:
-      - 'open("log.txt", "a")'
-      - "open('log.txt', 'a')"
+      - 'open("{{filename}}", "a")'
+      - "open('{{filename}}', 'a')"
     hints:
       - Use "a" mode for append
       - Preserves existing content, adds to end
@@ -217,8 +220,8 @@ exercises:
     prereqs: [modules-files.writing]
     type: write
     pattern: file
-    prompt: Write list of lines to file f
-    expected_answer: f.writelines(lines)
+    prompt: Write list of {{item_plural}} to file f
+    expected_answer: f.writelines({{list_name}})
     hints:
       - Use writelines() method
       - Doesn't add newlines automatically
@@ -235,13 +238,13 @@ exercises:
     prereqs: [modules-files.reading]
     type: write
     pattern: context
-    prompt: Open file "data.txt" using a with statement, assigning to f
-    expected_answer: 'with open("data.txt") as f:'
+    prompt: Open file "{{filename}}" using a with statement, assigning to f
+    expected_answer: 'with open("{{filename}}") as f:'
     accepted_solutions:
-      - 'with open("data.txt") as f:'
-      - "with open('data.txt') as f:"
-      - 'with open("data.txt", "r") as f:'
-      - "with open('data.txt', 'r') as f:"
+      - 'with open("{{filename}}") as f:'
+      - "with open('{{filename}}') as f:"
+      - 'with open("{{filename}}", "r") as f:'
+      - "with open('{{filename}}', 'r') as f:"
     hints:
       - with statement auto-closes file
       - Use 'as' for variable
@@ -257,13 +260,13 @@ exercises:
     prereqs: [reading]
     type: write
     pattern: context
-    prompt: Open file "data.txt" for reading using a context manager
-    expected_answer: 'with open("data.txt") as f:'
+    prompt: Open file "{{filename}}" for reading using a context manager
+    expected_answer: 'with open("{{filename}}") as f:'
     accepted_solutions:
-      - 'with open("data.txt") as f:'
-      - "with open('data.txt') as f:"
-      - 'with open("data.txt", "r") as f:'
-      - "with open('data.txt', 'r') as f:"
+      - 'with open("{{filename}}") as f:'
+      - "with open('{{filename}}') as f:"
+      - 'with open("{{filename}}", "r") as f:'
+      - "with open('{{filename}}', 'r') as f:"
     hints:
       - Use with statement for automatic cleanup
       - File closes automatically when block exits
@@ -279,11 +282,11 @@ exercises:
     prereqs: [modules-files.context]
     type: write
     pattern: context
-    prompt: Open input.txt and output.txt simultaneously in a with statement
-    expected_answer: 'with open("input.txt") as inp, open("output.txt", "w") as out:'
+    prompt: Open {{filename}} for reading and output.txt for writing simultaneously in a with statement
+    expected_answer: 'with open("{{filename}}") as inp, open("output.txt", "w") as out:'
     accepted_solutions:
-      - 'with open("input.txt") as inp, open("output.txt", "w") as out:'
-      - "with open('input.txt') as inp, open('output.txt', 'w') as out:"
+      - 'with open("{{filename}}") as inp, open("output.txt", "w") as out:'
+      - "with open('{{filename}}') as inp, open('output.txt', 'w') as out:"
     hints:
       - Comma-separate context managers
       - Both files close automatically when done
@@ -300,7 +303,7 @@ exercises:
     prereqs: [modules-files.imports]
     type: write
     pattern: construction
-    prompt: Create a Path object for the current directory
+    prompt: Create a Path object for the current {{item_singular}} directory
     expected_answer: "Path('.')"
     accepted_solutions:
       - "Path('.')"
@@ -308,7 +311,7 @@ exercises:
       - "Path.cwd()"
     hints:
       - Import Path from pathlib
-      - Use '.' for current directory
+      - Use '.' for current {{item_singular}} directory
     tags: [pathlib, files]
 
   - slug: pathlib-intro
@@ -321,14 +324,14 @@ exercises:
     prereqs: [imports]
     type: write
     pattern: construction
-    prompt: Create a Path object from string "data/file.txt"
-    expected_answer: 'Path("data/file.txt")'
+    prompt: Create a Path object from string "{{list_name}}/{{filename}}"
+    expected_answer: 'Path("{{list_name}}/{{filename}}")'
     accepted_solutions:
-      - 'Path("data/file.txt")'
-      - "Path('data/file.txt')"
+      - 'Path("{{list_name}}/{{filename}}")'
+      - "Path('{{list_name}}/{{filename}}')"
     hints:
       - Path is imported from pathlib
-      - Pass the string path to the constructor
+      - Pass the {{item_singular}} path to the constructor
     tags: [pathlib, path, intro]
 
   - slug: pathlib-join-paths
@@ -341,14 +344,14 @@ exercises:
     prereqs: [modules-files.pathlib]
     type: write
     pattern: construction
-    prompt: Join Path object base with "subdir" and "file.txt" using the / operator
-    expected_answer: base / "subdir" / "file.txt"
+    prompt: Join Path object base with "{{list_name}}" and "{{filename}}" using the / operator
+    expected_answer: base / "{{list_name}}" / "{{filename}}"
     accepted_solutions:
-      - base / "subdir" / "file.txt"
-      - base / 'subdir' / 'file.txt'
+      - base / "{{list_name}}" / "{{filename}}"
+      - base / '{{list_name}}' / '{{filename}}'
     hints:
       - Use / operator between Path and strings
-      - Chain multiple / operators
+      - Chain multiple / operators for {{item_plural}}
     tags: [pathlib, join, operator]
 
   - slug: pathlib-get-parent
@@ -361,11 +364,11 @@ exercises:
     prereqs: [modules-files.pathlib]
     type: write
     pattern: attribute
-    prompt: Get the parent directory of Path object p
+    prompt: Get the parent {{item_singular}} directory of Path object p
     expected_answer: p.parent
     hints:
       - Use the parent attribute
-      - Returns a Path object representing the directory
+      - Returns a Path object representing the {{item_singular}} directory
     tags: [pathlib, parent, navigation]
 
   - slug: pathlib-check-exists
@@ -378,14 +381,14 @@ exercises:
     prereqs: [modules-files.pathlib]
     type: write
     pattern: conditional
-    prompt: Check if Path p exists and is a directory
+    prompt: Check if {{item_singular}} Path p exists and is a directory
     expected_answer: p.exists() and p.is_dir()
     accepted_solutions:
       - p.exists() and p.is_dir()
       - p.is_dir()
     hints:
-      - Use exists() to check existence
-      - Use is_dir() to check if directory
+      - Use exists() to check {{item_singular}} existence
+      - Use is_dir() to check if {{item_singular}} directory
       - Combine with 'and' operator
     tags: [pathlib, exists, is_dir, validation]
 
@@ -400,14 +403,14 @@ exercises:
     prereqs: [modules-files.imports]
     type: write
     pattern: conditional
-    prompt: Write the standard Python main guard check
+    prompt: Write the standard Python main guard check for your {{item_singular}} module
     expected_answer: 'if __name__ == "__main__":'
     accepted_solutions:
       - 'if __name__ == "__main__":'
       - "if __name__ == '__main__':"
     hints:
       - Check if __name__ equals "__main__"
-      - This runs code only when script is executed directly
+      - This runs {{action_verb}} code only when {{item_singular}} script is executed directly
     tags: [main, guard, module]
 
   - slug: main-guard-call-main
@@ -420,20 +423,20 @@ exercises:
     prereqs: [modules-files.main-guard]
     type: write
     pattern: conditional
-    prompt: Write main guard that calls main() function
+    prompt: Write main guard that calls {{action_verb}}_{{item_plural}}() function
     expected_answer: |
       if __name__ == "__main__":
-          main()
+          {{action_verb}}_{{item_plural}}()
     accepted_solutions:
       - |
         if __name__ == "__main__":
-            main()
+            {{action_verb}}_{{item_plural}}()
       - |
         if __name__ == '__main__':
-            main()
+            {{action_verb}}_{{item_plural}}()
     hints:
       - First write the guard condition
-      - Then call main() inside the block
+      - Then call {{action_verb}}_{{item_plural}}() inside the block
     tags: [main, guard, function]
 
   - slug: main-guard-with-definition
@@ -446,30 +449,30 @@ exercises:
     prereqs: [main-guard, fn-basics]
     type: write
     pattern: function
-    prompt: Define a main() function that prints "Running" and call it from a main guard
+    prompt: Define a {{action_verb}}_{{item_plural}}() function that prints "{{status_var}}" and call it from a main guard
     expected_answer: |
-      def main():
-          print("Running")
+      def {{action_verb}}_{{item_plural}}():
+          print("{{status_var}}")
 
       if __name__ == "__main__":
-          main()
+          {{action_verb}}_{{item_plural}}()
     accepted_solutions:
       - |
-        def main():
-            print("Running")
+        def {{action_verb}}_{{item_plural}}():
+            print("{{status_var}}")
 
         if __name__ == "__main__":
-            main()
+            {{action_verb}}_{{item_plural}}()
       - |
-        def main():
-            print('Running')
+        def {{action_verb}}_{{item_plural}}():
+            print('{{status_var}}')
 
         if __name__ == '__main__':
-            main()
+            {{action_verb}}_{{item_plural}}()
     hints:
-      - Define the main function first
+      - Define the {{action_verb}}_{{item_plural}} function first
       - Add the main guard after the function
-      - Call main() inside the guard block
+      - Call {{action_verb}}_{{item_plural}}() inside the guard block
     tags: [main, guard, function, definition]
 
   # --- Fill-in Exercises ---
@@ -484,11 +487,11 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: import
-    prompt: Fill in the keyword that imports a module
-    template: "___ os"
+    prompt: Fill in the keyword that imports a module for {{action_verb}}ing {{item_plural}}
+    template: "___ json"
     expected_answer: "import"
     hints:
-      - Keyword to bring in a module
+      - Keyword to bring in a {{item_singular}} module
       - Goes at the start of the statement
     tags: [imports, fill-in]
 
@@ -503,12 +506,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: import
-    prompt: Fill in the keyword for selective imports
+    prompt: Fill in the keyword for selective {{item_singular}} imports
     template: "___ math import sqrt"
     expected_answer: "from"
     hints:
-      - Keyword for selective imports
-      - Specifies which module to import from
+      - Keyword for selective {{item_singular}} imports
+      - Specifies which module to import {{action_verb}} functions from
     tags: [imports, from, fill-in]
 
   - slug: with-keyword-fill
@@ -522,12 +525,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: context
-    prompt: Fill in the keyword that starts a context manager
-    template: '___ open("file.txt") as f:'
+    prompt: Fill in the keyword that starts a context manager for {{action_verb}}ing {{item_plural}}
+    template: '___ open("{{filename}}") as f:'
     expected_answer: "with"
     hints:
-      - Keyword for context managers
-      - Ensures file closes even if error occurs
+      - Keyword for {{item_singular}} context managers
+      - Ensures {{item_singular}} file closes even if error occurs
     tags: [files, with, fill-in]
 
   # --- Predict Exercises ---
@@ -541,14 +544,14 @@ exercises:
     prereqs: [modules-files.main-guard]
     type: predict
     pattern: conditional
-    prompt: What does __name__ equal when script runs directly?
+    prompt: What does __name__ equal when {{item_singular}} script runs directly?
     code: |
-      # Running: python script.py
+      # Running: python {{item_singular}}_app.py
       print(__name__)
     expected_answer: "__main__"
     hints:
-      - __name__ is "__main__" when run directly
-      - Different when imported as a module
+      - __name__ is "__main__" when {{item_singular}} runs directly
+      - Different when imported as a {{item_singular}} module
     tags: [modules, main, predict]
 
   - slug: file-read-predict
@@ -561,9 +564,9 @@ exercises:
     prereqs: [modules-files.reading]
     type: predict
     pattern: file
-    prompt: If file.txt contains "hello", what prints?
+    prompt: If {{filename}} contains "hello", what prints?
     code: |
-      with open("file.txt") as f:
+      with open("{{filename}}") as f:
           content = f.read()
       print(len(content))
     expected_answer: "5"
@@ -582,15 +585,15 @@ exercises:
     prereqs: [modules-files.pathlib]
     type: predict
     pattern: construction
-    prompt: What does this produce?
+    prompt: What does this pathlib path produce?
     code: |
       from pathlib import Path
-      p = Path("home") / "user" / "file.txt"
+      p = Path("{{list_name}}") / "data" / "{{filename}}"
       print(p)
-    expected_answer: "home/user/file.txt"
+    expected_answer: "{{list_name}}/data/{{filename}}"
     hints:
-      - / operator joins path components
-      - Creates OS-appropriate path separators
+      - / operator joins {{item_singular}} path components
+      - Creates OS-appropriate path separators for {{item_plural}}
     tags: [pathlib, join, predict]
 
   # --- Dynamic Exercises (using generators) ---

@@ -1,0 +1,172 @@
+# paths/python/blueprints/automation-script.yaml
+
+id: automation-script
+title: "Build an Automation Script"
+description: "Create a batch processing script that iterates through data, applies transformations, and generates reports"
+difficulty: intermediate
+concepts: [loops, collections, comprehensions, strings, functions, modules-files]
+
+beats:
+  # ============================================
+  # Act 1: Data Loading & Basic Iteration (Beats 1-5)
+  # ============================================
+  - beat: 1
+    exercise: for-loop-list
+    title: "Iterate through items"
+    sideQuests:
+      - for-loop-string
+      - for-loop-list-dynamic
+      - for-loop-fill
+      - for-list-total-dynamic
+
+  - beat: 2
+    exercise: range-intro
+    title: "Generate number sequences"
+    sideQuests:
+      - range-start-stop
+      - range-step
+      - range-negative-step
+      - range-fill
+      - range-function-fill
+      - range-predict
+      - range-output-dynamic
+      - for-range-predict
+      - for-range-step-dynamic
+      - range-len-anti-pattern
+
+  - beat: 3
+    exercise: enumerate-basic
+    title: "Track position while iterating"
+    sideQuests:
+      - enumerate-loop
+      - enumerate-start-dynamic
+      - enumerate-keyword
+      - enumerate-fill
+      - enumerate-predict
+
+  - beat: 4
+    exercise: zip-intro
+    title: "Pair up parallel data"
+    sideQuests:
+      - zip-two-lists
+      - zip-three-lists
+      - zip-unequal-lengths
+
+  - beat: 5
+    exercise: reversed-intro
+    title: "Process in reverse order"
+    sideQuests:
+      - reversed-list
+      - reversed-range
+      - reversed-enumerate
+
+  # ============================================
+  # Act 2: Control Flow & Filtering (Beats 6-10)
+  # ============================================
+  - beat: 6
+    exercise: break-statement
+    title: "Exit loop early"
+    sideQuests:
+      - break-loop
+      - break-predict
+      - break-fill
+      - break-keyword-fill
+      - break-output-predict
+
+  - beat: 7
+    exercise: continue-statement
+    title: "Skip current iteration"
+    sideQuests:
+      - continue-loop
+      - continue-predict
+      - continue-fill
+      - continue-keyword-fill
+      - continue-output-predict
+
+  - beat: 8
+    exercise: while-loop
+    title: "Loop until condition"
+    sideQuests:
+      - while-counter-intro
+      - while-countdown-dynamic
+      - while-condition-fill
+
+  - beat: 9
+    exercise: while-true-break
+    title: "Infinite loop with exit"
+    sideQuests:
+      - while-header-intro
+      - while-keyword
+
+  - beat: 10
+    exercise: for-else
+    title: "Handle no-break case"
+    sideQuests:
+      - break-else
+
+  # ============================================
+  # Act 3: Aggregation & Reporting (Beats 11-15)
+  # ============================================
+  - beat: 11
+    exercise: any-basic
+    title: "Check if any match"
+    sideQuests:
+      - any-with-condition
+      - any-all-combined
+
+  - beat: 12
+    exercise: all-basic
+    title: "Check if all match"
+    sideQuests:
+      - any-all-predict-dynamic
+      - any-all-write-dynamic
+
+  - beat: 13
+    exercise: sorted-intro
+    title: "Sort results"
+    sideQuests:
+      - sorted-list
+      - sorted-reverse
+      - sorted-key-len
+
+  - beat: 14
+    exercise: sorted-key-lambda
+    title: "Custom sort order"
+    sideQuests:
+      - sorted-key-lambda-tuples
+      - sorted-predict-dynamic
+      - sorted-write-dynamic
+
+  - beat: 15
+    exercise: list-comp-basic
+    title: "Transform data"
+    sideQuests:
+      - list-comp-conditional
+      - list-comp-filter-dynamic
+      - list-comp-transform-dynamic
+
+  # ============================================
+  # Act 4: Advanced Patterns (Beats 16-18)
+  # ============================================
+  - beat: 16
+    exercise: generator-exp-intro
+    title: "Memory-efficient iteration"
+    sideQuests:
+      - generator-exp-basic
+      - generator-exp-sum
+      - generator-predict-lazy
+
+  - beat: 17
+    exercise: zip-predict
+    title: "Combine and process"
+    sideQuests:
+      - zip-predict-dynamic
+      - zip-sum-dynamic
+      - for-zip
+
+  - beat: 18
+    exercise: nested-loop-predict
+    title: "Nested iteration"
+    sideQuests:
+      - nested-comp-predict
+      - for-sum-pair-dynamic

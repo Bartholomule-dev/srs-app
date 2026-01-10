@@ -7,6 +7,10 @@ srs-app/
 ├── tests/                # Test files (unit, integration, e2e)
 ├── supabase/             # Supabase configuration & migrations
 ├── exercises/            # YAML exercise definitions
+├── paths/                # Blueprint + Skin YAML definitions (NEW)
+│   └── python/
+│       ├── blueprints/   # Blueprint YAML (collection-cli-app.yaml)
+│       └── skins/        # Skin YAML (5 skins)
 ├── public/               # Static assets
 ├── docs/                 # Implementation plans & deployment guide
 ├── .github/              # GitHub Actions workflows
@@ -62,7 +66,9 @@ src/
 │   │   ├── ExerciseCard.tsx  # Orchestrator (answering → feedback) - uses gradeAnswer
 │   │   ├── FillInExercise.tsx # Fill-in-the-blank exercise type
 │   │   ├── TeachingCard.tsx  # Teaching card for new subconcepts (blue styling)
-│   │   └── CoachingFeedback.tsx # ✅ Non-punitive coaching (Phase 2) - blue info styling
+│   │   ├── CoachingFeedback.tsx # ✅ Non-punitive coaching (Phase 2) - blue info styling
+│   │   ├── BeatHeader.tsx    # ✅ Blueprint beat progress (Beat 1 of 8: Title)
+│   │   └── ContextHint.tsx   # ✅ Skin-specific context text for exercises
 │   │
 │   ├── session/              # Session flow components
 │   │   ├── index.ts          # Barrel export
@@ -76,10 +82,25 @@ src/
 │   │   ├── Greeting.tsx      # Time-based greeting ("Good morning, user!")
 │   │   └── PracticeCTA.tsx   # Practice button with card counts
 │   │
-│   └── stats/                # Stats display components
+│   ├── stats/                # Stats display components
+│   │   ├── index.ts          # Barrel export
+│   │   ├── StatsCard.tsx     # Individual stat with icon
+│   │   ├── StatsGrid.tsx     # Grid layout (streak, accuracy, today, total)
+│   │   └── ContributionGraph.tsx # ✅ GitHub-style 52-week activity grid
+│   │
+│   ├── gamification/         # ✅ Gamification components (Phase 3)
+│   │   ├── index.ts          # Barrel export
+│   │   ├── PointsAnimation.tsx    # Float-up points with scale/sparkle effects
+│   │   ├── StreakFlame.tsx        # Animated flame with intensity tiers
+│   │   ├── AchievementCard.tsx    # Locked/unlocked achievement display
+│   │   └── AchievementToast.tsx   # Slide-in unlock notification
+│   │
+│   └── skill-tree/           # ✅ Skill tree visualization
 │       ├── index.ts          # Barrel export
-│       ├── StatsCard.tsx     # Individual stat with icon
-│       └── StatsGrid.tsx     # Grid layout (streak, accuracy, today, total)
+│       ├── SkillTree.tsx     # Main skill tree container
+│       ├── ConceptCluster.tsx # Concept grouping with subconcepts
+│       ├── SubconceptNode.tsx # Individual subconcept node with badge tiers
+│       └── DependencyLines.tsx # SVG bezier curves for prereqs
 │
 └── lib/                      # Shared libraries
     ├── context/              # React context providers
@@ -97,6 +118,7 @@ src/
     │   ├── useRequireAuth.ts # Auth guard with redirect
     │   ├── useConceptSRS.ts  # Concept-based SRS scheduling
     │   ├── useConceptSession.ts # Practice session with teaching cards
+    │   ├── usePathContext.ts # ✅ Blueprint/skin context for components (NEW)
     │   └── useStats.ts       # User stats fetching
     │
     ├── errors/               # Error handling utilities
@@ -153,7 +175,18 @@ src/
     │       ├── variable-names.ts    # Python identifiers
     │       ├── index-values.ts      # single index (0-4)
     │       ├── arithmetic-values.ts # x/y with precomputed results
-    │       └── ... (36 total generators)
+    │       └── ... (13 total generators)
+│
+├── paths/                # ✅ Blueprint + Skin presentation layer (NEW)
+│   ├── index.ts          # Barrel export
+│   ├── types.ts          # Blueprint, Beat, Skin, SkinVars, SkinnedCard types
+│   ├── loader.ts         # loadPathIndex, loadBlueprints, loadSkins (YAML)
+│   ├── selector.ts       # pickSkin (recency rotation)
+│   ├── grouping.ts       # groupByBlueprint, sortByBeat
+│   ├── apply-skin.ts     # applySkinContext (Mustache templating)
+│   ├── render-skin-vars.ts # expandSkinVars for array→singular conversion
+│   ├── update-recent-skins.ts # updateRecentSkins in profile
+│   └── utils.ts          # pickRandomItem, pickSeededItem
     │
     ├── stats/                # Stats calculation library
     │   ├── index.ts          # Barrel export
@@ -162,6 +195,20 @@ src/
     │   ├── streak.ts         # calculateCurrentStreak, calculateLongestStreak
     │   ├── updateProfile.ts  # updateProfileStats (on session end)
     │   └── dynamic-metrics.ts # ✅ Dynamic exercise metrics (Phase 4)
+    │
+    ├── gamification/         # ✅ Gamification library (Phase 3)
+    │   ├── index.ts          # Barrel export
+    │   ├── types.ts          # Points, Streak, Achievement, BadgeTier types
+    │   ├── points.ts         # Points calculation, streak multiplier
+    │   ├── badges.ts         # Badge tiers (Bronze→Platinum), BADGE_STYLES
+    │   ├── contribution.ts   # Contribution graph data processing
+    │   ├── achievements.ts   # Achievement definitions, unlock logic
+    │   └── query-keys.ts     # React Query key factory for caching
+    │
+    ├── skill-tree/           # ✅ Skill tree data (Phase 3)
+    │   ├── index.ts          # Barrel export
+    │   ├── types.ts          # SkillTreeNode, SkillTreeCluster types
+    │   └── build-data.ts     # buildSkillTreeData transformation
     │
     ├── supabase/             # Supabase client & utilities
     │   ├── index.ts          # Barrel export
@@ -264,6 +311,7 @@ Exercise types: write (53%), fill-in (14%), predict (17%), dynamic (16%)
 - `pnpm validate:exercises` - Schema validation (Ajv against schema.json)
 - `pnpm validate:curriculum` - Curriculum consistency validation
 - `pnpm validate:dynamic` - Dynamic exercise rendering validation
+- `pnpm validate:paths` - Blueprint/skin YAML validation
 - `pnpm validate:all` - Run all validations
 ```
 

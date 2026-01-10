@@ -1,0 +1,170 @@
+# paths/python/blueprints/calculator-app.yaml
+
+id: calculator-app
+title: "Build a Calculator"
+description: "Build a calculator application that handles arithmetic, comparisons, type conversions, and input validation"
+difficulty: beginner
+concepts: [foundations, numbers-booleans, conditionals, functions, error-handling]
+
+beats:
+  # ============================================
+  # Act 1: Basic Operations (Beats 1-5)
+  # ============================================
+  - beat: 1
+    exercise: assign-variable
+    title: "Store input values"
+    sideQuests:
+      - assign-number
+      - multiple-assignment
+      - variable-assign-dynamic
+
+  - beat: 2
+    exercise: operator-addition-fill
+    title: "Add two numbers"
+    sideQuests:
+      - int-addition-dynamic
+      - int-multiply-dynamic
+
+  - beat: 3
+    exercise: operator-floor-division-fill
+    title: "Integer division"
+    sideQuests:
+      - int-floor-div-fill
+      - int-power-fill
+      - modulo-dynamic
+      - int-modulo-dynamic
+      - int-predict-floor
+      - int-predict-modulo
+      - int-subtract-write-dynamic
+
+  - beat: 4
+    exercise: float-round-fill
+    title: "Round results"
+    sideQuests:
+      - float-abs-fill
+      - float-predict-round
+      - float-predict-division
+
+  - beat: 5
+    exercise: operator-precedence-dynamic
+    title: "Order of operations"
+    sideQuests:
+      - operator-parentheses-dynamic
+      - operator-expression-predict-dynamic
+
+  # ============================================
+  # Act 2: Type Conversion (Beats 6-9)
+  # ============================================
+  - beat: 6
+    exercise: convert-int-fill
+    title: "Convert strings to numbers"
+    sideQuests:
+      - convert-str-fill
+      - convert-predict-int
+      - convert-predict-bool
+
+  - beat: 7
+    exercise: conversion-write-dynamic
+    title: "Dynamic type conversions"
+    sideQuests:
+      - conversion-predict-dynamic
+
+  - beat: 8
+    exercise: input-string
+    title: "Get user input"
+    sideQuests:
+      - print-string
+      - print-variable
+
+  - beat: 9
+    exercise: f-string-basic
+    title: "Format output"
+    sideQuests:
+      - print-fstring
+      - fstring-expression
+
+  # ============================================
+  # Act 3: Comparisons & Logic (Beats 10-14)
+  # ============================================
+  - beat: 10
+    exercise: bool-and-fill
+    title: "AND operations"
+    sideQuests:
+      - bool-or-fill
+      - bool-predict-and
+      - bool-predict-not
+
+  - beat: 11
+    exercise: bool-expression-dynamic
+    title: "Boolean expressions"
+    sideQuests:
+      - bool-logic-write-dynamic
+      - bool-expr-dynamic
+      - bool-compound-dynamic
+
+  - beat: 12
+    exercise: comparison-is-fill
+    title: "Identity checks"
+    sideQuests:
+      - identity-is-none
+      - identity-is-not-none
+      - identity-vs-equality
+      - comparison-in-fill
+      - comparison-predict-is
+      - identity-fill-is
+      - identity-fill-is-not
+      - identity-predict-small-ints
+      - identity-pythonic-none
+      - identity-trap-predict
+
+  - beat: 13
+    exercise: comparison-chaining
+    title: "Chained comparisons"
+    sideQuests:
+      - comparison-predict-chain
+      - comparison-result-dynamic
+
+  - beat: 14
+    exercise: truthiness-intro
+    title: "Truthy and falsy values"
+    sideQuests:
+      - truthiness-empty-list
+      - truthiness-predict-empty
+      - truthiness-predict-zero
+      - pythonic-if-empty-check
+      - truthiness-if-fill
+      - truthiness-not-fill
+      - truthiness-predict-dynamic
+      - truthiness-write-dynamic
+      - truthiness-write-if
+
+  # ============================================
+  # Act 4: Validation & Functions (Beats 15-18)
+  # ============================================
+  - beat: 15
+    exercise: if-else-basic
+    title: "Validate input"
+    sideQuests:
+      - if-statement
+      - ternary-basic
+
+  - beat: 16
+    exercise: try-except-basic
+    title: "Handle invalid input"
+    sideQuests:
+      - except-specific
+      - except-type-predict
+
+  - beat: 17
+    exercise: define-function
+    title: "Create calculator function"
+    sideQuests:
+      - function-return
+      - default-param-simple
+
+  - beat: 18
+    exercise: elif-grade
+    title: "Handle operations"
+    sideQuests:
+      - match-case-basic
+      - elif-http-status

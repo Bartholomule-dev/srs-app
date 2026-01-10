@@ -15,13 +15,13 @@ exercises:
     prereqs: [variables]
     pattern: arithmetic
     objective: Use floor division operator
-    prompt: Fill in the operator for integer division (discards remainder)
-    template: "result = 10 ___ 3  # result is 3"
+    prompt: Fill in the operator for integer division when calculating {{item_plural}} per page
+    template: "{{item_plural}}_per_page = total_{{item_plural}} ___ pages"
     blank_position: 0
     expected_answer: "//"
     accepted_solutions: ["//"]
     hints:
-      - Floor division uses two slashes
+      - Floor division uses two slashes for {{item_singular}} counts
       - Always rounds down toward negative infinity
     tags: [integers, division]
 
@@ -35,13 +35,13 @@ exercises:
     prereqs: [variables]
     pattern: arithmetic
     objective: Use exponentiation operator
-    prompt: Fill in the exponentiation operator
-    template: "result = 2 ___ 8"
+    prompt: Fill in the exponentiation operator to calculate {{item_singular}} growth
+    template: "{{item_singular}}_growth = base ___ exponent"
     blank_position: 0
     expected_answer: "**"
     accepted_solutions: ["**"]
     hints:
-      - Python uses ** for exponentiation
+      - Python uses ** for {{item_singular}} exponentiation
       - Not ^ like some other languages
     tags: [integers, exponentiation]
 
@@ -55,13 +55,13 @@ exercises:
     prereqs: [integers]
     pattern: invocation
     objective: Use round() function
-    prompt: Fill in the function that rounds numbers
-    template: "result = ___(3.14159, 2)"
+    prompt: Fill in the function that rounds {{item_singular}} price to 2 decimals
+    template: "{{item_singular}}_price = ___({{item_singular}}_total, 2)"
     blank_position: 0
     expected_answer: "round"
     accepted_solutions: ["round"]
     hints:
-      - Which built-in function rounds numbers?
+      - Which built-in function rounds {{item_singular}} numbers?
       - Second argument specifies decimal places
     tags: [floats, rounding]
 
@@ -75,13 +75,13 @@ exercises:
     prereqs: [integers]
     pattern: invocation
     objective: Get absolute value
-    prompt: Fill in the function that returns absolute value
-    template: "positive = ___(-5.5)"
+    prompt: Fill in the function that returns absolute {{item_singular}} difference
+    template: "{{item_singular}}_diff = ___({{item_singular}}_a - {{item_singular}}_b)"
     blank_position: 0
     expected_answer: "abs"
     accepted_solutions: ["abs"]
     hints:
-      - Which function returns absolute value?
+      - Which function returns absolute {{item_singular}} value?
       - Removes the negative sign if present
     tags: [floats, absolute]
 
@@ -95,14 +95,14 @@ exercises:
     prereqs: [variables]
     pattern: logical
     objective: Use logical AND
-    prompt: Fill in the operator that requires both conditions to be true
-    template: "valid = is_admin ___ is_active"
+    prompt: Fill in the operator that requires both {{item_singular}} conditions to be true
+    template: "{{item_singular}}_valid = is_{{status_var}} ___ has_{{attr_key_1}}"
     blank_position: 0
     expected_answer: "and"
     accepted_solutions: ["and"]
     hints:
-      - Python uses 'and' for logical AND
-      - True only if both sides are True
+      - Python uses 'and' for logical AND on {{item_plural}}
+      - True only if both {{item_singular}} conditions are True
     tags: [booleans, logic]
 
   - slug: bool-or-fill
@@ -115,14 +115,14 @@ exercises:
     prereqs: [variables]
     pattern: logical
     objective: Use logical OR
-    prompt: Fill in the operator that is true if either condition is true
-    template: "allowed = is_admin ___ has_permission"
+    prompt: Fill in the operator that allows {{item_singular}} if either condition is true
+    template: "{{item_singular}}_allowed = is_{{status_var}} ___ has_{{attr_key_1}}"
     blank_position: 0
     expected_answer: "or"
     accepted_solutions: ["or"]
     hints:
-      - Python uses 'or' for logical OR
-      - True if at least one side is True
+      - Python uses 'or' for logical OR on {{item_plural}}
+      - True if at least one {{item_singular}} condition is True
     tags: [booleans, logic]
 
   - slug: convert-int-fill
@@ -135,13 +135,13 @@ exercises:
     prereqs: [integers, floats]
     pattern: conversion
     objective: Convert string to integer
-    prompt: Fill in the function that converts to integer
-    template: 'number = ___("42")'
+    prompt: Fill in the function that converts {{item_singular}} count to integer
+    template: '{{item_singular}}_count = ___({{item_singular}}_str)'
     blank_position: 0
     expected_answer: "int"
     accepted_solutions: ["int"]
     hints:
-      - Which function converts to integer?
+      - Which function converts {{item_singular}} to integer?
       - Works on strings and floats
     tags: [conversion, int]
 
@@ -155,13 +155,13 @@ exercises:
     prereqs: [integers]
     pattern: conversion
     objective: Convert number to string
-    prompt: Fill in the function that converts to string
-    template: "text = ___(123)"
+    prompt: Fill in the function that converts {{item_singular}} ID to string
+    template: "{{item_singular}}_id_str = ___({{item_singular}}_id)"
     blank_position: 0
     expected_answer: "str"
     accepted_solutions: ["str"]
     hints:
-      - Which function converts to string?
+      - Which function converts {{item_singular}} to string?
       - Works on any type
     tags: [conversion, str]
 
@@ -175,13 +175,13 @@ exercises:
     prereqs: [booleans]
     pattern: logical
     objective: Use truthiness in condition
-    prompt: "Given a list called items, fill in the Pythonic empty-check (use: items)"
+    prompt: "Given a list called {{list_name}}, fill in the Pythonic empty-check (use: {{list_name}})"
     template: "if ___:"
     blank_position: 0
-    expected_answer: "items"
+    expected_answer: "{{list_name}}"
     hints:
       - Non-empty lists are truthy
-      - More Pythonic than if len(items) > 0
+      - More Pythonic than if len({{list_name}}) > 0
     tags: [truthiness, idiomatic]
 
   - slug: truthiness-not-fill
@@ -194,14 +194,14 @@ exercises:
     prereqs: [booleans]
     pattern: logical
     objective: Check for empty/falsy value
-    prompt: Fill in the operator to check if items is empty (falsy)
-    template: "if ___ items:"
+    prompt: Fill in the operator to check if {{list_name}} is empty (falsy)
+    template: "if ___ {{list_name}}:"
     blank_position: 0
     expected_answer: "not"
     accepted_solutions: ["not"]
     hints:
       - Use 'not' to check for falsy values
-      - More Pythonic than if len(items) == 0
+      - More Pythonic than if len({{list_name}}) == 0
     tags: [truthiness, idiomatic]
 
   - slug: comparison-is-fill
@@ -235,7 +235,7 @@ exercises:
     pattern: comparison
     objective: Check membership in collection
     prompt: Fill in the membership operator
-    template: "if item ___ items:"
+    template: "if {{item_singular}} ___ {{list_name}}:"
     blank_position: 0
     expected_answer: "in"
     accepted_solutions: ["in"]
@@ -256,15 +256,15 @@ exercises:
     prereqs: [variables]
     pattern: arithmetic
     objective: Predict floor division result
-    prompt: What does this code print?
+    prompt: What does this floor division print?
     code: |
-      result = 7 // 2
-      print(result)
+      {{item_plural}}_per_batch = 7 // 2
+      print({{item_plural}}_per_batch)
     expected_answer: "3"
     accepted_solutions: []
     hints:
-      - Floor division rounds down
-      - 7 divided by 2 is 3.5, floor is 3
+      - Floor division rounds down for {{item_plural}}
+      - 7 {{item_plural}} divided by 2 batches is 3.5, floor is 3
     tags: [integers, division]
 
   - slug: int-predict-modulo
@@ -277,15 +277,15 @@ exercises:
     prereqs: [variables]
     pattern: arithmetic
     objective: Predict modulo result
-    prompt: What does this code print?
+    prompt: What does this modulo calculation print?
     code: |
-      result = 10 % 3
-      print(result)
+      remaining_{{item_plural}} = 10 % 3
+      print(remaining_{{item_plural}})
     expected_answer: "1"
     accepted_solutions: []
     hints:
-      - Modulo returns the remainder
-      - 10 = 3*3 + 1, so remainder is 1
+      - Modulo returns the remaining {{item_plural}}
+      - 10 {{item_plural}} in groups of 3 leaves 1 remaining
     tags: [integers, modulo]
 
   - slug: float-predict-division
@@ -298,14 +298,14 @@ exercises:
     prereqs: [integers]
     pattern: arithmetic
     objective: Predict true division result
-    prompt: What does this code print?
+    prompt: What does this float division print?
     code: |
-      result = 5 / 2
-      print(result)
+      {{item_plural}}_each = 5 / 2
+      print({{item_plural}}_each)
     expected_answer: "2.5"
     accepted_solutions: []
     hints:
-      - Single / always returns a float
+      - Single / always returns a float for {{item_plural}}
       - Even 6/2 returns 3.0, not 3
     tags: [floats, division]
 
@@ -319,15 +319,15 @@ exercises:
     prereqs: [integers]
     pattern: invocation
     objective: Predict round() result
-    prompt: What does this code print?
+    prompt: What does this round() call print?
     code: |
-      result = round(3.7)
-      print(result)
+      {{item_singular}}_count = round(3.7)
+      print({{item_singular}}_count)
     expected_answer: "4"
     accepted_solutions: []
     hints:
-      - round() rounds to nearest integer by default
-      - 3.7 is closer to 4 than to 3
+      - round() rounds {{item_singular}} to nearest integer by default
+      - 3.7 {{item_plural}} is closer to 4 than to 3
     tags: [floats, rounding]
 
   - slug: bool-predict-and
@@ -340,15 +340,15 @@ exercises:
     prereqs: [variables]
     pattern: logical
     objective: Predict AND result
-    prompt: What does this code print?
+    prompt: What does this AND check print?
     code: |
-      a = True
-      b = False
-      print(a and b)
+      is_{{status_var}} = True
+      has_{{attr_key_1}} = False
+      print(is_{{status_var}} and has_{{attr_key_1}})
     expected_answer: "False"
     accepted_solutions: []
     hints:
-      - AND requires both to be True
+      - AND requires both {{item_singular}} conditions to be True
       - True AND False = False
     tags: [booleans, logic]
 
@@ -362,14 +362,14 @@ exercises:
     prereqs: [variables]
     pattern: logical
     objective: Predict NOT result
-    prompt: What does this code print?
+    prompt: What does this NOT expression print?
     code: |
-      value = True
-      print(not value)
+      is_{{status_var}} = True
+      print(not is_{{status_var}})
     expected_answer: "False"
     accepted_solutions: []
     hints:
-      - not inverts the boolean
+      - not inverts the {{item_singular}} boolean
       - not True = False, not False = True
     tags: [booleans, logic]
 
@@ -383,14 +383,14 @@ exercises:
     prereqs: [integers, floats]
     pattern: conversion
     objective: Predict int() result
-    prompt: What does this code print?
+    prompt: What does this int() conversion print?
     code: |
-      result = int(3.9)
-      print(result)
+      {{item_singular}}_count = int(3.9)
+      print({{item_singular}}_count)
     expected_answer: "3"
     accepted_solutions: []
     hints:
-      - int() truncates toward zero
+      - int() truncates {{item_singular}} toward zero
       - Does NOT round - just removes decimals
     tags: [conversion, int]
 
@@ -404,14 +404,15 @@ exercises:
     prereqs: [booleans]
     pattern: conversion
     objective: Predict bool() result
-    prompt: What does this code print?
+    prompt: What does this bool() conversion print?
     code: |
-      print(bool(0))
+      {{item_singular}}_count = 0
+      print(bool({{item_singular}}_count))
     expected_answer: "False"
     accepted_solutions: []
     hints:
-      - 0 is a falsy value
-      - Any non-zero number is truthy
+      - 0 {{item_plural}} is a falsy value
+      - Any non-zero {{item_singular}} count is truthy
     tags: [conversion, bool]
 
   - slug: truthiness-predict-empty
@@ -426,9 +427,9 @@ exercises:
     objective: Predict empty list truthiness
     prompt: What does this code print?
     code: |
-      items = []
-      if items:
-          print("has items")
+      {{list_name}} = []
+      if {{list_name}}:
+          print("has {{item_plural}}")
       else:
           print("empty")
     expected_answer: "empty"
@@ -450,8 +451,8 @@ exercises:
     objective: Predict zero truthiness
     prompt: What does this code print?
     code: |
-      count = 0
-      print("yes" if count else "no")
+      {{item_singular}}_count = 0
+      print("yes" if {{item_singular}}_count else "no")
     expected_answer: "no"
     accepted_solutions: []
     hints:
@@ -469,15 +470,15 @@ exercises:
     prereqs: [booleans]
     pattern: comparison
     objective: Predict chained comparison result
-    prompt: What does this code print?
+    prompt: What does this chained comparison print?
     code: |
-      x = 5
-      print(1 < x < 10)
+      {{item_singular}}_count = 5
+      print(1 < {{item_singular}}_count < 10)
     expected_answer: "True"
     accepted_solutions: []
     hints:
-      - Python allows chained comparisons
-      - Same as (1 < x) and (x < 10)
+      - Python allows chained {{item_singular}} comparisons
+      - Same as (1 < {{item_singular}}_count) and ({{item_singular}}_count < 10)
     tags: [comparisons, chaining]
 
   - slug: comparison-predict-is
@@ -490,16 +491,16 @@ exercises:
     prereqs: [booleans]
     pattern: comparison
     objective: Understand is vs ==
-    prompt: What does this code print?
+    prompt: What does this identity vs equality print?
     code: |
-      a = [1, 2, 3]
-      b = [1, 2, 3]
-      print(a == b, a is b)
+      {{list_name}}_a = [1, 2, 3]
+      {{list_name}}_b = [1, 2, 3]
+      print({{list_name}}_a == {{list_name}}_b, {{list_name}}_a is {{list_name}}_b)
     expected_answer: "True False"
     accepted_solutions: []
     hints:
-      - == checks equality, is checks identity
-      - Two lists with same values are equal but not identical
+      - == checks {{item_plural}} equality, is checks identity
+      - Two {{list_name}} with same values are equal but not identical
     tags: [comparisons, identity]
 
   # --- Dynamic Exercises for Numbers-Booleans ---
@@ -665,13 +666,14 @@ exercises:
     prereqs: [numbers-booleans.booleans]
     type: predict
     pattern: conversion
-    prompt: What does bool(0) return?
+    prompt: What does bool(0) return for {{item_singular}} count?
     code: |
-      print(bool(0))
+      {{item_singular}}_count = 0
+      print(bool({{item_singular}}_count))
     expected_answer: "False"
     hints:
-      - Zero is considered falsy in Python
-      - bool() converts to boolean
+      - Zero {{item_plural}} is considered falsy in Python
+      - bool() converts {{item_singular}} to boolean
     tags: [truthiness, intro, bool]
 
   - slug: truthiness-empty-list
@@ -684,13 +686,14 @@ exercises:
     prereqs: [numbers-booleans.booleans]
     type: predict
     pattern: conversion
-    prompt: What does bool([]) return?
+    prompt: What does bool([]) return for an empty {{list_name}}?
     code: |
-      print(bool([]))
+      {{list_name}} = []
+      print(bool({{list_name}}))
     expected_answer: "False"
     hints:
-      - Empty collections are falsy
-      - Non-empty collections are truthy
+      - Empty {{list_name}} is falsy
+      - Non-empty {{list_name}} with {{item_plural}} is truthy
     tags: [truthiness, intro, collections]
 
   - slug: truthiness-write-if
@@ -703,11 +706,11 @@ exercises:
     prereqs: [numbers-booleans.truthiness]
     type: write
     pattern: conditional
-    prompt: Write an if statement that checks if list items is truthy (non-empty)
-    expected_answer: "if items:"
+    prompt: Write an if statement that checks if list {{list_name}} is truthy (non-empty)
+    expected_answer: "if {{list_name}}:"
     accepted_solutions:
-      - "if items:"
-      - "if bool(items):"
+      - "if {{list_name}}:"
+      - "if bool({{list_name}}):"
     hints:
       - You don't need == or len()
       - The list itself can be the condition
@@ -828,10 +831,10 @@ exercises:
     prereqs: [comparisons]
     type: write
     pattern: comparison
-    prompt: Check if result is None using the identity operator
-    expected_answer: result is None
+    prompt: Check if {{item_singular}} is None using the identity operator
+    expected_answer: "{{item_singular}} is None"
     accepted_solutions:
-      - result is None
+      - "{{item_singular}} is None"
     hints:
       - Use 'is' for None checks, not ==
       - is checks identity (same object)
@@ -847,13 +850,13 @@ exercises:
     prereqs: [identity]
     type: write
     pattern: comparison
-    prompt: Check if config is not None using identity operator
-    expected_answer: config is not None
+    prompt: Check if {{item_singular}} is not None using identity operator
+    expected_answer: "{{item_singular}} is not None"
     accepted_solutions:
-      - config is not None
+      - "{{item_singular}} is not None"
     hints:
       - Use 'is not' (two words) for negation
-      - More readable than 'not config is None'
+      - More readable than 'not {{item_singular}} is None'
     tags: [identity, is, not, none]
 
   - slug: identity-vs-equality
@@ -891,7 +894,7 @@ exercises:
     blank_position: 0
     pattern: comparison
     prompt: Fill in the keyword that checks identity with None
-    template: "if value ___ None:"
+    template: "if {{item_singular}} ___ None:"
     expected_answer: "is"
     hints:
       - What keyword checks identity?
@@ -910,7 +913,7 @@ exercises:
     blank_position: 0
     pattern: comparison
     prompt: Fill in the keywords that check identity is NOT None
-    template: "if user ___ None:"
+    template: "if {{item_singular}} ___ None:"
     expected_answer: "is not"
     hints:
       - Two words for negated identity
@@ -971,17 +974,17 @@ exercises:
     prereqs: [identity]
     type: write
     pattern: idiomatic
-    prompt: Write an if statement that prints "Missing" if data is None
+    prompt: Write an if statement that prints "Missing {{item_singular}}" if {{item_singular}} is None
     expected_answer: |
-      if data is None:
-          print("Missing")
+      if {{item_singular}} is None:
+          print("Missing {{item_singular}}")
     accepted_solutions:
       - |
-        if data is None:
-            print("Missing")
+        if {{item_singular}} is None:
+            print("Missing {{item_singular}}")
       - |
-        if data is None:
-            print('Missing')
+        if {{item_singular}} is None:
+            print('Missing {{item_singular}}')
     hints:
       - Use 'is None', not '== None'
       - Pythonic and handles edge cases better

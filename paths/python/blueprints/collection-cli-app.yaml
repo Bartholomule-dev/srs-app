@@ -13,22 +13,38 @@ beats:
   - beat: 1
     exercise: list-create-empty
     title: "Initialize storage"
+    sideQuests:
+      - list-create-values
+      - tuple-create
 
   - beat: 2
     exercise: input-string
     title: "Get user input"
+    sideQuests:
+      - print-string
+      - print-variable
 
   - beat: 3
     exercise: list-append-dynamic
     title: "Add entries"
+    sideQuests:
+      - list-extend-method
+      - list-insert-dynamic
 
   - beat: 4
     exercise: list-in-check
     title: "Check for duplicates"
+    sideQuests:
+      - list-count
+      - list-index
 
   - beat: 5
     exercise: dict-create-values
     title: "Store richer data"
+    sideQuests:
+      - dict-create-empty
+      - dict-get-default
+      - dict-set-item
 
   # ============================================
   # Act 2: Display & Iteration (Beats 6-10)
@@ -36,22 +52,38 @@ beats:
   - beat: 6
     exercise: for-loop-list
     title: "Display all items"
+    sideQuests:
+      - for-loop-string
+      - for-loop-list-dynamic
 
   - beat: 7
     exercise: enumerate-basic
     title: "Number the items"
+    sideQuests:
+      - enumerate-start-dynamic
+      - zip-intro
 
   - beat: 8
     exercise: f-string-basic
     title: "Format output nicely"
+    sideQuests:
+      - fstring-expression
+      - fstring-expression-fill
 
   - beat: 9
     exercise: list-sorted
     title: "Sort the display"
+    sideQuests:
+      - list-sort
+      - list-reverse
+      - sorted-reverse
 
   - beat: 10
     exercise: list-comp-filter-dynamic
     title: "Filter results"
+    sideQuests:
+      - list-comp-basic
+      - list-comp-conditional
 
   # ============================================
   # Act 3: Logic & Validation (Beats 11-15)
@@ -59,22 +91,38 @@ beats:
   - beat: 11
     exercise: if-else-basic
     title: "Add basic checks"
+    sideQuests:
+      - if-statement
+      - boolean-and
+      - boolean-or
 
   - beat: 12
     exercise: elif-grade
     title: "Handle multiple cases"
+    sideQuests:
+      - elif-http-status
+      - match-case-basic
 
   - beat: 13
     exercise: try-except-basic
     title: "Catch errors"
+    sideQuests:
+      - raise-intro
+      - raise-exception
 
   - beat: 14
     exercise: except-specific
     title: "Handle specific errors"
+    sideQuests:
+      - except-as
+      - try-except-predict
 
   - beat: 15
     exercise: finally-basic
     title: "Ensure cleanup"
+    sideQuests:
+      - finally-with-except
+      - reraise
 
   # ============================================
   # Act 4: Organization & Persistence (Beats 16-20)
@@ -82,19 +130,35 @@ beats:
   - beat: 16
     exercise: define-function
     title: "Create a helper function"
+    sideQuests:
+      - function-return
+      - function-multiple-return
 
   - beat: 17
     exercise: default-param-simple
     title: "Add default arguments"
+    sideQuests:
+      - default-param-intro
+      - default-param-multiple
 
   - beat: 18
     exercise: context-intro
     title: "Save to file"
+    sideQuests:
+      - file-open-write
+      - file-read-lines
 
   - beat: 19
     exercise: pathlib-intro
     title: "Use modern paths"
+    sideQuests:
+      - pathlib-check-exists
+      - pathlib-create-path
+      - pathlib-join-paths
 
   - beat: 20
     exercise: main-guard-basic
     title: "Add main guard"
+    sideQuests:
+      - import-from
+      - import-module

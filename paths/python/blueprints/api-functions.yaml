@@ -1,0 +1,146 @@
+# paths/python/blueprints/api-functions.yaml
+
+id: api-functions
+title: "Build an API Function Library"
+description: "Create a reusable function library with proper signatures, type hints, and flexible parameters"
+difficulty: intermediate
+concepts: [functions, error-handling, modules-files, oop]
+
+beats:
+  # ============================================
+  # Act 1: Basic Functions (Beats 1-5)
+  # ============================================
+  - beat: 1
+    exercise: define-function
+    title: "Define a function"
+    sideQuests:
+      - def-keyword-fill
+      - function-no-params
+
+  - beat: 2
+    exercise: function-return
+    title: "Return values"
+    sideQuests:
+      - return-keyword-fill
+      - function-return-predict
+
+  - beat: 3
+    exercise: function-call
+    title: "Call functions"
+    sideQuests:
+      - function-call-dynamic
+      - function-call-write-dynamic
+
+  - beat: 4
+    exercise: function-multiple-return
+    title: "Return multiple values"
+    sideQuests:
+      - function-result-predict-dynamic
+
+  - beat: 5
+    exercise: positional-arg-intro
+    title: "Positional arguments"
+    sideQuests:
+      - mixed-args-intro
+
+  # ============================================
+  # Act 2: Parameter Flexibility (Beats 6-10)
+  # ============================================
+  - beat: 6
+    exercise: keyword-arg-intro
+    title: "Keyword arguments"
+    sideQuests:
+      - keyword-only-args
+      - positional-only-args
+
+  - beat: 7
+    exercise: default-param-simple
+    title: "Default parameters"
+    sideQuests:
+      - default-param-intro
+      - default-param-multiple
+      - default-param-predict
+      - default-value-fill
+
+  - beat: 8
+    exercise: default-param-none
+    title: "None as default"
+    sideQuests:
+      - default-param-mutable-trap
+      - mutable-default-predict
+
+  - beat: 9
+    exercise: args-intro
+    title: "Variable positional args"
+    sideQuests:
+      - args-syntax-fill
+      - args-predict
+
+  - beat: 10
+    exercise: kwargs-intro
+    title: "Variable keyword args"
+    sideQuests:
+      - kwargs-syntax-fill
+      - kwargs-function
+      - args-kwargs-combined
+
+  # ============================================
+  # Act 3: Type Safety (Beats 11-14)
+  # ============================================
+  - beat: 11
+    exercise: typehint-param
+    title: "Type hint parameters"
+    sideQuests:
+      - typehint-list
+
+  - beat: 12
+    exercise: typehint-return
+    title: "Type hint returns"
+    sideQuests:
+      - typehint-optional
+      - typehint-callable
+
+  - beat: 13
+    exercise: lambda-simple
+    title: "Lambda expressions"
+    sideQuests:
+      - lambda-keyword-fill
+      - lambda-two-args
+      - lambda-conditional
+
+  - beat: 14
+    exercise: lambda-predict
+    title: "Lambda behavior"
+    sideQuests:
+      - lambda-result-dynamic
+      - lambda-write-dynamic
+      - lambda-call-dynamic
+
+  # ============================================
+  # Act 4: Scope & Advanced (Beats 15-18)
+  # ============================================
+  - beat: 15
+    exercise: scope-intro
+    title: "Variable scope"
+    sideQuests:
+      - scope-global-read
+      - scope-predict
+
+  - beat: 16
+    exercise: global-keyword
+    title: "Global variables"
+    sideQuests:
+      - nonlocal-keyword
+
+  - beat: 17
+    exercise: args-kwargs-forward
+    title: "Forward arguments"
+    sideQuests:
+      - default-args-predict-dynamic
+      - default-args-call-dynamic
+
+  - beat: 18
+    exercise: retry-decorator-integrated
+    title: "Decorator pattern"
+    sideQuests:
+      - config-loader-integrated

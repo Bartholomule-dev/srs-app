@@ -1,0 +1,106 @@
+# paths/python/skins/api-client.yaml
+
+id: api-client
+title: "API Client"
+icon: "🌐"
+blueprints: [api-functions]
+
+vars:
+  list_name: endpoints
+  item_singular: endpoint
+  item_plural: endpoints
+  item_examples:
+    - "/users"
+    - "/posts"
+    - "/comments"
+    - "/auth/login"
+    - "/api/v1/data"
+  record_keys: ["url", "method", "headers", "body"]
+  attr_key_1: url
+  attr_key_2: method
+  id_var: endpoint_id
+  filename: api_response.json
+  filetype: json
+  user_role: client
+  status_var: authenticated
+  action_verb: request
+  entity_name: Endpoint
+
+dataPack:
+  list_sample: ["GET", "POST", "PUT", "DELETE"]
+  dict_sample:
+    url: "/api/users"
+    method: "GET"
+    headers: {"Authorization": "Bearer token"}
+    status: 200
+  records_sample:
+    - { endpoint: "/users", method: "GET", status: 200 }
+    - { endpoint: "/posts", method: "POST", status: 201 }
+    - { endpoint: "/auth", method: "DELETE", status: 401 }
+  string_samples:
+    - "Request successful"
+    - "Authentication failed"
+    - "Rate limit exceeded"
+    - "Endpoint not found"
+
+contexts:
+  # Basic Functions
+  define-function: "Define a function to make API requests."
+  def-keyword-fill: "Complete the function definition."
+  function-no-params: "Create a simple health check function."
+  function-return: "Return the response from an API call."
+  return-keyword-fill: "Complete the return statement."
+  function-return-predict: "Predict what the API function returns."
+  function-call: "Call an API endpoint function."
+  function-call-dynamic: "Call the function with different URLs."
+  function-call-write-dynamic: "Write the function call syntax."
+  function-multiple-return: "Return status code and response body."
+  function-result-predict-dynamic: "Predict the tuple of results."
+  positional-arg-intro: "Pass URL and method as positional args."
+  mixed-args-intro: "Mix positional and keyword arguments."
+
+  # Parameter Flexibility
+  keyword-arg-intro: "Use keyword arguments for headers."
+  keyword-only-args: "Force headers as keyword-only."
+  positional-only-args: "Make URL positional-only."
+  default-param-simple: "Set default HTTP method to GET."
+  default-param-intro: "Introduce default parameters."
+  default-param-multiple: "Multiple defaults for timeout and retries."
+  default-param-predict: "Predict behavior with defaults."
+  default-param-none: "Use None for optional headers."
+  default-param-mutable-trap: "Avoid mutable default for headers dict."
+  mutable-default-predict: "Predict mutable default bug."
+  args-intro: "Accept variable path segments."
+  args-syntax-fill: "Complete the *args syntax."
+  args-predict: "Predict *args behavior."
+  kwargs-intro: "Accept variable query parameters."
+  kwargs-syntax-fill: "Complete the **kwargs syntax."
+  kwargs-function: "Build query string from kwargs."
+  args-kwargs-combined: "Combine *args and **kwargs."
+
+  # Type Safety
+  typehint-param: "Type hint the URL parameter."
+  typehint-list: "Type hint list of endpoints."
+  typehint-return: "Type hint the response return."
+  typehint-optional: "Type hint optional headers."
+  typehint-callable: "Type hint a callback function."
+  lambda-simple: "Create a lambda for URL formatting."
+  lambda-keyword-fill: "Complete the lambda expression."
+  lambda-two-args: "Lambda with method and path."
+  lambda-conditional: "Lambda to check status codes."
+  lambda-predict: "Predict lambda behavior."
+  lambda-result-dynamic: "Predict dynamic lambda result."
+  lambda-write-dynamic: "Write a lambda expression."
+  lambda-call-dynamic: "Call a lambda with values."
+
+  # Scope & Advanced
+  scope-intro: "Understand local vs global base URL."
+  scope-global-read: "Read global API configuration."
+  scope-predict: "Predict scope resolution."
+  global-keyword: "Modify global token."
+  nonlocal-keyword: "Use nonlocal for request count."
+  args-kwargs-forward: "Forward arguments to underlying request."
+  default-args-predict-dynamic: "Predict default behavior."
+  default-args-call-dynamic: "Call with various defaults."
+  retry-decorator-integrated: "Add retry logic with decorator."
+  config-loader-integrated: "Load API config from file."

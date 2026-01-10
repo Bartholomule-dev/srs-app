@@ -113,6 +113,8 @@ export function useConceptSession(): UseConceptSessionReturn {
   const { loadPyodide } = usePyodide();
 
   const [exercises, setExercises] = useState<Exercise[]>([]);
+  // Raw exercises (before Mustache rendering) keyed by slug - used for re-rendering with skin vars
+  const [rawExercisesMap, setRawExercisesMap] = useState<Map<string, Exercise>>(new Map());
   // Unified session cards (teaching, practice, review)
   const [cards, setCards] = useState<SessionCardType[]>([]);
   // Internal tracking: maps card index to subconcept progress (for SRS updates)
@@ -177,8 +179,18 @@ export function useConceptSession(): UseConceptSessionReturn {
         }
 
         const mappedExercises = (data ?? []).map(mapExercise);
+
+        // Store raw exercises (before rendering) for later re-rendering with skin vars
+        // This is needed because Mustache strips unresolved {{tags}} in the first pass
+        const rawMap = new Map<string, Exercise>();
+        for (const ex of mappedExercises) {
+          rawMap.set(ex.slug, ex);
+        }
+        setRawExercisesMap(rawMap);
+
         // Render dynamic exercises (interpolate {{param}} templates)
         // Static exercises pass through unchanged
+        // Note: Skin vars not available yet - exercises will be re-rendered when skin is selected
         const renderedExercises = renderExercises(mappedExercises, userId, new Date());
         setExercises(renderedExercises);
       } catch (err) {
@@ -437,22 +449,29 @@ export function useConceptSession(): UseConceptSessionReturn {
             // Re-render exercises with their selected skin vars and data packs
             // This applies skin variables (like list_name, item_singular) and
             // sample data (for predict exercises) to templates
+            // IMPORTANT: Must use raw (un-rendered) exercises because Mustache
+            // strips unresolved {{tags}} on first render. Using pre-rendered
+            // exercises would lose all skin var placeholders.
             for (let i = 0; i < exerciseCardsInfo.length; i++) {
               const skin = selectedSkins[i];
               if (skin?.vars || skin?.dataPack) {
                 const cardIndex = exerciseCardsInfo[i].index;
                 const card = sessionCards[cardIndex];
                 if (card.type !== 'teaching') {
-                  // Re-render the exercise with skin vars and data pack
-                  const reRendered = renderExercise(
-                    card.exercise,
-                    userId,
-                    new Date(),
-                    skin?.vars,
-                    skin?.dataPack
-                  );
-                  // Update the card's exercise with re-rendered version
-                  (sessionCards[cardIndex] as { exercise: typeof reRendered }).exercise = reRendered;
+                  // Look up raw exercise (before any Mustache rendering)
+                  const rawExercise = rawExercisesMap.get(card.exercise.slug);
+                  if (rawExercise) {
+                    // Re-render from raw exercise with skin vars and data pack
+                    const reRendered = renderExercise(
+                      rawExercise,
+                      userId,
+                      new Date(),
+                      skin?.vars,
+                      skin?.dataPack
+                    );
+                    // Update the card's exercise with re-rendered version
+                    (sessionCards[cardIndex] as { exercise: typeof reRendered }).exercise = reRendered;
+                  }
                 }
               }
             }
@@ -515,7 +534,7 @@ export function useConceptSession(): UseConceptSessionReturn {
     return () => {
       cancelled = true;
     };
-  }, [dueSubconcepts, exercises, srsLoading, getNextExercise, user, sessionInitialized, showToast, profile]);
+  }, [dueSubconcepts, exercises, rawExercisesMap, srsLoading, getNextExercise, user, sessionInitialized, showToast, profile]);
 
   // Preload Pyodide if session contains predict exercises or execution-verified exercises
   useEffect(() => {

@@ -1,0 +1,100 @@
+# paths/python/blueprints/data-transformer.yaml
+
+id: data-transformer
+title: "Build a Data Transformer"
+description: "Create efficient data transformation pipelines using comprehensions and generators"
+difficulty: intermediate
+concepts: [comprehensions, loops, collections, functions]
+
+beats:
+  # ============================================
+  # Act 1: List Comprehensions (Beats 1-5)
+  # ============================================
+  - beat: 1
+    exercise: list-comp-basic
+    title: "Transform with list comprehension"
+    sideQuests:
+      - list-comp-for-fill
+      - list-comp-predict
+
+  - beat: 2
+    exercise: list-comp-conditional
+    title: "Filter with conditions"
+    sideQuests:
+      - list-comp-if-fill
+      - list-comp-filter-predict
+
+  - beat: 3
+    exercise: list-comp-transform-dynamic
+    title: "Dynamic transformations"
+    sideQuests:
+      - list-comp-filter-dynamic
+      - list-comp-write-transform-dynamic
+
+  - beat: 4
+    exercise: list-comp-ternary
+    title: "Conditional expressions"
+    sideQuests:
+      - nested-comp
+      - nested-comp-predict
+
+  - beat: 5
+    exercise: active-users-integrated
+    title: "Filter active users"
+    sideQuests:
+      - error-code-extractor-integrated
+
+  # ============================================
+  # Act 2: Dict & Set Comprehensions (Beats 6-9)
+  # ============================================
+  - beat: 6
+    exercise: dict-comp-intro
+    title: "Create dicts from data"
+    sideQuests:
+      - dict-comp-predict-intro
+      - dict-comp-colon-fill
+
+  - beat: 7
+    exercise: dict-comp-basic
+    title: "Transform to dictionary"
+    sideQuests:
+      - dict-comp-predict
+      - dict-comp-dynamic
+
+  - beat: 8
+    exercise: dict-comp-zip
+    title: "Zip to dictionary"
+    sideQuests:
+      - dict-comp-write-dynamic
+
+  - beat: 9
+    exercise: set-comp-intro
+    title: "Create unique sets"
+    sideQuests:
+      - set-comp-predict-intro
+      - set-comp-basic
+      - set-comp-brace-fill
+
+  # ============================================
+  # Act 3: Generators (Beats 10-13)
+  # ============================================
+  - beat: 10
+    exercise: generator-exp-intro
+    title: "Memory-efficient iteration"
+    sideQuests:
+      - generator-exp-basic
+      - generator-predict-lazy
+
+  - beat: 11
+    exercise: generator-exp-sum
+    title: "Aggregate with generators"
+
+  - beat: 12
+    exercise: generator-countdown
+    title: "Generator functions"
+    sideQuests:
+      - generator-evens
+
+  - beat: 13
+    exercise: generator-fibonacci
+    title: "Infinite sequences"

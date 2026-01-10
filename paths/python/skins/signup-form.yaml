@@ -1,0 +1,81 @@
+# paths/python/skins/signup-form.yaml
+
+id: signup-form
+title: "Signup Form"
+icon: "📋"
+blueprints: [form-validator]
+
+vars:
+  list_name: fields
+  item_singular: field
+  item_plural: fields
+  item_examples:
+    - "username"
+    - "email"
+    - "password"
+    - "phone"
+    - "age"
+  record_keys: ["name", "value", "required", "valid"]
+  attr_key_1: name
+  attr_key_2: value
+  id_var: field_id
+  filename: form_data.json
+  filetype: json
+  user_role: validator
+  status_var: validated
+  action_verb: validate
+  entity_name: Field
+
+dataPack:
+  list_sample: ["username", "email", "password", "confirm"]
+  dict_sample:
+    name: "email"
+    value: "user@example.com"
+    required: true
+    valid: true
+  records_sample:
+    - { field: "username", value: "john_doe", valid: true }
+    - { field: "email", value: "invalid", valid: false }
+    - { field: "password", value: "****", valid: true }
+  string_samples:
+    - "Valid email"
+    - "Password too short"
+    - "Username taken"
+    - "Field required"
+
+contexts:
+  # Basic Conditions
+  if-statement: "Check if the field has a value."
+  if-fill-colon: "Complete the if statement syntax."
+  if-predict-basic: "Predict the validation result."
+  if-else-basic: "Return valid or invalid status."
+  if-fill-else: "Complete the else clause."
+  if-predict-falsy: "Predict falsy value check."
+  if-membership: "Check if input is in allowed values."
+  if-not-condition: "Check if field is NOT empty."
+  pythonic-if-empty-check: "Check for empty input Pythonically."
+  pythonic-none-check: "Check for None value."
+  if-else-order-trap: "Understand condition order."
+
+  # Multiple Conditions
+  elif-grade: "Validate password strength levels."
+  elif-fill: "Complete the elif statement."
+  elif-predict-order: "Predict which branch executes."
+  elif-http-status: "Handle API validation responses."
+  elif-predict-fall-through: "Predict conditional flow."
+  ternary-basic: "Inline validation check."
+  ternary-fill: "Complete the ternary."
+  ternary-predict: "Predict ternary result."
+  ternary-max: "Clamp age to valid range."
+  ternary-default: "Provide default for missing field."
+  ternary-nested-predict: "Predict nested ternary."
+
+  # Pattern Matching
+  match-case-basic: "Match field type for validation."
+  match-case-fill: "Complete the match statement."
+  match-case-predict: "Predict which case matches."
+  match-case-or: "Match multiple field types."
+  match-case-tuple: "Match field name and value together."
+  comparison-chaining: "Chain multiple validation conditions."
+  if-elif-else-predict-dynamic: "Predict complex validation."
+  comparison-predict-chain: "Predict chained comparison."

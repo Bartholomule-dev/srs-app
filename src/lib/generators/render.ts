@@ -2,13 +2,39 @@
 // Template rendering pipeline for parameterized exercises
 
 import Mustache from 'mustache';
-import { createSeed } from './seed';
+import { createSeed, hashString } from './seed';
 import { getGenerator } from './index';
 import type { RenderedExerciseMetadata, VariantMap } from './types';
 import type { Skin, SkinVars, SkinDataPack } from '@/lib/paths/types';
 
 // Disable Mustache's HTML escaping (we're not rendering to HTML)
 Mustache.escape = (text: string) => text;
+
+/**
+ * Derive additional variables from skin vars.
+ * - item_example: Random element from item_examples (deterministic per exercise)
+ *
+ * @param skinVars - Original skin variables
+ * @param exerciseSlug - Exercise slug for deterministic selection
+ * @returns Extended skin variables with derived values
+ */
+function deriveSkinVars(
+  skinVars: SkinVars,
+  exerciseSlug: string
+): SkinVars & { item_example?: string } {
+  const derived: SkinVars & { item_example?: string } = { ...skinVars };
+
+  // Derive item_example from item_examples array
+  if (skinVars.item_examples && skinVars.item_examples.length > 0) {
+    // Use first 8 chars of hash as a number for deterministic index
+    const hash = hashString(exerciseSlug);
+    const hashNum = parseInt(hash.slice(0, 8), 16);
+    const index = hashNum % skinVars.item_examples.length;
+    derived.item_example = skinVars.item_examples[index];
+  }
+
+  return derived;
+}
 
 /**
  * Minimum exercise interface required for rendering.
@@ -84,10 +110,13 @@ export function renderExercise<T extends RenderableExercise>(
   skinVars?: SkinVars,
   skinDataPack?: SkinDataPack
 ): RenderedExercise<T> {
+  // Derive additional skin vars (like item_example from item_examples)
+  const derivedSkinVars = skinVars ? deriveSkinVars(skinVars, exercise.slug) : undefined;
+
   // Merge skin vars with data pack (skinVars take precedence over dataPack)
   const skinContext = skinDataPack
-    ? { ...skinDataPack, ...skinVars }
-    : skinVars;
+    ? { ...skinDataPack, ...derivedSkinVars }
+    : derivedSkinVars;
 
   // Static exercises with no skinContext pass through unchanged
   if (!exercise.generator && !skinContext) {
