@@ -88,6 +88,10 @@ export function interleaveAtBoundaries(
 }
 
 /**
+ * @deprecated Use interleaveAtBoundaries() instead.
+ * This function uses fixed intervals (every 3 cards).
+ * The new boundary-based approach places teaching at concept transitions.
+ *
  * Interleaves teaching+practice pairs into a queue of review cards.
  *
  * - Inserts one teaching pair after every 3 review cards
