@@ -16,13 +16,13 @@
 
 ## Exercise Quality Review
 
-**Exercise List:** `docs/EXERCISES.md` (auto-generated) contains all 510 exercises with a grading rubric.
+**Exercise List:** Obsidian vault `Exercise-List.md` (auto-generated) contains all exercises with stats.
 
 **Grading Process:** To review exercise quality by subconcept:
-1. Read the rubric in `docs/EXERCISES.md` (8 dimensions + Code Correctness Gate)
+1. Read the rubric in Obsidian `Grading-Rubric.md` (8 dimensions + Code Correctness Gate)
 2. Find exercises: `grep "subconcept: <name>" exercises/python/*.yaml`
 3. Grade each exercise against the rubric (max 40 points)
-4. Fix issues, then run `pnpm validate:exercises && pnpm generate:exercise-list:obsidian`
+4. Fix issues, then run `pnpm validate:exercises && pnpm generate:exercise-list`
 
 **Rubric Dimensions:** Tr (Transfer), Cg (Cognitive Match), Dd (Decision Depth), Nv (Narrative Versatility), Ad (Answer Determinism), Cc (Coverage Completeness), Id (Idiom Quality), Pc (Prompt Clarity)
 
@@ -46,7 +46,7 @@ A gamified web platform for practicing code syntax through spaced repetition. Ta
 | Language | TypeScript 5 (strict mode) |
 | UI | React 19, Tailwind CSS 4, framer-motion |
 | Backend | Supabase (PostgreSQL + Auth + Realtime) |
-| Testing | Vitest (1913 unit/integration) + Playwright (E2E) |
+| Testing | Vitest (2182 unit/integration) + Playwright (E2E) |
 | Deployment | Vercel + GitHub Actions CI/E2E |
 | Package Manager | pnpm |
 
@@ -59,7 +59,7 @@ pnpm dev              # Start dev server (localhost:3000)
 pnpm build            # Production build
 pnpm lint             # ESLint check
 pnpm typecheck        # TypeScript type checking
-pnpm test             # Run Vitest tests (1913 tests)
+pnpm test             # Run Vitest tests (2182 tests)
 pnpm test:e2e         # Run Playwright E2E tests
 pnpm test:e2e:headed  # Run E2E with browser visible
 pnpm db:start         # Start local Supabase
@@ -71,8 +71,7 @@ pnpm validate:exercises   # Validate YAML against schema
 pnpm validate:dynamic     # Validate dynamic exercises
 pnpm validate:paths       # Validate blueprint/skin YAML files
 pnpm coverage:blueprints  # Check exercise coverage across blueprints
-pnpm generate:exercise-list           # Generate docs/EXERCISES.md from YAML
-pnpm generate:exercise-list:obsidian  # Also generate to Obsidian vault
+pnpm generate:exercise-list  # Generate Exercise-List.md to Obsidian vault
 ```
 
 ---
@@ -89,7 +88,7 @@ src/
 │   └── practice/page.tsx  # Practice session flow
 ├── middleware.ts         # Supabase session refresh
 ├── components/
-│   ├── ui/               # Custom UI components (Button, Card, Input, etc.)
+│   ├── ui/               # Custom UI components (Button, Card, Input, FeatureErrorBoundary, etc.)
 │   ├── layout/           # Header, LandingHeader
 │   ├── landing/          # Hero, Features, HowItWorks, AuthForm
 │   ├── exercise/         # ExerciseCard, CodeInput, FillInExercise, TeachingCard, CoachingFeedback, BeatHeader, ContextHint
