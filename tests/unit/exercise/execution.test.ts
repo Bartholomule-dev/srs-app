@@ -5,6 +5,8 @@ import {
   verifyPredictAnswer,
   verifyWriteAnswer,
   captureStdout,
+  normalizeOutput,
+  parseExecutionError,
 } from '@/lib/exercise/execution';
 import type { PyodideInterface } from '@/lib/context/PyodideContext';
 import { createMockPyodide } from '@tests/fixtures/pyodide';
@@ -146,5 +148,63 @@ describe('verifyWriteAnswer', () => {
     await verifyWriteAnswer(mockPyodide, '"result"', 'result');
 
     expect(mockPyodide.runPython).toHaveBeenCalled();
+  });
+});
+
+describe('normalizeOutput', () => {
+  it('uses strict mode by default', () => {
+    expect(normalizeOutput('  hello  \n\n')).toBe('hello');
+  });
+
+  it('strict mode trims and removes trailing newlines', () => {
+    expect(normalizeOutput('  hello  \n\n', { mode: 'strict' })).toBe('hello');
+  });
+
+  it('trim mode just trims whitespace', () => {
+    expect(normalizeOutput('  hello  ', { mode: 'trim' })).toBe('hello');
+  });
+
+  it('ignore_whitespace mode removes all whitespace', () => {
+    expect(normalizeOutput('hello world', { mode: 'ignore_whitespace' })).toBe(
+      'helloworld'
+    );
+  });
+
+  it('ignore_whitespace removes newlines too', () => {
+    expect(normalizeOutput('hello\nworld', { mode: 'ignore_whitespace' })).toBe(
+      'helloworld'
+    );
+  });
+});
+
+describe('parseExecutionError', () => {
+  it('parses assertion error', () => {
+    const parsed = parseExecutionError('AssertionError: add(1, 2) should equal 3');
+    expect(parsed.type).toBe('AssertionError');
+    expect(parsed.message).toBe('add(1, 2) should equal 3');
+  });
+
+  it('parses syntax error', () => {
+    const parsed = parseExecutionError('SyntaxError: invalid syntax');
+    expect(parsed.type).toBe('SyntaxError');
+    expect(parsed.message).toBe('invalid syntax');
+  });
+
+  it('parses name error', () => {
+    const parsed = parseExecutionError('NameError: name "x" is not defined');
+    expect(parsed.type).toBe('NameError');
+    expect(parsed.message).toBe('name "x" is not defined');
+  });
+
+  it('handles timeout errors', () => {
+    const parsed = parseExecutionError('Execution timeout');
+    expect(parsed.type).toBe('Timeout');
+    expect(parsed.message).toBe('Code execution timed out');
+  });
+
+  it('handles unknown error formats', () => {
+    const parsed = parseExecutionError('Something went wrong');
+    expect(parsed.type).toBe('Unknown');
+    expect(parsed.message).toBe('Something went wrong');
   });
 });

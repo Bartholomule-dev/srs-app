@@ -165,12 +165,55 @@ export async function verifyWriteAnswer(
   return normalizedActual === normalizedExpected;
 }
 
+// =============================================================================
+// Output normalization and error parsing utilities
+// =============================================================================
+
+export interface NormalizeOptions {
+  mode: 'strict' | 'trim' | 'ignore_whitespace';
+}
+
 /**
- * Normalize output for comparison.
- * Trims whitespace and removes trailing newlines.
+ * Normalize execution output based on mode.
+ * - strict: trim + remove trailing newlines (default)
+ * - trim: just trim whitespace
+ * - ignore_whitespace: remove all whitespace
  */
-function normalizeOutput(output: string): string {
-  return output.trim().replace(/\n+$/, '');
+export function normalizeOutput(
+  output: string,
+  options: NormalizeOptions = { mode: 'strict' }
+): string {
+  switch (options.mode) {
+    case 'strict':
+      return output.trim().replace(/\n+$/, '');
+    case 'trim':
+      return output.trim();
+    case 'ignore_whitespace':
+      return output.replace(/\s+/g, '');
+    default:
+      return output.trim();
+  }
+}
+
+export interface ParsedError {
+  type: string;
+  message: string;
+}
+
+/**
+ * Parse Python error message into structured format.
+ */
+export function parseExecutionError(error: string): ParsedError {
+  if (error.includes('timeout') || error.includes('Timeout')) {
+    return { type: 'Timeout', message: 'Code execution timed out' };
+  }
+
+  const match = error.match(/^(\w+Error): (.+)$/);
+  if (match) {
+    return { type: match[1], message: match[2] };
+  }
+
+  return { type: 'Unknown', message: error };
 }
 
 // =============================================================================

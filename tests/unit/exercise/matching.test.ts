@@ -67,15 +67,45 @@ describe('normalizePython', () => {
     expect(normalizePython('{a:1,b:2}')).toBe('{a: 1, b: 2}');
   });
 
-  it('normalizes comma spacing preserves strings', () => {
-    // Commas inside strings should NOT be normalized
-    // This tests a limitation - regex can't know if we're in a string
-    // For now, we accept this limitation since accepted_solutions handles edge cases
-    expect(normalizePython('print("a,b,c")')).toBe('print("a, b, c")');
-  });
-
   it('normalizes pre-colon spacing in dicts', () => {
     expect(normalizePython('{a :1}')).toBe('{a: 1}');
+  });
+
+  describe('string literal preservation', () => {
+    it('preserves commas inside double-quoted strings', () => {
+      expect(normalizePython('print("a,b,c")')).toBe('print("a,b,c")');
+    });
+
+    it('preserves commas inside single-quoted strings', () => {
+      expect(normalizePython("print('a,b,c')")).toBe("print('a,b,c')");
+    });
+
+    it('preserves colons inside strings', () => {
+      // The colon BETWEEN "key" and "value" is outside strings (dict colon),
+      // so it correctly gets a space added. Only colons INSIDE strings are preserved.
+      expect(normalizePython('d = {"key":"value"}')).toBe('d = {"key": "value"}');
+    });
+
+    it('preserves colons inside string content', () => {
+      // Colon is INSIDE the string here
+      expect(normalizePython('s = "time:12:30"')).toBe('s = "time:12:30"');
+    });
+
+    it('still normalizes commas in code outside strings', () => {
+      expect(normalizePython('print("a,b"),print("c,d")')).toBe('print("a,b"), print("c,d")');
+    });
+
+    it('handles escaped quotes inside strings', () => {
+      expect(normalizePython('print("he said \\"hi,there\\"")')).toBe('print("he said \\"hi,there\\"")');
+    });
+
+    it('handles mixed quotes', () => {
+      expect(normalizePython("print('a,b') + print(\"c,d\")")).toBe("print('a,b') + print(\"c,d\")");
+    });
+
+    it('handles strings with colons (dict-like)', () => {
+      expect(normalizePython('f"{time:02d}:{mins:02d}"')).toBe('f"{time:02d}:{mins:02d}"');
+    });
   });
 });
 

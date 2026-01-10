@@ -24,11 +24,13 @@
     "validate:curriculum": "npx tsx scripts/validate-curriculum.ts",
     "validate:dynamic": "npx tsx scripts/validate-dynamic-exercises.ts",
     "validate:paths": "npx tsx scripts/validate-paths.ts",
+    "validate:strategies": "npx tsx scripts/validate-strategies.ts",
     "validate:templates": "npx tsx scripts/validate-templates.ts",
     "coverage:blueprints": "npx tsx scripts/blueprint-coverage.ts",
     "generate:paths": "npx tsx scripts/generate-path-index.ts",
     "validate:all": "pnpm validate:exercises && pnpm validate:curriculum && pnpm validate:dynamic && pnpm validate:paths",
-    "generate:exercise-list": "npx tsx scripts/generate-exercise-list.ts --obsidian \"/home/brett/GoogleDrive/Obsidian Vault\""
+    "generate:exercise-list": "npx tsx scripts/generate-exercise-list.ts --obsidian \"/home/brett/GoogleDrive/Obsidian Vault\"",
+    "audit:grading": "npx tsx scripts/audit-grading.ts"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.2.8",

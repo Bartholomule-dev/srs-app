@@ -513,9 +513,9 @@ paths/python/
 
 ---
 
-## Completed Milestones (28+)
+## Completed Milestones (29+)
 
-1. Database & Types | 2. Auth & Hooks | 3. SRS Engine | 4. Exercise Engine | 5. Practice Session | 6. Exercise Library | 7. Basic Stats | 8. MVP Deployment | 9. UI/UX Redesign | 10. Custom UI Components | 11. Theme System | 12. Phase 2.5 Curriculum Enhancement | 13. Learning Mode | 14. Phase 2.7 Exercise Variety | 15. Curriculum Restructure | 16. SM-2→FSRS Migration | 17. Dedicated Teaching Examples | 18-23. Dynamic Exercises (Phases 1-6) | 24. Exercise-List Auto-Gen | 25. Skill Tree Visualization | 26. Premium Curriculum Restructure | 27. Phase 3 Gamification | 28. Blueprint + Skin System | 29+. Ongoing generator/content expansion (38 generators, 22 skins, 15 blueprints)
+1. Database & Types | 2. Auth & Hooks | 3. SRS Engine | 4. Exercise Engine | 5. Practice Session | 6. Exercise Library | 7. Basic Stats | 8. MVP Deployment | 9. UI/UX Redesign | 10. Custom UI Components | 11. Theme System | 12. Phase 2.5 Curriculum Enhancement | 13. Learning Mode | 14. Phase 2.7 Exercise Variety | 15. Curriculum Restructure | 16. SM-2→FSRS Migration | 17. Dedicated Teaching Examples | 18-23. Dynamic Exercises (Phases 1-6) | 24. Exercise-List Auto-Gen | 25. Skill Tree Visualization | 26. Premium Curriculum Restructure | 27. Phase 3 Gamification | 28. Blueprint + Skin System | 29. Robust Answer Grading System (strategy-based grading, AST normalization, 5 failure modes fixed) | 30+. Ongoing generator/content expansion (38 generators, 22 skins, 15 blueprints)
 
 *Details in design docs: `docs/plans/`*
 

@@ -123,6 +123,15 @@
         "code": {
           "type": "string",
           "description": "Code snippet for predict-output exercises (read-only display)"
+        },
+        "grading_strategy": {
+          "type": "string",
+          "enum": ["exact", "token", "ast", "execution"],
+          "description": "Override grading strategy for this exercise"
+        },
+        "verification_script": {
+          "type": "string",
+          "description": "Verification script for execution-based grading"
         }
       },
       "allOf": [
@@ -139,6 +148,17 @@
             "required": ["level"]
           },
           "then": { "required": ["targets"] }
+        },
+        {
+          "if": {
+            "required": ["verification_script"]
+          },
+          "then": {
+            "properties": {
+              "grading_strategy": { "const": "execution" }
+            },
+            "required": ["grading_strategy"]
+          }
         }
       ]
     }

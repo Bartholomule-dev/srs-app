@@ -687,6 +687,10 @@ exercises:
       - 'any({{item_singular}}.startswith("a") for {{item_singular}} in {{list_name}})'
       - "any(item.startswith('a') for item in {{list_name}})"
       - 'any(item.startswith("a") for item in {{list_name}})'
+      - "any(x.startswith('a') for x in {{list_name}})"
+      - 'any(x.startswith("a") for x in {{list_name}})'
+      - "any(s.startswith('a') for s in {{list_name}})"
+      - 'any(s.startswith("a") for s in {{list_name}})'
     hints:
       - Use startswith() method
       - Generator expression with condition

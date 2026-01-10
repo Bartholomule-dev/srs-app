@@ -161,6 +161,27 @@ export function validateYamlExercise(
     }
   }
 
+  // Validate grading_strategy field
+  const validStrategies = ['exact', 'token', 'ast', 'execution'];
+  if (exercise.grading_strategy !== undefined && !validStrategies.includes(exercise.grading_strategy)) {
+    errors.push({
+      file,
+      slug,
+      field: 'grading_strategy',
+      message: `grading_strategy must be one of: ${validStrategies.join(', ')}`,
+    });
+  }
+
+  // Validate verification_script requires execution strategy
+  if (exercise.verification_script && exercise.grading_strategy && exercise.grading_strategy !== 'execution') {
+    errors.push({
+      file,
+      slug,
+      field: 'verification_script',
+      message: "verification_script requires grading_strategy 'execution'",
+    });
+  }
+
   return errors;
 }
 

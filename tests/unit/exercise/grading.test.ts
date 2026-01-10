@@ -389,8 +389,18 @@ describe('grading', () => {
 
   describe('gradeAnswerAsync', () => {
     describe('without Pyodide', () => {
-      it('uses string matching when pyodide is null', async () => {
+      it('falls back to exact when pyodide is null for write exercises', async () => {
+        // Write exercises default to ast with exact fallback
         const exercise = createExercise({ expectedAnswer: 's[1:4]' });
+        const result = await gradeAnswerAsync('s[1:4]', exercise, null);
+
+        expect(result.isCorrect).toBe(true);
+        // AST unavailable, so falls back to exact (reported as 'ast-fallback')
+        expect(result.gradingMethod).toBe('ast-fallback');
+      });
+
+      it('uses string matching when explicit exact strategy', async () => {
+        const exercise = createExercise({ expectedAnswer: 's[1:4]', gradingStrategy: 'exact' });
         const result = await gradeAnswerAsync('s[1:4]', exercise, null);
 
         expect(result.isCorrect).toBe(true);

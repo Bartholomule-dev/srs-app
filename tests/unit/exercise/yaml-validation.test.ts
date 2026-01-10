@@ -322,6 +322,80 @@ describe('generator field validation', () => {
   });
 });
 
+describe('grading_strategy field', () => {
+  const createExercise = (overrides: Partial<YamlExercise>): YamlExercise => ({
+    slug: 'test',
+    title: 'Test',
+    prompt: 'Test prompt',
+    expected_answer: 'x',
+    hints: ['hint'],
+    concept: 'foundations',
+    subconcept: 'print',
+    level: 'intro',
+    prereqs: [],
+    type: 'write',
+    pattern: 'output',
+    objective: 'Test objective',
+    ...overrides,
+  });
+
+  it('accepts valid grading_strategy values', () => {
+    const strategies = ['exact', 'token', 'ast', 'execution'] as const;
+    for (const strategy of strategies) {
+      const exercise = createExercise({ grading_strategy: strategy });
+      const errors = validateYamlExercise(exercise, 'test.yaml');
+      expect(errors.filter(e => e.field === 'grading_strategy')).toHaveLength(0);
+    }
+  });
+
+  it('rejects invalid grading_strategy values', () => {
+    const exercise = createExercise({ grading_strategy: 'invalid' as 'exact' });
+    const errors = validateYamlExercise(exercise, 'test.yaml');
+    expect(errors).toContainEqual(expect.objectContaining({
+      field: 'grading_strategy',
+      message: expect.stringContaining('must be one of'),
+    }));
+  });
+
+  it('accepts verification_script with execution strategy', () => {
+    const exercise = createExercise({
+      grading_strategy: 'execution',
+      verification_script: 'assert func(1) == 2',
+    });
+    const errors = validateYamlExercise(exercise, 'test.yaml');
+    expect(errors).toHaveLength(0);
+  });
+
+  it('rejects verification_script with non-execution strategy', () => {
+    const exercise = createExercise({
+      grading_strategy: 'token',
+      verification_script: 'assert func(1) == 2',
+    });
+    const errors = validateYamlExercise(exercise, 'test.yaml');
+    expect(errors).toContainEqual(expect.objectContaining({
+      field: 'verification_script',
+      message: expect.stringContaining("requires grading_strategy 'execution'"),
+    }));
+  });
+
+  it('accepts exercise without grading_strategy (uses default)', () => {
+    const exercise = createExercise({});
+    const errors = validateYamlExercise(exercise, 'test.yaml');
+    expect(errors.filter(e => e.field === 'grading_strategy')).toHaveLength(0);
+  });
+
+  it('accepts verification_script when grading_strategy is not set', () => {
+    // If grading_strategy is not set but verification_script is present,
+    // this is valid because the grading system can infer execution strategy
+    const exercise = createExercise({
+      verification_script: 'assert func(1) == 2',
+    });
+    const errors = validateYamlExercise(exercise, 'test.yaml');
+    // Should not error because grading_strategy is undefined, not a conflicting value
+    expect(errors.filter(e => e.field === 'verification_script')).toHaveLength(0);
+  });
+});
+
 describe('validateYamlFile', () => {
   const validFile: YamlExerciseFile = {
     language: 'python',

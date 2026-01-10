@@ -1,10 +1,10 @@
 // src/lib/exercise/grading.ts
 // Two-pass grading orchestrator for dynamic exercises.
-// Pass 1: Check correctness (string matching based on exercise type)
+// Pass 1: Check correctness via strategy router (exact/token/ast/execution)
 // Pass 2: If correct AND targetConstruct defined, check if construct was used
 
 import type { Exercise } from '@/lib/types';
-import type { GradingResult } from './types';
+import type { GradingResult, GradingMethod, GradingStrategy } from './types';
 import type { ConstructType } from '@/lib/generators/types';
 import type { PyodideInterface } from '@/lib/context/PyodideContext';
 import {
@@ -13,7 +13,11 @@ import {
   checkPredictAnswer,
 } from './matching';
 import { checkConstruct } from './construct-check';
-import { verifyPredictAnswer, verifyWriteAnswer } from './execution';
+import { gradeWithStrategy } from './strategy-router';
+import { createTelemetryEntry, logGradingTelemetry } from './telemetry';
+import { getDefaultStrategy } from './strategy-defaults';
+
+// Note: verifyPredictAnswer and verifyWriteAnswer are now called by strategy-router.ts
 
 const DEFAULT_COACHING_FEEDBACK =
   'Great job! Consider trying the suggested approach next time.';
@@ -172,86 +176,90 @@ function checkCorrectness(userAnswer: string, exercise: Exercise): CorrectnessRe
 }
 
 /**
- * Grade a user's answer with optional Pyodide execution.
+ * Grade a user's answer using the strategy router.
  *
- * For predict exercises (or write exercises with verifyByExecution),
- * attempts execution grading first, falls back to string matching.
+ * Routes to the appropriate grading strategy based on exercise config:
+ * - exact: String matching (default for fill-in)
+ * - token: Pyodide tokenization (whitespace/comment tolerance)
+ * - ast: AST normalization (semantic equivalence)
+ * - execution: Output verification (default for predict)
+ *
+ * Falls back gracefully if infrastructure (Pyodide) is unavailable.
  *
  * @param userAnswer - User's submitted answer
  * @param exercise - Exercise being graded
- * @param pyodide - Optional Pyodide instance for execution grading
- * @returns Full grading result
+ * @param pyodide - Optional Pyodide instance for token/ast/execution grading
+ * @returns Full grading result with construct check
  */
 export async function gradeAnswerAsync(
   userAnswer: string,
   exercise: Exercise,
   pyodide: PyodideInterface | null
 ): Promise<GradingResult> {
-  // Determine if we should use execution grading
-  const shouldUseExecution =
-    pyodide !== null &&
-    (exercise.exerciseType === 'predict' || exercise.verifyByExecution === true);
+  // Get strategy config (uses exercise.gradingStrategy or infers default)
+  const config = getDefaultStrategy(exercise);
+  const strategy = config.primary;
 
-  if (shouldUseExecution && pyodide) {
-    try {
-      let isCorrect = false;
+  // Run grading through strategy router
+  const strategyResult = await gradeWithStrategy(userAnswer, exercise, pyodide);
 
-      if (exercise.exerciseType === 'predict' && exercise.code) {
-        // For predict: execute the exercise code and compare output with user's answer
-        isCorrect = await verifyPredictAnswer(
-          pyodide,
-          exercise.code,
-          userAnswer
-        );
-      } else if (exercise.verifyByExecution) {
-        // For write with execution: run user's code and check output
-        isCorrect = await verifyWriteAnswer(
-          pyodide,
-          userAnswer,
-          exercise.expectedAnswer
-        );
-      }
+  // Map strategy result to GradingMethod for backward compatibility
+  const gradingMethod = mapToGradingMethod(strategy, strategyResult.fallbackUsed);
 
-      if (isCorrect) {
-        // Execution succeeded and matched
-        return buildGradingResult(
-          true,
-          userAnswer,
-          exercise,
-          'execution'
-        );
-      } else {
-        // Execution ran but didn't match - this is a real wrong answer
-        return buildGradingResult(
-          false,
-          userAnswer,
-          exercise,
-          'execution'
-        );
-      }
-    } catch {
-      // Execution failed - fall back to string matching
-      console.warn('Execution grading failed, falling back to string matching');
-      const result = gradeAnswer(userAnswer, exercise);
-      return {
-        ...result,
-        gradingMethod: 'execution-fallback',
-      };
-    }
-  }
+  // Build full result with construct check
+  const result = buildGradingResult(
+    strategyResult.isCorrect,
+    userAnswer,
+    exercise,
+    gradingMethod,
+    strategyResult.matchedAlternative
+  );
 
-  // Use standard string matching
-  return gradeAnswer(userAnswer, exercise);
+  // Log telemetry
+  const telemetry = createTelemetryEntry({
+    exerciseSlug: exercise.slug,
+    strategy,
+    wasCorrect: result.isCorrect,
+    fallbackUsed: strategyResult.fallbackUsed,
+    fallbackReason: strategyResult.fallbackReason,
+    matchedAlternative: result.matchedAlternative,
+    userAnswer,
+  });
+  logGradingTelemetry(telemetry);
+
+  return result;
 }
 
 /**
- * Helper to build grading result from execution result.
+ * Map grading strategy to GradingMethod type.
+ */
+function mapToGradingMethod(strategy: GradingStrategy, fallbackUsed: boolean): GradingMethod {
+  if (fallbackUsed) {
+    switch (strategy) {
+      case 'token': return 'token-fallback';
+      case 'ast': return 'ast-fallback';
+      case 'execution': return 'execution-fallback';
+      default: return 'string';
+    }
+  }
+  switch (strategy) {
+    case 'exact': return 'string';
+    case 'token': return 'token';
+    case 'ast': return 'ast';
+    case 'execution': return 'execution';
+    default: return 'string';
+  }
+}
+
+/**
+ * Helper to build grading result with construct check.
  */
 function buildGradingResult(
   isCorrect: boolean,
   userAnswer: string,
   exercise: Exercise,
-  gradingMethod: GradingResult['gradingMethod']
+  gradingMethod: GradingResult['gradingMethod'],
+  matchedAlternative: string | null = null
 ): GradingResult {
   const normalizedUser = userAnswer.trim();
   const normalizedExpected = exercise.expectedAnswer.trim();
@@ -280,6 +288,6 @@ function buildGradingResult(
     gradingMethod,
     normalizedUserAnswer: normalizedUser,
     normalizedExpectedAnswer: normalizedExpected,
-    matchedAlternative: null,
+    matchedAlternative,
   };
 }

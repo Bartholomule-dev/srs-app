@@ -10,6 +10,29 @@ import type { ConstructCheckResult } from './types';
  * These patterns are designed to match idiomatic usage while avoiding
  * false positives from similar-looking syntax.
  */
+/**
+ * Strip string literals and comments from code to prevent false positive matches.
+ * Replaces regular strings with empty quotes and removes comments entirely.
+ * Preserves f-string prefixes and placeholders for f-string detection.
+ */
+function stripStringsAndComments(code: string): string {
+  // First, preserve f-strings by replacing their content but keeping f"...{...}..."  structure
+  // This allows f-string detection to still work
+  let cleaned = code.replace(
+    /f(["'])(?:[^"'\\]|\\.)*?\{[^}]*\}(?:[^"'\\]|\\.)*?\1/g,
+    'f$1{x}$1'
+  );
+  // Replace regular string literals with empty strings (preserves structure)
+  // But don't replace strings that start with f (already handled above)
+  cleaned = cleaned.replace(
+    /(?<!f)(["'])(?:[^"'\\]|\\.)*?\1/g,
+    '""'
+  );
+  // Remove # comments (to end of line)
+  cleaned = cleaned.replace(/#.*/g, '');
+  return cleaned;
+}
+
 export const CONSTRUCT_PATTERNS: Record<ConstructType, RegExp> = {
   // Slice: matches [start:end] or [start:end:step] patterns
   // Must have at least one colon to distinguish from simple indexing
@@ -62,7 +85,9 @@ export function checkConstruct(
     };
   }
 
-  const detected = pattern.test(code);
+  // Strip strings and comments before matching to avoid false positives
+  const cleanCode = stripStringsAndComments(code);
+  const detected = pattern.test(cleanCode);
 
   return {
     detected,

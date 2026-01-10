@@ -39,7 +39,17 @@ export interface QualityInputs {
 }
 
 /** Grading method used for correctness check. */
-export type GradingMethod = 'string' | 'execution' | 'execution-fallback';
+export type GradingMethod =
+  | 'string'
+  | 'token'
+  | 'token-fallback'
+  | 'ast'
+  | 'ast-fallback'
+  | 'execution'
+  | 'execution-fallback';
+
+/** Grading strategy for telemetry tracking. */
+export type GradingStrategy = 'exact' | 'token' | 'ast' | 'execution';
 
 /**
  * Result of the full two-pass grading process.

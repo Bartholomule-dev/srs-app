@@ -74,6 +74,19 @@ function validateExercises() {
           hasErrors = true;
         }
       }
+
+      // Validate grading_strategy field
+      const validStrategies = ['exact', 'token', 'ast', 'execution'];
+      if (exercise.grading_strategy !== undefined && !validStrategies.includes(exercise.grading_strategy)) {
+        console.error(`\n❌ ${exercise.slug}: grading_strategy must be one of: ${validStrategies.join(', ')}`);
+        hasErrors = true;
+      }
+
+      // Validate verification_script requires execution strategy
+      if (exercise.verification_script && exercise.grading_strategy && exercise.grading_strategy !== 'execution') {
+        console.error(`\n❌ ${exercise.slug}: verification_script requires grading_strategy 'execution'`);
+        hasErrors = true;
+      }
     }
   }
 

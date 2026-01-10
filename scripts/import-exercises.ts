@@ -186,6 +186,9 @@ async function importToDatabase(
         generator: exercise.generator ?? null,
         target_construct: exercise.target_construct ?? null,
         verify_by_execution: exercise.verify_by_execution ?? false,
+        // Grading strategy fields (Phase 3C)
+        grading_strategy: exercise.grading_strategy ?? null,
+        verification_script: exercise.verification_script ?? null,
       };
 
       // Upsert on (language, slug) - check if exists first

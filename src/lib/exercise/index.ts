@@ -1,5 +1,5 @@
 // src/lib/exercise/index.ts
-export type { AnswerResult, QualityInputs, GradingMethod, GradingResult, ConstructCheckResult } from './types';
+export type { AnswerResult, QualityInputs, GradingMethod, GradingStrategy, GradingResult, ConstructCheckResult } from './types';
 export { normalizePython, checkAnswer, checkAnswerWithAlternatives, checkFillInAnswer, checkPredictAnswer } from './matching';
 export { inferQuality, FAST_THRESHOLD_MS, SLOW_THRESHOLD_MS, MIN_REPS_FOR_EASY } from './quality';
 export { gradeAnswer, shouldShowCoaching, gradeAnswerAsync } from './grading';
@@ -26,3 +26,19 @@ export {
   type AttemptRecord,
   type TransferAssessmentData,
 } from './log-attempt';
+
+// Telemetry
+export * from './telemetry';
+
+// Verification scripts
+export * from './verification';
+
+// Token comparison
+export * from './token-compare';
+
+// Strategy routing
+export * from './strategy-defaults';
+export * from './strategy-router';
+
+// AST comparison
+export * from './ast-compare';

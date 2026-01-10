@@ -99,8 +99,8 @@ describe('Pyodide grading integration', () => {
     });
   });
 
-  describe('non-execution exercises', () => {
-    it('uses string matching when Pyodide available but not needed', async () => {
+  describe('write exercises (ast default)', () => {
+    it('uses AST matching when Pyodide available', async () => {
       const mockPyodide = createMockPyodide({ output: 'unused' });
       const exercise = {
         ...baseExercise,
@@ -108,7 +108,6 @@ describe('Pyodide grading integration', () => {
         prompt: 'Print hello',
         expectedAnswer: 'print("hello")',
         acceptedSolutions: [],
-        // verifyByExecution NOT set
       } as Exercise;
 
       const result = await gradeAnswerAsync(
@@ -118,10 +117,29 @@ describe('Pyodide grading integration', () => {
       );
 
       expect(result.isCorrect).toBe(true);
-      expect(result.gradingMethod).toBe('string');
+      // Write exercises now default to AST grading
+      expect(result.gradingMethod).toBe('ast');
     });
 
-    it('uses string matching when pyodide is null', async () => {
+    it('falls back to exact when pyodide is null', async () => {
+      const exercise = {
+        ...baseExercise,
+        exerciseType: 'write',
+        prompt: 'Print hello',
+        expectedAnswer: 'print("hello")',
+        acceptedSolutions: [],
+      } as Exercise;
+
+      const result = await gradeAnswerAsync('print("hello")', exercise, null);
+
+      expect(result.isCorrect).toBe(true);
+      // AST unavailable, falls back to exact
+      expect(result.gradingMethod).toBe('ast-fallback');
+    });
+  });
+
+  describe('predict exercises fallback', () => {
+    it('falls back to exact when pyodide is null', async () => {
       const exercise = {
         ...baseExercise,
         exerciseType: 'predict',
@@ -133,7 +151,8 @@ describe('Pyodide grading integration', () => {
       const result = await gradeAnswerAsync('hello', exercise, null);
 
       expect(result.isCorrect).toBe(true);
-      expect(result.gradingMethod).toBe('string');
+      // Execution unavailable, falls back to exact
+      expect(result.gradingMethod).toBe('execution-fallback');
     });
   });
 });

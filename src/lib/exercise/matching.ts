@@ -12,13 +12,23 @@ import type { AnswerResult } from './types';
  * - Normalizes colon spacing (removes space before, ensures space after)
  * - Trims leading/trailing whitespace from entire string
  *
- * Note: These regex-based normalizations will also affect content inside strings.
- * For exercises where this matters, use accepted_solutions to provide alternatives.
+ * String literals are preserved - normalizations only apply to code outside strings.
  */
 export function normalizePython(code: string): string {
   if (!code) return '';
 
-  return code
+  // Step 1: Mask string literals to protect them from normalization
+  const strings: string[] = [];
+  let masked = code.replace(
+    /("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')/g,
+    (match) => {
+      strings.push(match);
+      return `__STR_${strings.length - 1}__`;
+    }
+  );
+
+  // Step 2: Apply normalizations to non-string code
+  masked = masked
     .replace(/\r\n/g, '\n')           // CRLF → LF
     .replace(/\t/g, '    ')           // Tabs → 4 spaces
     .replace(/ +$/gm, '')             // Remove trailing spaces per line
@@ -27,6 +37,9 @@ export function normalizePython(code: string): string {
     .replace(/ +:/g, ':')             // Pre-colon: remove spaces before colon
     .replace(/:(?![\n$]) */g, ': ')   // Post-colon: ensure single space after (but not at EOL)
     .trim();                          // Trim leading/trailing whitespace
+
+  // Step 3: Restore string literals
+  return masked.replace(/__STR_(\d+)__/g, (_, i) => strings[parseInt(i)]);
 }
 
 /**

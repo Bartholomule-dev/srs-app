@@ -414,6 +414,61 @@ squares = [x**2 for x in numbers]
     });
   });
 
+  describe('string/comment stripping', () => {
+    describe('should NOT detect constructs inside strings', () => {
+      it('ignores comprehension in double-quoted string', () => {
+        const result = checkConstruct('"[x for x in items]"', 'comprehension');
+        expect(result.detected).toBe(false);
+      });
+
+      it('ignores comprehension in single-quoted string', () => {
+        const result = checkConstruct("'[x for x in items]'", 'comprehension');
+        expect(result.detected).toBe(false);
+      });
+
+      it('ignores slice in string', () => {
+        const result = checkConstruct('"items[1:4]"', 'slice');
+        expect(result.detected).toBe(false);
+      });
+
+      it('ignores f-string pattern in regular string', () => {
+        const result = checkConstruct('"f\\"{name}\\"', 'f-string');
+        expect(result.detected).toBe(false);
+      });
+    });
+
+    describe('should NOT detect constructs inside comments', () => {
+      it('ignores comprehension in comment', () => {
+        const result = checkConstruct('# [x for x in items]', 'comprehension');
+        expect(result.detected).toBe(false);
+      });
+
+      it('ignores slice in comment', () => {
+        const result = checkConstruct('# items[1:4] is a slice', 'slice');
+        expect(result.detected).toBe(false);
+      });
+
+      it('ignores construct after code', () => {
+        const result = checkConstruct('x = 1  # [x for x in items]', 'comprehension');
+        expect(result.detected).toBe(false);
+      });
+    });
+
+    describe('should still detect constructs in actual code', () => {
+      it('detects comprehension in code with strings nearby', () => {
+        const result = checkConstruct('result = [x for x in items]; print("done")', 'comprehension');
+        expect(result.detected).toBe(true);
+      });
+
+      it('detects slice in code with comments nearby', () => {
+        const code = `# Get a slice
+result = items[1:4]`;
+        const result = checkConstruct(code, 'slice');
+        expect(result.detected).toBe(true);
+      });
+    });
+  });
+
   describe('checkAnyConstruct', () => {
     it('should return true if any construct is detected', () => {
       const code = 'result = [x for x in items]';

@@ -55,6 +55,12 @@ export interface YamlExercise {
   // Execution verification flag (optional, for write exercises)
   verify_by_execution?: boolean;
 
+  // Grading strategy override (optional)
+  grading_strategy?: 'exact' | 'token' | 'ast' | 'execution';
+
+  // Verification script for execution strategy (optional)
+  verification_script?: string;
+
   // Variant overrides for dynamic exercises with multiple prompt/answer structures
   variants?: VariantMap;
 }

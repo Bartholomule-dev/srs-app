@@ -51,6 +51,7 @@ export interface RenderableExercise {
   template?: string | null;
   hints?: string[];
   variants?: VariantMap;
+  verificationScript?: string | null;
 }
 
 /**
@@ -83,6 +84,9 @@ function renderWithParams<T extends RenderableExercise>(
   }
   if (exercise.template) {
     rendered.template = Mustache.render(exercise.template, params);
+  }
+  if (exercise.verificationScript) {
+    rendered.verificationScript = Mustache.render(exercise.verificationScript, params);
   }
 
   return rendered;
@@ -155,6 +159,7 @@ export function renderExercise<T extends RenderableExercise>(
   const hintsToRender = variantOverrides?.hints ?? exercise.hints;
   const codeToRender = variantOverrides?.code ?? exercise.code;
   const templateToRender = variantOverrides?.template ?? exercise.template;
+  const verificationScriptToRender = exercise.verificationScript;
 
   // Render all template fields
   const rendered: RenderedExercise<T> = {
@@ -177,6 +182,9 @@ export function renderExercise<T extends RenderableExercise>(
   }
   if (templateToRender) {
     rendered.template = Mustache.render(templateToRender, params);
+  }
+  if (verificationScriptToRender) {
+    rendered.verificationScript = Mustache.render(verificationScriptToRender, params);
   }
 
   return rendered;

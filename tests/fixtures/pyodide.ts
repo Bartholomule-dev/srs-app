@@ -9,6 +9,8 @@ export interface MockPyodideOptions {
   output?: string;
   /** Error to throw from runPython/runPythonAsync */
   error?: Error;
+  /** Dynamic runPython implementation for multi-call tests */
+  runPythonFn?: (code: string) => string | null;
 }
 
 /**
@@ -26,16 +28,17 @@ export interface MockPyodideOptions {
  * const pyodide = createMockPyodide({ error: new Error('Runtime error') });
  */
 export function createMockPyodide(options: MockPyodideOptions = {}): PyodideInterface {
-  const { output = '', error } = options;
+  const { output = '', error, runPythonFn } = options;
 
-  const execute = () => {
+  const execute = (code?: string) => {
     if (error) throw error;
+    if (runPythonFn) return runPythonFn(code ?? '');
     return output;
   };
 
   return {
     runPython: vi.fn(execute),
-    runPythonAsync: vi.fn(async () => execute()),
+    runPythonAsync: vi.fn(async (code?: string) => execute(code)),
     loadPackage: vi.fn(async () => {}),
     globals: new Map(),
   };

@@ -89,6 +89,12 @@ export interface Exercise {
 
   /** Verify answer by execution (for write exercises) */
   verifyByExecution?: boolean;
+
+  /** Explicit grading strategy override */
+  gradingStrategy?: 'exact' | 'token' | 'ast' | 'execution';
+
+  /** Verification script for execution-based grading */
+  verificationScript?: string;
 }
 
 /**

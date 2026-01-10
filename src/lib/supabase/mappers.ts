@@ -47,6 +47,9 @@ export function mapExercise(db: DbExercise): Exercise {
     generator?: string | null;
     target_construct?: { type: string; feedback?: string } | null;
     verify_by_execution?: boolean | null;
+    // Grading strategy fields (Phase 3C)
+    grading_strategy?: 'exact' | 'token' | 'ast' | 'execution' | null;
+    verification_script?: string | null;
   };
 
   return {
@@ -87,6 +90,9 @@ export function mapExercise(db: DbExercise): Exercise {
       feedback: dbExt.target_construct.feedback,
     } : undefined,
     verifyByExecution: dbExt.verify_by_execution ?? false,
+    // Grading strategy fields (Phase 3C)
+    gradingStrategy: dbExt.grading_strategy ?? undefined,
+    verificationScript: dbExt.verification_script ?? undefined,
   };
 }
 

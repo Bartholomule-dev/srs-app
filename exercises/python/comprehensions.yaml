@@ -16,6 +16,8 @@ exercises:
       - "[num**2 for num in range(1, 6)]"
       - "[x*x for x in range(1, 6)]"
       - "[n*n for n in range(1, 6)]"
+      - "[i*i for i in range(1, 6)]"
+      - "[num*num for num in range(1, 6)]"
     hints:
       - "Use [expression for item in iterable] syntax"
       - range(1, 6) gives numbers 1 through 5
@@ -68,6 +70,9 @@ exercises:
       - "{i: i**2 for i in range(1, 4)}"
       - "{n: n**2 for n in range(1, 4)}"
       - "{x: x**2 for x in range(1, 4)}"
+      - "{i: i*i for i in range(1, 4)}"
+      - "{n: n*n for n in range(1, 4)}"
+      - "{x: x*x for x in range(1, 4)}"
     hints:
       - "Dict comprehension uses {key: value for ...}"
       - "range(1, 4) gives 1, 2, 3"
@@ -136,6 +141,7 @@ exercises:
       - "{n**2 for n in range(1, 5)}"
       - "{x*x for x in range(1, 5)}"
       - "{n*n for n in range(1, 5)}"
+      - "{i*i for i in range(1, 5)}"
     hints:
       - "Set comprehension uses {expr for ...} (no colon)"
       - "Duplicates are automatically removed"
@@ -180,6 +186,8 @@ exercises:
       - "{x[0] for x in {{list_name}}}"
       - "{item[0] for item in {{list_name}}}"
       - "{s[0] for s in {{list_name}}}"
+      - "{i[0] for i in {{list_name}}}"
+      - "{n[0] for n in {{list_name}}}"
     hints:
       - Use curly braces like dict but without colon
       - "{{item_singular}}[0] gets the first character of each {{item_singular}}"
@@ -201,6 +209,10 @@ exercises:
       - "[{{item_singular}} for row in {{list_name}}_grid for {{item_singular}} in row]"
       - "[x for row in {{list_name}}_grid for x in row]"
       - "[item for row in {{list_name}}_grid for item in row]"
+      - "[i for row in {{list_name}}_grid for i in row]"
+      - "[n for row in {{list_name}}_grid for n in row]"
+      - "[x for r in {{list_name}}_grid for x in r]"
+      - "[i for r in {{list_name}}_grid for i in r]"
     hints:
       - Use multiple for clauses
       - Outer loop comes first
@@ -231,6 +243,7 @@ exercises:
       - "(i**2 for i in range(1, 6))"
       - "(x*x for x in range(1, 6))"
       - "(n*n for n in range(1, 6))"
+      - "(i*i for i in range(1, 6))"
     hints:
       - Use parentheses instead of brackets
       - Creates iterator, not list - more memory efficient
@@ -254,6 +267,7 @@ exercises:
       - "max(i**2 for i in range(1, 6))"
       - "max(x*x for x in range(1, 6))"
       - "max(n*n for n in range(1, 6))"
+      - "max(i*i for i in range(1, 6))"
     hints:
       - No extra parentheses needed when generator is only argument
       - max() accepts any iterable including generators
@@ -277,6 +291,7 @@ exercises:
       - "sum(i**2 for i in range(1, 101))"
       - "sum(x*x for x in range(1, 101))"
       - "sum(n*n for n in range(1, 101))"
+      - "sum(i*i for i in range(1, 101))"
     hints:
       - No extra parentheses needed inside sum()
       - More memory efficient than sum([...]) with list

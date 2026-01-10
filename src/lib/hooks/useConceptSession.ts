@@ -12,6 +12,7 @@ import { renderExercise, renderExercises } from '@/lib/generators/render';
 import { handleSupabaseError, AppError } from '@/lib/errors';
 import { updateProfileStats } from '@/lib/stats';
 import { logExerciseAttempt } from '@/lib/exercise';
+import { getDefaultStrategy } from '@/lib/exercise/strategy-defaults';
 import { selectExerciseByType, QUALITY_PASSING_THRESHOLD } from '@/lib/srs';
 import type { Exercise, Quality } from '@/lib/types';
 import { EXPERIENCE_LEVEL_RATIOS } from '@/lib/types/app.types';
@@ -571,12 +572,14 @@ export function useConceptSession(): UseConceptSessionReturn {
     };
   }, [dueSubconcepts, exercises, rawExercisesMap, srsLoading, getNextExercise, user, sessionInitialized, showToast, profile]);
 
-  // Preload Pyodide if session contains predict exercises or execution-verified exercises
+  // Preload Pyodide if session contains exercises that need it for grading
+  // Uses getDefaultStrategy() to respect both explicit and default strategy routing
   useEffect(() => {
+    const PYODIDE_STRATEGIES = new Set(['token', 'ast', 'execution']);
     const needsPyodide = cards.some((card) => {
       if (card.type === 'teaching') return false;
-      const exercise = card.exercise;
-      return exercise.exerciseType === 'predict' || exercise.verifyByExecution === true;
+      const strategy = getDefaultStrategy(card.exercise);
+      return PYODIDE_STRATEGIES.has(strategy.primary);
     });
 
     if (needsPyodide && sessionInitialized) {
