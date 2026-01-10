@@ -21,3 +21,9 @@ export {
   getAllSubconcepts,
   getCurriculumConcepts,
 } from './loader';
+
+export {
+  getUnlockedConcepts,
+  getNextSubconcepts,
+  getSkippedConceptsByExperience,
+} from './progression';

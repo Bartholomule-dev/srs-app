@@ -24,10 +24,17 @@ import type {
 import type { SubconceptProgress, ExercisePattern, ExerciseType } from '@/lib/curriculum/types';
 import {
   buildTeachingPair,
-  interleaveWithTeaching,
+  interleaveAtBoundaries,
+  calculateNewCardLimit,
   type TeachingPair,
 } from '@/lib/session';
-import { getSubconceptDefinition, getAllSubconcepts } from '@/lib/curriculum';
+import {
+  getSubconceptDefinition,
+  getCurriculumConcepts,
+  getNextSubconcepts,
+  getSkippedConceptsByExperience,
+} from '@/lib/curriculum';
+import { logSessionStart, buildSessionStartMetrics } from '@/lib/analytics/session-metrics';
 import { createEmptyFSRSCard } from '@/lib/srs/fsrs/adapter';
 import { getPathIndex } from '@/lib/paths/client-loader';
 import { groupByBlueprint, sortByBeat } from '@/lib/paths/grouping';
@@ -35,9 +42,6 @@ import { selectSkinForExercises } from '@/lib/paths/selector';
 import { applySkinContextBatch } from '@/lib/paths/apply-skin';
 import { updateRecentSkins } from '@/lib/paths/update-recent-skins';
 import type { SkinnedCard, PathIndex } from '@/lib/paths/types';
-
-/** Limit on teaching pairs (new subconcepts with teaching content) per session */
-const TEACHING_PAIRS_LIMIT = 5;
 
 /** Card type strings for progress bar display */
 export type CardTypeLabel = 'teaching' | 'practice' | 'review';
@@ -308,7 +312,11 @@ export function useConceptSession(): UseConceptSessionReturn {
         console.warn('Failed to load path index for blueprint grouping:', pathError);
       }
 
-      // === Step 2: Identify NEW subconcepts (no progress row) ===
+      // === Step 2: Calculate dynamic new card limit based on review backlog ===
+      const reviewBacklog = dueSubconcepts.length;
+      const newCardLimit = calculateNewCardLimit(reviewBacklog);
+
+      // === Step 3: Identify NEW subconcepts using soft concept gating ===
       // Query ALL subconcept progress (not just due) to find truly new subconcepts
       const { data: allProgressData, error: progressError } = await supabase
         .from('subconcept_progress')
@@ -344,21 +352,43 @@ export function useConceptSession(): UseConceptSessionReturn {
         return;
       }
 
-      // Get all subconcepts user already has progress for (due or not)
-      const progressSlugs = new Set(
+      // Build completed subconcepts set from progress data
+      const completedSubconcepts = new Set(
         (allProgressData ?? []).map((p) => p.subconcept_slug)
       );
 
-      // Get all subconcepts in curriculum
-      const allSubconcepts = getAllSubconcepts();
-      const newSubconcepts = allSubconcepts.filter((slug) => !progressSlugs.has(slug));
+      // Build in-progress subconcepts set from due cards
+      const inProgressSubconcepts = new Set(
+        dueSubconcepts.map((p) => p.subconceptSlug)
+      );
 
-      // === Step 3: Build teaching pairs for new subconcepts (limit 2) ===
+      // Apply experience-based skipping (adds skipped concepts to "completed")
+      const skippedConcepts = getSkippedConceptsByExperience(experienceLevel);
+      const curriculum = getCurriculumConcepts();
+
+      // Get subconcepts from skipped concepts and add to completed set
+      for (const concept of curriculum) {
+        if (skippedConcepts.has(concept.slug)) {
+          for (const subconcept of concept.subconcepts) {
+            completedSubconcepts.add(subconcept);
+          }
+        }
+      }
+
+      // Get next subconcepts to learn using soft concept gating
+      const newSubconcepts = getNextSubconcepts(
+        completedSubconcepts,
+        inProgressSubconcepts,
+        curriculum,
+        newCardLimit
+      );
+
+      // === Step 4: Build teaching pairs for new subconcepts ===
       const teachingPairs: TeachingPair[] = [];
       // Track progress for practice cards (teaching cards don't need SRS)
       const practiceProgressMap: Map<string, SubconceptProgress> = new Map();
 
-      for (const slug of newSubconcepts.slice(0, TEACHING_PAIRS_LIMIT)) {
+      for (const slug of newSubconcepts) {
         const definition = getSubconceptDefinition(slug);
         if (definition) {
           const pair = buildTeachingPair(slug, definition, exercises);
@@ -389,10 +419,10 @@ export function useConceptSession(): UseConceptSessionReturn {
         }
       }
 
-      // === Step 4: Interleave teaching pairs with review cards ===
-      const sessionCards = interleaveWithTeaching(reviewCards, teachingPairs);
+      // === Step 5: Interleave teaching pairs at concept boundaries ===
+      const sessionCards = interleaveAtBoundaries(reviewCards, teachingPairs);
 
-      // === Step 5: Build progress map for all cards ===
+      // === Step 6: Build progress map for all cards ===
       // Maps card index -> SubconceptProgress (only for practice/review cards)
       const progressMap = new Map<number, SubconceptProgress>();
       let reviewIndex = 0;
@@ -422,7 +452,7 @@ export function useConceptSession(): UseConceptSessionReturn {
       // Calculate exercise count (practice + review, NOT teaching)
       const exerciseCount = sessionCards.filter(c => c.type !== 'teaching').length;
 
-      // === Step 6: Build skinned cards map for blueprint/skin context ===
+      // === Step 7: Build skinned cards map for blueprint/skin context ===
       // This provides context text and blueprint position for each card
       const skinnedMap = new Map<number, SkinnedCard>();
       if (pathIndex) {
@@ -524,6 +554,14 @@ export function useConceptSession(): UseConceptSessionReturn {
       });
       setSessionInitialized(true);
       setLoading(false);
+
+      // === Step 8: Log session start metrics for analytics ===
+      const sessionMetrics = buildSessionStartMetrics({
+        reviewBacklog,
+        newCardLimit,
+        totalCards: sessionCards.length,
+      });
+      logSessionStart(sessionMetrics);
     }
 
     buildSession();
