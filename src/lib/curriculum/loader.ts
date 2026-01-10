@@ -1,4 +1,4 @@
-import type { SubconceptTeaching, SubconceptDefinition } from './types';
+import type { SubconceptTeaching, SubconceptDefinition, Concept } from './types';
 import curriculumData from './python.json';
 
 // Type for the extended curriculum with subconcepts
@@ -46,4 +46,12 @@ export function getAllSubconcepts(): string[] {
 
   // Combine and dedupe
   return [...new Set([...fromConcepts, ...fromDefinitions])];
+}
+
+/**
+ * Get all concepts from the curriculum as typed array.
+ * Used by progression functions that need the full concept graph.
+ */
+export function getCurriculumConcepts(): Concept[] {
+  return curriculum.concepts as Concept[];
 }

@@ -19,4 +19,5 @@ export {
   getSubconceptTeaching,
   getSubconceptDefinition,
   getAllSubconcepts,
+  getCurriculumConcepts,
 } from './loader';
