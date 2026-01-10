@@ -152,3 +152,31 @@ describe('getNextSubconcepts', () => {
     expect(next).toEqual([]);
   });
 });
+
+describe('getSkippedConceptsByExperience', () => {
+  it('returns empty set for beginner (start from scratch)', () => {
+    const skipped = getSkippedConceptsByExperience('beginner');
+    expect(skipped.size).toBe(0);
+  });
+
+  it('returns foundations + strings + numbers-booleans for learning level', () => {
+    const skipped = getSkippedConceptsByExperience('learning');
+    expect(skipped.has('foundations')).toBe(true);
+    expect(skipped.has('strings')).toBe(true);
+    expect(skipped.has('numbers-booleans')).toBe(true);
+    expect(skipped.has('conditionals')).toBe(false);
+  });
+
+  it('returns early concepts for refresher (experienced developers)', () => {
+    const skipped = getSkippedConceptsByExperience('refresher');
+    expect(skipped.has('foundations')).toBe(true);
+    expect(skipped.has('strings')).toBe(true);
+    expect(skipped.has('numbers-booleans')).toBe(true);
+    expect(skipped.has('conditionals')).toBe(true);
+    expect(skipped.has('collections')).toBe(true);
+    expect(skipped.has('loops')).toBe(true);
+    // Should NOT skip advanced concepts
+    expect(skipped.has('functions')).toBe(false);
+    expect(skipped.has('oop')).toBe(false);
+  });
+});

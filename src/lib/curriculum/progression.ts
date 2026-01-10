@@ -1,5 +1,6 @@
 // src/lib/curriculum/progression.ts
 import type { Concept, ConceptSlug } from './types';
+import type { ExperienceLevel } from '@/lib/types/app.types';
 
 /**
  * Get unlocked concepts based on completed subconcepts.
@@ -110,4 +111,42 @@ export function getNextSubconcepts(
   }
 
   return result;
+}
+
+/**
+ * Map experience level to concepts that should be treated as "auto-completed".
+ *
+ * This allows experienced users to skip basic concepts and start further
+ * into the curriculum based on their self-reported experience level.
+ *
+ * beginner  -> empty set (start at foundations)
+ * learning  -> foundations, strings, numbers-booleans
+ * refresher -> foundations through loops (skip basics, focus on advanced)
+ */
+export function getSkippedConceptsByExperience(
+  level: ExperienceLevel
+): Set<ConceptSlug> {
+  switch (level) {
+    case 'beginner':
+      return new Set();
+
+    case 'learning':
+      return new Set(['foundations', 'strings', 'numbers-booleans']);
+
+    case 'refresher':
+      return new Set([
+        'foundations',
+        'strings',
+        'numbers-booleans',
+        'conditionals',
+        'collections',
+        'loops',
+      ]);
+
+    default: {
+      // TypeScript exhaustiveness check
+      const _exhaustive: never = level;
+      return _exhaustive;
+    }
+  }
 }
