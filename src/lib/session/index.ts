@@ -13,6 +13,11 @@ export {
   getCardKey,
   getCardExercise,
 } from './types';
-export { interleaveWithTeaching } from './interleave-teaching';
+export {
+  interleaveWithTeaching,
+  interleaveAtBoundaries,
+  findConceptBoundaries,
+} from './interleave-teaching';
+export { calculateNewCardLimit } from './new-card-ordering';
 export { buildTeachingPair, findExampleExercise } from './teaching-cards';
 export type { TeachingPair } from './teaching-cards';
