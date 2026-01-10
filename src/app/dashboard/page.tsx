@@ -1,20 +1,17 @@
 // src/app/dashboard/page.tsx
 'use client';
 
-import { useEffect, useState } from 'react';
 import {
   ProtectedRoute,
   ErrorBoundary,
   Header,
   DueNowBand,
   StatsGrid,
-  RecentAchievements,
-  SkillTree,
-  ContributionGraph,
 } from '@/components';
-import { useAuth, useStats, useContributionGraph } from '@/lib/hooks';
-import { supabase } from '@/lib/supabase/client';
-import type { Database } from '@/lib/types';
+import { SkillTreeLazy } from '@/components/skill-tree';
+import { ContributionGraphLazy } from '@/components/stats';
+import { RecentAchievementsLazy } from '@/components/dashboard';
+import { useAuth, useStats, useContributionGraph, useDueCount } from '@/lib/hooks';
 
 function LoadingSkeleton() {
   return (
@@ -52,44 +49,9 @@ function DashboardContent() {
   const { user } = useAuth();
   const { stats, loading: statsLoading } = useStats();
   const { days: contributionDays, loading: contributionLoading } = useContributionGraph();
-  const [dueCount, setDueCount] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { dueCount, isLoading: dueLoading, error } = useDueCount(user?.id);
 
-  useEffect(() => {
-    if (!user) return;
-
-    async function fetchDueCount() {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const { data, error: queryError } = await supabase
-          .from('subconcept_progress')
-          .select('*')
-          .eq('user_id', user!.id);
-
-        if (queryError) throw queryError;
-
-        type SubconceptProgressRow = Database['public']['Tables']['subconcept_progress']['Row'];
-        const now = new Date();
-        const due = (data ?? []).filter((p: SubconceptProgressRow) => {
-          if (!p.next_review) return false;
-          return new Date(p.next_review) <= now;
-        }).length;
-
-        setDueCount(due);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load dashboard');
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchDueCount();
-  }, [user]);
-
-  if (loading) {
+  if (dueLoading) {
     return <LoadingSkeleton />;
   }
 
@@ -99,7 +61,7 @@ function DashboardContent() {
         <Header />
         <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-[var(--bg-base)]">
           <div className="text-center py-12 rounded-lg border border-red-500/20 bg-red-500/5">
-            <p className="text-red-400 mb-4">{error}</p>
+            <p className="text-red-400 mb-4">{error.message}</p>
             <button
               onClick={() => window.location.reload()}
               className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors duration-150"
@@ -131,14 +93,14 @@ function DashboardContent() {
           </section>
 
           {/* Recent Achievements Section */}
-          <RecentAchievements />
+          <RecentAchievementsLazy />
 
           {/* Contribution History Section */}
           <section>
             <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
               Activity History
             </h2>
-            <ContributionGraph
+            <ContributionGraphLazy
               days={contributionDays}
               loading={contributionLoading}
               collapsedMobile={true}
@@ -150,7 +112,7 @@ function DashboardContent() {
             <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
               Learning Path
             </h2>
-            <SkillTree />
+            <SkillTreeLazy />
           </section>
         </div>
       </main>

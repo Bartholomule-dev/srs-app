@@ -29,7 +29,7 @@ export type { BadgeProps, BadgeVariant } from './Badge';
 export { Alert } from './Alert';
 export type { AlertProps, AlertVariant } from './Alert';
 
-export { Skeleton } from './Skeleton';
+export { Skeleton, SkillTreeSkeleton, ContributionGraphSkeleton, AchievementsSkeleton } from './Skeleton';
 export type { SkeletonProps } from './Skeleton';
 
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './Tooltip';

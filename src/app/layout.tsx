@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from '@vercel/analytics/next';
 import "@fontsource-variable/space-grotesk";
 import "@fontsource-variable/dm-sans";
 import "@fontsource-variable/jetbrains-mono";
@@ -21,6 +23,8 @@ export default function RootLayout({
         <Providers>
           {children}
         </Providers>
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );

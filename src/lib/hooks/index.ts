@@ -19,3 +19,5 @@ export { useAchievements } from './useAchievements';
 export type { UseAchievementsReturn, AchievementWithStatus } from './useAchievements';
 export { usePathContext } from './usePathContext';
 export type { UsePathContextReturn } from './usePathContext';
+export { useDueCount } from './useDueCount';
+export type { UseDueCountReturn } from './useDueCount';

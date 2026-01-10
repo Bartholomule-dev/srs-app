@@ -20,23 +20,35 @@ vi.mock('@/components', () => ({
       {loading ? 'Loading stats...' : stats ? 'Stats loaded' : 'No stats'}
     </div>
   ),
-  SkillTree: () => <div data-testid="skill-tree">Skill Tree</div>,
-  ContributionGraph: ({ loading }: { days: unknown[]; loading: boolean }) => (
+}));
+
+// Mock lazy-loaded components
+vi.mock('@/components/skill-tree', () => ({
+  SkillTreeLazy: () => <div data-testid="skill-tree">Skill Tree</div>,
+}));
+
+vi.mock('@/components/stats', () => ({
+  ContributionGraphLazy: ({ loading }: { days: unknown[]; loading: boolean }) => (
     <div data-testid="contribution-graph">
       {loading ? 'Loading contributions...' : 'Contribution Graph'}
     </div>
   ),
-  RecentAchievements: () => <div data-testid="recent-achievements">Recent Achievements</div>,
+}));
+
+vi.mock('@/components/dashboard', () => ({
+  RecentAchievementsLazy: () => <div data-testid="recent-achievements">Recent Achievements</div>,
 }));
 
 const mockUseAuth = vi.fn();
 const mockUseStats = vi.fn();
 const mockUseContributionGraph = vi.fn();
+const mockUseDueCount = vi.fn();
 
 vi.mock('@/lib/hooks', () => ({
   useAuth: () => mockUseAuth(),
   useStats: () => mockUseStats(),
   useContributionGraph: () => mockUseContributionGraph(),
+  useDueCount: () => mockUseDueCount(),
 }));
 
 vi.mock('@/lib/supabase/client', () => ({
@@ -84,6 +96,12 @@ describe('DashboardPage', () => {
       error: null,
       refetch: vi.fn(),
       currentStreakDays: 0,
+    });
+    mockUseDueCount.mockReturnValue({
+      dueCount: 0,
+      isLoading: false,
+      error: null,
+      refetch: vi.fn(),
     });
   });
 

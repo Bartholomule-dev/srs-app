@@ -4,6 +4,7 @@ export { EmptyState } from './EmptyState';
 export { Greeting } from './Greeting';
 export { PracticeCTA } from './PracticeCTA';
 export { RecentAchievements } from './RecentAchievements';
+export { RecentAchievementsLazy } from './RecentAchievementsLazy';
 export { StatsCard } from './StatsCard';
 export type { StatsCardProps } from './StatsCard';
 export { StatsGrid } from './StatsGrid';

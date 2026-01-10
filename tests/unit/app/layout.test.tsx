@@ -5,6 +5,14 @@ vi.mock('@fontsource-variable/space-grotesk', () => ({}));
 vi.mock('@fontsource-variable/dm-sans', () => ({}));
 vi.mock('@fontsource-variable/jetbrains-mono', () => ({}));
 
+// Mock Vercel analytics components
+vi.mock('@vercel/speed-insights/next', () => ({
+  SpeedInsights: () => null,
+}));
+vi.mock('@vercel/analytics/next', () => ({
+  Analytics: () => null,
+}));
+
 // Mock toast context (for consistent mocking across test suite)
 vi.mock('@/lib/context/ToastContext', () => ({
   useToast: () => ({
@@ -56,8 +64,12 @@ describe('RootLayout', () => {
     expect(body).toBeDefined();
     expect(body.type).toBe('body');
 
-    // The body should contain Providers which wraps AuthProvider and ToastProvider
-    const providers = body.props.children;
+    // The body contains multiple children: Providers, SpeedInsights, Analytics
+    const children = body.props.children;
+    expect(children).toBeDefined();
+
+    // Find the Providers component (first child)
+    const providers = Array.isArray(children) ? children[0] : children;
     expect(providers).toBeDefined();
     // Providers wraps AuthProvider and ToastProvider
     const providerName = providers.type.name || providers.type.displayName || providers.type;
