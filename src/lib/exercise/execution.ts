@@ -1,7 +1,19 @@
 // src/lib/exercise/execution.ts
 // Python code execution helpers using Pyodide
+//
+// Two execution modes:
+// 1. Main thread (PyodideInterface) - faster, but blocks UI during execution
+// 2. Web Worker (PyodideWorkerManager) - isolated, terminable, recommended for user code
+//
+// The worker mode provides better security isolation and can be terminated
+// if code runs too long, preventing UI hangs.
 
 import type { PyodideInterface } from '@/lib/context/PyodideContext';
+import {
+  getPyodideWorkerManager,
+  type PyodideWorkerManager,
+  type WorkerExecutionResult,
+} from '@/lib/pyodide';
 
 /** Default execution timeout in milliseconds */
 const DEFAULT_TIMEOUT_MS = 5000;
@@ -160,3 +172,112 @@ export async function verifyWriteAnswer(
 function normalizeOutput(output: string): string {
   return output.trim().replace(/\n+$/, '');
 }
+
+// =============================================================================
+// Web Worker-based execution (recommended for user code)
+// =============================================================================
+
+/**
+ * Execute Python code in an isolated Web Worker.
+ *
+ * SECURITY: This is the recommended method for executing user-provided code.
+ * Benefits:
+ * - Runs in separate thread (cannot block main UI)
+ * - Can be terminated if execution takes too long
+ * - Better isolation from main application state
+ *
+ * @param code - Python code to execute
+ * @param options - Execution options
+ * @returns Execution result with output or error
+ */
+export async function executePythonCodeIsolated(
+  code: string,
+  options: ExecutionOptions = {}
+): Promise<ExecutionResult> {
+  const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+  const manager = getPyodideWorkerManager();
+
+  try {
+    // Initialize worker if not ready
+    if (!manager.isReady()) {
+      await manager.initialize();
+    }
+
+    const result: WorkerExecutionResult = await manager.execute(code, timeoutMs);
+
+    return {
+      success: result.success,
+      output: result.output,
+      error: result.error,
+    };
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : 'Worker execution error';
+    return {
+      success: false,
+      output: null,
+      error: errorMessage,
+    };
+  }
+}
+
+/**
+ * Verify a predict-output exercise using isolated worker execution.
+ *
+ * @param code - Code to execute
+ * @param expectedOutput - Expected output to compare against
+ * @returns Whether actual output matches expected
+ * @throws Error if execution fails (caller should fall back to string matching)
+ */
+export async function verifyPredictAnswerIsolated(
+  code: string,
+  expectedOutput: string
+): Promise<boolean> {
+  const result = await executePythonCodeIsolated(code);
+
+  if (!result.success) {
+    throw new Error(`Execution failed: ${result.error}`);
+  }
+
+  if (result.output === null) {
+    return false;
+  }
+
+  const normalizedActual = normalizeOutput(result.output);
+  const normalizedExpected = normalizeOutput(expectedOutput);
+
+  return normalizedActual === normalizedExpected;
+}
+
+/**
+ * Verify a write exercise using isolated worker execution.
+ *
+ * @param userAnswer - User's code answer
+ * @param expectedOutput - Expected output after execution
+ * @param verificationTemplate - Template with {{answer}} placeholder
+ * @returns Whether execution output matches expected
+ * @throws Error if execution fails (caller should fall back to string matching)
+ */
+export async function verifyWriteAnswerIsolated(
+  userAnswer: string,
+  expectedOutput: string,
+  verificationTemplate: string = DEFAULT_VERIFICATION_TEMPLATE
+): Promise<boolean> {
+  const codeToRun = verificationTemplate.replace('{{answer}}', userAnswer);
+  const result = await executePythonCodeIsolated(codeToRun);
+
+  if (!result.success) {
+    throw new Error(`Execution failed: ${result.error}`);
+  }
+
+  if (result.output === null) {
+    return false;
+  }
+
+  const normalizedActual = normalizeOutput(result.output);
+  const normalizedExpected = normalizeOutput(expectedOutput);
+
+  return normalizedActual === normalizedExpected;
+}
+
+// Re-export types for convenience
+export type { PyodideWorkerManager, WorkerExecutionResult };

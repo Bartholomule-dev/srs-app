@@ -1,4 +1,11 @@
 // scripts/import-exercises.ts
+// Import exercises from YAML files into Supabase database
+//
+// SECURITY NOTE: This script uses SUPABASE_SERVICE_ROLE_KEY which has admin privileges.
+// The fallback key is for LOCAL DEVELOPMENT ONLY (Supabase demo instance).
+// NEVER run with --prod flag unless you have verified the target database.
+// NEVER commit real service role keys to the repository.
+//
 // Load environment variables FIRST - before any other imports that might use process.env
 import { config } from 'dotenv';
 config({ path: '.env.test.local' });

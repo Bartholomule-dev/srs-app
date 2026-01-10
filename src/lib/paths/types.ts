@@ -77,16 +77,31 @@ export interface SkinVars {
 }
 
 /**
+ * Primitive value types for skin data packs.
+ */
+export type SkinPrimitiveValue = string | number | boolean;
+
+/**
+ * Value types for skin data packs.
+ * Allows nested objects for complex domain data (e.g., API responses).
+ */
+export type SkinDataValue =
+  | SkinPrimitiveValue
+  | SkinPrimitiveValue[]
+  | Record<string, SkinPrimitiveValue>
+  | Record<string, SkinPrimitiveValue | Record<string, SkinPrimitiveValue>>;
+
+/**
  * Data pack for predict exercises - provides themed sample data
  * that varies based on the skin domain.
  */
 export interface SkinDataPack {
   /** Sample list values for list exercises */
   list_sample: (string | number | boolean)[];
-  /** Sample dictionary for dict exercises */
-  dict_sample: Record<string, string | number | boolean>;
+  /** Sample dictionary for dict exercises - allows one level of nesting */
+  dict_sample: Record<string, SkinPrimitiveValue | Record<string, SkinPrimitiveValue>>;
   /** Sample records array for iteration exercises */
-  records_sample: Record<string, string | number | boolean>[];
+  records_sample: Record<string, SkinPrimitiveValue | Record<string, SkinPrimitiveValue>>[];
   /** Sample string messages for output exercises */
   string_samples: string[];
 }

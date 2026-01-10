@@ -2,6 +2,17 @@
 // Type definitions for the dynamic exercise generator system
 
 /**
+ * Primitive types for generator params.
+ */
+type GeneratorPrimitive = string | number | boolean;
+
+/**
+ * Nested object value - allows one level of nesting for skin dataPack compatibility.
+ * Example: { headers: { Authorization: "Bearer token" } }
+ */
+type NestedValue = GeneratorPrimitive | Record<string, GeneratorPrimitive>;
+
+/**
  * Parameters produced by a generator or merged from skin vars/dataPack.
  * Used in Mustache templates for dynamic exercises.
  *
@@ -11,12 +22,11 @@
  */
 export interface GeneratorParams {
   [key: string]:
-    | string
-    | number
-    | boolean
-    | (string | number | boolean)[]
-    | Record<string, string | number | boolean>
-    | Record<string, string | number | boolean>[]
+    | GeneratorPrimitive
+    | GeneratorPrimitive[]
+    | Record<string, GeneratorPrimitive>
+    | Record<string, NestedValue>
+    | Record<string, NestedValue>[]
     | undefined;
   /** Optional variant name for exercises with multiple templates */
   variant?: string;
