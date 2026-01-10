@@ -33,10 +33,11 @@ The current grading system has five documented failure modes:
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
 | **Strategy architecture** | Per-exercise grading strategies | Different exercises need different approaches |
-| **Default strategy** | `token` for write, `exact` for fill-in, `execution` for predict | Matches exercise semantics |
-| **Token comparison** | Pyodide's `tokenize` module | Handles whitespace/comments, runs client-side |
+| **Default strategy** | `exact` for write/fill-in, `execution` for predict | Avoids Pyodide load for most sessions; token is opt-in |
+| **Token comparison** | Pyodide's `tokenize` module (opt-in) | Handles whitespace/comments; requires Pyodide so explicit opt-in only |
 | **String literal fix** | Mask-before-normalize pattern | Quick win, backward compatible |
-| **Verification scripts** | Assertion-based (like LeetCode) | Tests behavior, not syntax |
+| **Verification scripts** | Assertion-based (like LeetCode), runs in worker | Tests behavior not syntax; worker avoids UI blocking |
+| **Fallback policy** | Only on infra unavailability, NOT on incorrect answers | Prevents wrong execution answers from passing via string match |
 | **Telemetry** | Log grading method, fallbacks, false negatives | Data-driven prioritization |
 | **Phasing** | 3 parallel tracks | Ship fast, iterate with data |
 
@@ -231,6 +232,8 @@ export function checkConstruct(
 
 **Purpose:** Compare code by token stream instead of string, handling whitespace and comments naturally.
 
+**Note:** Token comparison requires Pyodide, so it's opt-in for write exercises (not the default) to avoid loading Pyodide for sessions that don't need it. Use `grading_strategy: token` explicitly when semantic equivalence matters.
+
 ```typescript
 // src/lib/exercise/token-compare.ts
 import type { PyodideInterface } from '@/lib/context/PyodideContext';
@@ -257,28 +260,53 @@ def tokenize_code(code):
         return None
 `;
 
+let tokenizeInitialized = false;
+
+/** Initialize tokenize helper in Pyodide (call once) */
+export async function initTokenizer(pyodide: PyodideInterface): Promise<void> {
+  if (tokenizeInitialized) return;
+  pyodide.runPython(TOKENIZE_CODE);
+  tokenizeInitialized = true;
+}
+
 export async function tokenizeCode(
   pyodide: PyodideInterface,
   code: string
 ): Promise<[number, string][] | null> {
+  await initTokenizer(pyodide);
   const result = pyodide.runPython(`tokenize_code(${JSON.stringify(code)})`);
   return result ? JSON.parse(result) : null;
 }
 
+/** Compare user answer against expected + accepted alternatives by token stream */
 export async function compareByTokens(
   pyodide: PyodideInterface,
   userAnswer: string,
-  expectedAnswer: string
-): Promise<boolean> {
+  expectedAnswer: string,
+  acceptedSolutions: string[] = []
+): Promise<{ match: boolean; matchedAlternative: string | null }> {
   const userTokens = await tokenizeCode(pyodide, userAnswer);
-  const expectedTokens = await tokenizeCode(pyodide, expectedAnswer);
+  if (!userTokens) return { match: false, matchedAlternative: null };
 
-  if (!userTokens || !expectedTokens) return false;
-  return JSON.stringify(userTokens) === JSON.stringify(expectedTokens);
+  // Check primary expected answer
+  const expectedTokens = await tokenizeCode(pyodide, expectedAnswer);
+  if (expectedTokens && JSON.stringify(userTokens) === JSON.stringify(expectedTokens)) {
+    return { match: true, matchedAlternative: null };
+  }
+
+  // Check accepted alternatives
+  for (const alt of acceptedSolutions) {
+    const altTokens = await tokenizeCode(pyodide, alt);
+    if (altTokens && JSON.stringify(userTokens) === JSON.stringify(altTokens)) {
+      return { match: true, matchedAlternative: alt };
+    }
+  }
+
+  return { match: false, matchedAlternative: null };
 }
 ```
 
-**Handles:** Whitespace variations, comment differences, trailing newlines
+**Handles:** Whitespace variations, comment differences, trailing newlines, accepted_solutions
 
 ---
 
@@ -301,22 +329,34 @@ export async function compareByTokens(
 
 ```typescript
 // src/lib/exercise/verification.ts
+import { executePythonCodeIsolated } from './execution';
+
+/**
+ * Run verification script against user code in isolated worker.
+ * Uses worker execution to avoid blocking UI during assertion checks.
+ *
+ * IMPORTANT: executePythonCode returns { success: false } on errors,
+ * it does NOT throw. We must check result.success explicitly.
+ */
 export async function verifyWithScript(
-  pyodide: PyodideInterface,
   userCode: string,
   verificationScript: string
 ): Promise<{ passed: boolean; error?: string }> {
   const fullCode = `${userCode}\n\n${verificationScript}`;
 
-  try {
-    await executePythonCode(pyodide, fullCode);
-    return { passed: true };
-  } catch (err) {
+  // Use isolated worker execution (non-blocking, terminable)
+  const result = await executePythonCodeIsolated(fullCode);
+
+  if (!result.success) {
+    // Execution failed - could be syntax error, assertion failure, or timeout
     return {
       passed: false,
-      error: err instanceof Error ? err.message : 'Verification failed'
+      error: result.error ?? 'Verification failed'
     };
   }
+
+  // All assertions passed (no exception thrown)
+  return { passed: true };
 }
 ```
 
@@ -325,6 +365,8 @@ export async function verifyWithScript(
 ### B3: Grading Strategy Router
 
 **Purpose:** Dispatch to appropriate grading method based on exercise configuration.
+
+**Critical design decision:** Fallbacks should ONLY trigger when infrastructure is unavailable (Pyodide not loaded, worker crashed), NOT when the user's answer is legitimately incorrect. If execution runs successfully but the answer is wrong, that's a real incorrect answer—don't second-guess it with string matching.
 
 ```typescript
 // src/lib/exercise/strategy-router.ts
@@ -335,10 +377,19 @@ export interface StrategyConfig {
   fallback?: GradingStrategy;
 }
 
+export interface StrategyResult {
+  isCorrect: boolean;
+  infraAvailable: boolean;  // false = Pyodide unavailable, strategy couldn't run
+  matchedAlternative: string | null;
+  error?: string;
+}
+
+// NOTE: write defaults to 'exact' (not 'token') to avoid loading Pyodide unnecessarily.
+// Use grading_strategy: token explicitly for exercises needing semantic equivalence.
 const DEFAULT_STRATEGIES: Record<ExerciseType, StrategyConfig> = {
   'fill-in': { primary: 'exact' },
   'predict': { primary: 'execution', fallback: 'exact' },
-  'write': { primary: 'token', fallback: 'exact' },
+  'write': { primary: 'exact' },  // token is opt-in via grading_strategy field
 };
 
 export async function gradeWithStrategy(
@@ -351,19 +402,56 @@ export async function gradeWithStrategy(
     : DEFAULT_STRATEGIES[exercise.exerciseType];
 
   // Try primary strategy
-  let result = await executeStrategy(config.primary, userAnswer, exercise, pyodide);
+  const result = await executeStrategy(config.primary, userAnswer, exercise, pyodide);
 
-  // Fallback if primary fails/unavailable
-  if (!result.isCorrect && config.fallback) {
+  // IMPORTANT: Only fall back if infrastructure was unavailable.
+  // If the strategy ran successfully and returned incorrect, that's the real answer.
+  // Do NOT fall back on !isCorrect—that would let wrong execution answers
+  // pass via string matching.
+  if (!result.infraAvailable && config.fallback) {
+    console.warn(`Strategy '${config.primary}' unavailable, falling back to '${config.fallback}'`);
     const fallbackResult = await executeStrategy(
       config.fallback, userAnswer, exercise, pyodide
     );
-    if (fallbackResult.isCorrect) {
-      return { ...fallbackResult, fallbackUsed: true };
-    }
+    return { ...fallbackResult, fallbackUsed: true, fallbackReason: 'infra_unavailable' };
   }
 
-  return result;
+  return { ...result, fallbackUsed: false };
+}
+
+/** Execute a specific strategy, returning infraAvailable: false if it can't run */
+async function executeStrategy(
+  strategy: GradingStrategy,
+  userAnswer: string,
+  exercise: Exercise,
+  pyodide: PyodideInterface | null
+): Promise<StrategyResult> {
+  switch (strategy) {
+    case 'exact':
+      // Always available - no Pyodide needed
+      return { ...checkStringMatch(userAnswer, exercise), infraAvailable: true };
+
+    case 'token':
+      if (!pyodide) {
+        return { isCorrect: false, infraAvailable: false, matchedAlternative: null };
+      }
+      return { ...await compareByTokens(pyodide, userAnswer, exercise), infraAvailable: true };
+
+    case 'execution':
+      if (!pyodide && !exercise.verificationScript) {
+        return { isCorrect: false, infraAvailable: false, matchedAlternative: null };
+      }
+      // Verification scripts use worker (no pyodide instance needed)
+      if (exercise.verificationScript) {
+        const result = await verifyWithScript(userAnswer, exercise.verificationScript);
+        return { isCorrect: result.passed, infraAvailable: true, matchedAlternative: null };
+      }
+      // Output-based execution
+      return { ...await verifyByExecution(pyodide!, userAnswer, exercise), infraAvailable: true };
+
+    default:
+      return { isCorrect: false, infraAvailable: false, matchedAlternative: null };
+  }
 }
 ```
 
@@ -425,10 +513,13 @@ export interface Exercise {
 | Exercise Type | Default Strategy | Rationale |
 |--------------|------------------|-----------|
 | `fill-in` | `exact` | Single token answers, exact match sufficient |
-| `predict` | `execution` → `exact` | Run code, compare output; fallback if Pyodide unavailable |
-| `write` (simple) | `token` → `exact` | Token stream handles formatting; string fallback |
-| `write` (with `verification_script`) | `execution` | Behavior testing trumps syntax |
-| `write` (with `verifyByExecution: true`) | `execution` → `token` | Legacy flag support |
+| `predict` | `execution` → `exact` | Run code, compare output; fallback only if Pyodide unavailable |
+| `write` (simple) | `exact` | String matching with normalization; avoids Pyodide load |
+| `write` (with `grading_strategy: token`) | `token` | Opt-in for exercises needing semantic equivalence |
+| `write` (with `verification_script`) | `execution` | Behavior testing trumps syntax; runs in worker |
+| `write` (with `verifyByExecution: true`) | `execution` → `exact` | Legacy flag support |
+
+**Important:** Token strategy is opt-in (not default) because it requires Pyodide. Most write exercises work fine with exact matching + `accepted_solutions`. Use `grading_strategy: token` only when you need semantic equivalence (whitespace, comments, quote styles).
 
 ```typescript
 // src/lib/exercise/strategy-defaults.ts
@@ -613,14 +704,15 @@ CREATE TABLE grading_telemetry (
 │ Grading Health Dashboard                                     │
 ├─────────────────────────────────────────────────────────────┤
 │ Strategy Distribution    │ Fallback Triggers                │
-│ ████████ token (65%)     │ Top 5 exercises:                 │
-│ ████ exact (20%)         │ 1. string-format-dynamic         │
-│ ███ execution (15%)      │ 2. list-comp-filter              │
-│                          │ 3. dict-access-dynamic           │
+│ ████████ exact (65%)     │ Top 5 exercises:                 │
+│ ████ execution (25%)     │ 1. predict-list-output           │
+│ ██ token (10%)           │ 2. function-return-value         │
+│                          │ 3. string-format-dynamic         │
 ├─────────────────────────────────────────────────────────────┤
 │ False Negative Candidates (review queue)                     │
 │ User answered: items[:3]  Expected: items[0:3]              │
 │ User answered: f'{x}'     Expected: f"{x}"                  │
+│ → Consider adding grading_strategy: token to these exercises│
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -637,6 +729,26 @@ CREATE TABLE grading_telemetry (
 4. **LLM fallback (ruled out for now):** If all else fails, LLM could evaluate semantic equivalence—but cost/latency concerns remain
 
 5. **Community-contributed alternatives:** Users submit answers that were marked wrong but should be correct; review queue for content authors
+
+6. **JS-based token matching:** If Pyodide proves too heavy for token comparison, could implement a simplified JS tokenizer that handles the most common cases (whitespace, quotes, comments) without full Python tokenize semantics.
+
+---
+
+## Open Questions Resolved
+
+These questions were raised during multi-AI review. Answers are incorporated into the design above.
+
+### Q: Should execution fallbacks only happen when Pyodide is unavailable, or also on assertion/runtime failures?
+
+**A: Only when infrastructure is unavailable.** If the user's code runs and produces wrong output (or fails assertions), that's a legitimate incorrect answer. Falling back to string matching would let wrong answers pass incorrectly. The `infraAvailable` flag in `StrategyResult` distinguishes "couldn't run" from "ran but failed". See B3 implementation.
+
+### Q: Is loading Pyodide for most write exercises acceptable, or should token matching be limited/JS-based to avoid that cost?
+
+**A: Token matching is opt-in, not default.** Write exercises default to `exact` strategy (string matching with normalization). Authors must explicitly set `grading_strategy: token` for exercises that need semantic equivalence. This avoids loading Pyodide for sessions that don't need it. The existing preload logic in `useConceptSession.ts` only triggers for `predict` or `verifyByExecution` exercises—this remains unchanged.
+
+### Q: Do you want verification scripts to run in the worker (executePythonCodeIsolated) to avoid UI blocking?
+
+**A: Yes, verification scripts run in the worker.** The `verifyWithScript` function uses `executePythonCodeIsolated` which runs in a Web Worker, keeping the UI responsive during assertion checks. This also provides timeout handling and crash isolation.
 
 ---
 
