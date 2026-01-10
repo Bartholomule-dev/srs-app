@@ -1,6 +1,7 @@
 // tests/integration/session/practice-flow.test.tsx
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { waitFor } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/lib/context/AuthContext';
 import type { ReactNode } from 'react';
 
@@ -117,8 +118,19 @@ vi.mock('@/lib/supabase/client', () => {
 
 import { useConceptSession } from '@/lib/hooks/useConceptSession';
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      gcTime: 0,
+    },
+  },
+});
+
 const wrapper = ({ children }: { children: ReactNode }) => (
-  <AuthProvider>{children}</AuthProvider>
+  <QueryClientProvider client={queryClient}>
+    <AuthProvider>{children}</AuthProvider>
+  </QueryClientProvider>
 );
 
 describe('Practice Session Integration', () => {

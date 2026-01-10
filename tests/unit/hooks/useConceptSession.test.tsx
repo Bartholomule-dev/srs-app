@@ -1,6 +1,7 @@
 // tests/unit/hooks/useConceptSession.test.tsx
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, waitFor, act } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
 import { AuthProvider } from '@/lib/context/AuthContext';
 import { createMockExercise } from '@tests/fixtures/exercise';
@@ -135,9 +136,22 @@ vi.mock('@/lib/supabase/client', () => {
 
 import { useConceptSession } from '@/lib/hooks/useConceptSession';
 
-// Wrapper with auth context
+// Wrapper with auth context and QueryClient
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      gcTime: 0,
+    },
+  },
+});
+
 function wrapper({ children }: { children: ReactNode }) {
-  return <AuthProvider>{children}</AuthProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>{children}</AuthProvider>
+    </QueryClientProvider>
+  );
 }
 
 describe('useConceptSession', () => {

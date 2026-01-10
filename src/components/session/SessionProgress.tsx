@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 
 /** Card type for session progress visualization */
@@ -28,15 +29,19 @@ export function SessionProgress({
   // Calculate percentage for aria attributes
   const percentage = total > 0 ? Math.round((current / total) * 100) : 0;
 
-  // Generate segments
-  const segments = Array.from({ length: total }, (_, index) => {
-    const isCompleted = index < current;
-    const isCurrent = index === current && current < total;
-    const cardType: CardType = cardTypes?.[index] ?? 'review';
-    const isTeaching = cardType === 'teaching';
+  // Generate segments (memoized to avoid recreating array on every render)
+  const segments = useMemo(
+    () =>
+      Array.from({ length: total }, (_, index) => {
+        const isCompleted = index < current;
+        const isCurrent = index === current && current < total;
+        const cardType: CardType = cardTypes?.[index] ?? 'review';
+        const isTeaching = cardType === 'teaching';
 
-    return { index, isCompleted, isCurrent, cardType, isTeaching };
-  });
+        return { index, isCompleted, isCurrent, cardType, isTeaching };
+      }),
+    [total, current, cardTypes]
+  );
 
   return (
     <div className={`flex items-center gap-4 ${className}`}>

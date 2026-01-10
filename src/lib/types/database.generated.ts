@@ -34,32 +34,107 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievement_definitions: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string
+          icon: string
+          metadata: Json | null
+          name: string
+          slug: string
+          sort_order: number | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description: string
+          icon: string
+          metadata?: Json | null
+          name: string
+          slug: string
+          sort_order?: number | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string
+          icon?: string
+          metadata?: Json | null
+          name?: string
+          slug?: string
+          sort_order?: number | null
+        }
+        Relationships: []
+      }
       exercise_attempts: {
         Row: {
+          attempted_at: string | null
+          coaching_shown: boolean | null
           created_at: string
           exercise_slug: string
+          generated_params: Json | null
+          grading_method: string | null
+          hint_used: boolean | null
           id: string
+          is_correct: boolean | null
+          is_first_attempt: boolean | null
           last_seen_at: string | null
+          points_earned: number | null
+          quality_score: number | null
+          rating: number | null
+          response_time_ms: number | null
+          seed: string | null
           times_correct: number
           times_seen: number
+          timezone_offset_minutes: number | null
+          used_target_construct: boolean | null
           user_id: string
         }
         Insert: {
+          attempted_at?: string | null
+          coaching_shown?: boolean | null
           created_at?: string
           exercise_slug: string
+          generated_params?: Json | null
+          grading_method?: string | null
+          hint_used?: boolean | null
           id?: string
+          is_correct?: boolean | null
+          is_first_attempt?: boolean | null
           last_seen_at?: string | null
+          points_earned?: number | null
+          quality_score?: number | null
+          rating?: number | null
+          response_time_ms?: number | null
+          seed?: string | null
           times_correct?: number
           times_seen?: number
+          timezone_offset_minutes?: number | null
+          used_target_construct?: boolean | null
           user_id: string
         }
         Update: {
+          attempted_at?: string | null
+          coaching_shown?: boolean | null
           created_at?: string
           exercise_slug?: string
+          generated_params?: Json | null
+          grading_method?: string | null
+          hint_used?: boolean | null
           id?: string
+          is_correct?: boolean | null
+          is_first_attempt?: boolean | null
           last_seen_at?: string | null
+          points_earned?: number | null
+          quality_score?: number | null
+          rating?: number | null
+          response_time_ms?: number | null
+          seed?: string | null
           times_correct?: number
           times_seen?: number
+          timezone_offset_minutes?: number | null
+          used_target_construct?: boolean | null
           user_id?: string
         }
         Relationships: []
@@ -77,6 +152,7 @@ export type Database = {
           exercise_type: string | null
           expected_answer: string
           explanation: string | null
+          generator: string | null
           hints: Json | null
           id: string
           language: string
@@ -88,11 +164,13 @@ export type Database = {
           slug: string
           subconcept: string | null
           tags: string[] | null
+          target_construct: Json | null
           targets: string[] | null
           template: string | null
           times_practiced: number | null
           title: string
           updated_at: string | null
+          verify_by_execution: boolean | null
         }
         Insert: {
           accepted_solutions?: string[] | null
@@ -106,6 +184,7 @@ export type Database = {
           exercise_type?: string | null
           expected_answer: string
           explanation?: string | null
+          generator?: string | null
           hints?: Json | null
           id?: string
           language: string
@@ -117,11 +196,13 @@ export type Database = {
           slug: string
           subconcept?: string | null
           tags?: string[] | null
+          target_construct?: Json | null
           targets?: string[] | null
           template?: string | null
           times_practiced?: number | null
           title: string
           updated_at?: string | null
+          verify_by_execution?: boolean | null
         }
         Update: {
           accepted_solutions?: string[] | null
@@ -135,6 +216,7 @@ export type Database = {
           exercise_type?: string | null
           expected_answer?: string
           explanation?: string | null
+          generator?: string | null
           hints?: Json | null
           id?: string
           language?: string
@@ -146,11 +228,13 @@ export type Database = {
           slug?: string
           subconcept?: string | null
           tags?: string[] | null
+          target_construct?: Json | null
           targets?: string[] | null
           template?: string | null
           times_practiced?: number | null
           title?: string
           updated_at?: string | null
+          verify_by_execution?: boolean | null
         }
         Relationships: []
       }
@@ -163,9 +247,12 @@ export type Database = {
           display_name: string | null
           experience_level: string | null
           id: string
+          last_activity_date: string | null
+          last_freeze_earned_at: string | null
           longest_streak: number | null
           notification_time: string | null
           preferred_language: string | null
+          streak_freezes: number | null
           total_exercises_completed: number | null
           updated_at: string | null
           username: string | null
@@ -178,9 +265,12 @@ export type Database = {
           display_name?: string | null
           experience_level?: string | null
           id: string
+          last_activity_date?: string | null
+          last_freeze_earned_at?: string | null
           longest_streak?: number | null
           notification_time?: string | null
           preferred_language?: string | null
+          streak_freezes?: number | null
           total_exercises_completed?: number | null
           updated_at?: string | null
           username?: string | null
@@ -193,9 +283,12 @@ export type Database = {
           display_name?: string | null
           experience_level?: string | null
           id?: string
+          last_activity_date?: string | null
+          last_freeze_earned_at?: string | null
           longest_streak?: number | null
           notification_time?: string | null
           preferred_language?: string | null
+          streak_freezes?: number | null
           total_exercises_completed?: number | null
           updated_at?: string | null
           username?: string | null
@@ -256,59 +349,74 @@ export type Database = {
         }
         Relationships: []
       }
-      user_progress: {
+      transfer_assessments: {
         Row: {
-          created_at: string | null
-          ease_factor: number | null
-          exercise_id: string
+          assessed_at: string
+          exercise_slug: string
+          grading_method: string | null
           id: string
-          interval: number | null
-          last_reviewed: string | null
-          next_review: string | null
-          repetitions: number | null
-          times_correct: number | null
-          times_seen: number | null
-          updated_at: string | null
+          last_practice_at: string | null
+          practice_count: number
+          response_time_ms: number | null
+          subconcept_slug: string
+          user_id: string
+          was_correct: boolean
+        }
+        Insert: {
+          assessed_at?: string
+          exercise_slug: string
+          grading_method?: string | null
+          id?: string
+          last_practice_at?: string | null
+          practice_count: number
+          response_time_ms?: number | null
+          subconcept_slug: string
+          user_id: string
+          was_correct: boolean
+        }
+        Update: {
+          assessed_at?: string
+          exercise_slug?: string
+          grading_method?: string | null
+          id?: string
+          last_practice_at?: string | null
+          practice_count?: number
+          response_time_ms?: number | null
+          subconcept_slug?: string
+          user_id?: string
+          was_correct?: boolean
+        }
+        Relationships: []
+      }
+      user_achievements: {
+        Row: {
+          achievement_slug: string
+          id: string
+          unlocked_at: string | null
           user_id: string
         }
         Insert: {
-          created_at?: string | null
-          ease_factor?: number | null
-          exercise_id: string
+          achievement_slug: string
           id?: string
-          interval?: number | null
-          last_reviewed?: string | null
-          next_review?: string | null
-          repetitions?: number | null
-          times_correct?: number | null
-          times_seen?: number | null
-          updated_at?: string | null
+          unlocked_at?: string | null
           user_id: string
         }
         Update: {
-          created_at?: string | null
-          ease_factor?: number | null
-          exercise_id?: string
+          achievement_slug?: string
           id?: string
-          interval?: number | null
-          last_reviewed?: string | null
-          next_review?: string | null
-          repetitions?: number | null
-          times_correct?: number | null
-          times_seen?: number | null
-          updated_at?: string | null
+          unlocked_at?: string | null
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "user_progress_exercise_id_fkey"
-            columns: ["exercise_id"]
+            foreignKeyName: "user_achievements_achievement_slug_fkey"
+            columns: ["achievement_slug"]
             isOneToOne: false
-            referencedRelation: "exercises"
-            referencedColumns: ["id"]
+            referencedRelation: "achievement_definitions"
+            referencedColumns: ["slug"]
           },
           {
-            foreignKeyName: "user_progress_user_id_fkey"
+            foreignKeyName: "user_achievements_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -321,6 +429,28 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_attempt_points: {
+        Args: {
+          p_is_correct: boolean
+          p_is_first_attempt: boolean
+          p_rating: number
+          p_response_time_ms: number
+          p_subconcept_stability: number
+          p_used_hint: boolean
+          p_user_id: string
+        }
+        Returns: number
+      }
+      check_achievements: { Args: { p_user_id: string }; Returns: Json }
+      get_contribution_history: {
+        Args: { p_end_date: string; p_start_date: string; p_user_id: string }
+        Returns: Json
+      }
+      get_points_summary: {
+        Args: { p_end_date: string; p_start_date: string; p_user_id: string }
+        Returns: Json
+      }
+      repair_user_stats: { Args: { p_user_id: string }; Returns: Json }
       update_profile_stats_atomic: {
         Args: {
           p_current_streak: number
@@ -329,6 +459,10 @@ export type Database = {
           p_user_id: string
         }
         Returns: undefined
+      }
+      update_streak: {
+        Args: { p_activity_date: string; p_user_id: string }
+        Returns: Json
       }
     }
     Enums: {

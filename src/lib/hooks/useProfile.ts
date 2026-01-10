@@ -1,12 +1,33 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase/client';
 import { useAuth } from './useAuth';
 import { mapProfile, toDbProfileUpdate } from '@/lib/supabase/mappers';
 import { handleSupabaseError } from '@/lib/errors';
 import type { Profile, DbProfile, ExperienceLevel } from '@/lib/types';
 import type { AppError } from '@/lib/errors';
+
+/** Query key for profile data */
+export const profileKeys = {
+  all: ['profile'] as const,
+  detail: (userId: string) => [...profileKeys.all, userId] as const,
+};
+
+async function fetchProfile(userId: string): Promise<Profile> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if (error) {
+    throw handleSupabaseError(error);
+  }
+
+  return mapProfile(data as DbProfile);
+}
 
 interface UseProfileReturn {
   profile: Profile | null;
@@ -19,112 +40,93 @@ interface UseProfileReturn {
 
 export function useProfile(): UseProfileReturn {
   const { user, loading: authLoading } = useAuth();
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [profileLoading, setProfileLoading] = useState(false);
-  const [error, setError] = useState<AppError | null>(null);
+  const queryClient = useQueryClient();
 
-  // Track fetch trigger for refetch functionality
-  const [fetchTrigger, setFetchTrigger] = useState(0);
+  const query = useQuery({
+    queryKey: profileKeys.detail(user?.id ?? ''),
+    queryFn: () => fetchProfile(user!.id),
+    enabled: !!user && !authLoading,
+  });
 
-  useEffect(() => {
-    // Only fetch profile when auth is done loading
-    if (authLoading) {
-      return;
-    }
-
-    // Use an IIFE to handle the async operation
-    let cancelled = false;
-
-    (async () => {
-      if (!user) {
-        setProfile(null);
-        setProfileLoading(false);
-        return;
-      }
-
-      setProfileLoading(true);
-      setError(null);
-
-      const { data, error: fetchError } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-
-      if (cancelled) return;
-
-      if (fetchError) {
-        setError(handleSupabaseError(fetchError));
-        setProfile(null);
-      } else if (data) {
-        setProfile(mapProfile(data as DbProfile));
-      }
-
-      setProfileLoading(false);
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [authLoading, user, fetchTrigger]);
-
-  // Loading is true if auth is loading OR profile is loading
-  const loading = authLoading || profileLoading;
-
-  const refetch = useCallback(() => {
-    setFetchTrigger((prev) => prev + 1);
-  }, []);
-
-  const updateProfile = useCallback(
-    async (updates: Partial<Omit<Profile, 'id' | 'createdAt'>>): Promise<Profile> => {
+  const updateMutation = useMutation({
+    mutationFn: async (updates: Partial<Omit<Profile, 'id' | 'createdAt'>>) => {
       if (!user) {
         throw handleSupabaseError(new Error('Must be authenticated to update profile'));
       }
 
       const dbUpdates = toDbProfileUpdate(updates);
 
-      const { data, error: updateError } = await supabase
+      const { data, error } = await supabase
         .from('profiles')
         .update(dbUpdates)
         .eq('id', user.id)
         .select()
         .single();
 
-      if (updateError) {
-        throw handleSupabaseError(updateError);
+      if (error) {
+        throw handleSupabaseError(error);
       }
 
-      const updatedProfile = mapProfile(data as DbProfile);
-      setProfile(updatedProfile);
-      return updatedProfile;
+      return mapProfile(data as DbProfile);
     },
-    [user]
-  );
+    onSuccess: (updatedProfile) => {
+      // Update cache with new profile data
+      queryClient.setQueryData(profileKeys.detail(user!.id), updatedProfile);
+    },
+  });
 
-  const updateExperienceLevel = useCallback(
-    async (level: ExperienceLevel) => {
-      if (!profile) return;
+  const experienceLevelMutation = useMutation({
+    mutationFn: async (level: ExperienceLevel) => {
+      const profile = query.data;
+      if (!profile) {
+        throw new Error('No profile loaded');
+      }
 
-      const { error: updateError } = await supabase
+      const { error } = await supabase
         .from('profiles')
         .update({ experience_level: level })
         .eq('id', profile.id);
 
-      if (updateError) {
-        console.error('Failed to update experience level:', updateError);
-        return;
+      if (error) {
+        throw handleSupabaseError(error);
       }
 
-      // Optimistically update local state
-      setProfile((prev) => (prev ? { ...prev, experienceLevel: level } : null));
+      return level;
     },
-    [profile]
+    onSuccess: (level) => {
+      // Optimistically update cache
+      queryClient.setQueryData(
+        profileKeys.detail(user!.id),
+        (old: Profile | undefined) => (old ? { ...old, experienceLevel: level } : old)
+      );
+    },
+    onError: (error) => {
+      console.error('Failed to update experience level:', error);
+    },
+  });
+
+  const updateProfile = useCallback(
+    async (updates: Partial<Omit<Profile, 'id' | 'createdAt'>>): Promise<Profile> => {
+      return updateMutation.mutateAsync(updates);
+    },
+    [updateMutation]
   );
 
+  const updateExperienceLevel = useCallback(
+    async (level: ExperienceLevel) => {
+      await experienceLevelMutation.mutateAsync(level);
+    },
+    [experienceLevelMutation]
+  );
+
+  const refetch = useCallback(() => {
+    query.refetch();
+  }, [query]);
+
   return {
-    profile,
-    loading,
-    error,
+    profile: query.data ?? null,
+    loading: authLoading || query.isLoading,
+    error: query.error as AppError | null,
     updateProfile,
     updateExperienceLevel,
     refetch,

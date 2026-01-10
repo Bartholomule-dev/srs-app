@@ -1,5 +1,8 @@
 // src/lib/srs/index.ts
 
+// SRS constants
+export { QUALITY_PASSING_THRESHOLD } from './constants';
+
 // FSRS algorithm (primary SRS implementation)
 export * from './fsrs';
 

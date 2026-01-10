@@ -50,9 +50,9 @@ export interface SessionStats {
   total: number;
   /** Cards answered so far */
   completed: number;
-  /** Cards answered correctly (quality >= 3) */
+  /** Cards answered correctly (quality >= QUALITY_PASSING_THRESHOLD) */
   correct: number;
-  /** Cards answered incorrectly (quality < 3) */
+  /** Cards answered incorrectly (quality < QUALITY_PASSING_THRESHOLD) */
   incorrect: number;
   /** When session started */
   startTime: Date;

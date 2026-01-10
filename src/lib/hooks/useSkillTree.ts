@@ -5,45 +5,9 @@ import { useAuth } from './useAuth';
 import { supabase } from '@/lib/supabase/client';
 import { buildSkillTreeData } from '@/lib/skill-tree/build-tree';
 import type { SkillTreeData, SubconceptState } from '@/lib/skill-tree/types';
-import type { SubconceptProgress, ConceptSlug } from '@/lib/curriculum/types';
-
-interface DbSubconceptProgress {
-  id: string;
-  user_id: string;
-  subconcept_slug: string;
-  concept_slug: string;
-  stability: number;
-  difficulty: number;
-  fsrs_state: number;
-  reps: number;
-  lapses: number;
-  elapsed_days: number;
-  scheduled_days: number;
-  next_review: string;
-  last_reviewed: string | null;
-  created_at: string;
-  updated_at: string;
-}
-
-function mapDbToProgress(db: DbSubconceptProgress): SubconceptProgress {
-  return {
-    id: db.id,
-    userId: db.user_id,
-    subconceptSlug: db.subconcept_slug,
-    conceptSlug: db.concept_slug as ConceptSlug,
-    stability: db.stability,
-    difficulty: db.difficulty,
-    fsrsState: db.fsrs_state as 0 | 1 | 2 | 3,
-    reps: db.reps,
-    lapses: db.lapses,
-    elapsedDays: db.elapsed_days,
-    scheduledDays: db.scheduled_days,
-    nextReview: new Date(db.next_review),
-    lastReviewed: db.last_reviewed ? new Date(db.last_reviewed) : null,
-    createdAt: new Date(db.created_at),
-    updatedAt: new Date(db.updated_at),
-  };
-}
+import type { SubconceptProgress } from '@/lib/curriculum/types';
+import type { DbSubconceptProgress } from '@/lib/types';
+import { mapDbToSubconceptProgress } from '@/lib/types';
 
 export interface UseSkillTreeReturn {
   data: SkillTreeData | null;
@@ -80,7 +44,7 @@ export function useSkillTree(): UseSkillTreeReturn {
       }
 
       const progress = (progressData ?? []).map((row) =>
-        mapDbToProgress(row as DbSubconceptProgress)
+        mapDbToSubconceptProgress(row as DbSubconceptProgress)
       );
       const treeData = buildSkillTreeData(progress);
       setData(treeData);

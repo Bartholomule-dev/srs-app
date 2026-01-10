@@ -88,19 +88,6 @@ export function ExerciseCard({
     }
   }, [exercise.id]);
 
-  // Trigger Pyodide loading for predict exercises (or exercises with verifyByExecution)
-  useEffect(() => {
-    if (
-      (exercise.exerciseType === 'predict' || exercise.verifyByExecution) &&
-      !pyodide &&
-      !pyodideLoading
-    ) {
-      loadPyodide().catch((err) => {
-        console.warn('Failed to preload Pyodide:', err);
-      });
-    }
-  }, [exercise.exerciseType, exercise.verifyByExecution, pyodide, pyodideLoading, loadPyodide]);
-
   // Track page visibility for pausing timer
   useEffect(() => {
     const handleVisibilityChange = () => {

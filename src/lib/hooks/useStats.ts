@@ -8,28 +8,9 @@ import { handleSupabaseError } from '@/lib/errors';
 import { getCardsReviewedToday, getTotalAccuracy } from '@/lib/stats';
 import type { UserStats } from '@/lib/stats';
 import type { AppError } from '@/lib/errors';
-import type { Profile, DbProfile } from '@/lib/types';
+import type { Profile, DbProfile, DbExerciseAttempt } from '@/lib/types';
+import { mapDbToExerciseAttempt } from '@/lib/types';
 import type { ExerciseAttempt } from '@/lib/curriculum/types';
-
-interface DbExerciseAttempt {
-  id: string;
-  user_id: string;
-  exercise_slug: string;
-  times_seen: number;
-  times_correct: number;
-  last_seen_at: string | null;
-}
-
-function mapDbToExerciseAttempt(row: DbExerciseAttempt): ExerciseAttempt {
-  return {
-    id: row.id,
-    userId: row.user_id,
-    exerciseSlug: row.exercise_slug,
-    timesSeen: row.times_seen,
-    timesCorrect: row.times_correct,
-    lastSeenAt: row.last_seen_at ? new Date(row.last_seen_at) : new Date(),
-  };
-}
 
 export interface UseStatsReturn {
   stats: UserStats | null;

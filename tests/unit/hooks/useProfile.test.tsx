@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, waitFor, act } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useProfile } from '@/lib/hooks/useProfile';
 import { AuthProvider } from '@/lib/context/AuthContext';
 import type { ReactNode } from 'react';
@@ -36,9 +37,24 @@ import { supabase } from '@/lib/supabase/client';
 
 const mockUser = { id: 'test-user-id', email: 'test@example.com' };
 
-const wrapper = ({ children }: { children: ReactNode }) => (
-  <AuthProvider>{children}</AuthProvider>
-);
+const createWrapper = () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        gcTime: 0,
+      },
+    },
+  });
+  function TestWrapper({ children }: { children: ReactNode }) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>{children}</AuthProvider>
+      </QueryClientProvider>
+    );
+  }
+  return TestWrapper;
+};
 
 describe('useProfile', () => {
   beforeEach(() => {
@@ -54,7 +70,7 @@ describe('useProfile', () => {
     });
     vi.mocked(supabase.auth.getUser).mockReturnValue(getUserPromise as any);
 
-    const { result } = renderHook(() => useProfile(), { wrapper });
+    const { result } = renderHook(() => useProfile(), { wrapper: createWrapper() });
 
     // Profile hook starts in loading state
     expect(result.current.loading).toBe(true);
@@ -98,7 +114,7 @@ describe('useProfile', () => {
       }),
     } as any);
 
-    const { result } = renderHook(() => useProfile(), { wrapper });
+    const { result } = renderHook(() => useProfile(), { wrapper: createWrapper() });
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
@@ -115,7 +131,7 @@ describe('useProfile', () => {
       error: null,
     } as any);
 
-    const { result } = renderHook(() => useProfile(), { wrapper });
+    const { result } = renderHook(() => useProfile(), { wrapper: createWrapper() });
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
@@ -140,7 +156,7 @@ describe('useProfile', () => {
       }),
     } as any);
 
-    const { result } = renderHook(() => useProfile(), { wrapper });
+    const { result } = renderHook(() => useProfile(), { wrapper: createWrapper() });
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
@@ -201,7 +217,7 @@ describe('useProfile', () => {
       // Mock the update to return the updated profile
       singleMock.mockResolvedValue({ data: updatedDbProfile, error: null });
 
-      const { result } = renderHook(() => useProfile(), { wrapper });
+      const { result } = renderHook(() => useProfile(), { wrapper: createWrapper() });
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -224,9 +240,11 @@ describe('useProfile', () => {
       expect(updatedProfile.displayName).toBe('Updated Name');
       expect(updatedProfile.dailyGoal).toBe(20);
 
-      // Verify local state is updated
-      expect(result.current.profile?.displayName).toBe('Updated Name');
-      expect(result.current.profile?.dailyGoal).toBe(20);
+      // Verify local state is updated (wait for cache update)
+      await waitFor(() => {
+        expect(result.current.profile?.displayName).toBe('Updated Name');
+        expect(result.current.profile?.dailyGoal).toBe(20);
+      });
     });
 
     it('throws when user is not authenticated', async () => {
@@ -235,7 +253,7 @@ describe('useProfile', () => {
         error: null,
       } as any);
 
-      const { result } = renderHook(() => useProfile(), { wrapper });
+      const { result } = renderHook(() => useProfile(), { wrapper: createWrapper() });
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -282,7 +300,7 @@ describe('useProfile', () => {
         return {} as any;
       });
 
-      const { result } = renderHook(() => useProfile(), { wrapper });
+      const { result } = renderHook(() => useProfile(), { wrapper: createWrapper() });
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -336,7 +354,7 @@ describe('useProfile', () => {
         return {} as any;
       });
 
-      const { result } = renderHook(() => useProfile(), { wrapper });
+      const { result } = renderHook(() => useProfile(), { wrapper: createWrapper() });
 
       // Wait for initial load
       await waitFor(() => {
@@ -355,11 +373,13 @@ describe('useProfile', () => {
       expect(updateMock).toHaveBeenCalledWith({ experience_level: 'beginner' });
       expect(eqMock).toHaveBeenCalledWith('id', 'test-user-id');
 
-      // Verify local state is updated
-      expect(result.current.profile?.experienceLevel).toBe('beginner');
+      // Verify local state is updated (wait for cache update)
+      await waitFor(() => {
+        expect(result.current.profile?.experienceLevel).toBe('beginner');
+      });
     });
 
-    it('does nothing when profile is null', async () => {
+    it('throws error when profile is null', async () => {
       vi.mocked(supabase.auth.getUser).mockResolvedValue({
         data: { user: null },
         error: null,
@@ -371,7 +391,7 @@ describe('useProfile', () => {
         update: updateMock,
       } as any);
 
-      const { result } = renderHook(() => useProfile(), { wrapper });
+      const { result } = renderHook(() => useProfile(), { wrapper: createWrapper() });
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -380,21 +400,24 @@ describe('useProfile', () => {
       // Profile should be null
       expect(result.current.profile).toBeNull();
 
-      // Try to update experience level
-      await act(async () => {
-        await result.current.updateExperienceLevel('beginner');
-      });
+      // Try to update experience level - should throw since profile is null
+      await expect(
+        act(async () => {
+          await result.current.updateExperienceLevel('beginner');
+        })
+      ).rejects.toThrow('No profile loaded');
 
       // Update should not have been called
       expect(updateMock).not.toHaveBeenCalled();
     });
 
-    it('logs error but does not throw when update fails', async () => {
+    it('throws when update fails and does not update state', async () => {
       vi.mocked(supabase.auth.getUser).mockResolvedValue({
         data: { user: mockUser },
         error: null,
       } as any);
 
+      // Suppress console.error for this test since onError logs the error
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
       const updateError = { message: 'Update failed', code: 'PGRST116' };
@@ -416,22 +439,18 @@ describe('useProfile', () => {
         return {} as any;
       });
 
-      const { result } = renderHook(() => useProfile(), { wrapper });
+      const { result } = renderHook(() => useProfile(), { wrapper: createWrapper() });
 
       await waitFor(() => {
         expect(result.current.profile).not.toBeNull();
       });
 
-      // Try to update experience level
-      await act(async () => {
-        await result.current.updateExperienceLevel('learning');
-      });
-
-      // Should log error
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Failed to update experience level:',
-        updateError
-      );
+      // Try to update experience level - should throw with mutateAsync
+      await expect(
+        act(async () => {
+          await result.current.updateExperienceLevel('learning');
+        })
+      ).rejects.toThrow();
 
       // State should not be updated
       expect(result.current.profile?.experienceLevel).toBe('refresher');
@@ -483,7 +502,7 @@ describe('useProfile', () => {
         }),
       } as any));
 
-      const { result } = renderHook(() => useProfile(), { wrapper });
+      const { result } = renderHook(() => useProfile(), { wrapper: createWrapper() });
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);

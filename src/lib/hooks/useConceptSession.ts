@@ -12,7 +12,7 @@ import { renderExercise, renderExercises } from '@/lib/generators/render';
 import { handleSupabaseError, AppError } from '@/lib/errors';
 import { updateProfileStats } from '@/lib/stats';
 import { logExerciseAttempt } from '@/lib/exercise';
-import { selectExerciseByType } from '@/lib/srs/exercise-selection';
+import { selectExerciseByType, QUALITY_PASSING_THRESHOLD } from '@/lib/srs';
 import type { Exercise, Quality } from '@/lib/types';
 import { EXPERIENCE_LEVEL_RATIOS } from '@/lib/types/app.types';
 import type { ExperienceLevel } from '@/lib/types/app.types';
@@ -38,9 +38,6 @@ import type { SkinnedCard, PathIndex } from '@/lib/paths/types';
 
 /** Limit on teaching pairs (new subconcepts with teaching content) per session */
 const TEACHING_PAIRS_LIMIT = 5;
-
-/** Quality threshold for passing (3+ = pass) */
-const QUALITY_PASSING_THRESHOLD = 3;
 
 /** Card type strings for progress bar display */
 export type CardTypeLabel = 'teaching' | 'practice' | 'review';
