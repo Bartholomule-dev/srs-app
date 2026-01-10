@@ -1,6 +1,10 @@
 // tests/unit/curriculum/progression.test.ts
 import { describe, it, expect } from 'vitest';
-import { getUnlockedConcepts } from '@/lib/curriculum/progression';
+import {
+  getUnlockedConcepts,
+  getNextSubconcepts,
+  getSkippedConceptsByExperience,
+} from '@/lib/curriculum/progression';
 import type { Concept } from '@/lib/curriculum/types';
 
 // Test curriculum graph (simplified subset)
@@ -87,5 +91,64 @@ describe('getUnlockedConcepts', () => {
     const completed = new Set(['variables', 'basics', 'integers', 'lists', 'if-else']);
     const unlocked = getUnlockedConcepts(completed, testCurriculum);
     expect(unlocked).toContain('loops');
+  });
+});
+
+describe('getNextSubconcepts', () => {
+  it('returns intro subconcepts from foundations for fresh beginner', () => {
+    const completed = new Set<string>();
+    const inProgress = new Set<string>();
+    const next = getNextSubconcepts(completed, inProgress, testCurriculum, 3);
+    expect(next.length).toBeLessThanOrEqual(3);
+    expect(next.every(s => testCurriculum[0].subconcepts.includes(s))).toBe(true);
+  });
+
+  it('prioritizes finishing current concept over starting new ones', () => {
+    const completed = new Set(['variables']);
+    const inProgress = new Set(['operators']);
+    const next = getNextSubconcepts(completed, inProgress, testCurriculum, 3);
+    expect(next).toContain('expressions');
+    expect(next).not.toContain('operators');
+  });
+
+  it('returns subconcepts from multiple unlocked concepts when limit allows', () => {
+    const completed = new Set(['variables', 'operators', 'expressions']);
+    const inProgress = new Set<string>();
+    const next = getNextSubconcepts(completed, inProgress, testCurriculum, 5);
+    const fromStrings = next.filter(s => testCurriculum[1].subconcepts.includes(s));
+    const fromNumbers = next.filter(s => testCurriculum[2].subconcepts.includes(s));
+    expect(fromStrings.length).toBeGreaterThan(0);
+    expect(fromNumbers.length).toBeGreaterThan(0);
+  });
+
+  it('excludes already completed subconcepts', () => {
+    const completed = new Set(['variables', 'operators']);
+    const inProgress = new Set<string>();
+    const next = getNextSubconcepts(completed, inProgress, testCurriculum, 5);
+    expect(next).not.toContain('variables');
+    expect(next).not.toContain('operators');
+  });
+
+  it('excludes in-progress subconcepts', () => {
+    const completed = new Set<string>();
+    const inProgress = new Set(['variables']);
+    const next = getNextSubconcepts(completed, inProgress, testCurriculum, 5);
+    expect(next).not.toContain('variables');
+    expect(next).toContain('operators');
+  });
+
+  it('respects the limit parameter', () => {
+    const completed = new Set<string>();
+    const inProgress = new Set<string>();
+    const next = getNextSubconcepts(completed, inProgress, testCurriculum, 2);
+    expect(next.length).toBeLessThanOrEqual(2);
+  });
+
+  it('returns empty array when all subconcepts completed or in-progress', () => {
+    const allSubconcepts = testCurriculum.flatMap(c => c.subconcepts);
+    const completed = new Set(allSubconcepts);
+    const inProgress = new Set<string>();
+    const next = getNextSubconcepts(completed, inProgress, testCurriculum, 5);
+    expect(next).toEqual([]);
   });
 });

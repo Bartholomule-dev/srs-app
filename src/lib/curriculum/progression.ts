@@ -46,3 +46,68 @@ export function getUnlockedConcepts(
 
   return unlocked;
 }
+
+/**
+ * Get next subconcepts to learn, respecting soft gating.
+ *
+ * Selection strategy:
+ * 1. Get all unlocked concepts
+ * 2. Prioritize concepts where user has started but not finished (in-progress)
+ * 3. Then add from newly unlocked concepts
+ * 4. Exclude completed and in-progress subconcepts
+ * 5. Respect the limit
+ */
+export function getNextSubconcepts(
+  completedSubconcepts: Set<string>,
+  inProgressSubconcepts: Set<string>,
+  curriculum: Concept[],
+  limit: number
+): string[] {
+  if (limit <= 0) return [];
+
+  const unlockedConceptSlugs = new Set(
+    getUnlockedConcepts(completedSubconcepts, curriculum)
+  );
+
+  // Build concept priority: concepts with in-progress work come first
+  const conceptsWithProgress: Concept[] = [];
+  const newlyUnlockedConcepts: Concept[] = [];
+
+  for (const concept of curriculum) {
+    if (!unlockedConceptSlugs.has(concept.slug)) continue;
+
+    const hasInProgress = concept.subconcepts.some((s) =>
+      inProgressSubconcepts.has(s)
+    );
+    const hasCompleted = concept.subconcepts.some((s) =>
+      completedSubconcepts.has(s)
+    );
+
+    if (hasInProgress || hasCompleted) {
+      conceptsWithProgress.push(concept);
+    } else {
+      newlyUnlockedConcepts.push(concept);
+    }
+  }
+
+  const orderedConcepts = [...conceptsWithProgress, ...newlyUnlockedConcepts];
+
+  const result: string[] = [];
+
+  for (const concept of orderedConcepts) {
+    if (result.length >= limit) break;
+
+    for (const subconcept of concept.subconcepts) {
+      if (result.length >= limit) break;
+
+      if (
+        !completedSubconcepts.has(subconcept) &&
+        !inProgressSubconcepts.has(subconcept)
+      ) {
+        result.push(subconcept);
+      }
+    }
+  }
+
+  return result;
+}
