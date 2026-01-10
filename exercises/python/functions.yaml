@@ -7,11 +7,14 @@ exercises:
     objective: "Define a basic function using the def keyword"
     title: Define Function
     difficulty: 1
-    prompt: Define a function called {{action_verb}}_{{item_singular}} that takes a {{item_singular}} parameter
+    prompt: Write the function header for `{{action_verb}}_{{item_singular}}` with one parameter named `{{item_singular}}`
     expected_answer: "def {{action_verb}}_{{item_singular}}({{item_singular}}):"
+    accepted_solutions:
+      - "def {{action_verb}}_{{item_singular}}({{item_singular}}):"
+      - "def {{action_verb}}_{{item_singular}}( {{item_singular}} ):"
     hints:
-      - Start with the def keyword
-      - End the line with a colon like if statements
+      - Start with the `def` keyword
+      - End the line with a colon
     tags: [functions, def, beginner]
     concept: functions
     subconcept: fn-basics
@@ -21,13 +24,19 @@ exercises:
     pattern: definition
 
   - slug: function-return
-    objective: "Write a function that returns a computed value"
+    objective: "Write a function that returns a value"
     title: Function with Return
     difficulty: 2
-    prompt: Define a function get_{{item_singular}} that takes {{id_var}}, returns the {{item_singular}}
+    prompt: Define a function get_{{item_singular}} that takes {{id_var}} and returns it
     expected_answer: |
       def get_{{item_singular}}({{id_var}}):
-          return {{item_singular}}
+          return {{id_var}}
+    accepted_solutions:
+      - |
+        def get_{{item_singular}}({{id_var}}):
+            return {{id_var}}
+      - "def get_{{item_singular}}({{id_var}}):\n    return {{id_var}}"
+      - "def get_{{item_singular}}({{id_var}}):\n\treturn {{id_var}}"
     hints:
       - Use return to send back a value
       - The body is indented under the def line
@@ -50,11 +59,14 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: invocation
-    prompt: Call function get_{{item_singular}} with argument 1 (positional)
+    prompt: Write the call that passes `1` positionally into `get_{{item_singular}}`
     expected_answer: "get_{{item_singular}}(1)"
+    accepted_solutions:
+      - "get_{{item_singular}}(1)"
+      - "get_{{item_singular}}( 1 )"
     hints:
-      - Arguments are separated by commas
-      - Order matters for positional args
+      - Function name followed by parentheses
+      - Arguments go inside the parentheses
     tags: [functions, arguments, positional]
 
   - slug: keyword-arg-intro
@@ -67,14 +79,14 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: invocation
-    prompt: Call {{action_verb}}_{{item_singular}} with {{item_singular}}="{{item_example}}" as a keyword argument
+    prompt: Write the call using a keyword argument so `{{item_singular}}` receives `"{{item_example}}"`
     expected_answer: '{{action_verb}}_{{item_singular}}({{item_singular}}="{{item_example}}")'
     accepted_solutions:
       - '{{action_verb}}_{{item_singular}}({{item_singular}}="{{item_example}}")'
       - "{{action_verb}}_{{item_singular}}({{item_singular}}='{{item_example}}')"
     hints:
-      - Use name=value syntax
-      - The parameter name goes before the equals sign
+      - Use `name=value` syntax
+      - Function is `{{action_verb}}_{{item_singular}}`
     tags: [functions, arguments, keyword]
 
   - slug: mixed-args-intro
@@ -87,24 +99,28 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: invocation
-    prompt: Call add_{{item_singular}} with "{{item_example}}" positional, {{status_var}}=True keyword
+    prompt: Write the call passing `"{{item_example}}"` positionally and `{{status_var}}=True` as a keyword
     expected_answer: 'add_{{item_singular}}("{{item_example}}", {{status_var}}=True)'
     accepted_solutions:
       - 'add_{{item_singular}}("{{item_example}}", {{status_var}}=True)'
       - "add_{{item_singular}}('{{item_example}}', {{status_var}}=True)"
     hints:
       - Positional arguments come first
-      - Keyword arguments follow positional ones
+      - Function is `add_{{item_singular}}`
     tags: [functions, arguments, mixed]
 
   - slug: kwargs-function
-    objective: "Use **kwargs to accept variable keyword arguments"
-    title: Keyword Arguments
+    objective: "Use **kwargs to accept arbitrary configuration settings"
+    title: Configuration with Kwargs
     difficulty: 3
-    prompt: Define a function configure_{{item_singular}} that accepts any keyword arguments
+    prompt: Write the function header for `configure_{{item_singular}}` that accepts arbitrary keyword settings
     expected_answer: "def configure_{{item_singular}}(**kwargs):"
+    accepted_solutions:
+      - "def configure_{{item_singular}}(**kwargs):"
+      - "def configure_{{item_singular}}(**options):"
+      - "def configure_{{item_singular}}(**settings):"
     hints:
-      - Use **kwargs (double asterisk) for keyword arguments
+      - Use `**kwargs` (double asterisk) for keyword arguments
       - kwargs becomes a dictionary of name=value pairs
     tags: [functions, kwargs, advanced]
     concept: functions
@@ -125,10 +141,13 @@ exercises:
     prereqs: [foundations]
     type: write
     pattern: definition
-    prompt: Define a function called show_{{list_name}} with no parameters
+    prompt: Write the function header for `show_{{list_name}}` with no parameters
     expected_answer: "def show_{{list_name}}():"
+    accepted_solutions:
+      - "def show_{{list_name}}():"
+      - "def show_{{list_name}}( ):"
     hints:
-      - Empty parentheses () for no parameters
+      - Empty parentheses `()` for no parameters
       - Still need the parentheses even with no args
     tags: [functions, definition, beginner]
 
@@ -142,7 +161,7 @@ exercises:
     prereqs: [functions.fn-basics]
     type: write
     pattern: invocation
-    prompt: Call function get_{{item_singular}} with argument "{{item_example}}"
+    prompt: Write the call passing the string `"{{item_example}}"` into `get_{{item_singular}}`
     expected_answer: 'get_{{item_singular}}("{{item_example}}")'
     accepted_solutions:
       - 'get_{{item_singular}}("{{item_example}}")'
@@ -162,11 +181,15 @@ exercises:
     prereqs: [functions.fn-basics]
     type: write
     pattern: definition
-    prompt: Return both {{attr_key_1}} and {{attr_key_2}} from a function (tuple return)
+    prompt: Write a return statement that returns both `{{attr_key_1}}` and `{{attr_key_2}}` as a tuple
     expected_answer: return {{attr_key_1}}, {{attr_key_2}}
+    accepted_solutions:
+      - return {{attr_key_1}}, {{attr_key_2}}
+      - "return {{attr_key_1}}, {{attr_key_2}}"
+      - "return ({{attr_key_1}}, {{attr_key_2}})"
     hints:
       - Comma-separated values become a tuple
-      - Caller can unpack with a, b = func()
+      - Caller can unpack with `a, b = func()`
     tags: [functions, return, tuple]
 
   # --- Additional Arguments Subconcept ---
@@ -180,11 +203,14 @@ exercises:
     prereqs: [functions.arguments]
     type: write
     pattern: definition
-    prompt: Define {{action_verb}}_{{item_singular}}({{id_var}}, *, {{status_var}}) where {{status_var}} must be passed as keyword
+    prompt: Write the function header where `{{status_var}}` is keyword-only
     expected_answer: "def {{action_verb}}_{{item_singular}}({{id_var}}, *, {{status_var}}):"
+    accepted_solutions:
+      - "def {{action_verb}}_{{item_singular}}({{id_var}}, *, {{status_var}}):"
+      - "def {{action_verb}}_{{item_singular}}({{id_var}},*,{{status_var}}):"
     hints:
-      - "Bare '*' separates positional from keyword-only params"
-      - "Call with {{action_verb}}_{{item_singular}}(1, {{status_var}}=True), not {{action_verb}}_{{item_singular}}(1, True)"
+      - Bare `*` separates positional from keyword-only params
+      - Function is `{{action_verb}}_{{item_singular}}` with params `{{id_var}}` and `{{status_var}}`
     tags: [functions, arguments, keyword-only]
 
   - slug: positional-only-args
@@ -197,10 +223,13 @@ exercises:
     prereqs: [functions.arguments]
     type: write
     pattern: definition
-    prompt: Define get_{{item_singular}}({{id_var}}, /, {{attr_key_1}}) where {{id_var}} must be passed positionally
+    prompt: Write the function header where `{{id_var}}` is positional-only (use `/`)
     expected_answer: "def get_{{item_singular}}({{id_var}}, /, {{attr_key_1}}):"
+    accepted_solutions:
+      - "def get_{{item_singular}}({{id_var}}, /, {{attr_key_1}}):"
+      - "def get_{{item_singular}}({{id_var}},/,{{attr_key_1}}):"
     hints:
-      - / separates positional-only from other params
+      - "`/` separates positional-only from other params"
       - Python 3.8+ feature
     tags: [functions, arguments, positional-only]
 
@@ -215,15 +244,21 @@ exercises:
     prereqs: [functions.fn-basics]
     type: write
     pattern: definition
-    prompt: Create a lambda that doubles the {{item_singular}}_count input
+    prompt: Write a lambda that takes `{{item_singular}}_count` and returns it doubled
     expected_answer: "lambda {{item_singular}}_count: {{item_singular}}_count * 2"
     accepted_solutions:
       - "lambda {{item_singular}}_count: {{item_singular}}_count * 2"
       - "lambda x: x * 2"
       - "lambda n: n * 2"
+      - "lambda val: val * 2"
+      - "lambda value: value * 2"
+      - "lambda i: i * 2"
+      - "lambda num: num * 2"
+      - "lambda {{item_singular}}_count: 2 * {{item_singular}}_count"
+      - "lambda x: 2 * x"
     hints:
-      - "Format is: lambda args: expression"
-      - No def keyword, no return keyword needed
+      - "Format is: `lambda args: expression`"
+      - No `def` keyword, no `return` keyword needed
     tags: [functions, lambda, beginner]
 
   - slug: lambda-two-args
@@ -236,12 +271,14 @@ exercises:
     prereqs: [functions.lambda]
     type: write
     pattern: definition
-    prompt: Create a lambda that adds {{attr_key_1}} and {{attr_key_2}} values together
+    prompt: Write a lambda that takes two parameters and adds them together
     expected_answer: "lambda {{attr_key_1}}, {{attr_key_2}}: {{attr_key_1}} + {{attr_key_2}}"
     accepted_solutions:
       - "lambda {{attr_key_1}}, {{attr_key_2}}: {{attr_key_1}} + {{attr_key_2}}"
       - "lambda a, b: a + b"
       - "lambda x, y: x + y"
+      - "lambda a,b: a+b"
+      - "lambda x,y: x+y"
     hints:
       - Multiple args separated by comma before the colon
       - Expression after colon is the return value
@@ -257,14 +294,16 @@ exercises:
     prereqs: [functions.lambda]
     type: write
     pattern: definition
-    prompt: Create a lambda that returns "{{status_var}}" if is_{{status_var}} is True, "pending" otherwise
+    prompt: Create a lambda that takes `is_{{status_var}}` and returns `"{{status_var}}"` if true, otherwise `"pending"`
     expected_answer: 'lambda is_{{status_var}}: "{{status_var}}" if is_{{status_var}} else "pending"'
     accepted_solutions:
       - 'lambda is_{{status_var}}: "{{status_var}}" if is_{{status_var}} else "pending"'
       - "lambda is_{{status_var}}: '{{status_var}}' if is_{{status_var}} else 'pending'"
+      - 'lambda x: "{{status_var}}" if x else "pending"'
+      - "lambda x: '{{status_var}}' if x else 'pending'"
     hints:
-      - "Use ternary: value_if_true if condition else value_if_false"
-      - Boolean variables don't need == True comparison
+      - "Use ternary: `value_if_true if condition else value_if_false`"
+      - Boolean variables don't need `== True` comparison
     tags: [functions, lambda, conditional]
 
   - slug: sorted-key-lambda
@@ -278,15 +317,16 @@ exercises:
     type: write
     pattern: construction
     targets: [lambda, lists]
-    prompt: Sort {{list_name}} by second element ({{attr_key_2}}) using lambda
+    prompt: Given `{{list_name}}` is a list of 2-item tuples, write an expression that returns it sorted by the second element
     expected_answer: "sorted({{list_name}}, key=lambda x: x[1])"
     accepted_solutions:
       - "sorted({{list_name}}, key=lambda x: x[1])"
       - "sorted({{list_name}}, key=lambda item: item[1])"
       - "sorted({{list_name}}, key=lambda t: t[1])"
+      - "sorted({{list_name}}, key=lambda e: e[1])"
     hints:
-      - Use key parameter
-      - Lambda extracts sort key
+      - Use `key` parameter with a lambda
+      - Lambda extracts the element to sort by
     tags: [functions, lambda, sorting]
 
   # --- Scope Subconcept ---
@@ -345,11 +385,14 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: declaration
-    prompt: Declare {{item_singular}}_count as a global variable inside a function
+    prompt: Write the statement to declare `{{item_singular}}_count` as a global variable inside a function body
     expected_answer: global {{item_singular}}_count
+    accepted_solutions:
+      - global {{item_singular}}_count
+      - "global {{item_singular}}_count"
     hints:
-      - Use global keyword
-      - Declares that variable refers to module-level scope
+      - Use the `global` keyword
+      - This tells Python to use the module-level variable
     tags: [functions, scope, global]
 
   - slug: nonlocal-keyword
@@ -362,11 +405,14 @@ exercises:
     prereqs: [functions.scope]
     type: write
     pattern: declaration
-    prompt: Access outer function variable {{item_singular}}_count from inner function using nonlocal
+    prompt: Write the statement to access the outer function's `{{item_singular}}_count` from an inner function
     expected_answer: nonlocal {{item_singular}}_count
+    accepted_solutions:
+      - nonlocal {{item_singular}}_count
+      - "nonlocal {{item_singular}}_count"
     hints:
-      - nonlocal for enclosing scope
-      - Not global, not local
+      - Use `nonlocal` for enclosing scope
+      - Not `global`, not local
     tags: [functions, scope, nonlocal]
 
   # --- Type Hints Subconcept ---
@@ -380,10 +426,13 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: definition
-    prompt: Define get_{{item_singular}}({{attr_key_1}}) with {{attr_key_1}} typed as str
+    prompt: Write the function header for `get_{{item_singular}}` with `{{attr_key_1}}` typed as `str`
     expected_answer: "def get_{{item_singular}}({{attr_key_1}}: str):"
+    accepted_solutions:
+      - "def get_{{item_singular}}({{attr_key_1}}: str):"
+      - "def get_{{item_singular}}( {{attr_key_1}}: str ):"
     hints:
-      - "Use : type after parameter"
+      - "Use `: type` after parameter name"
       - Type hints are optional but improve IDE support
     tags: [functions, typehints, annotation]
 
@@ -397,10 +446,13 @@ exercises:
     prereqs: [functions.typehints]
     type: write
     pattern: definition
-    prompt: Define count_{{list_name}}({{list_name}}) returning int
+    prompt: Define `count_{{list_name}}` that takes `{{list_name}}` and returns `int`
     expected_answer: "def count_{{list_name}}({{list_name}}) -> int:"
+    accepted_solutions:
+      - "def count_{{list_name}}({{list_name}}) -> int:"
+      - "def count_{{list_name}}({{list_name}}: list) -> int:"
     hints:
-      - Use -> type before colon
+      - Use `-> type` before colon for return type
       - Return type annotation comes after parameters
     tags: [functions, typehints, return]
 
@@ -414,14 +466,14 @@ exercises:
     prereqs: [functions.typehints]
     type: write
     pattern: definition
-    prompt: Define process_{{list_name}}({{list_name}}) with {{list_name}} typed as list[str]
+    prompt: Write the function header with `{{list_name}}` typed as `list[str]`
     expected_answer: "def process_{{list_name}}({{list_name}}: list[str]):"
     accepted_solutions:
       - "def process_{{list_name}}({{list_name}}: list[str]):"
       - "def process_{{list_name}}({{list_name}}: List[str]):"
     hints:
-      - Generic types use []
-      - Python 3.9+ allows list[str] directly
+      - Generic types use `[]` for element type
+      - Python 3.9+ allows `list[str]` directly
     tags: [functions, typehints, generic]
 
   - slug: typehint-optional
@@ -434,14 +486,15 @@ exercises:
     prereqs: [functions.typehints]
     type: write
     pattern: definition
-    prompt: Define find_{{item_singular}}({{attr_key_1}}) with {{attr_key_1}} typed as str or None
+    prompt: Write the function header where `{{attr_key_1}}` can be `str` or `None`
     expected_answer: "def find_{{item_singular}}({{attr_key_1}}: str | None):"
     accepted_solutions:
       - "def find_{{item_singular}}({{attr_key_1}}: str | None):"
       - "def find_{{item_singular}}({{attr_key_1}}: Optional[str]):"
+      - "def find_{{item_singular}}({{attr_key_1}}: None | str):"
     hints:
-      - Use | None for optional
-      - Or Optional[type]
+      - Use `| None` for optional (Python 3.10+)
+      - Or `Optional[type]` from typing
     tags: [functions, typehints, optional]
 
   - slug: typehint-callable
@@ -455,16 +508,19 @@ exercises:
     type: write
     pattern: definition
     targets: [typehints, lambda]
-    prompt: Define {{action_verb}}_{{item_singular}}(func) where func is a callable taking int and returning int
+    prompt: Write the function header where `func` takes `int` and returns `int`. Assume `Callable` is imported
     expected_answer: "def {{action_verb}}_{{item_singular}}(func: Callable[[int], int]):"
+    accepted_solutions:
+      - "def {{action_verb}}_{{item_singular}}(func: Callable[[int], int]):"
+      - "def {{action_verb}}_{{item_singular}}(func: Callable[[int], int]) -> int:"
     hints:
-      - Callable[[args], return]
-      - Import from typing
+      - "Callable[[args], return] format"
+      - Function name is `{{action_verb}}_{{item_singular}}`
     tags: [functions, typehints, callable]
 
   # --- Defaults Subconcept ---
   - slug: default-param-intro
-    objective: Define a function parameter with a default value
+    objective: Define a function parameter with an integer default value
     title: Default Parameter Intro
     difficulty: 1
     concept: functions
@@ -473,10 +529,13 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: definition
-    prompt: Define function get_{{item_singular}} with {{id_var}} parameter defaulting to 1
+    prompt: Write the function header for `get_{{item_singular}}` where `{{id_var}}` defaults to `1`
     expected_answer: "def get_{{item_singular}}({{id_var}}=1):"
+    accepted_solutions:
+      - "def get_{{item_singular}}({{id_var}}=1):"
+      - "def get_{{item_singular}}({{id_var}} = 1):"
     hints:
-      - Use = to set the default value
+      - Use `=` to set the default value
       - Default goes after the parameter name
     tags: [functions, defaults, intro]
 
@@ -490,11 +549,14 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: definition
-    prompt: Define add_{{item_singular}}({{item_singular}}, {{status_var}}=False) with a default status
+    prompt: Write the function header where `{{status_var}}` defaults to `False`
     expected_answer: "def add_{{item_singular}}({{item_singular}}, {{status_var}}=False):"
+    accepted_solutions:
+      - "def add_{{item_singular}}({{item_singular}}, {{status_var}}=False):"
+      - "def add_{{item_singular}}({{item_singular}}, {{status_var}} = False):"
     hints:
-      - Default values use =
-      - Put defaults after required params
+      - Default values use `=`
+      - Function is `add_{{item_singular}}` with params `{{item_singular}}`, `{{status_var}}`
     tags: [functions, defaults]
 
   - slug: default-param-multiple
@@ -507,14 +569,14 @@ exercises:
     prereqs: [functions.defaults]
     type: write
     pattern: definition
-    prompt: Define create_{{item_singular}}({{attr_key_1}}, {{attr_key_2}}="medium", {{status_var}}=False) with two defaults
+    prompt: Write the function header with defaults `{{attr_key_2}}="medium"` and `{{status_var}}=False`
     expected_answer: 'def create_{{item_singular}}({{attr_key_1}}, {{attr_key_2}}="medium", {{status_var}}=False):'
     accepted_solutions:
       - 'def create_{{item_singular}}({{attr_key_1}}, {{attr_key_2}}="medium", {{status_var}}=False):'
       - "def create_{{item_singular}}({{attr_key_1}}, {{attr_key_2}}='medium', {{status_var}}=False):"
     hints:
       - Multiple defaults follow same pattern
-      - Required params come first
+      - Function is `create_{{item_singular}}` with required param `{{attr_key_1}}`
     tags: [functions, defaults]
 
   - slug: default-param-none
@@ -527,11 +589,14 @@ exercises:
     prereqs: [functions.defaults]
     type: write
     pattern: definition
-    prompt: Define add_{{item_singular}}({{item_singular}}, {{list_name}}=None) with None as default
+    prompt: Write the function header using `None` as the default for `{{list_name}}` (to avoid mutable defaults)
     expected_answer: "def add_{{item_singular}}({{item_singular}}, {{list_name}}=None):"
+    accepted_solutions:
+      - "def add_{{item_singular}}({{item_singular}}, {{list_name}}=None):"
+      - "def add_{{item_singular}}({{item_singular}}, {{list_name}} = None):"
     hints:
       - None is safe default for mutables
-      - Check for None inside function
+      - Check for None inside function and create list there
     tags: [functions, defaults, mutable]
 
   - slug: default-param-mutable-trap
@@ -544,12 +609,14 @@ exercises:
     prereqs: [functions.defaults]
     type: write
     pattern: definition
-    prompt: Define add_item(item, items=None) avoiding the mutable default trap (use None, not [])
+    prompt: Write the function header for `add_item` using `None` as the default for `items` (not `[]`)
     expected_answer: "def add_item(item, items=None):"
+    accepted_solutions:
+      - "def add_item(item, items=None):"
+      - "def add_item(item, items = None):"
     hints:
-      - Never use [] as default
-      - Use None then create list inside
-      - Mutable defaults persist between calls
+      - Never use `[]` as default - it's shared across calls
+      - Use `None` then create list inside function
     tags: [functions, defaults, mutable, antipattern]
 
   # --- Args-Kwargs Subconcept ---
@@ -563,10 +630,14 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: definition
-    prompt: Define a function combine_{{list_name}} that accepts any number of positional arguments
+    prompt: Write the function header for `combine_{{list_name}}` that accepts any number of positional arguments
     expected_answer: "def combine_{{list_name}}(*args):"
+    accepted_solutions:
+      - "def combine_{{list_name}}(*args):"
+      - "def combine_{{list_name}}(*items):"
+      - "def combine_{{list_name}}(*values):"
     hints:
-      - Use * before parameter name
+      - "Use `*` before parameter name"
       - args is a tuple inside function
     tags: [functions, args-kwargs, args]
 
@@ -580,10 +651,13 @@ exercises:
     prereqs: [fn-basics]
     type: write
     pattern: definition
-    prompt: Define a function build_{{item_singular}} that accepts any keyword arguments
+    prompt: Write the function header for `build_{{item_singular}}` that accepts any keyword arguments
     expected_answer: "def build_{{item_singular}}(**kwargs):"
+    accepted_solutions:
+      - "def build_{{item_singular}}(**kwargs):"
+      - "def build_{{item_singular}}(**options):"
     hints:
-      - Use ** before parameter name
+      - "Use `**` before parameter name"
       - kwargs is a dict inside function
     tags: [functions, args-kwargs, kwargs]
 
@@ -597,11 +671,14 @@ exercises:
     prereqs: [functions.args-kwargs]
     type: write
     pattern: definition
-    prompt: Define a function {{action_verb}}_{{item_singular}} that accepts any positional and keyword arguments
+    prompt: Write the function header for `{{action_verb}}_{{item_singular}}` that accepts any positional and keyword arguments
     expected_answer: "def {{action_verb}}_{{item_singular}}(*args, **kwargs):"
+    accepted_solutions:
+      - "def {{action_verb}}_{{item_singular}}(*args, **kwargs):"
+      - "def {{action_verb}}_{{item_singular}}(*args,**kwargs):"
     hints:
       - "*args comes before **kwargs"
-      - Order is required, *args, **kwargs
+      - "Order matters: *args, **kwargs"
     tags: [functions, args-kwargs, combined]
 
   - slug: args-kwargs-forward
@@ -614,10 +691,13 @@ exercises:
     prereqs: [functions.args-kwargs]
     type: write
     pattern: invocation
-    prompt: Call inner_func forwarding all args and kwargs from wrapper
+    prompt: Inside `wrapper(*args, **kwargs)`, write the call that forwards all arguments to `inner_func`
     expected_answer: "inner_func(*args, **kwargs)"
+    accepted_solutions:
+      - "inner_func(*args, **kwargs)"
+      - "inner_func(*args,**kwargs)"
     hints:
-      - Unpack with * and ** when calling
+      - Unpack with `*` and `**` when calling
       - Same syntax for collecting and spreading
     tags: [functions, args-kwargs, forwarding]
 
@@ -633,7 +713,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Fill in the keyword that defines a function for {{action_verb}}ing {{item_plural}}
+    prompt: "Fill in the keyword: `___ foo():`"
     template: "___ {{action_verb}}_{{item_singular}}({{item_singular}}):"
     expected_answer: "def"
     hints:
@@ -652,10 +732,10 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Fill in the keyword that returns the {{item_singular}} from the function
+    prompt: "Fill in the keyword: `___ x`"
     template: |
       def get_{{item_singular}}({{id_var}}):
-          ___ {{item_singular}}
+          ___ {{id_var}}
     expected_answer: "return"
     hints:
       - Keyword to send value back to caller
@@ -673,12 +753,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Fill in the keyword for an anonymous function to double the {{item_singular}}_count
+    prompt: "Fill in the keyword: `___ x: x * 2`"
     template: "double_{{item_singular}} = ___ {{item_singular}}_count: {{item_singular}}_count * 2"
     expected_answer: "lambda"
     hints:
       - Keyword for anonymous functions
-      - Single expression, no return keyword needed
+      - Single expression, no `return` keyword needed
     tags: [functions, lambda, fill-in]
 
   - slug: default-value-fill
@@ -692,7 +772,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Fill in the operator that assigns a default value to {{status_var}}
+    prompt: "Fill in the operator for default parameter value: `def f(x ___ 1):`"
     template: 'def add_{{item_singular}}({{item_singular}}, {{status_var}}___False):'
     expected_answer: "="
     hints:
@@ -711,7 +791,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Fill in the prefix for variable positional arguments when combining {{item_plural}}
+    prompt: "Fill in the symbol for variable positional arguments: `___args`"
     template: "def combine_{{list_name}}(___args):"
     expected_answer: "*"
     hints:
@@ -730,7 +810,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Fill in the prefix for variable keyword arguments when building a {{item_singular}}
+    prompt: "Fill in the symbol for variable keyword arguments: `___kwargs`"
     template: "def build_{{item_singular}}(___kwargs):"
     expected_answer: "**"
     hints:
@@ -1033,7 +1113,7 @@ exercises:
 
   # --- Integrated Exercises (Premium - Combining Multiple Subconcepts) ---
   - slug: retry-decorator-integrated
-    objective: Build a retry decorator combining decorators, while loops, and exception handling
+    objective: Build a retry decorator combining decorators, loops, and exception handling
     title: Retry Connection Decorator
     difficulty: 3
     concept: functions
@@ -1043,36 +1123,59 @@ exercises:
     targets: [decorators, while, try-except, args-kwargs]
     type: write
     pattern: definition
-    domains: [web, devops]
     prompt: |
-      Create a decorator @retry that wraps a function and retries it up to 3 times
-      if ConnectionError is raised. Use *args, **kwargs to pass arguments through.
+      Write a decorator `retry` that retries the wrapped function up to 3 total attempts
+      when ConnectionError occurs. If all attempts fail, re-raise the last ConnectionError.
+      The wrapper must accept *args, **kwargs and forward them.
     expected_answer: |
       def retry(func):
           def wrapper(*args, **kwargs):
-              attempts = 0
-              while attempts < 3:
+              last_err = None
+              for _ in range(3):
                   try:
                       return func(*args, **kwargs)
-                  except ConnectionError:
-                      attempts += 1
-              return func(*args, **kwargs)
+                  except ConnectionError as e:
+                      last_err = e
+              raise last_err
           return wrapper
     accepted_solutions:
       - |
         def retry(func):
             def wrapper(*args, **kwargs):
+                last_err = None
                 for _ in range(3):
                     try:
                         return func(*args, **kwargs)
+                    except ConnectionError as e:
+                        last_err = e
+                raise last_err
+            return wrapper
+      - |
+        def retry(func):
+            def wrapper(*args, **kwargs):
+                attempts = 0
+                while attempts < 3:
+                    try:
+                        return func(*args, **kwargs)
+                    except ConnectionError as e:
+                        attempts += 1
+                        last_err = e
+                raise last_err
+            return wrapper
+      - |
+        def retry(func):
+            def wrapper(*args, **kwargs):
+                for i in range(3):
+                    try:
+                        return func(*args, **kwargs)
                     except ConnectionError:
-                        pass
-                return func(*args, **kwargs)
+                        if i == 2:
+                            raise
             return wrapper
     hints:
       - Decorator returns a wrapper function
-      - Use while or for loop for attempts
-      - Catch ConnectionError inside the loop
+      - Use for loop with range(3) for exactly 3 attempts
+      - Store the exception to re-raise after all attempts fail
     tags: [decorators, retry, integrated, production]
 
   - slug: config-loader-integrated
@@ -1086,11 +1189,10 @@ exercises:
     targets: [context, try-except, imports-basic, dicts]
     type: write
     pattern: definition
-    domains: [devops, web]
     prompt: |
-      Write load_config(path) that safely loads a JSON file using a context manager.
-      If FileNotFoundError or json.JSONDecodeError occurs, return empty dict {}.
-      Assume json is already imported.
+      Write `load_config(path)` that safely loads a JSON file using a context manager.
+      Return `{}` if `FileNotFoundError` or `json.JSONDecodeError` occurs.
+      Assume `json` is already imported.
     expected_answer: |
       def load_config(path):
           try:
@@ -1106,9 +1208,16 @@ exercises:
                     return json.load(f)
             except (FileNotFoundError, json.JSONDecodeError):
                 return {}
+      - |
+        def load_config(path):
+            try:
+                with open(path) as file:
+                    return json.load(file)
+            except (FileNotFoundError, json.JSONDecodeError):
+                return {}
     hints:
-      - Use with statement for file handling
-      - Catch multiple exceptions with tuple
-      - Return empty dict on any error
+      - Use `with` statement for file handling
+      - Catch multiple exceptions with a tuple
+      - Return empty dict on error
     tags: [context-manager, json, error-handling, integrated]
   # --- Debug Exercises (Pitfall Subconcepts) ---

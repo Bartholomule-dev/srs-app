@@ -35,8 +35,11 @@ exercises:
     type: write
     pattern: assignment
     generator: arithmetic-values
-    prompt: Create a variable called {{item_singular}}_count and assign it the value {{x}}
+    prompt: Assign the value `{{x}}` to a variable named `{{item_singular}}_count`
     expected_answer: "{{item_singular}}_count = {{x}}"
+    accepted_solutions:
+      - "{{item_singular}}_count = {{x}}"
+      - "{{item_singular}}_count={{x}}"
     hints:
       - Numbers don't need quotes
       - Use = for assignment
@@ -52,7 +55,7 @@ exercises:
     prereqs: [variables]
     type: write
     pattern: assignment
-    prompt: Assign "{{item_example}}", 1, True to variables {{item_singular}}, {{item_singular}}_id, {{status_var}} in one line
+    prompt: In a single line, assign `"{{item_example}}"`, `1`, and `True` to `{{item_singular}}`, `{{item_singular}}_id`, and `{{status_var}}`
     expected_answer: '{{item_singular}}, {{item_singular}}_id, {{status_var}} = "{{item_example}}", 1, True'
     accepted_solutions:
       - '{{item_singular}}, {{item_singular}}_id, {{status_var}} = "{{item_example}}", 1, True'
@@ -68,15 +71,16 @@ exercises:
     difficulty: 2
     concept: foundations
     subconcept: variables
-    level: edge
+    level: practice
     prereqs: [variables]
     type: write
     pattern: swap
-    prompt: Swap the values of current_{{item_singular}} and next_{{item_singular}} in one line
+    prompt: Swap `current_{{item_singular}}` and `next_{{item_singular}}` using tuple unpacking (no temp variable)
     expected_answer: "current_{{item_singular}}, next_{{item_singular}} = next_{{item_singular}}, current_{{item_singular}}"
     accepted_solutions:
       - "current_{{item_singular}}, next_{{item_singular}} = next_{{item_singular}}, current_{{item_singular}}"
       - "next_{{item_singular}}, current_{{item_singular}} = current_{{item_singular}}, next_{{item_singular}}"
+      - "(current_{{item_singular}}, next_{{item_singular}}) = (next_{{item_singular}}, current_{{item_singular}})"
     hints:
       - Python allows simultaneous assignment
       - No temp variable needed
@@ -96,11 +100,12 @@ exercises:
     type: write
     pattern: arithmetic
     generator: arithmetic-values
-    prompt: Perform floor division of {{x}} by {{y}} (integer division)
+    prompt: You have {{x}} {{item_plural}} to split among {{y}} groups. Calculate how many full {{item_plural}} each group gets using floor division
     expected_answer: "{{x}} // {{y}}"
     accepted_solutions:
       - "{{x}} // {{y}}"
       - "{{x}}//{{y}}"
+      - "({{x}} // {{y}})"
     hints:
       - Use // for integer division
       - Result rounds down to nearest integer
@@ -117,14 +122,15 @@ exercises:
     type: write
     pattern: arithmetic
     generator: arithmetic-values
-    prompt: Get the remainder when {{x}} is divided by {{y}}
+    prompt: You have {{x}} {{item_plural}} to distribute among {{y}} groups. Calculate how many leftover {{item_plural}} remain using modulo
     expected_answer: "{{x}} % {{y}}"
     accepted_solutions:
       - "{{x}} % {{y}}"
       - "{{x}}%{{y}}"
+      - "({{x}} % {{y}})"
     hints:
-      - Use the % operator
-      - Returns remainder after division
+      - Use the % operator for remainder
+      - Returns how many {{item_plural}} are left over
     tags: [operators, modulo, remainder, dynamic]
 
   # Static exponentiation-intro removed - covered by exponentiation-dynamic
@@ -155,20 +161,22 @@ exercises:
     difficulty: 2
     concept: foundations
     subconcept: operators
-    level: edge
+    level: practice
     prereqs: [operators]
     type: write
     pattern: comparison
-    prompt: Check if {{item_singular}}_count is between 0 and 10 (exclusive) using chained comparison
+    prompt: Write an expression that is True when `{{item_singular}}_count` is strictly between 0 and 10
     expected_answer: 0 < {{item_singular}}_count < 10
     accepted_solutions:
       - 0 < {{item_singular}}_count < 10
+      - (0 < {{item_singular}}_count < 10)
       - (0 < {{item_singular}}_count) and ({{item_singular}}_count < 10)
       - 0 < {{item_singular}}_count and {{item_singular}}_count < 10
       - "{{item_singular}}_count > 0 and {{item_singular}}_count < 10"
+      - "({{item_singular}}_count > 0) and ({{item_singular}}_count < 10)"
     hints:
-      - Python allows chaining comparisons
-      - No need for 'and'
+      - Python allows chaining comparisons like 0 < x < 10
+      - Alternatively use 'and' to combine two conditions
     tags: [operators, comparison, chaining]
 
   # --- Expressions Subconcept ---
@@ -182,11 +190,13 @@ exercises:
     prereqs: []
     type: write
     pattern: logical
-    prompt: Write a boolean expression that is True only when both has_{{attr_key_1}} and has_{{attr_key_2}} are True
+    prompt: Write a boolean expression that is True only if both `has_{{attr_key_1}}` and `has_{{attr_key_2}}` are True
     expected_answer: has_{{attr_key_1}} and has_{{attr_key_2}}
     accepted_solutions:
       - has_{{attr_key_1}} and has_{{attr_key_2}}
       - has_{{attr_key_2}} and has_{{attr_key_1}}
+      - (has_{{attr_key_1}} and has_{{attr_key_2}})
+      - (has_{{attr_key_2}} and has_{{attr_key_1}})
     hints:
       - Use the 'and' keyword
       - Both conditions must be true
@@ -202,19 +212,21 @@ exercises:
     prereqs: []
     type: write
     pattern: logical
-    prompt: Write a boolean expression that is True when either is_{{status_var}} or is_{{attr_key_1}} is True
+    prompt: Write a boolean expression that is True if either `is_{{status_var}}` or `is_{{attr_key_1}}` is True
     expected_answer: is_{{status_var}} or is_{{attr_key_1}}
     accepted_solutions:
       - is_{{status_var}} or is_{{attr_key_1}}
       - is_{{attr_key_1}} or is_{{status_var}}
+      - (is_{{status_var}} or is_{{attr_key_1}})
+      - (is_{{attr_key_1}} or is_{{status_var}})
     hints:
       - Use the 'or' keyword
       - Either condition can be true
     tags: [expressions, boolean, or]
 
   - slug: boolean-not
-    objective: Negate conditions using the NOT or inequality operator
-    title: Boolean NOT
+    objective: Compare values for inequality using the != operator
+    title: Inequality Check
     difficulty: 1
     concept: foundations
     subconcept: expressions
@@ -222,15 +234,19 @@ exercises:
     prereqs: []
     type: write
     pattern: logical
-    prompt: Write an expression that checks if {{item_singular}}_count is not equal to 0
+    prompt: Write a boolean expression that is True when `{{item_singular}}_count` is non-zero
     expected_answer: "{{item_singular}}_count != 0"
     accepted_solutions:
       - "{{item_singular}}_count != 0"
+      - "({{item_singular}}_count != 0)"
       - "not {{item_singular}}_count == 0"
+      - "{{item_singular}}_count!=0"
+      - "0 != {{item_singular}}_count"
+      - "bool({{item_singular}}_count)"
     hints:
-      - Use != for not equal
-      - Or use 'not' with ==
-    tags: [expressions, boolean, not]
+      - Use != for not equal comparison
+      - Alternatively, bool() converts to True/False based on truthiness
+    tags: [expressions, boolean, inequality]
 
   - slug: ternary-expression
     objective: Write conditional expressions using Python ternary syntax
@@ -242,11 +258,13 @@ exercises:
     prereqs: [expressions]
     type: write
     pattern: conditional
-    prompt: Write a ternary expression that returns "{{status_var}}" if is_{{status_var}} is True, "pending" otherwise
+    prompt: Write a conditional expression that returns `"{{status_var}}"` when `is_{{status_var}}` is True, otherwise returns `"pending"`
     expected_answer: '"{{status_var}}" if is_{{status_var}} else "pending"'
     accepted_solutions:
       - '"{{status_var}}" if is_{{status_var}} else "pending"'
       - "'{{status_var}}' if is_{{status_var}} else 'pending'"
+      - '("{{status_var}}" if is_{{status_var}} else "pending")'
+      - "('{{status_var}}' if is_{{status_var}} else 'pending')"
     hints:
       - Format is value_if_true if condition else value_if_false
       - Boolean variables don't need == True comparison
@@ -263,7 +281,7 @@ exercises:
     prereqs: []
     type: write
     pattern: output
-    prompt: Print the string "Welcome to {{entity_name}} Manager!"
+    prompt: 'Print the exact message: Welcome to {{entity_name}} Manager!'
     expected_answer: 'print("Welcome to {{entity_name}} Manager!")'
     accepted_solutions:
       - 'print("Welcome to {{entity_name}} Manager!")'
@@ -283,8 +301,11 @@ exercises:
     prereqs: []
     type: write
     pattern: output
-    prompt: Print the value of the variable {{item_singular}}
+    prompt: Print the value stored in `{{item_singular}}`
     expected_answer: "print({{item_singular}})"
+    accepted_solutions:
+      - "print({{item_singular}})"
+      - "print( {{item_singular}} )"
     hints:
       - Use print() with the variable name
       - No quotes around variable name
@@ -305,6 +326,8 @@ exercises:
     accepted_solutions:
       - '{{item_singular}} = input("Enter {{item_singular}}: ")'
       - "{{item_singular}} = input('Enter {{item_singular}}: ')"
+      - '{{item_singular}} = input("Enter {{item_singular}}:")'
+      - "{{item_singular}} = input('Enter {{item_singular}}:')"
     hints:
       - Use the input() function
       - Assign result to variable
@@ -340,7 +363,7 @@ exercises:
     prereqs: [io]
     type: write
     pattern: output
-    prompt: Print {{item_singular}}_id, {{item_singular}}_name, {{item_singular}}_status separated by dashes using sep parameter
+    prompt: Print `{{item_singular}}_id`, `{{item_singular}}_name`, and `{{item_singular}}_status` on one line, separated by `-` using `sep`
     expected_answer: print({{item_singular}}_id, {{item_singular}}_name, {{item_singular}}_status, sep="-")
     accepted_solutions:
       - 'print({{item_singular}}_id, {{item_singular}}_name, {{item_singular}}_status, sep="-")'
@@ -361,11 +384,13 @@ exercises:
     type: write
     pattern: input
     targets: [io, conversion]
-    prompt: Get a number from the user and store it as an integer in a variable called {{item_singular}}_count
-    expected_answer: '{{item_singular}}_count = int(input("Enter {{item_singular}} count: "))'
+    prompt: 'Read input using the prompt "Enter count: ", convert it to an int, and store it in `{{item_singular}}_count`'
+    expected_answer: '{{item_singular}}_count = int(input("Enter count: "))'
     accepted_solutions:
-      - '{{item_singular}}_count = int(input("Enter {{item_singular}} count: "))'
-      - "{{item_singular}}_count = int(input('Enter {{item_singular}} count: '))"
+      - '{{item_singular}}_count = int(input("Enter count: "))'
+      - "{{item_singular}}_count = int(input('Enter count: '))"
+      - '{{item_singular}}_count = int(input("Enter count:"))'
+      - "{{item_singular}}_count = int(input('Enter count:'))"
       - "{{item_singular}}_count = int(input())"
     hints:
       - Wrap input() in int() to convert the string to a number
@@ -465,7 +490,7 @@ exercises:
     prereqs: [operators]
     pattern: logical
     objective: Use the logical AND operator
-    prompt: Fill in the logical operator that requires both conditions to be true
+    prompt: Fill in the operator that is True only when both conditions are True
     template: "is_valid = has_{{attr_key_1}} ___ has_{{attr_key_2}}"
     blank_position: 0
     expected_answer: "and"
@@ -485,7 +510,7 @@ exercises:
     prereqs: [operators]
     pattern: logical
     objective: Use the logical NOT operator
-    prompt: Fill in the operator that inverts a boolean value
+    prompt: Fill in the operator that flips a boolean (True to False, False to True)
     template: "is_invalid = ___ is_{{status_var}}"
     blank_position: 0
     expected_answer: "not"
@@ -545,17 +570,18 @@ exercises:
     level: intro
     prereqs: []
     pattern: assignment
+    generator: arithmetic-values
     objective: Predict variable value after assignment
     prompt: What does this variable assignment code print?
     code: |
-      {{item_singular}}_count = 10
+      {{item_singular}}_count = {{x}}
       print({{item_singular}}_count)
-    expected_answer: "10"
+    expected_answer: "{{x}}"
     accepted_solutions: []
     hints:
       - Variables store the {{item_singular}} value assigned to them
       - print() displays the stored value
-    tags: [variables, assignment]
+    tags: [variables, assignment, dynamic]
 
   - slug: variable-predict-reassign
     title: Variable Reassignment
@@ -566,18 +592,19 @@ exercises:
     level: practice
     prereqs: []
     pattern: assignment
+    generator: arithmetic-values
     objective: Predict value after reassignment
     prompt: What does this variable reassignment code print?
     code: |
-      {{item_singular}}_count = 5
-      {{item_singular}}_count = 10
+      {{item_singular}}_count = {{x}}
+      {{item_singular}}_count = {{y}}
       print({{item_singular}}_count)
-    expected_answer: "10"
+    expected_answer: "{{y}}"
     accepted_solutions: []
     hints:
       - "{{item_plural}} can be reassigned to new values"
       - The most recent assignment is what matters
-    tags: [variables, assignment]
+    tags: [variables, assignment, dynamic]
 
   - slug: operator-predict-modulo
     title: Modulo Result
@@ -588,17 +615,18 @@ exercises:
     level: practice
     prereqs: [variables]
     pattern: arithmetic
+    generator: arithmetic-values
     objective: Predict modulo operation result
     prompt: What does this modulo operation code print?
     code: |
-      {{item_singular}}_remainder = 17 % 5
+      {{item_singular}}_remainder = {{x}} % {{y}}
       print({{item_singular}}_remainder)
-    expected_answer: "2"
+    expected_answer: "{{modulo}}"
     accepted_solutions: []
     hints:
       - Modulo returns the remainder of {{item_singular}} division
-      - "17 = 5*3 + 2, so 17 % 5 = 2"
-    tags: [operators, arithmetic]
+      - "{{x}} divided by {{y}} with remainder {{modulo}}"
+    tags: [operators, arithmetic, dynamic]
 
   - slug: operator-predict-floor
     title: Floor Division Result
@@ -609,17 +637,18 @@ exercises:
     level: practice
     prereqs: [variables]
     pattern: arithmetic
+    generator: arithmetic-values
     objective: Predict floor division result
     prompt: What does this floor division code print?
     code: |
-      {{item_plural}}_per_group = 17 // 5
+      {{item_plural}}_per_group = {{x}} // {{y}}
       print({{item_plural}}_per_group)
-    expected_answer: "3"
+    expected_answer: "{{floorDiv}}"
     accepted_solutions: []
     hints:
       - Floor division discards the {{item_singular}} remainder
-      - "17 // 5 = 3 (not 3.4)"
-    tags: [operators, arithmetic]
+      - "{{x}} // {{y}} rounds down to {{floorDiv}}"
+    tags: [operators, arithmetic, dynamic]
 
   - slug: expression-predict-and
     title: Boolean AND Result
@@ -715,11 +744,13 @@ exercises:
     type: write
     pattern: arithmetic
     generator: arithmetic-values
-    prompt: "Calculate {{x}} to the power of {{y}}"
+    prompt: Write an expression that raises `{{x}}` to the power of `{{y}}`
     expected_answer: "{{x}} ** {{y}}"
     accepted_solutions:
       - "{{x}} ** {{y}}"
       - "{{x}}**{{y}}"
+      - "({{x}} ** {{y}})"
+      - "pow({{x}}, {{y}})"
     hints:
       - Use ** for exponentiation
       - Not ^ like some other languages
@@ -756,11 +787,13 @@ exercises:
     prereqs: [variables]
     type: write
     pattern: import
-    prompt: Import the math module to calculate {{item_singular}} values
+    prompt: Import the `math` module
     expected_answer: import math
+    accepted_solutions:
+      - import math
     hints:
-      - Use the import keyword for {{item_singular}} calculations
-      - math is a built-in module for {{item_plural}}
+      - Use the import keyword
+      - math is a built-in module
     tags: [imports, math, module]
 
   - slug: import-math-sqrt-dynamic
@@ -774,8 +807,11 @@ exercises:
     type: write
     pattern: import
     generator: arithmetic-values
-    prompt: Calculate the square root of {{x}} using math.sqrt
+    prompt: Assume `import math` has already run. Write an expression that returns the square root of {{x}}
     expected_answer: math.sqrt({{x}})
+    accepted_solutions:
+      - math.sqrt({{x}})
+      - (math.sqrt({{x}}))
     hints:
       - Access module functions with dot notation
       - module.function(argument) pattern
@@ -791,11 +827,13 @@ exercises:
     prereqs: [imports-basic]
     type: write
     pattern: import
-    prompt: Import only the sqrt function from the math module for {{item_singular}} calculations
+    prompt: Import only `sqrt` from the `math` module
     expected_answer: from math import sqrt
+    accepted_solutions:
+      - from math import sqrt
     hints:
-      - Use from ... import syntax for {{item_singular}} functions
-      - Then you can use sqrt() directly on {{item_plural}}
+      - Use from ... import syntax
+      - Then you can use sqrt() directly
     tags: [imports, from, math]
 
   - slug: import-random-choice
@@ -808,10 +846,13 @@ exercises:
     prereqs: [imports-basic]
     type: write
     pattern: invocation
-    prompt: Given that random is already imported, select a random {{item_singular}} from the list {{list_name}}
+    prompt: Assume `import random` has already run. Return a random element from `{{list_name}}`
     expected_answer: random.choice({{list_name}})
+    accepted_solutions:
+      - random.choice({{list_name}})
+      - (random.choice({{list_name}}))
     hints:
-      - random.choice() picks one {{item_singular}} from a sequence
+      - random.choice() picks one element from a sequence
       - Pass the list as the argument
     tags: [imports, random, choice]
 
@@ -825,7 +866,7 @@ exercises:
     prereqs: [imports-basic]
     type: write
     pattern: invocation
-    prompt: Given that datetime is already imported, get today's date
+    prompt: Assume `import datetime` has already run. Get today's date
     expected_answer: datetime.date.today()
     accepted_solutions:
       - datetime.date.today()
@@ -904,15 +945,16 @@ exercises:
     prereqs: [imports-basic]
     type: predict
     pattern: import
+    generator: arithmetic-values
     prompt: What does this math.ceil() code print?
     code: |
       import math
-      print(math.ceil(4.2))
-    expected_answer: "5"
+      print(math.ceil({{floatVal}}))
+    expected_answer: "{{ceilInt}}"
     hints:
       - ceil() rounds UP {{item_singular}} count to nearest integer
       - Always rounds {{item_plural}} toward positive infinity
-    tags: [imports, math, ceil, predict]
+    tags: [imports, math, ceil, predict, dynamic]
 
   - slug: import-multiple-basic
     objective: Import multiple items from a module in one statement
@@ -924,14 +966,16 @@ exercises:
     prereqs: [imports-basic]
     type: write
     pattern: import
-    prompt: Import both sqrt and pi from the math module for {{item_singular}} calculations
+    prompt: Import `sqrt` and `pi` from `math`
     expected_answer: from math import sqrt, pi
     accepted_solutions:
       - from math import sqrt, pi
       - from math import pi, sqrt
+      - "from math import (sqrt, pi)"
+      - "from math import (pi, sqrt)"
     hints:
-      - Separate multiple {{item_singular}} imports with commas
-      - from module import a, b when {{action_verb}}ing {{item_plural}}
+      - Separate multiple imports with commas
+      - from module import a, b
     tags: [imports, from, multiple]
 
   - slug: import-as-alias
@@ -944,9 +988,11 @@ exercises:
     prereqs: [imports-basic]
     type: write
     pattern: import
-    prompt: Import the datetime module as dt for {{item_singular}} tracking
+    prompt: Import `datetime` using the alias `dt`
     expected_answer: import datetime as dt
+    accepted_solutions:
+      - import datetime as dt
     hints:
-      - Use 'as' to create an alias for {{item_singular}} dates
-      - Common for modules with long {{item_plural}} names
+      - Use 'as' to create an alias
+      - Common for modules with long names
     tags: [imports, alias, as]

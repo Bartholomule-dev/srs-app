@@ -120,6 +120,13 @@ export const inheritanceMethodGenerator: Generator = {
       description: scenario.description,
       scenario: scenario.name,
       callOn: scenario.callOn,
+      // Which class actually provides the method implementation
+      implementingClass:
+        scenario.callOn === 'parent'
+          ? scenario.parentClass
+          : scenario.childImpl
+            ? scenario.childClass
+            : scenario.parentClass,
       code,
     };
   },
@@ -136,6 +143,8 @@ export const inheritanceMethodGenerator: Generator = {
       typeof params.description === 'string' &&
       typeof params.scenario === 'string' &&
       typeof params.callOn === 'string' &&
+      typeof params.implementingClass === 'string' &&
+      params.implementingClass.length > 0 &&
       typeof params.code === 'string' &&
       params.code.includes('class ')
     );

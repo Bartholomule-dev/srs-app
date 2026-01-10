@@ -1,0 +1,49 @@
+# paths/python/skins/sdk-builder.yaml
+# Skin for module-library blueprint - Building a client SDK theme
+
+id: sdk-builder
+title: "SDK Builder"
+icon: package
+blueprints: [module-library]
+
+vars:
+  list_name: endpoints
+  item_singular: endpoint
+  item_plural: endpoints
+  item_examples:
+    - "/users"
+    - "/auth"
+    - "/data"
+    - "/webhooks"
+  record_keys: ["path", "method", "auth_required", "rate_limit"]
+  attr_key_1: path
+  attr_key_2: method
+  status_var: authenticated
+  action_verb: request
+  entity_name: Client
+  id_var: client_id
+  filename: config.json
+  user_role: SDK developer
+
+contexts:
+  import-from: "Import dependencies for HTTP requests and JSON handling"
+  main-guard-basic: "Add the main guard so the SDK can be tested standalone"
+  context-intro: "Safely handle HTTP connections and file resources"
+  define-function: "Define the public API function for making requests"
+  default-param-simple: "Add sensible defaults like timeout and retry count"
+  typehint-param: "Type the {{attr_key_1}} parameter for better IDE support"
+  typehint-return: "Document the return type for API responses"
+  define-class: "Create the {{entity_name}} class to hold connection state"
+  init-method: "Initialize the {{entity_name}} with base URL and credentials"
+  instance-attribute: "Store the API key and base URL on the {{entity_name}}"
+  custom-exception: "Define {{entity_name}}Error for SDK-specific failures"
+  try-except-basic: "Handle network failures and invalid responses gracefully"
+
+dataPack:
+  list_sample: '["/users", "/auth", "/data"]'
+  dict_sample: '{"base_url": "https://api.example.com", "api_key": "sk-xxx"}'
+  records_sample: '[{"path": "/users", "method": "GET"}, {"path": "/auth", "method": "POST"}]'
+  string_samples:
+    - "https://api.example.com"
+    - "Bearer sk-xxx123"
+    - "application/json"

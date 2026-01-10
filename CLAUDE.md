@@ -9,6 +9,9 @@
 **Obsidian Vault** (`/home/brett/GoogleDrive/Obsidian Vault/SRS-app/`) is the source of truth. Key docs:
 - `Index.md` - Project hub | `Architecture.md` - System design, SRS algorithm
 - `Features.md` - Roadmap | `Database-Schema.md` - PostgreSQL schema, RLS
+- `Grading-Rubric.md` - Exercise quality scoring (8 dimensions, 40-point scale)
+- `Exercises/` - Auto-generated folder: `index.md` (compact summary) + per-concept files (regenerate with `pnpm generate:exercise-list`)
+- `Blueprints.md` - Blueprint/skin content planning and coverage tracking
 
 **After significant work**, update: Obsidian docs, Serena memories (if structure changed), CLAUDE.md milestones.
 
@@ -34,7 +37,7 @@
 
 A gamified web platform for practicing code syntax through spaced repetition. Target users are AI-assisted developers who want to maintain their programming fundamentals.
 
-**Current Status:** Blueprint + Skin System Complete - Presentation layer wraps atomic exercises in narrative context through 4 mega-blueprints (65 beats total) and 7 skins (5 domain-specific + 2 global). Phase 3 Gamification complete. Next: Onboarding flow, then JavaScript/TypeScript exercises.
+**Current Status:** Blueprint + Skin System Complete - Presentation layer wraps atomic exercises in narrative context through 15 blueprints (234 beats total) and 22 skins. 529 exercises (109 dynamic with 38 generators). Phase 3 Gamification complete. Next: Onboarding flow, then JavaScript/TypeScript exercises.
 
 ---
 
@@ -46,7 +49,7 @@ A gamified web platform for practicing code syntax through spaced repetition. Ta
 | Language | TypeScript 5 (strict mode) |
 | UI | React 19, Tailwind CSS 4, framer-motion |
 | Backend | Supabase (PostgreSQL + Auth + Realtime) |
-| Testing | Vitest (2182 unit/integration) + Playwright (E2E) |
+| Testing | Vitest (2219 unit/integration) + Playwright (E2E) |
 | Deployment | Vercel + GitHub Actions CI/E2E |
 | Package Manager | pnpm |
 
@@ -59,7 +62,7 @@ pnpm dev              # Start dev server (localhost:3000)
 pnpm build            # Production build
 pnpm lint             # ESLint check
 pnpm typecheck        # TypeScript type checking
-pnpm test             # Run Vitest tests (2182 tests)
+pnpm test             # Run Vitest tests (2219 tests)
 pnpm test:e2e         # Run Playwright E2E tests
 pnpm test:e2e:headed  # Run E2E with browser visible
 pnpm db:start         # Start local Supabase
@@ -71,7 +74,7 @@ pnpm validate:exercises   # Validate YAML against schema
 pnpm validate:dynamic     # Validate dynamic exercises
 pnpm validate:paths       # Validate blueprint/skin YAML files
 pnpm coverage:blueprints  # Check exercise coverage across blueprints
-pnpm generate:exercise-list  # Generate Exercise-List.md to Obsidian vault
+pnpm generate:exercise-list  # Generate Exercises/ folder to Obsidian vault
 ```
 
 ---
@@ -101,7 +104,7 @@ src/
     ├── exercise/         # Answer matching, quality inference, two-pass grading, construct detection
     ├── session/          # Session types, interleaving, teaching cards
     ├── curriculum/       # python.json curriculum graph, types, loader
-    ├── generators/       # Dynamic exercise generation (types, seed, utils, render, registry)
+    ├── generators/       # Dynamic exercise generation (38 generators, seed, utils, render, registry)
     ├── paths/            # Blueprint + Skin system (types, loader, grouping, apply-skin)
     ├── stats/            # Stats queries, streak calculation
     ├── errors/           # AppError, handleSupabaseError
@@ -311,6 +314,41 @@ gemini -p "prompt"       # Google Gemini
 
 **Debate Hall MCP:** Thread ID format `YYYY-MM-DD-topic`. Order: Wind (advocate/PATHOS) → Wall (skeptic/ETHOS) → Door (synthesizer/LOGOS) → `close_debate()`
 
+### Running Real Multi-AI Debates
+
+**CRITICAL:** When running debates between Claude, Codex, and Gemini, you must ACTUALLY call the CLI tools to get real responses. Do NOT simulate other AIs by writing their responses yourself.
+
+**Proper Debate Workflow:**
+1. `init_debate` with topic and thread_id
+2. Add YOUR opening position as Wind (Claude)
+3. Get the current debate state and send to Codex:
+   ```bash
+   codex exec "You are Wall (skeptic/ETHOS) in a debate. Topic: [topic]
+
+   Previous turns:
+   [paste all previous turns]
+
+   Respond to the arguments above. Challenge assumptions, find flaws, demand evidence."
+   ```
+4. Add Codex's ACTUAL response as a Wall turn
+5. Send updated debate state to Gemini:
+   ```bash
+   gemini -p "You are Door (synthesizer/LOGOS) in a debate. Topic: [topic]
+
+   Previous turns:
+   [paste all previous turns including Codex's response]
+
+   Synthesize the positions. Find common ground. Propose actionable resolution."
+   ```
+6. Add Gemini's ACTUAL response as a Door turn
+7. Continue rounds: send full context to each AI so they respond to each other
+8. `close_debate()` and save to Obsidian `Debate-Results/` folder
+
+**Key Rules:**
+- ALWAYS include previous turns when prompting Codex/Gemini so they can respond to each other
+- NEVER write responses "as" another AI - get their real output
+- Each AI must see what others said to create real back-and-forth
+
 **Daem0n MCP Covenant (CRITICAL):** ALWAYS call `context_check({ description: "..." })` BEFORE `remember()` or `add_rule()`. Skipping = blocked. Disable: `export DAEM0NMCP_DISABLE_COVENANT=1`
 
 ### Daem0n MCP Tools (Key Tools)
@@ -336,26 +374,27 @@ Full tool list: run `mcp__daem0nmcp__health` or see Daem0n docs.
 
 ## Exercise Content Management
 
-**Source of Truth:** `exercises/python/*.yaml` files (510 exercises across 11 files)
+**Source of Truth:** `exercises/python/*.yaml` files (529 exercises across 11 files)
 
 **Workflow for adding/modifying exercises:**
 1. Edit the appropriate YAML file in `exercises/python/`
 2. Run `pnpm validate:exercises` to check schema compliance
 3. Run `pnpm validate:dynamic` if adding dynamic exercises
-4. Run `pnpm generate:exercise-list:obsidian` to regenerate documentation
+4. Run `pnpm generate:exercise-list` to regenerate Exercises/ folder
 5. Commit both YAML changes and generated docs
 
 **Auto-Generated Files (DO NOT EDIT DIRECTLY):**
-- `docs/EXERCISES.md` - Exercise list in repo
-- Obsidian `SRS-app/Exercise-List.md` - Same content for Obsidian vault
+- Obsidian `SRS-app/Exercises/` - Folder with index.md + per-concept files
+- Obsidian `SRS-app/Blueprints.md` - Blueprint/skin documentation
+- Obsidian `SRS-app/Grading-Rubric.md` - Exercise quality rubric
 
 **Exercise Types:**
-- `write` (221): Write code from scratch
-- `fill-in` (58): Complete blanks in template
-- `predict` (73): Predict code output
-- **Dynamic** (37): Values change per user/day via generators
+- `write` (319): Write code from scratch
+- `fill-in` (71): Complete blanks in template
+- `predict` (139): Predict code output
+- **Dynamic** (109): Values change per user/day via generators
 
-**Generators:** slice-bounds, list-values, variable-names, index-values, arithmetic-values, loop-simulation, comparison-logic, string-ops, dict-values, comp-mapping, comp-filter, try-except-flow, oop-instance
+**Generators (38 total):** slice-bounds, list-values, variable-names, index-values, arithmetic-values, loop-simulation, comparison-logic, string-ops, dict-values, comp-mapping, comp-filter, try-except-flow, oop-instance, lambda-expr, zip-lists, any-all, bool-logic, class-method, conditional-chain, default-args, dict-comp, exception-scenario, file-io, finally-flow, function-call, inheritance-method, list-method, list-transform, nested-access, operator-chain, path-ops, set-ops, sorted-list, string-format, string-slice, truthiness, tuple-access, type-conversion
 
 ---
 
@@ -364,8 +403,8 @@ Full tool list: run `mcp__daem0nmcp__health` or see Daem0n docs.
 See `Database-Schema.md` in Obsidian for full schema. Key tables:
 
 - `profiles` - User data with auto-generated username, stats (streak, accuracy, total)
-- `exercises` - Exercise content with slug-based identity (510 Python exercises)
-- `user_progress` - SRS state per user/exercise (SM-2 algorithm)
+- `exercises` - Exercise content with slug-based identity (529 Python exercises)
+- `user_progress` - SRS state per user/exercise (FSRS algorithm)
 - `subconcept_progress` - **(Phase 2)** Concept-based SRS state per subconcept
 - `exercise_attempts` - **(Phase 2)** Exercise usage tracking for selection algorithm
 
@@ -389,6 +428,8 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 
 **Curriculum:** `src/lib/curriculum/python.json` - 11 concepts, 65 subconcepts (DAG structure)
 
+**Exercise Levels:** intro (206), practice (238), edge (53), integrated (32)
+
 **Algorithm Features:** Anti-repeat pattern selection, multi-subconcept SRS credit for integrated exercises
 
 ---
@@ -403,32 +444,34 @@ A presentation layer that wraps atomic exercises in narrative context.
 - **Skin:** Domain theming - variable values, context text, and data packs for exercises
 
 **Content Summary:**
-- **4 Blueprints** (65 beats total):
-  - `collection-cli-app` (20 beats) - Beginner CLI app from scratch
-  - `data-processor` (18 beats) - Intermediate log parsing pipeline
-  - `text-adventure` (15 beats) - Intermediate interactive game
-  - `module-library` (12 beats) - Advanced reusable module design
-- **7 Skins** (5 domain-specific + 2 global):
-  - Domain-specific: task-manager, shopping-cart, playlist-app, recipe-book, game-inventory
-  - Global (any blueprint): fantasy-game, music-app
-- **19 exercises** converted to use skin templates
+- **15 Blueprints** (234 beats total):
+  - `python-basics` (16 beats), `collection-cli-app` (20 beats), `calculator-app` (18 beats)
+  - `data-processor` (18 beats), `data-transformer` (13 beats), `data-store` (18 beats)
+  - `text-adventure` (15 beats), `text-formatter` (14 beats)
+  - `file-manager` (16 beats), `module-library` (12 beats), `api-functions` (18 beats)
+  - `automation-script` (18 beats), `form-validator` (11 beats), `error-handler` (12 beats)
+  - `oop-entity` (15 beats)
+- **22 Skins** (domain-specific + global):
+  - Domain: task-manager, shopping-cart, playlist-app, recipe-book, game-inventory, calculator-app, hello-python, pet-simulator, etc.
+  - Global: fantasy-game, music-app, dungeon-crawler, api-guardian, batch-processor, etc.
 
 **Directory Structure:**
 ```
 paths/python/
-├── blueprints/
-│   ├── collection-cli-app.yaml  # 20 beats (beginner)
-│   ├── data-processor.yaml      # 18 beats (intermediate)
-│   ├── text-adventure.yaml      # 15 beats (intermediate)
-│   └── module-library.yaml      # 12 beats (advanced)
-└── skins/
-    ├── task-manager.yaml        # Domain-specific
-    ├── shopping-cart.yaml
-    ├── playlist-app.yaml
-    ├── recipe-book.yaml
-    ├── game-inventory.yaml
-    ├── fantasy-game.yaml        # Global skin
-    └── music-app.yaml           # Global skin
+├── blueprints/               # 15 blueprint files (234 total beats)
+│   ├── python-basics.yaml, collection-cli-app.yaml, calculator-app.yaml
+│   ├── data-processor.yaml, data-transformer.yaml, data-store.yaml
+│   ├── text-adventure.yaml, text-formatter.yaml, file-manager.yaml
+│   ├── module-library.yaml, api-functions.yaml, automation-script.yaml
+│   ├── form-validator.yaml, error-handler.yaml, oop-entity.yaml
+└── skins/                    # 22 skin files
+    ├── task-manager.yaml, shopping-cart.yaml, playlist-app.yaml
+    ├── recipe-book.yaml, game-inventory.yaml, calculator-app.yaml
+    ├── hello-python.yaml, pet-simulator.yaml, fantasy-game.yaml
+    ├── music-app.yaml, dungeon-crawler.yaml, api-guardian.yaml
+    ├── batch-processor.yaml, config-manager.yaml, csv-parser.yaml
+    ├── devops-toolkit.yaml, log-analyzer.yaml, markdown-editor.yaml
+    ├── sdk-builder.yaml, signup-form.yaml, user-database.yaml, api-client.yaml
 ```
 
 **Key Types (`src/lib/paths/types.ts`):**
@@ -470,9 +513,9 @@ paths/python/
 
 ---
 
-## Completed Milestones (28)
+## Completed Milestones (28+)
 
-1. Database & Types | 2. Auth & Hooks | 3. SRS Engine | 4. Exercise Engine | 5. Practice Session | 6. Exercise Library | 7. Basic Stats | 8. MVP Deployment | 9. UI/UX Redesign | 10. Custom UI Components | 11. Theme System | 12. Phase 2.5 Curriculum Enhancement | 13. Learning Mode | 14. Phase 2.7 Exercise Variety | 15. Curriculum Restructure | 16. SM-2→FSRS Migration | 17. Dedicated Teaching Examples | 18-23. Dynamic Exercises (Phases 1-6) | 24. Exercise-List Auto-Gen | 25. Skill Tree Visualization | 26. Premium Curriculum Restructure | 27. Phase 3 Gamification | 28. Blueprint + Skin System
+1. Database & Types | 2. Auth & Hooks | 3. SRS Engine | 4. Exercise Engine | 5. Practice Session | 6. Exercise Library | 7. Basic Stats | 8. MVP Deployment | 9. UI/UX Redesign | 10. Custom UI Components | 11. Theme System | 12. Phase 2.5 Curriculum Enhancement | 13. Learning Mode | 14. Phase 2.7 Exercise Variety | 15. Curriculum Restructure | 16. SM-2→FSRS Migration | 17. Dedicated Teaching Examples | 18-23. Dynamic Exercises (Phases 1-6) | 24. Exercise-List Auto-Gen | 25. Skill Tree Visualization | 26. Premium Curriculum Restructure | 27. Phase 3 Gamification | 28. Blueprint + Skin System | 29+. Ongoing generator/content expansion (38 generators, 22 skins, 15 blueprints)
 
 *Details in design docs: `docs/plans/`*
 

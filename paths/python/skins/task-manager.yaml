@@ -3,7 +3,7 @@
 id: task-manager
 title: "Task Manager"
 icon: "\u2705"
-blueprints: [collection-cli-app]
+# Global skin - works with any blueprint
 
 vars:
   list_name: tasks

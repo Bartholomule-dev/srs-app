@@ -4,18 +4,29 @@ category: error-handling
 
 exercises:
   - slug: try-except-basic
-    objective: Write a basic try-except block to catch any exception
+    objective: Write a basic try-except block to catch exceptions
     title: Try Except Basic
     difficulty: 2
-    prompt: Write a complete try-except structure to safely {{action_verb}} a {{item_singular}} (use pass in both blocks)
+    prompt: Write a try/except skeleton that catches Exception. Use pass in both blocks.
     expected_answer: |
       try:
           pass
-      except:
+      except Exception:
+          pass
+    accepted_solutions:
+      - |
+        try:
+            pass
+        except Exception:
+            pass
+      - |
+        try:
+          pass
+        except Exception:
           pass
     hints:
       - Use try and except keywords for {{item_singular}} safety
-      - Code that might fail when {{action_verb}}ing {{item_plural}} goes in try block
+      - Catch Exception to handle errors when {{action_verb}}ing {{item_plural}}
     tags: [exceptions, try, intermediate]
     concept: error-handling
     subconcept: try-except
@@ -28,11 +39,14 @@ exercises:
     objective: Handle lookup failures with specific exception
     title: Key Not Found Error
     difficulty: 2
-    prompt: Catch a KeyError exception when the {{item_singular}} key doesn't exist in the {{list_name}}
+    prompt: Write the except clause that catches KeyError when a key is missing from a dictionary.
     expected_answer: "except KeyError:"
+    accepted_solutions:
+      - "except KeyError:"
+      - "except KeyError :"
     hints:
       - Put exception type after the except keyword
-      - Specific exceptions prevent catching unrelated {{item_singular}} errors
+      - KeyError is raised when accessing a missing dictionary key
     tags: [exceptions, key-error]
     concept: error-handling
     subconcept: try-except
@@ -42,7 +56,6 @@ exercises:
     pattern: handling
 
   - slug: raise-exception
-    domains: [web, general]
     objective: Raise a validation error when input fails rules
     title: Validation Error
     difficulty: 2
@@ -94,11 +107,14 @@ exercises:
     prereqs: [error-handling.try-except]
     type: write
     pattern: handling
-    prompt: Write a finally block to always save the {{list_name}} state after {{action_verb}}ing {{item_plural}}
+    prompt: Write only the line that begins a finally block.
     expected_answer: "finally:"
+    accepted_solutions:
+      - "finally:"
+      - "finally :"
     hints:
       - finally runs whether {{item_singular}} exception occurs or not
-      - Use for cleanup code (saving {{list_name}}, closing files)
+      - Use for cleanup code (closing files, saving state)
     tags: [exceptions, finally, cleanup]
 
   - slug: finally-cleanup
@@ -115,6 +131,13 @@ exercises:
     expected_answer: |
       finally:
           f.close()
+    accepted_solutions:
+      - |
+        finally:
+            f.close()
+      - |
+        finally:
+          f.close()
     hints:
       - finally ensures {{item_singular}} cleanup happens
       - Even if {{item_singular}} exception occurs
@@ -130,13 +153,28 @@ exercises:
     prereqs: [error-handling.finally]
     type: write
     pattern: handling
-    prompt: Write a complete try-except-finally structure to safely {{action_verb}} {{item_singular}} with pass in each block
+    prompt: Write a try/except/finally skeleton. Use pass in each block and catch Exception.
     expected_answer: |
       try:
           pass
-      except:
+      except Exception:
           pass
       finally:
+          pass
+    accepted_solutions:
+      - |
+        try:
+            pass
+        except Exception:
+            pass
+        finally:
+            pass
+      - |
+        try:
+          pass
+        except Exception:
+          pass
+        finally:
           pass
     hints:
       - finally comes after except when {{action_verb}}ing {{item_plural}}
@@ -153,7 +191,7 @@ exercises:
     prereqs: [error-handling.finally]
     type: predict
     pattern: handling
-    prompt: What gets printed when {{action_verb}}ing the {{item_singular}}?
+    prompt: What does this code print? List each line of output.
     code: |
       def {{action_verb}}_{{item_singular}}():
           try:
@@ -166,7 +204,7 @@ exercises:
       cleanup
       {{status_var}}
     hints:
-      - finally runs before {{action_verb}}_{{item_singular}} actually returns
+      - finally runs before the function actually returns
       - Return value is held until finally completes
     tags: [exceptions, finally, return]
 
@@ -180,7 +218,7 @@ exercises:
     prereqs: [error-handling.finally]
     type: predict
     pattern: handling
-    prompt: What gets printed before the {{item_singular}} error?
+    prompt: What does this code print before it crashes? List each line.
     code: |
       try:
           print("{{action_verb}}ing")
@@ -191,27 +229,34 @@ exercises:
       {{action_verb}}ing
       cleanup
     hints:
-      - finally runs before {{item_singular}} exception propagates
+      - finally runs before the exception propagates
       - Exception continues after finally completes
     tags: [exceptions, finally, propagation]
 
   - slug: else-clause
     objective: Use else clause that runs when no exception occurs
     title: Try-Else Clause
-    difficulty: 3
+    difficulty: 2
     concept: error-handling
     subconcept: finally
-    level: edge
+    level: intro
     prereqs: [error-handling.try-except]
     type: write
     pattern: handling
-    prompt: Write an else block that runs when {{item_singular}} {{action_verb}} succeeds (no exception)
+    prompt: In a try/except, write an else block that runs only when no exception occurs. Use pass for the body.
     expected_answer: |
       else:
           pass
+    accepted_solutions:
+      - |
+        else:
+            pass
+      - |
+        else:
+          pass
     hints:
-      - else comes between except and finally when {{action_verb}}ing {{item_plural}}
-      - Runs only if no {{item_singular}} exception occurs
+      - else comes between except and finally
+      - Runs only if no exception occurred in try block
     tags: [exceptions, else, control]
 
   # --- Additional Raising Exercises ---
@@ -225,13 +270,13 @@ exercises:
     prereqs: [try-except]
     type: write
     pattern: handling
-    prompt: Raise a generic Exception when {{action_verb}}ing {{item_singular}} fails
+    prompt: Write the statement to raise a generic Exception (no message needed).
     expected_answer: "raise Exception()"
     accepted_solutions:
       - "raise Exception()"
       - "raise Exception"
     hints:
-      - Use the raise keyword for {{item_singular}} errors
+      - Use the raise keyword followed by the exception type
       - Exception is the base exception class
     tags: [exceptions, raise, intro]
 
@@ -285,11 +330,11 @@ exercises:
     prereqs: [error-handling.raising]
     type: write
     pattern: handling
-    prompt: Re-raise the current exception after logging the {{item_singular}} {{action_verb}} error
+    prompt: Write the statement to re-raise the current exception (inside an except block).
     expected_answer: raise
     hints:
       - Bare 'raise' re-raises current {{item_singular}} exception
-      - Preserves original {{item_singular}} traceback
+      - Preserves original traceback for debugging
     tags: [exceptions, raise, reraise]
 
   - slug: custom-exception
@@ -302,11 +347,20 @@ exercises:
     prereqs: [error-handling.raising, oop.inheritance]
     type: write
     pattern: definition
-    prompt: Define a custom exception class {{entity_name}}Error for {{item_singular}} operations that inherits from Exception
-    expected_answer: "class {{entity_name}}Error(Exception):"
+    prompt: Define a custom exception class {{entity_name}}Error that inherits from Exception. Use pass for the body.
+    expected_answer: |
+      class {{entity_name}}Error(Exception):
+          pass
+    accepted_solutions:
+      - |
+        class {{entity_name}}Error(Exception):
+            pass
+      - |
+        class {{entity_name}}Error(Exception):
+          pass
     hints:
-      - Inherit from Exception for {{item_singular}} errors
-      - Can add custom {{item_singular}} attributes if needed
+      - Inherit from Exception using class Name(Exception)
+      - Custom exceptions can add attributes later
     tags: [exceptions, custom, class]
 
   # --- Fill-in Exercises ---
@@ -470,7 +524,7 @@ exercises:
     type: predict
     pattern: handling
     generator: exception-scenario
-    prompt: "What exception type does this code raise?"
+    prompt: "What exception type does this code raise? (Answer with just the exception class name, e.g. ValueError)"
     code: "{{code}}"
     expected_answer: "{{exceptionType}}"
     hints:
@@ -509,12 +563,118 @@ exercises:
     type: predict
     pattern: handling
     generator: finally-flow
-    prompt: "How many lines does this code print?"
+    prompt: "How many times does print() run? Answer with a single integer."
     code: "{{code}}"
     expected_answer: "{{outputCount}}"
     hints:
-      - "Count: try block lines + except block lines (if exception) + finally block lines"
+      - "Count: try block prints + except block prints (if exception) + finally block prints"
       - "{{description}}"
     tags: [exceptions, finally, trace, dynamic]
+
+  # --- Integrated Exercises (Multi-Concept) ---
+  - slug: error-handling-file-read
+    objective: Handle file reading errors with proper exception handling
+    title: Safe File Read
+    difficulty: 3
+    concept: error-handling
+    subconcept: try-except
+    level: integrated
+    prereqs: [try-except, modules-files.reading]
+    targets: [try-except, reading]
+    type: write
+    pattern: handling
+    prompt: |
+      Write code that tries to read {{filename}} and stores content in {{item_singular}}_data.
+      Handle FileNotFoundError by setting {{item_singular}}_data to an empty string.
+    expected_answer: |
+      try:
+          with open("{{filename}}") as f:
+              {{item_singular}}_data = f.read()
+      except FileNotFoundError:
+          {{item_singular}}_data = ""
+    accepted_solutions:
+      - |
+        try:
+            with open("{{filename}}") as f:
+                {{item_singular}}_data = f.read()
+        except FileNotFoundError:
+            {{item_singular}}_data = ""
+      - |
+        try:
+            with open('{{filename}}') as f:
+                {{item_singular}}_data = f.read()
+        except FileNotFoundError:
+            {{item_singular}}_data = ''
+    hints:
+      - "Use with statement for safe file handling"
+      - "Catch FileNotFoundError specifically"
+      - "Provide a fallback value in the except block"
+    tags: [exceptions, files, integrated]
+
+  - slug: error-handling-dict-access
+    objective: Safely access dictionary keys with exception handling
+    title: Safe Dict Access
+    difficulty: 3
+    concept: error-handling
+    subconcept: try-except
+    level: integrated
+    prereqs: [try-except, dicts]
+    targets: [try-except, dicts]
+    type: write
+    pattern: handling
+    prompt: |
+      Try to get {{item_singular}}_data["{{attr_key_1}}"] and store in result.
+      Handle KeyError by setting result to "Unknown".
+    expected_answer: |
+      try:
+          result = {{item_singular}}_data["{{attr_key_1}}"]
+      except KeyError:
+          result = "Unknown"
+    accepted_solutions:
+      - |
+        try:
+            result = {{item_singular}}_data["{{attr_key_1}}"]
+        except KeyError:
+            result = "Unknown"
+      - |
+        try:
+            result = {{item_singular}}_data['{{attr_key_1}}']
+        except KeyError:
+            result = 'Unknown'
+    hints:
+      - "KeyError is raised when a key doesn't exist"
+      - "Provide a default value in the except block"
+      - "Alternatively, use .get() method for simpler cases"
+    tags: [exceptions, dicts, integrated]
+
+  - slug: error-handling-conversion
+    objective: Handle type conversion errors with proper fallback
+    title: Safe Type Conversion
+    difficulty: 3
+    concept: error-handling
+    subconcept: try-except
+    level: integrated
+    prereqs: [try-except, foundations.conversion]
+    targets: [try-except, conversion]
+    type: write
+    pattern: handling
+    prompt: |
+      Try to convert {{item_singular}}_input to an integer and store in {{item_singular}}_count.
+      Handle ValueError by setting {{item_singular}}_count to 0.
+    expected_answer: |
+      try:
+          {{item_singular}}_count = int({{item_singular}}_input)
+      except ValueError:
+          {{item_singular}}_count = 0
+    accepted_solutions:
+      - |
+        try:
+            {{item_singular}}_count = int({{item_singular}}_input)
+        except ValueError:
+            {{item_singular}}_count = 0
+    hints:
+      - "int() raises ValueError for non-numeric strings"
+      - "Provide a sensible default in the except block"
+    tags: [exceptions, conversion, integrated]
 
   # --- Trade-off Exercises (Senior-Level Decision Making) ---

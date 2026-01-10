@@ -1,0 +1,52 @@
+# paths/python/skins/dungeon-crawler.yaml
+# Skin for text-adventure blueprint - Dungeon exploration theme
+
+id: dungeon-crawler
+title: "Dungeon Crawler"
+icon: castle
+blueprints: [text-adventure]
+
+vars:
+  list_name: inventory
+  item_singular: item
+  item_plural: items
+  item_examples:
+    - "rusty key"
+    - "torch"
+    - "healing potion"
+    - "gold coin"
+  record_keys: ["name", "power", "weight", "quantity"]
+  attr_key_1: name
+  attr_key_2: power
+  status_var: active
+  action_verb: explore
+  entity_name: Hero
+  id_var: room_id
+  filename: save.json
+  user_role: adventurer
+
+contexts:
+  dict-create-values: "Create the player state to track health and location in the dungeon"
+  list-create-empty: "Initialize an empty {{list_name}} for the {{entity_name}}"
+  dict-set-item: "Set the current room in the dungeon map"
+  f-string-basic: "Display the {{entity_name}}'s status and current {{list_name}}"
+  string-split: "Parse the player's command into action and target"
+  string-lower: "Normalize player input to handle 'GO NORTH' and 'go north'"
+  if-else-basic: "Handle the 'go' command to move between dungeon rooms"
+  elif-http-status: "Route commands like 'look', 'take', 'use', and 'attack'"
+  match-case-basic: "Modern command dispatch for player actions"
+  while-true-break: "Run the main game loop until the {{entity_name}} escapes or dies"
+  list-in-check: "Check if an {{item_singular}} is in the {{list_name}}"
+  list-append-dynamic: "Add a found {{item_singular}} to the {{list_name}}"
+  list-pop-index: "Remove and use an {{item_singular}} from the {{list_name}}"
+  define-function: "Define a function to handle {{action_verb}} actions"
+  function-return: "Return the updated game state after processing a command"
+
+dataPack:
+  list_sample: '["torch", "rusty key", "healing potion"]'
+  dict_sample: '{"health": 100, "room": "entrance", "gold": 50}'
+  records_sample: '[{"name": "goblin", "power": 10}, {"name": "dragon", "power": 50}]'
+  string_samples:
+    - "go north"
+    - "take torch"
+    - "use healing potion"

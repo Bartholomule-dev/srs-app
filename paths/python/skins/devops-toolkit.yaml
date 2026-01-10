@@ -1,0 +1,133 @@
+# paths/python/skins/devops-toolkit.yaml
+# Global skin - no blueprints restriction = usable with any Python blueprint
+
+id: devops-toolkit
+title: "DevOps Toolkit"
+icon: "\U0001F528"
+# NO blueprints field = global skin (usable with any blueprint)
+
+vars:
+  # REQUIRED existing fields (match current SkinVars interface)
+  list_name: servers
+  item_singular: server
+  item_plural: servers
+  item_examples:
+    - "web-01"
+    - "db-01"
+    - "cache-01"
+    - "api-01"
+    - "worker-01"
+    - "proxy-01"
+  record_keys: ["hostname", "ip", "status", "cpu"]
+
+  # Extended optional slots for broader exercise coverage
+  attr_key_1: hostname
+  attr_key_2: ip
+  id_var: server_id
+  filename: inventory.yaml
+  filetype: yaml
+  user_role: sysadmin
+  status_var: healthy
+  action_verb: deploy
+  entity_name: Server
+
+dataPack:
+  list_sample: ["web-01", "db-01", "cache-01", "api-01"]
+  dict_sample:
+    hostname: "web-01"
+    ip: "10.0.0.1"
+    status: "running"
+    cpu: 45
+  records_sample:
+    - { hostname: "web-01", ip: "10.0.0.1", status: "running" }
+    - { hostname: "db-01", ip: "10.0.0.2", status: "stopped" }
+    - { hostname: "cache-01", ip: "10.0.0.3", status: "running" }
+  string_samples:
+    - "Deployment started"
+    - "Health check passed"
+    - "Container restarted"
+    - "Service scaled to 3 replicas"
+
+contexts:
+  # Setup & Storage
+  list-create-empty: "Initialize an empty list to store server instances."
+  list-create-values: "Define the list of servers to manage."
+  tuple-create: "Store immutable config like (hostname, port)."
+  list-append-dynamic: "Add a new server to the cluster."
+  list-extend-method: "Add multiple servers from a discovery service."
+  list-insert-dynamic: "Insert a server at a specific priority position."
+  list-in-check: "Check if a server is already in the cluster."
+  list-count: "Count how many servers have this status."
+  list-index: "Find the position of a server in the rotation."
+  dict-create-values: "Store server configuration with hostname and IP."
+  dict-create-empty: "Create empty config for new server."
+  dict-get-default: "Get server setting with sensible default."
+  dict-set-item: "Update a server's configuration value."
+  input-string: "Get the deployment target from operator."
+  print-string: "Log a status message to the console."
+  print-variable: "Display the current server status."
+
+  # Display & Iteration
+  for-loop-list: "Iterate over all servers for health checks."
+  for-loop-string: "Parse each character in a config string."
+  for-loop-range: "Process servers in batches by index."
+  enumerate-basic: "Number servers for selection menu."
+  enumerate-start: "Number servers starting from 1 for display."
+  zip-basic: "Pair server names with their IP addresses."
+  f-string-basic: "Format log message with server name and status."
+  f-string-expression: "Show calculated uptime percentage."
+  string-format: "Format the deployment summary."
+  list-sorted: "Sort servers alphabetically for display."
+  list-sort: "Sort servers by priority."
+  list-reverse: "Show servers in reverse order."
+  sorted-reverse: "Get servers sorted by CPU usage, highest first."
+  while-loop-basic: "Poll until deployment completes."
+  list-comp-filter-dynamic: "Filter to only running servers."
+  list-comp-basic: "Get list of all hostnames."
+  list-comp-conditional: "Get servers with CPU above threshold."
+
+  # Logic & Validation
+  if-else-basic: "Check if server is running or needs restart."
+  if-only: "Check if cluster is empty."
+  boolean-and: "Check if server is healthy AND under load limit."
+  boolean-or: "Check if server is down OR unreachable."
+  elif-grade: "Categorize server load: critical, warning, or normal."
+  elif-http-status: "Handle different deployment status codes."
+  match-case-basic: "Handle different operator commands."
+  try-except-basic: "Handle connection timeouts gracefully."
+  raise-intro: "Raise an error for invalid configuration."
+  raise-exception: "Raise ServerNotFound when server is missing."
+  except-specific: "Catch timeout errors on connection."
+  except-multi: "Handle both TimeoutError and ConnectionError."
+  try-else: "Run code only when connection succeeded."
+  finally-basic: "Always close the SSH connection."
+  try-except-finally: "Complete connection handling with cleanup."
+  reraise: "Re-raise after logging the deployment error."
+
+  # Organization & Persistence
+  define-function: "Create a function to check server health."
+  function-return: "Return the health check result."
+  return-none: "Return None when server not found."
+  default-param-simple: "Deploy with default timeout of 30s."
+  default-param-intro: "Define optional deployment parameters."
+  default-param-multiple: "Multiple defaults for server config."
+  context-intro: "Write server inventory to a YAML file."
+  file-open-write: "Write deployment log to disk."
+  file-read-lines: "Load server inventory from file."
+  pathlib-intro: "Use Path objects for config file management."
+  pathlib-check-exists: "Check if config file exists."
+  pathlib-create-path: "Create path to the configs directory."
+  pathlib-join-paths: "Join paths for backup configs."
+  main-guard-basic: "Only run deployment script when executed directly."
+  import-from: "Import deployment utility functions."
+  import-module: "Import the infrastructure module."
+
+  # Comprehensions
+  dict-comp-basic: "Create hostname to IP mapping."
+  dict-comp-intro: "Build a dict of server configurations."
+
+  # OOP
+  define-class: "Create a Server class to represent infrastructure."
+  init-method: "Initialize server with hostname and IP."
+  instance-attribute: "Store server status as instance attribute."
+  custom-exception: "Create a custom DeploymentError exception."

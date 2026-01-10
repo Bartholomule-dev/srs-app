@@ -14,7 +14,10 @@ exercises:
     prereqs: [comparisons]
     type: write
     pattern: branching
-    prompt: 'Write an if-else that prints "{{item_singular}} {{status_var}}" if {{status_var}} is True, otherwise "{{item_singular}} pending"'
+    prompt: |
+      Write an if-else statement:
+      - If {{status_var}} is True, print "{{item_singular}} {{status_var}}"
+      - Otherwise, print "{{item_singular}} pending"
     expected_answer: |
       if {{status_var}}:
           print("{{item_singular}} {{status_var}}")
@@ -31,9 +34,14 @@ exercises:
             print('{{item_singular}} {{status_var}}')
         else:
             print('{{item_singular}} pending')
+      - |
+        if {{status_var}} == True:
+            print("{{item_singular}} {{status_var}}")
+        else:
+            print("{{item_singular}} pending")
     hints:
-      - if condition followed by colon
-      - else also needs a colon
+      - if statement ends with a colon, then indent the body
+      - else clause also ends with a colon
     tags: [if, else]
 
   - slug: if-statement
@@ -72,7 +80,9 @@ exercises:
     prereqs: [if-else]
     type: write
     pattern: branching
-    prompt: Check if "{{item_example}}" is in the {{list_name}} list and print "{{entity_name}} exists"
+    prompt: |
+      If "{{item_example}}" is in the {{list_name}} list, print "{{entity_name}} exists".
+      (Assume {{list_name}} is already defined as a list of strings.)
     expected_answer: |
       if "{{item_example}}" in {{list_name}}:
           print("{{entity_name}} exists")
@@ -84,8 +94,8 @@ exercises:
         if '{{item_example}}' in {{list_name}}:
             print('{{entity_name}} exists')
     hints:
-      - Use 'in' operator for membership
-      - Common pattern for checking existence
+      - Use the 'in' operator to check membership
+      - No else clause needed for this check
     tags: [if, membership]
 
   - slug: if-not-condition
@@ -98,7 +108,9 @@ exercises:
     prereqs: [if-else]
     type: write
     pattern: branching
-    prompt: Print "Empty {{list_name}}" if the {{list_name}} list is empty
+    prompt: |
+      If {{list_name}} is empty, print "Empty {{list_name}}".
+      Use a Pythonic truthiness check (not len()).
     expected_answer: |
       if not {{list_name}}:
           print("Empty {{list_name}}")
@@ -109,12 +121,10 @@ exercises:
       - |
         if not {{list_name}}:
             print('Empty {{list_name}}')
-      - |
-        if len({{list_name}}) == 0:
-            print("Empty {{list_name}}")
     hints:
       - Empty lists are falsy in Python
-      - Use 'not' for negation
+      - "not [] evaluates to True"
+      - "Avoid 'if len(list) == 0' - it's less Pythonic"
     tags: [if, not, truthiness]
 
   - slug: if-fill-colon
@@ -128,14 +138,14 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: branching
-    prompt: Fill in the character that ends the {{item_singular}} check condition
+    prompt: Fill in the character that ends an if statement's condition line
     template: |
       if {{item_singular}}_count > 30___
           print("High {{item_singular}} count!")
     expected_answer: ":"
     hints:
-      - What ends the if condition line?
-      - Same as other block statements in Python
+      - All Python block statements (if, for, def, etc.) end with this character
+      - It tells Python that an indented block follows
     tags: [if, syntax, fill-in]
 
   - slug: if-fill-else
@@ -149,7 +159,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: branching
-    prompt: Fill in the keyword for the alternative {{item_singular}} case
+    prompt: Fill in the keyword that runs when the if condition is False
     template: |
       if is_{{status_var}}:
           {{action_verb}}_{{item_singular}}()
@@ -157,8 +167,8 @@ exercises:
           show_{{item_singular}}_error()
     expected_answer: "else"
     hints:
-      - What keyword handles the alternative case?
-      - No condition needed after this keyword
+      - This keyword handles the "otherwise" case
+      - No condition needed - it catches everything not matched by if
     tags: [else, branching, fill-in]
 
   - slug: if-predict-basic
@@ -219,8 +229,11 @@ exercises:
     type: write
     pattern: branching
     prompt: |
-      Assign {{item_singular}}_grade based on {{item_singular}}_score:
-      90+ = "A", 80+ = "B", 70+ = "C", else "F"
+      Write an if/elif/else chain to assign {{item_singular}}_grade based on {{item_singular}}_score:
+      - 90 or higher: "A"
+      - 80 to 89: "B"
+      - 70 to 79: "C"
+      - Below 70: "F"
     expected_answer: |
       if {{item_singular}}_score >= 90:
           {{item_singular}}_grade = "A"
@@ -250,8 +263,8 @@ exercises:
         else:
             {{item_singular}}_grade = 'F'
     hints:
-      - Check highest {{item_singular}} threshold first
-      - Each elif checks progressively lower {{item_singular}} scores
+      - Check the highest threshold first (90)
+      - Once a condition matches, remaining elif/else are skipped
     tags: [elif, branching, grading]
 
   - slug: elif-http-status
@@ -265,8 +278,12 @@ exercises:
     type: write
     pattern: branching
     prompt: |
-      Print message based on status_code:
-      200 = "OK", 404 = "Not Found", 500 = "Server Error", else "Unknown"
+      Given an integer status_code, print the appropriate message:
+      - 200: "OK"
+      - 404: "Not Found"
+      - 500: "Server Error"
+      - Any other code: "Unknown"
+      Use if/elif/else (not match-case).
     expected_answer: |
       if status_code == 200:
           print("OK")
@@ -296,8 +313,8 @@ exercises:
         else:
             print('Unknown')
     hints:
-      - Check each specific code
-      - else handles unexpected codes
+      - Use == to check for specific integer values
+      - else clause handles any unexpected codes
     tags: [elif, http, status]
 
   - slug: elif-fill
@@ -311,7 +328,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: branching
-    prompt: Fill in the keyword for an additional {{item_singular}} condition branch
+    prompt: Fill in the keyword for adding another conditional branch with its own condition
     template: |
       if {{item_singular}}_count > 10:
           print("Many {{item_plural}}")
@@ -319,8 +336,8 @@ exercises:
           print("Some {{item_plural}}")
     expected_answer: "elif"
     hints:
-      - Combines else and if
-      - Python's way of saying "else if"
+      - Python's contraction of "else if"
+      - Allows checking a new condition when the previous was False
     tags: [elif, fill-in]
 
   - slug: elif-predict-order
@@ -391,7 +408,7 @@ exercises:
       - '{{item_singular}}_status = "{{status_var}}" if is_{{status_var}} else "pending"'
       - "{{item_singular}}_status = '{{status_var}}' if is_{{status_var}} else 'pending'"
     hints:
-      - Format is value_if_true if condition else value_if_false
+      - "Format is: value_if_true if condition else value_if_false"
       - Common pattern for dashboard indicators
     tags: [ternary, expression, ui-state]
 
@@ -405,15 +422,16 @@ exercises:
     prereqs: [ternary]
     type: write
     pattern: expression
-    prompt: Find maximum of a and b using ternary expression
+    prompt: Use a ternary expression (not the max() function) to assign the larger of a and b to max_val
     expected_answer: max_val = a if a > b else b
     accepted_solutions:
       - max_val = a if a > b else b
-      - maximum = a if a > b else b
-      - result = a if a > b else b
+      - max_val = a if a >= b else b
+      - max_val = b if b > a else a
+      - max_val = b if b >= a else a
     hints:
-      - Return a if a is larger, else return b
-      - Same logic as max() function
+      - "Format is: value_if_true if condition else value_if_false"
+      - Compare a and b, then pick the larger one
     tags: [ternary, max, expression]
 
   - slug: ternary-default
@@ -426,14 +444,17 @@ exercises:
     prereqs: [ternary]
     type: write
     pattern: expression
-    prompt: Set display_{{item_singular}} to {{item_singular}} if {{item_singular}} exists, else "Unknown"
+    prompt: |
+      Use a ternary expression to set display_{{item_singular}}:
+      - If {{item_singular}} is truthy, use {{item_singular}}
+      - Otherwise, use "Unknown"
     expected_answer: 'display_{{item_singular}} = {{item_singular}} if {{item_singular}} else "Unknown"'
     accepted_solutions:
       - 'display_{{item_singular}} = {{item_singular}} if {{item_singular}} else "Unknown"'
       - "display_{{item_singular}} = {{item_singular}} if {{item_singular}} else 'Unknown'"
     hints:
-      - Truthy check on {{item_singular}}
-      - Empty string or None would use fallback
+      - Truthy check returns the value itself if true
+      - Empty string, None, 0, [] are all falsy
     tags: [ternary, default, fallback]
 
   - slug: ternary-fill
@@ -447,12 +468,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: expression
-    prompt: Fill in the keyword that provides the alternative {{item_singular}} value
+    prompt: Fill in the keyword that separates the two possible values in a conditional expression
     template: '{{item_singular}}_status = "{{status_var}}" if is_{{status_var}} ___ "pending"'
     expected_answer: "else"
     hints:
-      - What separates the two possible {{item_singular}} values?
-      - Keyword that provides the alternative
+      - Same keyword as in if/else blocks
+      - "Pattern is: value_if_true if condition ___ value_if_false"
     tags: [ternary, fill-in]
 
   - slug: ternary-predict
@@ -509,8 +530,10 @@ exercises:
     type: write
     pattern: branching
     prompt: |
-      Use match-case to handle command:
-      "start" prints "Starting", "stop" prints "Stopping", default prints "Unknown"
+      Use match-case to handle the command variable:
+      - "start" prints "Starting"
+      - "stop" prints "Stopping"
+      - Any other value prints "Unknown"
     expected_answer: |
       match command:
           case "start":
@@ -537,8 +560,8 @@ exercises:
             case _:
                 print('Unknown')
     hints:
-      - Use match value followed by colon
-      - case _ is the wildcard (default)
+      - "'match' takes the value to check, 'case' defines each pattern"
+      - "Use _ (underscore) as the wildcard for the default case"
     tags: [match, case, structural]
 
   - slug: match-case-or
@@ -551,7 +574,9 @@ exercises:
     prereqs: [match-case]
     type: write
     pattern: branching
-    prompt: Match command for "quit" or "exit" to print "Goodbye"
+    prompt: |
+      Use match-case to handle the command variable.
+      If command is "quit" or "exit", print "Goodbye".
     expected_answer: |
       match command:
           case "quit" | "exit":
@@ -565,9 +590,13 @@ exercises:
         match command:
             case 'quit' | 'exit':
                 print('Goodbye')
+      - |
+        match command:
+            case "exit" | "quit":
+                print("Goodbye")
     hints:
-      - Use | to match either pattern
-      - Like OR in other match systems
+      - Use | (pipe) to match either pattern in one case
+      - No need for separate cases for each value
     tags: [match, case, or-pattern]
 
   - slug: match-case-fill
@@ -581,7 +610,7 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: branching
-    prompt: Fill in the wildcard pattern that matches anything
+    prompt: Fill in the pattern that matches any value not matched by previous cases
     template: |
       match status:
           case 200:
@@ -590,8 +619,8 @@ exercises:
               print("Error")
     expected_answer: "_"
     hints:
-      - Single underscore is the wildcard
-      - Matches anything not matched above
+      - Single underscore is Python's wildcard pattern
+      - Like 'else' in if/elif chains - catches everything else
     tags: [match, wildcard, fill-in]
 
   - slug: match-case-predict
@@ -631,19 +660,47 @@ exercises:
     type: write
     pattern: branching
     prompt: |
-      Match point tuple for origin (0, 0) to print "Origin",
-      x-axis (x, 0) to print "X-axis", default to print "Other"
+      Use match-case to classify a point tuple:
+      - (0, 0) prints "Origin"
+      - Any point on the x-axis (y is 0) prints "X-axis"
+      - Otherwise prints "Other"
     expected_answer: |
       match point:
           case (0, 0):
               print("Origin")
-          case (x, 0):
+          case (_, 0):
               print("X-axis")
           case _:
               print("Other")
+    accepted_solutions:
+      - |
+        match point:
+            case (0, 0):
+                print("Origin")
+            case (_, 0):
+                print("X-axis")
+            case _:
+                print("Other")
+      - |
+        match point:
+            case (0, 0):
+                print('Origin')
+            case (_, 0):
+                print('X-axis')
+            case _:
+                print('Other')
+      - |
+        match point:
+            case (0, 0):
+                print("Origin")
+            case (x, 0):
+                print("X-axis")
+            case _:
+                print("Other")
     hints:
-      - Literal values must match exactly
-      - Variables capture any value
+      - Use _ as wildcard when you don't need the captured value
+      - "Pattern (_, 0) matches any x-value with y=0"
+      - "Check origin first since (0, 0) also matches (_, 0)"
     tags: [match, case, tuple, structural]
 
   # --- Premium Idiomatic Exercises ---
@@ -657,7 +714,9 @@ exercises:
     prereqs: [if-else]
     type: predict
     pattern: idiomatic
-    prompt: Which is more Pythonic? What does Option B print?
+    prompt: |
+      Option B is the Pythonic way to check for empty collections.
+      What does Option B print when {{list_name}} is empty?
     code: |
       {{list_name}} = []
 
@@ -672,8 +731,8 @@ exercises:
           print("Empty")
     expected_answer: "Empty"
     hints:
-      - Option B is Pythonic - empty collections are falsy
-      - Avoid explicit len() > 0 checks
+      - Empty lists are falsy in Python
+      - Option B directly checks truthiness instead of comparing len() to 0
     tags: [pythonic, idiomatic, truthiness]
 
   - slug: pythonic-none-check
@@ -686,7 +745,9 @@ exercises:
     prereqs: [if-else, identity]
     type: write
     pattern: idiomatic
-    prompt: Check if {{item_singular}} is None the Pythonic way
+    prompt: |
+      Print "No {{item_singular}}" only if {{item_singular}} is None.
+      Use the Pythonic identity check (not == comparison).
     expected_answer: |
       if {{item_singular}} is None:
           print("No {{item_singular}}")
@@ -698,8 +759,9 @@ exercises:
         if {{item_singular}} is None:
             print('No {{item_singular}}')
     hints:
-      - Use 'is' for None checks, not ==
-      - is checks identity, == checks equality
+      - "Use 'is' for None checks (checks identity)"
+      - "'is' works because there's only one None object"
+      - "An empty string or 0 should not trigger this check"
     tags: [pythonic, is, none]
 
   # --- Error-First Learning Exercise ---
@@ -713,7 +775,9 @@ exercises:
     prereqs: [elif-chains]
     type: predict
     pattern: error-first
-    prompt: Why does this grading code give everyone a C?
+    prompt: |
+      This grading function has a bug. What does it print?
+      (Hint: think about which condition matches first)
     code: |
       def get_grade(score):
           if score >= 70:
@@ -727,7 +791,120 @@ exercises:
       print(get_grade(95))
     expected_answer: "C"
     hints:
-      - First True condition wins
-      - 95 >= 70 is True, so "C" returns immediately
-      - Order from highest to lowest threshold
+      - "First True condition wins - 95 >= 70 is True"
+      - "The bug is condition ordering - check higher thresholds first"
+      - "Fix: check >= 90, then >= 80, then >= 70"
     tags: [elif, order, trap, error-first]
+
+  # --- Integrated Exercises (Multi-Concept) ---
+  - slug: conditional-dict-validation
+    objective: Validate a dictionary has required keys before processing
+    title: Dict Key Validation
+    difficulty: 3
+    concept: conditionals
+    subconcept: if-else
+    level: integrated
+    prereqs: [if-else, dicts]
+    targets: [if-else, dicts]
+    type: write
+    pattern: branching
+    prompt: |
+      Check if {{item_singular}}_data dict has both "{{attr_key_1}}" and "{{attr_key_2}}" keys.
+      If both exist, print "Valid {{item_singular}}". Otherwise print "Missing fields".
+    expected_answer: |
+      if "{{attr_key_1}}" in {{item_singular}}_data and "{{attr_key_2}}" in {{item_singular}}_data:
+          print("Valid {{item_singular}}")
+      else:
+          print("Missing fields")
+    accepted_solutions:
+      - |
+        if "{{attr_key_1}}" in {{item_singular}}_data and "{{attr_key_2}}" in {{item_singular}}_data:
+            print("Valid {{item_singular}}")
+        else:
+            print("Missing fields")
+      - |
+        if '{{attr_key_1}}' in {{item_singular}}_data and '{{attr_key_2}}' in {{item_singular}}_data:
+            print('Valid {{item_singular}}')
+        else:
+            print('Missing fields')
+    hints:
+      - "Use 'in' operator to check if a key exists in a dict"
+      - "Combine conditions with 'and' for both keys"
+    tags: [conditionals, dicts, validation, integrated]
+
+  - slug: conditional-list-any
+    objective: Check if any item in a list meets a condition
+    title: Any Item Matches
+    difficulty: 3
+    concept: conditionals
+    subconcept: if-else
+    level: integrated
+    prereqs: [if-else, lists, comprehensions.generator-exp]
+    targets: [if-else, lists]
+    type: write
+    pattern: branching
+    prompt: |
+      Check if any {{item_singular}} in {{list_name}} has length greater than 10.
+      Use any() with a generator expression. Print "Found long {{item_singular}}" or "All short".
+    expected_answer: |
+      if any(len({{item_singular}}) > 10 for {{item_singular}} in {{list_name}}):
+          print("Found long {{item_singular}}")
+      else:
+          print("All short")
+    accepted_solutions:
+      - |
+        if any(len({{item_singular}}) > 10 for {{item_singular}} in {{list_name}}):
+            print("Found long {{item_singular}}")
+        else:
+            print("All short")
+      - |
+        if any(len(item) > 10 for item in {{list_name}}):
+            print("Found long {{item_singular}}")
+        else:
+            print("All short")
+    hints:
+      - "any() returns True if any element in the iterable is truthy"
+      - "Use a generator expression inside any()"
+    tags: [conditionals, lists, any, generator, integrated]
+
+  - slug: conditional-early-return
+    objective: Write a function with guard clauses for early returns
+    title: Guard Clause Pattern
+    difficulty: 3
+    concept: conditionals
+    subconcept: if-else
+    level: integrated
+    prereqs: [if-else, functions.define]
+    targets: [if-else, functions]
+    type: write
+    pattern: branching
+    prompt: |
+      Write a function validate_{{item_singular}} that takes {{item_singular}}_data.
+      Return "Empty" if not {{item_singular}}_data, "Too short" if len < 3, else "Valid".
+    expected_answer: |
+      def validate_{{item_singular}}({{item_singular}}_data):
+          if not {{item_singular}}_data:
+              return "Empty"
+          if len({{item_singular}}_data) < 3:
+              return "Too short"
+          return "Valid"
+    accepted_solutions:
+      - |
+        def validate_{{item_singular}}({{item_singular}}_data):
+            if not {{item_singular}}_data:
+                return "Empty"
+            if len({{item_singular}}_data) < 3:
+                return "Too short"
+            return "Valid"
+      - |
+        def validate_{{item_singular}}({{item_singular}}_data):
+            if not {{item_singular}}_data:
+                return 'Empty'
+            if len({{item_singular}}_data) < 3:
+                return 'Too short'
+            return 'Valid'
+    hints:
+      - "Guard clauses check edge cases first and return early"
+      - "No else needed when you return early"
+      - "This pattern reduces nesting and improves readability"
+    tags: [conditionals, functions, guard-clause, integrated]

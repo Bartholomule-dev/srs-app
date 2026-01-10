@@ -55,13 +55,13 @@ exercises:
     prereqs: [integers]
     pattern: invocation
     objective: Use round() function
-    prompt: Fill in the function that rounds {{item_singular}} price to 2 decimals
+    prompt: Fill in the function name to round a number to 2 decimal places
     template: "{{item_singular}}_price = ___({{item_singular}}_total, 2)"
     blank_position: 0
     expected_answer: "round"
     accepted_solutions: ["round"]
     hints:
-      - Which built-in function rounds {{item_singular}} numbers?
+      - Which built-in function rounds numbers?
       - Second argument specifies decimal places
     tags: [floats, rounding]
 
@@ -75,13 +75,13 @@ exercises:
     prereqs: [integers]
     pattern: invocation
     objective: Get absolute value
-    prompt: Fill in the function that returns absolute {{item_singular}} difference
+    prompt: Fill in the function name to get the absolute (non-negative) value
     template: "{{item_singular}}_diff = ___({{item_singular}}_a - {{item_singular}}_b)"
     blank_position: 0
     expected_answer: "abs"
     accepted_solutions: ["abs"]
     hints:
-      - Which function returns absolute {{item_singular}} value?
+      - Which function returns the absolute value?
       - Removes the negative sign if present
     tags: [floats, absolute]
 
@@ -95,14 +95,14 @@ exercises:
     prereqs: [variables]
     pattern: logical
     objective: Use logical AND
-    prompt: Fill in the operator that requires both {{item_singular}} conditions to be true
+    prompt: Fill in the operator that requires both conditions to be True
     template: "{{item_singular}}_valid = is_{{status_var}} ___ has_{{attr_key_1}}"
     blank_position: 0
     expected_answer: "and"
     accepted_solutions: ["and"]
     hints:
-      - Python uses 'and' for logical AND on {{item_plural}}
-      - True only if both {{item_singular}} conditions are True
+      - Python uses 'and' for logical AND
+      - Result is True only if both sides are True
     tags: [booleans, logic]
 
   - slug: bool-or-fill
@@ -115,14 +115,14 @@ exercises:
     prereqs: [variables]
     pattern: logical
     objective: Use logical OR
-    prompt: Fill in the operator that allows {{item_singular}} if either condition is true
+    prompt: Fill in the operator that allows access if either condition is True
     template: "{{item_singular}}_allowed = is_{{status_var}} ___ has_{{attr_key_1}}"
     blank_position: 0
     expected_answer: "or"
     accepted_solutions: ["or"]
     hints:
-      - Python uses 'or' for logical OR on {{item_plural}}
-      - True if at least one {{item_singular}} condition is True
+      - Python uses 'or' for logical OR
+      - Result is True if at least one side is True
     tags: [booleans, logic]
 
   - slug: convert-int-fill
@@ -135,14 +135,14 @@ exercises:
     prereqs: [integers, floats]
     pattern: conversion
     objective: Convert string to integer
-    prompt: Fill in the function that converts {{item_singular}} count to integer
+    prompt: Fill in the function name to convert a string to an integer
     template: '{{item_singular}}_count = ___({{item_singular}}_str)'
     blank_position: 0
     expected_answer: "int"
     accepted_solutions: ["int"]
     hints:
-      - Which function converts {{item_singular}} to integer?
-      - Works on strings and floats
+      - Which built-in function converts to integer?
+      - Works on strings like "42" and floats like 3.7
     tags: [conversion, int]
 
   - slug: convert-str-fill
@@ -155,14 +155,14 @@ exercises:
     prereqs: [integers]
     pattern: conversion
     objective: Convert number to string
-    prompt: Fill in the function that converts {{item_singular}} ID to string
+    prompt: Fill in the function name to convert a number to a string
     template: "{{item_singular}}_id_str = ___({{item_singular}}_id)"
     blank_position: 0
     expected_answer: "str"
     accepted_solutions: ["str"]
     hints:
-      - Which function converts {{item_singular}} to string?
-      - Works on any type
+      - Which built-in function converts to string?
+      - Works on any type (int, float, bool, etc.)
     tags: [conversion, str]
 
   - slug: truthiness-if-fill
@@ -175,12 +175,14 @@ exercises:
     prereqs: [booleans]
     pattern: logical
     objective: Use truthiness in condition
-    prompt: "Given a list called {{list_name}}, fill in the Pythonic empty-check (use: {{list_name}})"
+    prompt: "Fill in the condition to check if `{{list_name}}` has items (use truthiness, not len())"
     template: "if ___:"
     blank_position: 0
     expected_answer: "{{list_name}}"
+    accepted_solutions:
+      - "{{list_name}}"
     hints:
-      - Non-empty lists are truthy
+      - Non-empty lists are truthy - just use the list name
       - More Pythonic than if len({{list_name}}) > 0
     tags: [truthiness, idiomatic]
 
@@ -204,26 +206,6 @@ exercises:
       - More Pythonic than if len({{list_name}}) == 0
     tags: [truthiness, idiomatic]
 
-  - slug: comparison-is-fill
-    title: Identity Check
-    type: fill-in
-    difficulty: 2
-    concept: numbers-booleans
-    subconcept: comparisons
-    level: intro
-    prereqs: [booleans]
-    pattern: comparison
-    objective: Check for None identity
-    prompt: Fill in the identity operator for None checks
-    template: "if value ___ None:"
-    blank_position: 0
-    expected_answer: "is"
-    accepted_solutions: ["is"]
-    hints:
-      - Use 'is' for identity comparisons with None
-      - Don't use == for None checks
-    tags: [comparisons, identity]
-
   - slug: comparison-in-fill
     title: Membership Check
     type: fill-in
@@ -234,13 +216,13 @@ exercises:
     prereqs: [booleans]
     pattern: comparison
     objective: Check membership in collection
-    prompt: Fill in the membership operator
+    prompt: Fill in the operator to check if `{{item_singular}}` exists in `{{list_name}}`
     template: "if {{item_singular}} ___ {{list_name}}:"
     blank_position: 0
     expected_answer: "in"
     accepted_solutions: ["in"]
     hints:
-      - Which operator checks membership?
+      - Which operator checks if an item is inside a collection?
       - Works with lists, sets, dicts, strings, etc.
     tags: [comparisons, membership]
 
@@ -255,17 +237,17 @@ exercises:
     level: intro
     prereqs: [variables]
     pattern: arithmetic
+    generator: arithmetic-values
     objective: Predict floor division result
     prompt: What does this floor division print?
     code: |
-      {{item_plural}}_per_batch = 7 // 2
+      {{item_plural}}_per_batch = {{x}} // {{y}}
       print({{item_plural}}_per_batch)
-    expected_answer: "3"
-    accepted_solutions: []
+    expected_answer: "{{floorDiv}}"
     hints:
       - Floor division rounds down for {{item_plural}}
-      - 7 {{item_plural}} divided by 2 batches is 3.5, floor is 3
-    tags: [integers, division]
+      - "{{x}} {{item_plural}} divided by {{y}} batches"
+    tags: [integers, division, dynamic]
 
   - slug: int-predict-modulo
     title: Modulo Operation
@@ -276,17 +258,17 @@ exercises:
     level: practice
     prereqs: [variables]
     pattern: arithmetic
+    generator: arithmetic-values
     objective: Predict modulo result
     prompt: What does this modulo calculation print?
     code: |
-      remaining_{{item_plural}} = 10 % 3
+      remaining_{{item_plural}} = {{x}} % {{y}}
       print(remaining_{{item_plural}})
-    expected_answer: "1"
-    accepted_solutions: []
+    expected_answer: "{{modulo}}"
     hints:
       - Modulo returns the remaining {{item_plural}}
-      - 10 {{item_plural}} in groups of 3 leaves 1 remaining
-    tags: [integers, modulo]
+      - "{{x}} {{item_plural}} in groups of {{y}}"
+    tags: [integers, modulo, dynamic]
 
   - slug: float-predict-division
     title: Float Division
@@ -297,17 +279,17 @@ exercises:
     level: intro
     prereqs: [integers]
     pattern: arithmetic
+    generator: arithmetic-values
     objective: Predict true division result
     prompt: What does this float division print?
     code: |
-      {{item_plural}}_each = 5 / 2
+      {{item_plural}}_each = {{x}} / {{y}}
       print({{item_plural}}_each)
-    expected_answer: "2.5"
-    accepted_solutions: []
+    expected_answer: "{{divResult}}"
     hints:
       - Single / always returns a float for {{item_plural}}
-      - Even 6/2 returns 3.0, not 3
-    tags: [floats, division]
+      - "{{x}} / {{y}} = {{divResult}}"
+    tags: [floats, division, dynamic]
 
   - slug: float-predict-round
     title: Round Result
@@ -318,17 +300,17 @@ exercises:
     level: practice
     prereqs: [integers]
     pattern: invocation
+    generator: arithmetic-values
     objective: Predict round() result
     prompt: What does this round() call print?
     code: |
-      {{item_singular}}_count = round(3.7)
+      {{item_singular}}_count = round({{floatVal}})
       print({{item_singular}}_count)
-    expected_answer: "4"
-    accepted_solutions: []
+    expected_answer: "{{roundedInt}}"
     hints:
-      - round() rounds {{item_singular}} to nearest integer by default
-      - 3.7 {{item_plural}} is closer to 4 than to 3
-    tags: [floats, rounding]
+      - round() rounds to the nearest integer by default
+      - "{{floatVal}} rounds to {{roundedInt}}"
+    tags: [floats, rounding, dynamic]
 
   - slug: bool-predict-and
     title: AND Result
@@ -340,16 +322,15 @@ exercises:
     prereqs: [variables]
     pattern: logical
     objective: Predict AND result
-    prompt: What does this AND check print?
+    prompt: What does this print?
     code: |
       is_{{status_var}} = True
       has_{{attr_key_1}} = False
       print(is_{{status_var}} and has_{{attr_key_1}})
     expected_answer: "False"
-    accepted_solutions: []
     hints:
-      - AND requires both {{item_singular}} conditions to be True
-      - True AND False = False
+      - The `and` operator requires both sides to be True
+      - True and False = False
     tags: [booleans, logic]
 
   - slug: bool-predict-not
@@ -362,14 +343,13 @@ exercises:
     prereqs: [variables]
     pattern: logical
     objective: Predict NOT result
-    prompt: What does this NOT expression print?
+    prompt: What does this print?
     code: |
       is_{{status_var}} = True
       print(not is_{{status_var}})
     expected_answer: "False"
-    accepted_solutions: []
     hints:
-      - not inverts the {{item_singular}} boolean
+      - The `not` operator inverts the boolean
       - not True = False, not False = True
     tags: [booleans, logic]
 
@@ -382,17 +362,17 @@ exercises:
     level: intro
     prereqs: [integers, floats]
     pattern: conversion
+    generator: arithmetic-values
     objective: Predict int() result
-    prompt: What does this int() conversion print?
+    prompt: "What does this print? (int() truncates toward zero)"
     code: |
-      {{item_singular}}_count = int(3.9)
+      {{item_singular}}_count = int({{floatVal}})
       print({{item_singular}}_count)
-    expected_answer: "3"
-    accepted_solutions: []
+    expected_answer: "{{truncatedInt}}"
     hints:
-      - int() truncates {{item_singular}} toward zero
-      - Does NOT round - just removes decimals
-    tags: [conversion, int]
+      - int() truncates toward zero (does NOT round)
+      - "{{floatVal}} becomes {{truncatedInt}}"
+    tags: [conversion, int, dynamic]
 
   - slug: convert-predict-bool
     title: Bool Conversion
@@ -409,10 +389,9 @@ exercises:
       {{item_singular}}_count = 0
       print(bool({{item_singular}}_count))
     expected_answer: "False"
-    accepted_solutions: []
     hints:
-      - 0 {{item_plural}} is a falsy value
-      - Any non-zero {{item_singular}} count is truthy
+      - 0 is a falsy value in Python
+      - Any non-zero number is truthy
     tags: [conversion, bool]
 
   - slug: truthiness-predict-empty
@@ -433,10 +412,9 @@ exercises:
       else:
           print("empty")
     expected_answer: "empty"
-    accepted_solutions: []
     hints:
       - Empty collections are falsy
-      - The else branch runs when if condition is False
+      - The else branch runs when the if condition is False
     tags: [truthiness]
 
   - slug: truthiness-predict-zero
@@ -454,7 +432,6 @@ exercises:
       {{item_singular}}_count = 0
       print("yes" if {{item_singular}}_count else "no")
     expected_answer: "no"
-    accepted_solutions: []
     hints:
       - 0 is falsy
       - This is a ternary expression (if/else on one line)
@@ -475,9 +452,8 @@ exercises:
       {{item_singular}}_count = 5
       print(1 < {{item_singular}}_count < 10)
     expected_answer: "True"
-    accepted_solutions: []
     hints:
-      - Python allows chained {{item_singular}} comparisons
+      - Python allows chained comparisons
       - Same as (1 < {{item_singular}}_count) and ({{item_singular}}_count < 10)
     tags: [comparisons, chaining]
 
@@ -491,16 +467,15 @@ exercises:
     prereqs: [booleans]
     pattern: comparison
     objective: Understand is vs ==
-    prompt: What does this identity vs equality print?
+    prompt: What does this print? (Two lists with same values)
     code: |
       {{list_name}}_a = [1, 2, 3]
       {{list_name}}_b = [1, 2, 3]
       print({{list_name}}_a == {{list_name}}_b, {{list_name}}_a is {{list_name}}_b)
     expected_answer: "True False"
-    accepted_solutions: []
     hints:
-      - == checks {{item_plural}} equality, is checks identity
-      - Two {{list_name}} with same values are equal but not identical
+      - "== compares values (equality), is compares object identity"
+      - Two separate list objects with same values are equal but not identical
     tags: [comparisons, identity]
 
   # --- Dynamic Exercises for Numbers-Booleans ---
@@ -517,7 +492,6 @@ exercises:
     objective: Predict addition result with varying operands
     prompt: "Given x = {{x}} and y = {{y}}, what does x + y print?"
     expected_answer: "{{sum}}"
-    accepted_solutions: []
     hints:
       - Add the two values together
       - x + y means {{x}} + {{y}}
@@ -540,7 +514,6 @@ exercises:
     objective: Predict multiplication result with varying operands
     prompt: "Given x = {{x}} and y = {{y}}, what does x * y print?"
     expected_answer: "{{product}}"
-    accepted_solutions: []
     hints:
       - Multiply the two values together
       - x * y means {{x}} * {{y}}
@@ -566,6 +539,8 @@ exercises:
     accepted_solutions:
       - "{{x}} % {{y}}"
       - "{{x}}%{{y}}"
+      - "({{x}} % {{y}})"
+      - "({{x}}) % ({{y}})"
     hints:
       - Use the modulo operator %
       - modulo returns the remainder after division
@@ -648,8 +623,11 @@ exercises:
     type: write
     pattern: comparison
     generator: bool-logic
-    prompt: "Write an expression that checks if {{description}} (using a={{a}}, b={{b}})"
+    prompt: "Write a boolean expression: {{description}}"
     expected_answer: "{{expression}}"
+    accepted_solutions:
+      - "{{expression}}"
+      - "({{expression}})"
     hints:
       - "Use comparison operators (<, >, ==, !=, <=, >=)"
       - "Combine with and/or/not if needed"
@@ -706,11 +684,12 @@ exercises:
     prereqs: [numbers-booleans.truthiness]
     type: write
     pattern: conditional
-    prompt: Write an if statement that checks if list {{list_name}} is truthy (non-empty)
+    prompt: Write a Pythonic if statement that checks if list {{list_name}} is non-empty (use truthiness, not len())
     expected_answer: "if {{list_name}}:"
     accepted_solutions:
       - "if {{list_name}}:"
       - "if bool({{list_name}}):"
+      - "if {{list_name}} :"
     hints:
       - You don't need == or len()
       - The list itself can be the condition
@@ -792,7 +771,7 @@ exercises:
     type: predict
     pattern: conversion
     generator: type-conversion
-    prompt: "What does {{conversionCall}} return?"
+    prompt: "What does this conversion print?"
     code: |
       result = {{conversionCall}}
       print(result)
@@ -813,10 +792,10 @@ exercises:
     type: write
     pattern: conversion
     generator: type-conversion
-    prompt: "Convert {{inputValue}} to {{targetType}}"
+    prompt: "Convert `{{inputValue}}` to type `{{targetType}}`"
     expected_answer: "{{conversionCall}}"
     hints:
-      - "Use the {{targetType}}() function"
+      - "Use the {{targetType}}() constructor"
       - "Pass the value as an argument"
     tags: [conversion, type, dynamic, write]
 
@@ -835,6 +814,8 @@ exercises:
     expected_answer: "{{item_singular}} is None"
     accepted_solutions:
       - "{{item_singular}} is None"
+      - "({{item_singular}} is None)"
+      - "{{item_singular}}  is  None"
     hints:
       - Use 'is' for None checks, not ==
       - is checks identity (same object)
@@ -854,6 +835,8 @@ exercises:
     expected_answer: "{{item_singular}} is not None"
     accepted_solutions:
       - "{{item_singular}} is not None"
+      - "({{item_singular}} is not None)"
+      - "not {{item_singular}} is None"
     hints:
       - Use 'is not' (two words) for negation
       - More readable than 'not {{item_singular}} is None'
@@ -869,7 +852,7 @@ exercises:
     prereqs: [identity]
     type: predict
     pattern: comparison
-    prompt: What does this code print?
+    prompt: What does this print?
     code: |
       a = [1, 2, 3]
       b = [1, 2, 3]
@@ -877,9 +860,9 @@ exercises:
       print(a == b, a is b, a is c)
     expected_answer: "True False True"
     hints:
-      - == compares values (equality)
-      - is compares object identity
-      - c points to the same list as a
+      - "== compares values, is compares object identity"
+      - "a and b have same values but are different objects"
+      - "c = a makes c point to the exact same object as a"
     tags: [identity, equality, predict]
 
   - slug: identity-fill-is
@@ -930,20 +913,20 @@ exercises:
     prereqs: [identity]
     type: predict
     pattern: comparison
-    prompt: What does this code print? (Python caches small integers -5 to 256)
+    prompt: "In CPython, what does this print? (Small integers -5 to 256 are cached)"
     code: |
       a = 100
       b = 100
       print(a is b)
     expected_answer: "True"
     hints:
-      - Python caches small integers (-5 to 256)
-      - Same integer literals may share identity
-      - Don't rely on this - use == for numbers
+      - CPython caches small integers (-5 to 256) for efficiency
+      - Same small integer literals share the same object in memory
+      - "Never rely on this - always use == for comparing numbers"
     tags: [identity, caching, edge]
 
   - slug: identity-trap-predict
-    objective: Avoid the common trap of using is with mutable objects
+    objective: Understand why is fails for large numbers
     title: Identity Trap
     difficulty: 3
     concept: numbers-booleans
@@ -952,16 +935,16 @@ exercises:
     prereqs: [identity]
     type: predict
     pattern: error-first
-    prompt: Why might this comparison fail for large numbers?
+    prompt: What does this print? (Large integers are not cached like small ones)
     code: |
-      a = 1000
-      b = 1000
+      a = int("1000")
+      b = int("1000")
       print(a == b, a is b)
     expected_answer: "True False"
     hints:
-      - Large integers may not be cached
-      - Always use == for value comparison
-      - Reserve 'is' for None, True, False
+      - Large integers (>256) are not cached by CPython
+      - int("1000") forces creation of new integer objects
+      - Always use == for value comparison, not is
     tags: [identity, trap, error-first]
 
   - slug: identity-pythonic-none
@@ -989,5 +972,77 @@ exercises:
       - Use 'is None', not '== None'
       - Pythonic and handles edge cases better
     tags: [identity, pythonic, none]
+
+  # --- Integrated Exercises (Multi-Concept) ---
+  - slug: number-stats-from-list
+    objective: Calculate statistics from a list of numbers
+    title: List Statistics
+    difficulty: 3
+    concept: numbers-booleans
+    subconcept: arithmetic
+    level: integrated
+    prereqs: [arithmetic, lists]
+    targets: [arithmetic, lists]
+    type: write
+    pattern: arithmetic
+    prompt: |
+      Calculate the average of numbers in `{{list_name}}` and store in `{{item_singular}}_avg`.
+      Assume the list is non-empty. Use sum() and len() functions.
+    expected_answer: "{{item_singular}}_avg = sum({{list_name}}) / len({{list_name}})"
+    accepted_solutions:
+      - "{{item_singular}}_avg = sum({{list_name}}) / len({{list_name}})"
+    hints:
+      - "sum() adds all numbers in a list"
+      - "len() gives the count of items"
+      - "Divide sum by count to get average"
+    tags: [arithmetic, lists, statistics, integrated]
+
+  - slug: boolean-all-check
+    objective: Check if all items in a list meet a condition
+    title: All Items Check
+    difficulty: 3
+    concept: numbers-booleans
+    subconcept: boolean-ops
+    level: integrated
+    prereqs: [boolean-ops, lists, comprehensions.generator-exp]
+    targets: [boolean-ops, lists]
+    type: write
+    pattern: logical
+    prompt: |
+      Check if all {{item_plural}} in {{list_name}} are greater than 0.
+      Store result in all_positive using all() with a generator expression.
+    expected_answer: "all_positive = all({{item_singular}} > 0 for {{item_singular}} in {{list_name}})"
+    accepted_solutions:
+      - "all_positive = all({{item_singular}} > 0 for {{item_singular}} in {{list_name}})"
+      - "all_positive = all(x > 0 for x in {{list_name}})"
+      - "all_positive = all(item > 0 for item in {{list_name}})"
+    hints:
+      - "all() returns True if all elements are truthy"
+      - "Use a generator expression for the condition"
+    tags: [boolean, all, lists, generator, integrated]
+
+  - slug: number-round-format
+    objective: Round a number and format it for display
+    title: Round and Format
+    difficulty: 3
+    concept: numbers-booleans
+    subconcept: arithmetic
+    level: integrated
+    prereqs: [arithmetic, fstrings]
+    targets: [arithmetic, fstrings]
+    type: write
+    pattern: arithmetic
+    prompt: |
+      Format `{{item_singular}}_value` as currency with exactly 2 decimal places.
+      Create an f-string that outputs: "{{entity_name}}: $X.XX"
+      The label "{{entity_name}}" is literal text, not a variable.
+    expected_answer: 'f"{{entity_name}}: ${{{item_singular}}_value:.2f}"'
+    accepted_solutions:
+      - 'f"{{entity_name}}: ${{{item_singular}}_value:.2f}"'
+      - "f'{{entity_name}}: ${{{item_singular}}_value:.2f}'"
+    hints:
+      - "Use :.2f format specifier for exactly 2 decimal places"
+      - "This ensures trailing zeros (e.g., 10.50 not 10.5)"
+    tags: [arithmetic, fstrings, formatting, integrated]
 
   # --- Debug Exercises (Pitfall Subconcepts) ---

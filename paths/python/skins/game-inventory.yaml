@@ -3,7 +3,7 @@
 id: game-inventory
 title: "Game Inventory"
 icon: "\U0001F3AE"
-blueprints: [collection-cli-app]
+# Global skin - works with any blueprint
 
 vars:
   list_name: inventory

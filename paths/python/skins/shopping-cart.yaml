@@ -3,7 +3,7 @@
 id: shopping-cart
 title: "Shopping Cart"
 icon: "\U0001F6D2"
-blueprints: [collection-cli-app]
+# Global skin - works with any blueprint
 
 vars:
   list_name: cart

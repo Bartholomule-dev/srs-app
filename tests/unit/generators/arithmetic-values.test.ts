@@ -15,14 +15,16 @@ describe('arithmeticValuesGenerator', () => {
       expect(typeof params.y).toBe('number');
     });
 
-    it('generates values in range [1, 20]', () => {
+    it('generates values in valid ranges', () => {
       const seeds = Array.from({ length: 50 }, (_, i) => `seed-${i}`);
       for (const seed of seeds) {
         const params = arithmeticValuesGenerator.generate(seed);
-        expect(params.x).toBeGreaterThanOrEqual(1);
+        // x: 5-20 (larger to ensure interesting floor/mod results)
+        expect(params.x).toBeGreaterThanOrEqual(5);
         expect(params.x).toBeLessThanOrEqual(20);
-        expect(params.y).toBeGreaterThanOrEqual(1);
-        expect(params.y).toBeLessThanOrEqual(20);
+        // y: 2-9 (smaller divisor to avoid x/y < 1)
+        expect(params.y).toBeGreaterThanOrEqual(2);
+        expect(params.y).toBeLessThanOrEqual(9);
       }
     });
 
@@ -41,15 +43,19 @@ describe('arithmeticValuesGenerator', () => {
 
   describe('validate()', () => {
     it('returns true for valid params', () => {
-      expect(arithmeticValuesGenerator.validate({ x: 5, y: 10, sum: 15, product: 50 })).toBe(true);
+      // x: 5-20, y: 2-9
+      expect(arithmeticValuesGenerator.validate({ x: 10, y: 5, sum: 15, product: 50, floorDiv: 2, modulo: 0 })).toBe(true);
     });
 
     it('returns false for out of range', () => {
-      expect(arithmeticValuesGenerator.validate({ x: 0, y: 10, sum: 10, product: 0 })).toBe(false);
+      // x must be >= 5
+      expect(arithmeticValuesGenerator.validate({ x: 0, y: 5, sum: 5, product: 0, floorDiv: 0, modulo: 0 })).toBe(false);
+      // y must be in 2-9
+      expect(arithmeticValuesGenerator.validate({ x: 10, y: 10, sum: 20, product: 100, floorDiv: 1, modulo: 0 })).toBe(false);
     });
 
     it('returns false for inconsistent sum/product', () => {
-      expect(arithmeticValuesGenerator.validate({ x: 5, y: 10, sum: 100, product: 50 })).toBe(false);
+      expect(arithmeticValuesGenerator.validate({ x: 10, y: 5, sum: 100, product: 50, floorDiv: 2, modulo: 0 })).toBe(false);
     });
   });
 

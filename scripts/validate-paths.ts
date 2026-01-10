@@ -125,11 +125,14 @@ async function main() {
             errors++;
           }
         }
-        // Check contexts reference valid exercises in blueprints
+        // Check contexts reference valid exercises in blueprints (including side-quests)
         for (const exerciseSlug of Object.keys(skin.contexts)) {
           const isInBlueprint = skin.blueprints.some(bpId => {
             const bp = blueprints.find(b => b.id === bpId);
-            return bp?.beats.some(beat => beat.exercise === exerciseSlug);
+            return bp?.beats.some(beat =>
+              beat.exercise === exerciseSlug ||
+              beat.sideQuests?.includes(exerciseSlug)
+            );
           });
           if (!isInBlueprint) {
             console.warn(`  ⚠ Skin ${skin.id}: context for '${exerciseSlug}' not in any linked blueprint`);

@@ -45,10 +45,8 @@ dataPack:
 contexts:
   # Variables & Input
   assign-variable: "Store the user's input number."
-  assign-number: "Store a numeric constant."
   multiple-assignment: "Store multiple values at once."
   input-string: "Get the expression from the user."
-  input-number: "Get a numeric value from the user."
   print-variable: "Display the result to the user."
 
   # Arithmetic Operations
@@ -64,8 +62,6 @@ contexts:
   float-predict-round: "Predict the result of rounding."
   float-predict-division: "Predict the result of division."
   operator-precedence-dynamic: "Apply correct order of operations."
-  operator-parentheses-dynamic: "Use parentheses to control evaluation order."
-  operator-expression-predict-dynamic: "Predict the result of an expression."
 
   # Type Conversion
   convert-int-fill: "Convert string input to a number."
@@ -78,7 +74,6 @@ contexts:
   # Output
   f-string-basic: "Format the result nicely."
   print-fstring: "Print the formatted calculation."
-  f-string-expression: "Show calculated value in output."
 
   # Boolean Logic
   bool-and-fill: "Check if both operands are valid."
@@ -91,7 +86,6 @@ contexts:
   bool-compound-dynamic: "Combine multiple boolean conditions."
 
   # Comparisons
-  comparison-is-fill: "Check if result is None."
   identity-is-none: "Check if input is None."
   identity-is-not-none: "Verify input is not None."
   identity-vs-equality: "Understand == vs is."
@@ -108,11 +102,9 @@ contexts:
 
   # Validation & Error Handling
   if-else-basic: "Check if input is a valid number."
-  if-only: "Check for division by zero."
   ternary-basic: "Return result or error in one line."
   try-except-basic: "Handle invalid numeric input."
   except-specific: "Catch ValueError for bad input."
-  valueerror-catch: "Handle conversion errors."
 
   # Functions
   define-function: "Create a function to perform calculations."

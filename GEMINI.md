@@ -20,7 +20,7 @@
 
 A gamified web platform for practicing code syntax through spaced repetition. Target users are AI-assisted developers who want to maintain their programming fundamentals.
 
-**Current Status:** Skill Tree Visualization Complete - Dashboard shows visual skill tree with 54 subconcept nodes across 10 concepts. Four node states (locked, available, in-progress, mastered) based on FSRS stability (>=7 days = mastered). Interactive tooltips, SVG dependency lines, staggered animations. Next: Gamification (achievements, points, leaderboards).
+**Current Status:** Blueprint + Skin System Complete - 529 exercises (109 dynamic with 38 generators), 15 blueprints (234 beats), 22 skins. Phase 3 Gamification complete (points, streaks, achievements, skill tree). Next: Onboarding flow, then JavaScript/TypeScript exercises.
 
 ---
 
@@ -32,7 +32,7 @@ A gamified web platform for practicing code syntax through spaced repetition. Ta
 | Language | TypeScript 5 (Strict Mode) |
 | UI | React 19, Tailwind CSS 4, framer-motion |
 | Backend | Supabase (PostgreSQL, Auth, Realtime) |
-| Testing | Vitest (1125+ unit/integration) + Playwright (E2E) |
+| Testing | Vitest (2219 unit/integration) + Playwright (E2E) |
 | Deployment | Vercel + GitHub Actions CI/E2E |
 | Package Manager | pnpm |
 
@@ -45,7 +45,7 @@ pnpm dev              # Start development server
 pnpm build            # Production build
 pnpm lint             # ESLint check
 pnpm typecheck        # TypeScript type checking
-pnpm test             # Run Vitest tests (1125+ tests)
+pnpm test             # Run Vitest tests (2219 tests)
 pnpm test:e2e         # Run Playwright E2E tests
 pnpm db:start         # Start local Supabase
 pnpm db:reset         # Reset database with migrations
@@ -181,7 +181,7 @@ RLS enabled on all user tables.
 3. SRS Engine - SM-2 algorithm (later migrated to FSRS)
 4. Exercise Engine - CodeInput, ExerciseCard, answer matching
 5. Practice Session - useSession, /dashboard, /practice pages
-6. Exercise Library - 50 Python exercises (expanded to 352)
+6. Exercise Library - 50 Python exercises (expanded to 529)
 7. Basic Stats - StatsGrid, useStats, streak/accuracy
 8. MVP Deployment - Vercel, GitHub Actions CI/E2E, Playwright
 9. UI/UX Redesign - "IDE-Inspired Premium" aesthetic
@@ -194,15 +194,17 @@ RLS enabled on all user tables.
 16. Curriculum Restructure - 10 files matching curriculum graph
 17. SM-2 to FSRS Migration - ts-fsrs adapter, validateFsrsState guard
 18. Dedicated Teaching Examples - exampleCode field for all 54 subconcepts
-19. Dynamic Exercises Phase 1-6 - Generator infrastructure, 13 generators, 37 dynamic exercises
+19. Dynamic Exercises Phase 1-6 - Generator infrastructure, 38 generators, 109 dynamic exercises
 20. Exercise-List.md Auto-Generation - YAML source of truth, generated docs
-21. Skill Tree Visualization - 54 subconcept nodes, 4 states, dependency lines
+21. Skill Tree Visualization - 65 subconcept nodes, 4 states, dependency lines
+22. Phase 3 Gamification - Points, streaks, achievements, contribution graph
+23. Blueprint + Skin System - 15 blueprints (234 beats), 22 skins
 
 ---
 
 ## Next Steps
 
 1. **Onboarding:** Integrate ExperienceLevelSelector into user flow
-2. **Gamification:** Achievements system, points, leaderboards
-3. **Languages:** JavaScript/TypeScript exercises
-4. **More Dynamic Exercises:** Continue migrating static exercises to use generators
+2. **Languages:** JavaScript/TypeScript exercises
+3. **Leaderboards:** Daily/weekly/all-time rankings (deferred from Phase 3)
+4. **More Blueprints/Skins:** Expand content coverage

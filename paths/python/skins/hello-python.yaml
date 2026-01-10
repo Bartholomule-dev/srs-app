@@ -48,8 +48,6 @@ contexts:
   assign-variable: "Store your username."
   variable-assign-fill: "Complete the assignment."
   variable-predict-assign: "Predict the stored value."
-  assign-number: "Store your age."
-  variable-naming-fill: "Name the variable correctly."
   variable-predict-reassign: "Predict after reassignment."
   multiple-assignment: "Assign multiple values at once."
   swap-variables: "Swap two values."
@@ -68,8 +66,6 @@ contexts:
   exponentiation-dynamic: "Calculate powers."
   augmented-assignment-dynamic: "Update with augmented assignment."
   operator-precedence-dynamic: "Understand operator order."
-  operator-expression-predict-dynamic: "Predict expression result."
-  operator-parentheses-dynamic: "Use parentheses correctly."
 
   # Boolean Logic
   boolean-and: "Combine conditions with AND."
@@ -93,7 +89,6 @@ contexts:
   import-fill-import: "Complete the import."
   import-predict-pi: "Predict math.pi value."
   import-from-math: "Import sqrt function."
-  import-math-sqrt: "Use sqrt function."
   import-fill-from: "Complete from import."
   import-predict-ceil: "Predict ceil result."
   import-random-choice: "Import random choice."

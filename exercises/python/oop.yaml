@@ -7,10 +7,13 @@ exercises:
     objective: Define a basic class using the class keyword syntax
     title: Define Class
     difficulty: 2
-    prompt: Define a class called {{entity_name}}
+    prompt: Write the class header for a class named `{{entity_name}}` (header only, no body)
     expected_answer: "class {{entity_name}}:"
+    accepted_solutions:
+      - "class {{entity_name}}:"
+      - "class {{entity_name}}():"
     hints:
-      - Use the class keyword
+      - Use the `class` keyword followed by the class name
       - Class names conventionally use PascalCase
     tags: [classes, oop, intermediate]
     concept: oop
@@ -24,11 +27,13 @@ exercises:
     objective: Define an __init__ constructor method with self and parameters
     title: Init Method
     difficulty: 2
-    prompt: Define __init__ that takes self and {{attr_key_1}} parameter
+    prompt: Write the `__init__` constructor header that takes `self` and `{{attr_key_1}}` (header only, no body)
     expected_answer: "def __init__(self, {{attr_key_1}}):"
+    accepted_solutions:
+      - "def __init__(self, {{attr_key_1}}):"
     hints:
-      - Use double underscores
-      - self is always first parameter
+      - Use double underscores around init
+      - The `self` parameter is always first
     tags: [classes, init, intermediate]
     concept: oop
     subconcept: methods
@@ -41,10 +46,12 @@ exercises:
     objective: Assign a value to an instance attribute using self.attribute syntax
     title: Instance Attribute
     difficulty: 2
-    prompt: Set self.{{attr_key_1}} to the {{attr_key_1}} parameter inside __init__
+    prompt: Inside `__init__`, assign the `{{attr_key_1}}` parameter to an instance attribute
     expected_answer: "self.{{attr_key_1}} = {{attr_key_1}}"
+    accepted_solutions:
+      - "self.{{attr_key_1}} = {{attr_key_1}}"
     hints:
-      - Use self.attribute = value
+      - Use `self.attribute = value` syntax
       - This makes the attribute accessible on the object
     tags: [classes, attributes, intermediate]
     concept: oop
@@ -58,11 +65,13 @@ exercises:
     objective: Define an instance method that takes self as the first parameter
     title: Instance Method
     difficulty: 2
-    prompt: Define a method called {{action_verb}} that takes self
+    prompt: Write the method header for an instance method named `{{action_verb}}` (header only, no body)
     expected_answer: "def {{action_verb}}(self):"
+    accepted_solutions:
+      - "def {{action_verb}}(self):"
     hints:
-      - Methods always take self as first parameter
-      - self gives access to the instance's attributes
+      - Methods always take `self` as the first parameter
+      - The `self` parameter gives access to the instance's attributes
     tags: [classes, methods, intermediate]
     concept: oop
     subconcept: methods
@@ -82,11 +91,14 @@ exercises:
     prereqs: [oop.classes]
     type: write
     pattern: definition
-    prompt: Define class Special{{entity_name}} that inherits from {{entity_name}}
+    prompt: Write the class header for `Special{{entity_name}}` as a subclass of `{{entity_name}}`
     expected_answer: "class Special{{entity_name}}({{entity_name}}):"
+    accepted_solutions:
+      - "class Special{{entity_name}}({{entity_name}}):"
+      - "class Special{{entity_name}}( {{entity_name}} ):"
     hints:
-      - Put parent class in parentheses
-      - Special{{entity_name}} will inherit all methods from {{entity_name}}
+      - Put the parent class in parentheses after the class name
+      - The subclass will inherit all methods from `{{entity_name}}`
     tags: [oop, inheritance, beginner]
 
   - slug: inheritance-super-init
@@ -99,11 +111,13 @@ exercises:
     prereqs: [oop.inheritance]
     type: write
     pattern: invocation
-    prompt: Call the parent class __init__ with {{attr_key_1}} parameter using super()
+    prompt: Inside a subclass `__init__`, call the parent constructor with `{{attr_key_1}}`
     expected_answer: "super().__init__({{attr_key_1}})"
+    accepted_solutions:
+      - "super().__init__({{attr_key_1}})"
     hints:
-      - Use super() to access parent
-      - Call __init__ like a method
+      - Use `super()` to access the parent class
+      - Call `__init__` like a regular method
     tags: [oop, inheritance, super]
 
   - slug: inheritance-override-method
@@ -116,11 +130,20 @@ exercises:
     prereqs: [oop.inheritance]
     type: write
     pattern: definition
-    prompt: Define a {{action_verb}} method in a subclass that overrides the parent's {{action_verb}}
-    expected_answer: "def {{action_verb}}(self):"
+    prompt: In a subclass, override `{{action_verb}}` so it returns `"{{item_example}}"`
+    expected_answer: |
+      def {{action_verb}}(self):
+          return "{{item_example}}"
+    accepted_solutions:
+      - |
+        def {{action_verb}}(self):
+            return "{{item_example}}"
+      - |
+        def {{action_verb}}(self):
+            return '{{item_example}}'
     hints:
-      - Same method name overrides parent
-      - The subclass version is called instead
+      - Define a method with the same name to override the parent
+      - Return the specified value
     tags: [oop, inheritance, override]
 
   - slug: inheritance-super-method
@@ -133,10 +156,12 @@ exercises:
     prereqs: [oop.inheritance]
     type: write
     pattern: invocation
-    prompt: Call the parent's {{action_verb}} method from within an overriding {{action_verb}} method
-    expected_answer: "super().{{action_verb}}()"
+    prompt: Inside an overriding `{{action_verb}}`, call the parent implementation and store it in `base_result`
+    expected_answer: "base_result = super().{{action_verb}}()"
+    accepted_solutions:
+      - "base_result = super().{{action_verb}}()"
     hints:
-      - Use super() to access parent method
+      - Use `super()` to access the parent's method
       - This lets you extend the parent's behavior rather than replace it
     tags: [oop, inheritance, super]
 
@@ -150,11 +175,13 @@ exercises:
     prereqs: [oop.inheritance]
     type: write
     pattern: invocation
-    prompt: Check if {{item_singular}} is an instance of {{entity_name}} (including subclasses)
+    prompt: Write an expression that returns `True` if `{{item_singular}}` is an instance of `{{entity_name}}` (including subclasses)
     expected_answer: "isinstance({{item_singular}}, {{entity_name}})"
+    accepted_solutions:
+      - "isinstance({{item_singular}}, {{entity_name}})"
     hints:
-      - isinstance checks inheritance chain
-      - Returns True if object is {{entity_name}} or any subclass
+      - The `isinstance` function checks the inheritance chain
+      - Returns `True` for instances of the class or any subclass
     tags: [oop, inheritance, isinstance]
 
   - slug: inheritance-issubclass
@@ -167,10 +194,12 @@ exercises:
     prereqs: [oop.inheritance]
     type: write
     pattern: invocation
-    prompt: Check if Special{{entity_name}} is a subclass of {{entity_name}}
+    prompt: Write an expression that returns `True` if `Special{{entity_name}}` is a subclass of `{{entity_name}}`
     expected_answer: "issubclass(Special{{entity_name}}, {{entity_name}})"
+    accepted_solutions:
+      - "issubclass(Special{{entity_name}}, {{entity_name}})"
     hints:
-      - issubclass checks class hierarchy
+      - The `issubclass` function checks the class hierarchy
       - Takes class names, not instances
     tags: [oop, inheritance, issubclass]
 
@@ -185,7 +214,7 @@ exercises:
     prereqs: [oop.methods]
     type: write
     pattern: definition
-    prompt: Write the decorator and signature for a class method called create_{{item_singular}} (just the header, no body)
+    prompt: Write the decorator and method header for a class method named `create_{{item_singular}}` (no body)
     expected_answer: |
       @classmethod
       def create_{{item_singular}}(cls):
@@ -195,8 +224,8 @@ exercises:
         def create_{{item_singular}}(cls):
       - "@classmethod\ndef create_{{item_singular}}(cls):"
     hints:
-      - Use @classmethod decorator on the line before def
-      - First parameter is cls, not self
+      - Use `@classmethod` decorator on the line before `def`
+      - First parameter is `cls`, not `self`
     tags: [oop, classmethod, decorator]
 
   - slug: classmethod-cls-parameter
@@ -209,11 +238,13 @@ exercises:
     prereqs: [oop.classmethod]
     type: write
     pattern: invocation
-    prompt: Return cls.{{item_singular}}_count from within a classmethod
+    prompt: Inside a `@classmethod`, return the class attribute `{{item_singular}}_count`
     expected_answer: "return cls.{{item_singular}}_count"
+    accepted_solutions:
+      - "return cls.{{item_singular}}_count"
     hints:
-      - cls refers to the class itself
-      - Access class attributes with cls.attribute_name
+      - The `cls` parameter refers to the class itself
+      - Access class attributes with `cls.attribute_name`
     tags: [oop, classmethod, cls]
 
   - slug: classmethod-factory
@@ -226,14 +257,19 @@ exercises:
     prereqs: [oop.classmethod]
     type: write
     pattern: definition
-    prompt: Define a classmethod from_string that creates an instance from a string
+    prompt: Write a `from_string` classmethod that takes `s` and returns a new instance created with `cls(s)`
     expected_answer: |
       @classmethod
       def from_string(cls, s):
           return cls(s)
+    accepted_solutions:
+      - |
+        @classmethod
+        def from_string(cls, s):
+            return cls(s)
     hints:
-      - Call cls() to create new instance
-      - Parse the string and pass to constructor
+      - Call `cls()` to create a new instance
+      - The method receives the class as the first argument
     tags: [oop, classmethod, factory]
 
   - slug: classmethod-call
@@ -246,11 +282,11 @@ exercises:
     prereqs: [oop.classmethod]
     type: write
     pattern: invocation
-    prompt: Call the from_string classmethod on {{entity_name}} class with "{{item_example}}"
-    expected_answer: '{{entity_name}}.from_string("{{item_example}}")'
+    prompt: Call `from_string` on `{{entity_name}}` and store the returned instance in `obj`
+    expected_answer: 'obj = {{entity_name}}.from_string("{{item_example}}")'
     accepted_solutions:
-      - '{{entity_name}}.from_string("{{item_example}}")'
-      - "{{entity_name}}.from_string('{{item_example}}')"
+      - 'obj = {{entity_name}}.from_string("{{item_example}}")'
+      - "obj = {{entity_name}}.from_string('{{item_example}}')"
     hints:
       - Call on the class, not an instance
       - Classmethods can also be called on instances, but calling on the class is clearer
@@ -266,13 +302,23 @@ exercises:
     prereqs: [oop.methods]
     type: write
     pattern: definition
-    prompt: Define a static method called validate_{{item_singular}} using @staticmethod decorator
+    prompt: Define a `@staticmethod` named `validate_{{item_singular}}(value)` that returns `True` if `value` is truthy, otherwise `False`
     expected_answer: |
       @staticmethod
       def validate_{{item_singular}}(value):
+          return bool(value)
+    accepted_solutions:
+      - |
+        @staticmethod
+        def validate_{{item_singular}}(value):
+            return bool(value)
+      - |
+        @staticmethod
+        def validate_{{item_singular}}(value):
+            return True if value else False
     hints:
-      - Use @staticmethod decorator
-      - No self or cls parameter
+      - Use the `@staticmethod` decorator
+      - No `self` or `cls` parameter needed
     tags: [oop, staticmethod, decorator]
 
   - slug: staticmethod-vs-classmethod
@@ -285,13 +331,23 @@ exercises:
     prereqs: [oop.classmethod]
     type: write
     pattern: definition
-    prompt: Define a utility method is_valid_{{item_singular}} that doesn't need self or cls
+    prompt: Define a `@staticmethod` `is_valid_{{item_singular}}(value)` that returns `False` for empty or whitespace-only strings
     expected_answer: |
       @staticmethod
       def is_valid_{{item_singular}}(value):
+          return bool(value.strip())
+    accepted_solutions:
+      - |
+        @staticmethod
+        def is_valid_{{item_singular}}(value):
+            return bool(value.strip())
+      - |
+        @staticmethod
+        def is_valid_{{item_singular}}(value):
+            return len(value.strip()) > 0
     hints:
-      - staticmethod when you don't need class access
-      - classmethod when you need cls
+      - Use `@staticmethod` when you don't need class or instance access
+      - Use `.strip()` to check for whitespace-only strings
     tags: [oop, staticmethod, classmethod]
 
   # --- Properties Subconcept ---
@@ -305,13 +361,19 @@ exercises:
     prereqs: [oop.methods]
     type: write
     pattern: definition
-    prompt: Define a property called {{item_singular}}_display using @property decorator
+    prompt: Define a `@property` named `{{item_singular}}_display` that returns `self._{{item_singular}}_display`
     expected_answer: |
       @property
       def {{item_singular}}_display(self):
+          return self._{{item_singular}}_display
+    accepted_solutions:
+      - |
+        @property
+        def {{item_singular}}_display(self):
+            return self._{{item_singular}}_display
     hints:
-      - Use @property decorator
-      - Method becomes readable as attribute
+      - Use the `@property` decorator
+      - The method becomes accessible as an attribute (no parentheses needed)
     tags: [oop, property, getter]
 
   - slug: property-return
@@ -324,15 +386,15 @@ exercises:
     prereqs: [oop.properties]
     type: write
     pattern: construction
-    prompt: Return {{attr_key_1}} and {{attr_key_2}} joined with a space from a {{item_singular}} property
-    expected_answer: return f"{self.{{attr_key_1}}} {self.{{attr_key_2}}}"
+    prompt: In a `@property` getter, return `{{attr_key_1}}` and `{{attr_key_2}}` separated by a space
+    expected_answer: 'return f"{self.{{attr_key_1}}} {self.{{attr_key_2}}}"'
     accepted_solutions:
       - 'return f"{self.{{attr_key_1}}} {self.{{attr_key_2}}}"'
       - "return f'{self.{{attr_key_1}}} {self.{{attr_key_2}}}'"
       - "return self.{{attr_key_1}} + ' ' + self.{{attr_key_2}}"
     hints:
-      - Combine the two {{item_singular}} attributes
-      - Use f-string or string concatenation with a space
+      - Combine the two instance attributes with `self.`
+      - Use an f-string or string concatenation with a space
     tags: [oop, property, computed]
 
   - slug: property-setter
@@ -345,13 +407,19 @@ exercises:
     prereqs: [oop.properties]
     type: write
     pattern: definition
-    prompt: Define a setter for the {{item_singular}}_display property
+    prompt: Define the setter header for `{{item_singular}}_display` and assign `value` to `self._{{item_singular}}_display`
     expected_answer: |
       @{{item_singular}}_display.setter
       def {{item_singular}}_display(self, value):
+          self._{{item_singular}}_display = value
+    accepted_solutions:
+      - |
+        @{{item_singular}}_display.setter
+        def {{item_singular}}_display(self, value):
+            self._{{item_singular}}_display = value
     hints:
-      - Use @property_name.setter
-      - Same method name as getter
+      - Use `@property_name.setter` decorator
+      - Use the same method name as the getter
     tags: [oop, property, setter]
 
   - slug: property-setter-validation
@@ -364,20 +432,23 @@ exercises:
     prereqs: [oop.properties]
     type: write
     pattern: handling
-    prompt: In a {{item_singular}} setter, raise ValueError if {{attr_key_1}} is negative
+    prompt: In a setter, raise `ValueError` if `value` is negative
     expected_answer: |
-      if {{attr_key_1}} < 0:
-          raise ValueError("{{attr_key_1}} cannot be negative")
+      if value < 0:
+          raise ValueError("value cannot be negative")
     accepted_solutions:
       - |
-        if {{attr_key_1}} < 0:
-            raise ValueError("{{attr_key_1}} cannot be negative")
+        if value < 0:
+            raise ValueError("value cannot be negative")
       - |
-        if {{attr_key_1}} < 0:
-            raise ValueError('{{attr_key_1}} cannot be negative')
+        if value < 0:
+            raise ValueError('value cannot be negative')
+      - |
+        if value < 0:
+            raise ValueError("Cannot be negative")
     hints:
-      - Check {{item_singular}} condition before setting
-      - Raise appropriate {{item_singular}} exception
+      - Check the condition before setting the value
+      - Raise `ValueError` with a descriptive message
     tags: [oop, property, validation]
 
   - slug: property-deleter
@@ -390,13 +461,19 @@ exercises:
     prereqs: [oop.properties]
     type: write
     pattern: definition
-    prompt: Define a deleter for the {{item_singular}} property
+    prompt: Define a deleter for the `{{item_singular}}` property that deletes `self._{{item_singular}}`
     expected_answer: |
       @{{item_singular}}.deleter
       def {{item_singular}}(self):
+          del self._{{item_singular}}
+    accepted_solutions:
+      - |
+        @{{item_singular}}.deleter
+        def {{item_singular}}(self):
+            del self._{{item_singular}}
     hints:
-      - Use @property_name.deleter
-      - Called when del obj.{{item_singular}} is used
+      - Use `@property_name.deleter` decorator
+      - Called when `del obj.property_name` is used
     tags: [oop, property, deleter]
 
   - slug: property-readonly
@@ -409,14 +486,19 @@ exercises:
     prereqs: [oop.properties]
     type: write
     pattern: definition
-    prompt: Define a read-only property called {{attr_key_1}} that returns self._{{attr_key_1}}
+    prompt: Define a read-only `@property` named `{{attr_key_1}}` that returns `self._{{attr_key_1}}`
     expected_answer: |
       @property
       def {{attr_key_1}}(self):
           return self._{{attr_key_1}}
+    accepted_solutions:
+      - |
+        @property
+        def {{attr_key_1}}(self):
+            return self._{{attr_key_1}}
     hints:
-      - Only define getter, no setter
-      - Use underscore prefix for private attribute
+      - Only define a getter, no setter
+      - Use underscore prefix for the private attribute
     tags: [oop, property, readonly]
 
   # --- Fill-in Exercises ---
@@ -431,12 +513,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Fill in the keyword that defines a {{item_singular}} class
+    prompt: Fill in the Python keyword used to define a class
     template: "___ {{entity_name}}:"
     expected_answer: "class"
     hints:
-      - Keyword that starts {{item_singular}} class definition
-      - Similar to how 'def' starts a {{item_singular}} function
+      - The keyword that starts a class definition
+      - Similar to how `def` starts a function
     tags: [oop, class, fill-in]
 
   - slug: init-self-fill
@@ -450,12 +532,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: definition
-    prompt: Fill in the first parameter that refers to the {{item_singular}} instance
+    prompt: Fill in the conventional first parameter name for an instance method
     template: "def __init__(___, {{attr_key_1}}):"
     expected_answer: "self"
     hints:
-      - Always the first parameter in {{item_singular}} instance methods
-      - Refers to the {{item_singular}} object being created
+      - Always the first parameter in instance methods
+      - Refers to the object being created
     tags: [oop, init, fill-in]
 
   - slug: super-fill
@@ -469,12 +551,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: invocation
-    prompt: Fill in the function that accesses the parent {{item_singular}} class
+    prompt: Fill in the keyword used to call a parent method
     template: "___().__init__({{attr_key_1}})"
     expected_answer: "super"
     hints:
-      - Built-in to access parent {{item_singular}} class
-      - Returns a proxy object for accessing parent {{item_singular}} methods
+      - Built-in function to access the parent class
+      - Returns a proxy object for calling parent methods
     tags: [oop, super, fill-in]
 
   # --- Predict Exercises ---
@@ -498,8 +580,8 @@ exercises:
       print(p.name)
     expected_answer: "{{personName}}"
     hints:
-      - self.name stores the passed value
-      - Accessing p.name retrieves what was set in __init__
+      - The `self.name` attribute stores the passed value
+      - Accessing `p.name` retrieves what was set in `__init__`
     tags: [oop, attribute, predict, dynamic]
 
   - slug: method-call-predict
@@ -512,7 +594,7 @@ exercises:
     prereqs: [oop.methods]
     type: predict
     pattern: invocation
-    prompt: What does this counter method code print?
+    prompt: What does this code print? (Enter each line of output on a separate line)
     code: |
       class {{entity_name}}Counter:
           def __init__(self):
@@ -526,9 +608,14 @@ exercises:
     expected_answer: |
       1
       2
+    accepted_solutions:
+      - |
+        1
+        2
+      - "1\n2"
     hints:
-      - Each {{action_verb}} call increments and returns {{item_singular}} count
-      - The {{item_singular}} object remembers its state between method calls
+      - Each `{{action_verb}}` call increments and returns the count
+      - The object remembers its state between method calls
     tags: [oop, method, predict]
 
   - slug: inheritance-predict
@@ -541,7 +628,7 @@ exercises:
     prereqs: [oop.inheritance]
     type: predict
     pattern: invocation
-    prompt: What does this inheritance override print?
+    prompt: The subclass overrides a method. What does this code print?
     code: |
       class {{entity_name}}:
           def {{action_verb}}(self):
@@ -553,8 +640,8 @@ exercises:
       print(obj.{{action_verb}}())
     expected_answer: "{{item_example}}"
     hints:
-      - Child {{item_singular}} method overrides parent
-      - Python uses the most specific (child) {{item_singular}} implementation
+      - The child method overrides the parent
+      - Python uses the most specific (child) implementation
     tags: [oop, inheritance, predict]
 
   # --- Dynamic OOP Exercises ---
@@ -569,11 +656,11 @@ exercises:
     type: predict
     pattern: invocation
     generator: class-method
-    prompt: "What does this code print?"
+    prompt: "What does this code print? (Focus on what the method returns)"
     code: "{{code}}"
     expected_answer: "{{result}}"
     hints:
-      - "The {{method}} method modifies or returns based on {{attribute}}"
+      - "The `{{method}}` method modifies or returns based on `{{attribute}}`"
       - "Context: {{context}}"
     tags: [oop, methods, dynamic, predict]
 
@@ -588,10 +675,12 @@ exercises:
     type: write
     pattern: invocation
     generator: class-method
-    prompt: "Given obj is a {{className}} instance, call its {{method}} method"
-    expected_answer: "{{methodCall}}"
+    prompt: "Given `obj` is an instance of `{{className}}`, write the code to call `{{method}}`"
+    expected_answer: "obj.{{method}}()"
+    accepted_solutions:
+      - "obj.{{method}}()"
     hints:
-      - "Call methods using dot notation: obj.method()"
+      - "Call methods using dot notation: `obj.method()`"
       - "Don't forget the parentheses at the end"
     tags: [oop, methods, dynamic, write]
 
@@ -607,12 +696,12 @@ exercises:
     type: predict
     pattern: invocation
     generator: inheritance-method
-    prompt: "What does this code print?"
+    prompt: "What does this code print? (Focus on method overriding)"
     code: "{{code}}"
     expected_answer: "{{result}}"
     hints:
       - "{{description}}"
-      - "Check if {{childClass}} overrides {{method}}"
+      - "Check if `{{childClass}}` overrides `{{method}}`"
     tags: [oop, inheritance, dynamic, predict]
 
   - slug: inheritance-override-dynamic
@@ -626,9 +715,12 @@ exercises:
     type: predict
     pattern: invocation
     generator: inheritance-method
-    prompt: "When calling {{method}}() on a {{callOn}} instance, which class provides the implementation? ({{parentClass}} or {{childClass}})"
+    prompt: "When calling `{{method}}()` on `obj`, which class provides the implementation: `{{parentClass}}` or `{{childClass}}`?"
     code: "{{code}}"
-    expected_answer: "{{callOn}}"
+    expected_answer: "{{implementingClass}}"
+    accepted_solutions:
+      - "{{implementingClass}}"
+      - "{{implementingClass}}."
     hints:
       - "Check if the child class overrides the method"
       - "If no override, the parent's method is used"
@@ -648,25 +740,29 @@ exercises:
     pattern: definition
     domains: [web]
     prompt: |
-      Define a @dataclass named {{entity_name}}Response with:
-      - {{status_var}}: int defaulting to 200
-      - {{item_plural}}: list[str] using field(default_factory=list) to avoid shared state
-      Import field from dataclasses.
+      Create a dataclass `{{entity_name}}Response` with:
+      - `{{status_var}}: int = 200`
+      - `{{item_plural}}: list[str] = field(default_factory=list)`
+      Include the needed imports from `dataclasses`.
     expected_answer: |
+      from dataclasses import dataclass, field
+
       @dataclass
       class {{entity_name}}Response:
           {{status_var}}: int = 200
           {{item_plural}}: list[str] = field(default_factory=list)
     accepted_solutions:
       - |
+        from dataclasses import dataclass, field
+
         @dataclass
         class {{entity_name}}Response:
             {{status_var}}: int = 200
             {{item_plural}}: list[str] = field(default_factory=list)
     hints:
-      - Use @dataclass decorator for {{item_singular}}
-      - Mutable {{item_plural}} defaults need field(default_factory=...)
-      - This prevents shared {{item_singular}} state bugs
+      - Use the `@dataclass` decorator
+      - Mutable defaults need `field(default_factory=...)` to avoid shared state
+      - Import both `dataclass` and `field` from `dataclasses`
     tags: [dataclass, api, mutable-default, integrated]
 
   - slug: health-check-dataclass-integrated
@@ -681,12 +777,15 @@ exercises:
     type: write
     pattern: definition
     prompt: |
-      Define a @dataclass {{entity_name}}Check with:
-      - {{attr_key_1}}: str
-      - {{status_var}}: str = "ok"
-      - {{attr_key_2}}_ms: int = 0
-      Add method to_log_line() returning f"{self.{{attr_key_1}}}:{self.{{status_var}}} ({self.{{attr_key_2}}_ms}ms)"
+      Create a dataclass `{{entity_name}}Check` with:
+      - `{{attr_key_1}}: str`
+      - `{{status_var}}: str = "ok"`
+      - `{{attr_key_2}}_ms: int = 0`
+      Add method `to_log_line()` returning `f"{self.{{attr_key_1}}}:{self.{{status_var}}} ({self.{{attr_key_2}}_ms}ms)"`.
+      Include the import.
     expected_answer: |
+      from dataclasses import dataclass
+
       @dataclass
       class {{entity_name}}Check:
           {{attr_key_1}}: str
@@ -695,10 +794,22 @@ exercises:
 
           def to_log_line(self) -> str:
               return f"{self.{{attr_key_1}}}:{self.{{status_var}}} ({self.{{attr_key_2}}_ms}ms)"
+    accepted_solutions:
+      - |
+        from dataclasses import dataclass
+
+        @dataclass
+        class {{entity_name}}Check:
+            {{attr_key_1}}: str
+            {{status_var}}: str = "ok"
+            {{attr_key_2}}_ms: int = 0
+
+            def to_log_line(self) -> str:
+                return f"{self.{{attr_key_1}}}:{self.{{status_var}}} ({self.{{attr_key_2}}_ms}ms)"
     hints:
-      - Methods work normally in {{item_singular}} dataclasses
-      - Use f-string for formatted {{item_singular}} output
-      - Access {{item_singular}} fields with self.fieldname
+      - Methods work normally inside dataclasses
+      - Use an f-string for formatted output
+      - Access fields with `self.fieldname`
     tags: [dataclass, logging, fstring, integrated]
 
   # --- Debug Exercises (Pitfall Subconcepts) ---

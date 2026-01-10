@@ -3,7 +3,7 @@
 id: recipe-book
 title: "Recipe Book"
 icon: "\U0001F4D6"
-blueprints: [collection-cli-app]
+# Global skin - works with any blueprint
 
 vars:
   list_name: recipes

@@ -3,7 +3,7 @@
 id: playlist-app
 title: "Playlist App"
 icon: "\U0001F3B5"
-blueprints: [collection-cli-app]
+# Global skin - works with any blueprint
 
 vars:
   list_name: playlist

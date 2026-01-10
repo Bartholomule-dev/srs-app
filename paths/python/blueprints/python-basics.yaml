@@ -18,10 +18,10 @@ beats:
       - variable-predict-assign
 
   - beat: 2
-    exercise: assign-number
+    exercise: assign-number-dynamic
     title: "Store numbers"
     sideQuests:
-      - variable-naming-fill
+      - variable-underscore-fill
       - variable-predict-reassign
 
   - beat: 3
@@ -60,13 +60,13 @@ beats:
     title: "Powers and exponents"
     sideQuests:
       - augmented-assignment-dynamic
-      - operator-precedence-dynamic
 
   - beat: 8
-    exercise: operator-expression-predict-dynamic
+    exercise: operator-precedence-dynamic
     title: "Expression evaluation"
     sideQuests:
-      - operator-parentheses-dynamic
+      - comparison-chaining
+      - operator-predict-modulo
 
   # ============================================
   # Act 3: Boolean Logic (Beats 9-12)
@@ -124,7 +124,7 @@ beats:
     exercise: import-from-math
     title: "Import specific functions"
     sideQuests:
-      - import-math-sqrt
+      - import-math-sqrt-dynamic
       - import-fill-from
       - import-predict-ceil
       - import-random-choice

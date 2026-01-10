@@ -6,11 +6,11 @@ srs-app/
 ├── src/                  # Application source code
 ├── tests/                # Test files (unit, integration, e2e)
 ├── supabase/             # Supabase configuration & migrations
-├── exercises/            # YAML exercise definitions
-├── paths/                # Blueprint + Skin YAML definitions (NEW)
+├── exercises/            # YAML exercise definitions (529 exercises across 11 files)
+├── paths/                # Blueprint + Skin YAML definitions
 │   └── python/
-│       ├── blueprints/   # Blueprint YAML (collection-cli-app.yaml)
-│       └── skins/        # Skin YAML (5 skins)
+│       ├── blueprints/   # 15 Blueprint YAML files (234 total beats)
+│       └── skins/        # 22 Skin YAML files
 ├── public/               # Static assets
 ├── docs/                 # Implementation plans & deployment guide
 ├── .github/              # GitHub Actions workflows
@@ -163,19 +163,19 @@ src/
     │   ├── teaching-cards.ts # buildTeachingPair (teaching + practice card pairs)
     │   └── interleave-teaching.ts # interleaveWithTeaching (insert teaching pairs)
     │
-    ├── generators/           # ✅ Dynamic exercise generation (5 generators)
-    │   ├── index.ts          # Registry (getGenerator, registerGenerator, hasGenerator)
-    │   ├── types.ts          # Generator, GeneratorParams, TargetConstruct
-    │   ├── seed.ts           # createSeed, hashString (deterministic seeding)
-    │   ├── utils.ts          # seededRandom (int, pick, shuffle)
-    │   ├── render.ts         # renderExercise, renderExercises (Mustache)
-    │   └── definitions/      # Generator implementations
-    │       ├── slice-bounds.ts      # start/end indices for slicing
-    │       ├── list-values.ts       # a/b/c integers (1-99)
-    │       ├── variable-names.ts    # Python identifiers
-    │       ├── index-values.ts      # single index (0-4)
-    │       ├── arithmetic-values.ts # x/y with precomputed results
-    │       └── ... (13 total generators)
+    ├── generators/           # ✅ Dynamic exercise generation (38 generators)
+│   ├── index.ts          # Registry (getGenerator, registerGenerator, hasGenerator)
+│   ├── types.ts          # Generator, GeneratorParams, TargetConstruct, VariantOverrides types
+│   ├── seed.ts           # createSeed, hashString (deterministic seeding)
+│   ├── utils.ts          # seededRandom (int, pick, shuffle)
+│   ├── render.ts         # renderExercise, renderExercises (Mustache templates + variant support)
+│   └── definitions/      # 38 generator implementations
+│       ├── slice-bounds.ts, list-values.ts, variable-names.ts
+│       ├── index-values.ts, arithmetic-values.ts, loop-simulation.ts
+│       ├── comparison-logic.ts, string-ops.ts, dict-values.ts
+│       ├── comp-mapping.ts, comp-filter.ts, try-except-flow.ts
+│       ├── oop-instance.ts, lambda-expr.ts, zip-lists.ts
+│       └── ... (38 total generators)
 │
 ├── paths/                # ✅ Blueprint + Skin presentation layer (NEW)
 │   ├── index.ts          # Barrel export
@@ -224,6 +224,7 @@ src/
 ```
 
 ## Tests (`tests/`)
+**Total: 2219 tests passing (Vitest unit/integration)**
 ```
 tests/
 ├── setup.ts                  # Vitest setup, safety checks
@@ -291,6 +292,31 @@ supabase/
 ```
 
 ## Exercises (`exercises/`)
+```
+exercises/
+└── python/                   # Python exercises (529 total, 109 dynamic, restructured to match curriculum graph)
+    ├── foundations.yaml      # variables, operators, expressions, io
+    ├── strings.yaml          # basics, indexing, slicing, methods, fstrings
+    ├── numbers-booleans.yaml # integers, floats, booleans, conversion, truthiness, comparisons
+    ├── collections.yaml      # lists, tuples, dictionaries, sets, mutability
+    ├── conditionals.yaml     # if, elif, else, ternary
+    ├── loops.yaml            # for, while, range, enumerate, zip, nested
+    ├── functions.yaml        # defining, parameters, returns, scope, lambda
+    ├── comprehensions.yaml   # list, dict, set, generator, nested
+    ├── error-handling.yaml   # try-except, finally, raising, custom
+    ├── oop.yaml              # classes, methods, dunder, inheritance
+    └── modules-files.yaml    # importing, packages, reading, writing
+
+Exercise types: write (319 / 60%), fill-in (71 / 13%), predict (139 / 26%)
+Levels: intro (206), practice (238), edge (53), integrated (32)
+Dynamic: 109 exercises using 38 generators
+
+**Validation Commands:**
+- `pnpm validate:exercises` - Schema validation (Ajv against schema.json)
+- `pnpm validate:curriculum` - Curriculum consistency validation
+- `pnpm validate:dynamic` - Dynamic exercise rendering validation
+- `pnpm validate:paths` - Blueprint/skin YAML validation
+- `pnpm validate:all` - Run all validations
 ```
 exercises/
 └── python/                   # Python exercises (355 total, 23 dynamic, restructured to match curriculum graph)

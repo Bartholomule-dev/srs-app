@@ -8,17 +8,21 @@ SRS-App is a gamified web platform for practicing code syntax through spaced rep
 ## Current Status
 - **Phase:** Production Ready (v0.1.0)
 - **Auth System:** ✅ Complete (Magic Link via Supabase + auto-generated usernames)
-- **Database Schema:** ✅ Complete (profiles, exercises, user_progress)
+- **Database Schema:** ✅ Complete (profiles, exercises, user_progress, subconcept_progress)
 - **TypeScript Types:** ✅ Complete (auto-generated + camelCase mappers)
-- **Test Infrastructure:** ✅ Complete (Vitest 1088 tests + Playwright E2E)
+- **Test Infrastructure:** ✅ Complete (Vitest 2219 tests + Playwright E2E)
 - **Error Handling:** ✅ Complete (AppError + ErrorBoundary + Toast)
 - **Core SRS Engine:** ✅ Complete (FSRS algorithm + useConceptSRS hook)
 - **Exercise Engine:** ✅ Complete (ExerciseCard + components)
 - **Practice Session:** ✅ Complete (useConceptSession + /dashboard + /practice)
-- **Exercise Library:** ✅ Complete (355 Python exercises, 23 dynamic, across 54 subconcepts)
+- **Exercise Library:** ✅ Complete (529 Python exercises, 109 dynamic, across 65 subconcepts)
 - **Basic Stats:** ✅ Complete (StatsGrid + useStats + streak/accuracy)
 - **Deployment:** ✅ Complete (Vercel + Supabase + GitHub Actions CI/E2E)
 - **UI/UX Redesign:** ✅ Complete (Landing page, Header, Dashboard, Practice flow)
+- **Phase 2 Curriculum:** ✅ Complete (concept-based SRS, 11 concepts, 65 subconcepts)
+- **Phase 3 Gamification:** ✅ Complete (points, streaks, achievements, skill tree)
+- **Blueprint + Skin System:** ✅ Complete (15 blueprints, 22 skins, 234 beats)
+- **Dynamic Exercises:** ✅ Complete (38 generators, 109 dynamic exercises)
 
 ## Completed Milestones
 1. **Milestone 1: Database & Types** - Migrations, RLS, types, seed data
@@ -26,25 +30,24 @@ SRS-App is a gamified web platform for practicing code syntax through spaced rep
 3. **Milestone 3: SRS Engine & Error Handling** - SM-2 algorithm, useSRS, AppError, Toast
 4. **Milestone 4: Exercise Engine** - normalizePython, checkAnswer, ExerciseCard components
 5. **Milestone 5: Practice Session** - useSession, SessionProgress, /dashboard, /practice pages
-6. **Milestone 6: Exercise Library** - 50 Python exercises in YAML, import script, validation
+6. **Milestone 6: Exercise Library** - Python exercises in YAML, import script, validation
 7. **Milestone 7: Basic Stats** - StatsCard, StatsGrid, useStats hook, streak/accuracy utilities
-8. **Milestone 8: MVP Deployment** - Vercel config, GitHub Actions CI/E2E, Playwright tests, username auto-gen
-9. **Milestone 9: UI/UX Redesign** - Landing page, Header components, Dashboard improvements, Practice flow polish
-10. **Milestone 10: Custom UI Components** - Premium Tailwind components with warm amber theme, framer-motion animations
+8. **Milestone 8: MVP Deployment** - Vercel config, GitHub Actions CI/E2E, Playwright tests
+9. **Milestone 9: UI/UX Redesign** - Landing page, Header components, Dashboard improvements
+10. **Milestone 10: Custom UI Components** - Premium Tailwind components, framer-motion animations
 11. **Milestone 11: Theme System** - CSS variables, fonts, cn() utility, Card elevation
 12. **Milestone 12: Answer Matching** - accepted_solutions, alternative syntax support
-13. **Milestone 13: Phase 2 Curriculum** - Concept-based SRS, 171 exercises, useConceptSession
-14. **Milestone 14: Phase 2.5 Enhancement** - objective/targets fields, anti-repeat, 218 exercises
-15. **Milestone 15: Learning Mode** - Teaching cards for new subconcepts, TeachingCard component, blue progress segments
-16. **Milestone 16: Phase 2.7 Exercise Variety** - Three exercise types (write/fill-in/predict), experience levels
-17. **Milestone 17: Curriculum Restructure** - 332 exercises across 10 files matching curriculum graph
-18. **Milestone 18: SM-2 to FSRS Migration** - FSRS algorithm with ts-fsrs library, adapter pattern
-19. **Milestone 19: Dedicated Teaching Examples** - exampleCode field, instructional examples
-20. **Milestone 20: Dynamic Exercises Phase 1** - Generator infrastructure, deterministic seeding, Mustache templates
-21. **Milestone 21: Dynamic Exercises Phase 2 (Grading)** - Two-pass grading (correctness + construct coaching), 8 construct patterns, CoachingFeedback component
-22. **Milestone 22: Dynamic Exercises Phase 3 (Pyodide)** - Lazy-loaded Python execution, PyodideContext, execution-based grading
-23. **Milestone 23: Dynamic Exercises Phase 4 (Metrics)** - Audit logging, retention/transfer metrics, construct adoption tracking
-24. **Milestone 24: Dynamic Exercises Phase 5 (Content)** - 23 dynamic exercises, 5 generators (slice-bounds, list-values, variable-names, index-values, arithmetic-values)
+13. **Milestone 13: Phase 2 Curriculum** - Concept-based SRS, useConceptSession
+14. **Milestone 14: Phase 2.5 Enhancement** - objective/targets fields, anti-repeat
+15. **Milestone 15: Learning Mode** - Teaching cards, TeachingCard component
+16. **Milestone 16: Phase 2.7 Exercise Variety** - write/fill-in/predict types, experience levels
+17. **Milestone 17: Curriculum Restructure** - 11 exercise files matching curriculum graph
+18. **Milestone 18: SM-2 to FSRS Migration** - FSRS algorithm with ts-fsrs library
+19. **Milestone 19: Dedicated Teaching Examples** - exampleCode field
+20. **Milestone 20-25: Dynamic Exercises** - 38 generators, two-pass grading, Pyodide, metrics
+26. **Milestone 26: Skill Tree Visualization** - Badge tiers, dependency lines
+27. **Milestone 27: Phase 3 Gamification** - Points, streaks, achievements, contribution graph
+28. **Milestone 28: Blueprint + Skin System** - 15 blueprints, 22 skins, presentation layer
 
 ## Next Up
 - **Username Selection UI** (auto-generated for now)
@@ -91,7 +94,7 @@ SRS-App is a gamified web platform for practicing code syntax through spaced rep
 - Time-based greetings use `Date.getHours()` (morning < 12, afternoon < 17, evening)
 
 ## Key Architectural Decisions
-- **SRS Algorithm:** SM-2 variant with easeFactor (1.3-3.0), interval scheduling
+- **SRS Algorithm:** FSRS (Free Spaced Repetition Scheduler) via ts-fsrs library
 - **Auth:** Passwordless Magic Link (email OTP) + auto-generated usernames
 - **Database:** PostgreSQL with Row-Level Security (RLS) for data isolation
 - **Client:** React Compiler enabled for auto-optimization

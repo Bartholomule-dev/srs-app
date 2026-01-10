@@ -14,10 +14,10 @@ exercises:
     prereqs: [foundations]
     type: write
     pattern: import
-    prompt: Import the math module for {{action_verb}}ing {{item_plural}}
+    prompt: Import the `math` module
     expected_answer: import math
     hints:
-      - Use import keyword for {{item_singular}} operations
+      - Use `import` keyword
       - No quotes around module name
     tags: [imports, module, beginner]
 
@@ -31,11 +31,11 @@ exercises:
     prereqs: [modules-files.imports]
     type: write
     pattern: import
-    prompt: Import only sqrt from the math module (for {{item_singular}} calculations)
+    prompt: Import only `sqrt` from the `math` module
     expected_answer: from math import sqrt
     hints:
-      - Use from...import syntax for {{item_singular}} operations
-      - You can then use sqrt() directly without math prefix
+      - Use `from ... import` syntax
+      - You can then use `sqrt()` directly without `math.` prefix
     tags: [imports, from, specific]
 
   - slug: import-alias
@@ -48,11 +48,11 @@ exercises:
     prereqs: [modules-files.imports]
     type: write
     pattern: import
-    prompt: Import numpy as np (for {{action_verb}}ing {{item_plural}} data)
+    prompt: Import `numpy` as `np`
     expected_answer: import numpy as np
     hints:
-      - Use 'as' for {{item_singular}} alias
-      - Common convention in data science community
+      - Use `as` keyword for alias
+      - Common convention in data science
     tags: [imports, alias, convention]
 
   - slug: import-multiple
@@ -65,14 +65,14 @@ exercises:
     prereqs: [modules-files.imports]
     type: write
     pattern: import
-    prompt: Import sin and cos from math (for {{item_singular}} calculations)
+    prompt: Import `sin` and `cos` from `math` in one statement
     expected_answer: from math import sin, cos
     accepted_solutions:
       - from math import sin, cos
       - from math import cos, sin
     hints:
-      - Comma-separate {{item_singular}} imports
-      - All come after a single 'import' keyword
+      - Comma-separate the imports
+      - All come after a single `import` keyword
     tags: [imports, multiple, from]
 
   # --- Reading Subconcept ---
@@ -86,7 +86,7 @@ exercises:
     prereqs: [foundations]
     type: write
     pattern: file
-    prompt: Open file "{{filename}}" for reading
+    prompt: Write the function call that opens `{{filename}}` in read mode
     expected_answer: 'open("{{filename}}", "r")'
     accepted_solutions:
       - 'open("{{filename}}", "r")'
@@ -94,7 +94,7 @@ exercises:
       - 'open("{{filename}}")'
       - "open('{{filename}}')"
     hints:
-      - Use open() function
+      - Use `open()` function
       - '"r" is default mode'
     tags: [files, open, read]
 
@@ -108,11 +108,11 @@ exercises:
     prereqs: [modules-files.reading]
     type: write
     pattern: file
-    prompt: Read entire contents of the {{item_singular}} file object f
+    prompt: Read the entire contents of file object `f`
     expected_answer: f.read()
     hints:
-      - Use read() method
-      - Returns all {{item_singular}} content as a single string
+      - Use `.read()` method
+      - Returns all content as a single string
     tags: [files, read, content]
 
   - slug: file-read-lines
@@ -125,11 +125,11 @@ exercises:
     prereqs: [modules-files.reading]
     type: write
     pattern: file
-    prompt: Read all {{item_plural}} from file f as a list
+    prompt: Read all lines from file `f` into a list (each line keeps its newline)
     expected_answer: f.readlines()
     hints:
-      - Use readlines() method
-      - Each {{item_singular}} becomes a list item with newline included
+      - Use `.readlines()` method
+      - Each line becomes a list item with newline included
     tags: [files, read, lines]
 
   - slug: file-read-line
@@ -142,11 +142,11 @@ exercises:
     prereqs: [modules-files.reading]
     type: write
     pattern: file
-    prompt: Read one {{item_singular}} from file f
+    prompt: Read the next line from file `f` (including the trailing newline)
     expected_answer: f.readline()
     hints:
-      - Use readline() method
-      - Call again to get the next {{item_singular}}
+      - Use `.readline()` method
+      - Returns a single line with newline included
     tags: [files, read, line]
 
   # --- Writing Subconcept ---
@@ -160,13 +160,13 @@ exercises:
     prereqs: [modules-files.reading]
     type: write
     pattern: file
-    prompt: Open file "{{filename}}" for writing
+    prompt: Write the function call that opens `{{filename}}` in write mode
     expected_answer: 'open("{{filename}}", "w")'
     accepted_solutions:
       - 'open("{{filename}}", "w")'
       - "open('{{filename}}', 'w')"
     hints:
-      - Use "w" mode for write
+      - Use `"w"` mode for write
       - "Warning: 'w' mode overwrites existing content"
     tags: [files, open, write]
 
@@ -180,13 +180,13 @@ exercises:
     prereqs: [modules-files.writing]
     type: write
     pattern: file
-    prompt: Write "{{item_example}}" to file object f
+    prompt: Write the string `{{item_example}}` to the open file object `f`
     expected_answer: 'f.write("{{item_example}}")'
     accepted_solutions:
       - 'f.write("{{item_example}}")'
       - "f.write('{{item_example}}')"
     hints:
-      - Use write() method
+      - Use `.write()` method
       - Returns number of characters written
     tags: [files, write, content]
 
@@ -200,13 +200,13 @@ exercises:
     prereqs: [modules-files.writing]
     type: write
     pattern: file
-    prompt: Open file "{{filename}}" for appending
+    prompt: Write the function call that opens `{{filename}}` in append mode
     expected_answer: 'open("{{filename}}", "a")'
     accepted_solutions:
       - 'open("{{filename}}", "a")'
       - "open('{{filename}}', 'a')"
     hints:
-      - Use "a" mode for append
+      - Use `"a"` mode for append
       - Preserves existing content, adds to end
     tags: [files, open, append]
 
@@ -220,17 +220,17 @@ exercises:
     prereqs: [modules-files.writing]
     type: write
     pattern: file
-    prompt: Write list of {{item_plural}} to file f
+    prompt: Write a list of strings called `{{list_name}}` to file `f` (each item is already a full line including `\n`)
     expected_answer: f.writelines({{list_name}})
     hints:
-      - Use writelines() method
-      - Doesn't add newlines automatically
+      - Use `.writelines()` method
+      - Does NOT add newlines automatically
     tags: [files, write, lines]
 
   # --- Context Subconcept ---
   - slug: context-manager-open
-    objective: Use a with statement for safe file handling
-    title: With Statement for File
+    objective: Use a with statement for safe file handling in write mode
+    title: With Statement for Writing
     difficulty: 2
     concept: modules-files
     subconcept: context
@@ -238,17 +238,15 @@ exercises:
     prereqs: [modules-files.reading]
     type: write
     pattern: context
-    prompt: Open file "{{filename}}" using a with statement, assigning to f
-    expected_answer: 'with open("{{filename}}") as f:'
+    prompt: Open `{{filename}}` in **write** mode using a context manager, binding to `f`
+    expected_answer: 'with open("{{filename}}", "w") as f:'
     accepted_solutions:
-      - 'with open("{{filename}}") as f:'
-      - "with open('{{filename}}') as f:"
-      - 'with open("{{filename}}", "r") as f:'
-      - "with open('{{filename}}', 'r') as f:"
+      - 'with open("{{filename}}", "w") as f:'
+      - "with open('{{filename}}', 'w') as f:"
     hints:
-      - with statement auto-closes file
-      - Use 'as' for variable
-    tags: [files, context, with]
+      - Use `with open(...)` for automatic cleanup
+      - "Write mode requires the 'w' argument"
+    tags: [files, context, with, write]
 
   - slug: context-intro
     objective: Use the with statement for automatic resource management
@@ -260,7 +258,7 @@ exercises:
     prereqs: [reading]
     type: write
     pattern: context
-    prompt: Open file "{{filename}}" for reading using a context manager
+    prompt: Using a context manager, open `{{filename}}` for reading and store the file object in `f`
     expected_answer: 'with open("{{filename}}") as f:'
     accepted_solutions:
       - 'with open("{{filename}}") as f:'
@@ -268,7 +266,7 @@ exercises:
       - 'with open("{{filename}}", "r") as f:'
       - "with open('{{filename}}', 'r') as f:"
     hints:
-      - Use with statement for automatic cleanup
+      - Use `with open(...)` for automatic cleanup
       - File closes automatically when block exits
     tags: [files, context, intro]
 
@@ -282,11 +280,13 @@ exercises:
     prereqs: [modules-files.context]
     type: write
     pattern: context
-    prompt: Open {{filename}} for reading and output.txt for writing simultaneously in a with statement
+    prompt: In one `with` statement, open `{{filename}}` for reading as `inp` and `output.txt` for writing as `out`
     expected_answer: 'with open("{{filename}}") as inp, open("output.txt", "w") as out:'
     accepted_solutions:
       - 'with open("{{filename}}") as inp, open("output.txt", "w") as out:'
       - "with open('{{filename}}') as inp, open('output.txt', 'w') as out:"
+      - 'with open("{{filename}}", "r") as inp, open("output.txt", "w") as out:'
+      - "with open('{{filename}}', 'r') as inp, open('output.txt', 'w') as out:"
     hints:
       - Comma-separate context managers
       - Both files close automatically when done
@@ -303,15 +303,15 @@ exercises:
     prereqs: [modules-files.imports]
     type: write
     pattern: construction
-    prompt: Create a Path object for the current {{item_singular}} directory
-    expected_answer: "Path('.')"
+    prompt: Assume `Path` is imported. Create a `Path` for the current working directory
+    expected_answer: "Path.cwd()"
     accepted_solutions:
+      - "Path.cwd()"
       - "Path('.')"
       - 'Path(".")'
-      - "Path.cwd()"
     hints:
-      - Import Path from pathlib
-      - Use '.' for current {{item_singular}} directory
+      - Use `Path.cwd()` for current working directory
+      - Or use `Path('.')` for relative path
     tags: [pathlib, files]
 
   - slug: pathlib-intro
@@ -324,14 +324,13 @@ exercises:
     prereqs: [imports]
     type: write
     pattern: construction
-    prompt: Create a Path object from string "{{list_name}}/{{filename}}"
+    prompt: Assume `Path` is imported. Create a `Path` from the string `{{list_name}}/{{filename}}`
     expected_answer: 'Path("{{list_name}}/{{filename}}")'
     accepted_solutions:
       - 'Path("{{list_name}}/{{filename}}")'
       - "Path('{{list_name}}/{{filename}}')"
     hints:
-      - Path is imported from pathlib
-      - Pass the {{item_singular}} path to the constructor
+      - Pass the path string to the `Path()` constructor
     tags: [pathlib, path, intro]
 
   - slug: pathlib-join-paths
@@ -344,14 +343,14 @@ exercises:
     prereqs: [modules-files.pathlib]
     type: write
     pattern: construction
-    prompt: Join Path object base with "{{list_name}}" and "{{filename}}" using the / operator
+    prompt: Assume `base` is a `Path`. Join it with `{{list_name}}` and `{{filename}}` using the `/` operator
     expected_answer: base / "{{list_name}}" / "{{filename}}"
     accepted_solutions:
       - base / "{{list_name}}" / "{{filename}}"
       - base / '{{list_name}}' / '{{filename}}'
     hints:
-      - Use / operator between Path and strings
-      - Chain multiple / operators for {{item_plural}}
+      - Use `/` operator between Path and strings
+      - Chain multiple `/` operators to build the path
     tags: [pathlib, join, operator]
 
   - slug: pathlib-get-parent
@@ -364,11 +363,11 @@ exercises:
     prereqs: [modules-files.pathlib]
     type: write
     pattern: attribute
-    prompt: Get the parent {{item_singular}} directory of Path object p
+    prompt: Given `p` is a `Path`, write the expression that returns its parent directory
     expected_answer: p.parent
     hints:
-      - Use the parent attribute
-      - Returns a Path object representing the {{item_singular}} directory
+      - Use the `.parent` attribute
+      - Returns a Path object
     tags: [pathlib, parent, navigation]
 
   - slug: pathlib-check-exists
@@ -381,15 +380,15 @@ exercises:
     prereqs: [modules-files.pathlib]
     type: write
     pattern: conditional
-    prompt: Check if {{item_singular}} Path p exists and is a directory
+    prompt: Write a boolean expression that is `True` only if `Path` object `p` exists and is a directory
     expected_answer: p.exists() and p.is_dir()
     accepted_solutions:
       - p.exists() and p.is_dir()
       - p.is_dir()
     hints:
-      - Use exists() to check {{item_singular}} existence
-      - Use is_dir() to check if {{item_singular}} directory
-      - Combine with 'and' operator
+      - Use `.exists()` to check existence
+      - Use `.is_dir()` to check if directory
+      - Combine with `and` operator
     tags: [pathlib, exists, is_dir, validation]
 
   # --- Main Guard Subconcept ---
@@ -403,14 +402,14 @@ exercises:
     prereqs: [modules-files.imports]
     type: write
     pattern: conditional
-    prompt: Write the standard Python main guard check for your {{item_singular}} module
+    prompt: Write the standard main guard line used to run code only when the file is executed directly
     expected_answer: 'if __name__ == "__main__":'
     accepted_solutions:
       - 'if __name__ == "__main__":'
       - "if __name__ == '__main__':"
     hints:
-      - Check if __name__ equals "__main__"
-      - This runs {{action_verb}} code only when {{item_singular}} script is executed directly
+      - Check if `__name__` equals `"__main__"`
+      - Code inside runs only when script is executed directly
     tags: [main, guard, module]
 
   - slug: main-guard-call-main
@@ -423,7 +422,7 @@ exercises:
     prereqs: [modules-files.main-guard]
     type: write
     pattern: conditional
-    prompt: Write main guard that calls {{action_verb}}_{{item_plural}}() function
+    prompt: Write a main guard that calls `{{action_verb}}_{{item_plural}}()`
     expected_answer: |
       if __name__ == "__main__":
           {{action_verb}}_{{item_plural}}()
@@ -436,7 +435,7 @@ exercises:
             {{action_verb}}_{{item_plural}}()
     hints:
       - First write the guard condition
-      - Then call {{action_verb}}_{{item_plural}}() inside the block
+      - Then call `{{action_verb}}_{{item_plural}}()` inside the block
     tags: [main, guard, function]
 
   - slug: main-guard-with-definition
@@ -449,7 +448,7 @@ exercises:
     prereqs: [main-guard, fn-basics]
     type: write
     pattern: function
-    prompt: Define a {{action_verb}}_{{item_plural}}() function that prints "{{status_var}}" and call it from a main guard
+    prompt: Write a function named `{{action_verb}}_{{item_plural}}()` that prints `{{status_var}}`, then call it under a main guard
     expected_answer: |
       def {{action_verb}}_{{item_plural}}():
           print("{{status_var}}")
@@ -470,9 +469,9 @@ exercises:
         if __name__ == '__main__':
             {{action_verb}}_{{item_plural}}()
     hints:
-      - Define the {{action_verb}}_{{item_plural}} function first
+      - Define the `{{action_verb}}_{{item_plural}}` function first
       - Add the main guard after the function
-      - Call {{action_verb}}_{{item_plural}}() inside the guard block
+      - Call `{{action_verb}}_{{item_plural}}()` inside the guard block
     tags: [main, guard, function, definition]
 
   # --- Fill-in Exercises ---
@@ -487,11 +486,11 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: import
-    prompt: Fill in the keyword that imports a module for {{action_verb}}ing {{item_plural}}
+    prompt: "Fill in the keyword used to import a module: `___ json`"
     template: "___ json"
     expected_answer: "import"
     hints:
-      - Keyword to bring in a {{item_singular}} module
+      - Keyword to bring in a module
       - Goes at the start of the statement
     tags: [imports, fill-in]
 
@@ -506,12 +505,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: import
-    prompt: Fill in the keyword for selective {{item_singular}} imports
+    prompt: "Fill in the keyword used for `from module import name` imports: `___ math import sqrt`"
     template: "___ math import sqrt"
     expected_answer: "from"
     hints:
-      - Keyword for selective {{item_singular}} imports
-      - Specifies which module to import {{action_verb}} functions from
+      - Keyword for selective imports
+      - Specifies which module to import from
     tags: [imports, from, fill-in]
 
   - slug: with-keyword-fill
@@ -525,12 +524,12 @@ exercises:
     type: fill-in
     blank_position: 0
     pattern: context
-    prompt: Fill in the keyword that starts a context manager for {{action_verb}}ing {{item_plural}}
+    prompt: 'Fill in the keyword used to start a context manager statement: `___ open(...) as f:`'
     template: '___ open("{{filename}}") as f:'
     expected_answer: "with"
     hints:
-      - Keyword for {{item_singular}} context managers
-      - Ensures {{item_singular}} file closes even if error occurs
+      - Keyword for context managers
+      - Ensures file closes even if error occurs
     tags: [files, with, fill-in]
 
   # --- Predict Exercises ---
@@ -544,14 +543,14 @@ exercises:
     prereqs: [modules-files.main-guard]
     type: predict
     pattern: conditional
-    prompt: What does __name__ equal when {{item_singular}} script runs directly?
+    prompt: When you run a Python file directly, what does `__name__` print?
     code: |
-      # Running: python {{item_singular}}_app.py
+      # Running: python my_script.py
       print(__name__)
     expected_answer: "__main__"
     hints:
-      - __name__ is "__main__" when {{item_singular}} runs directly
-      - Different when imported as a {{item_singular}} module
+      - "`__name__` is `\"__main__\"` when run directly"
+      - Different when imported as a module
     tags: [modules, main, predict]
 
   - slug: file-read-predict
@@ -564,7 +563,7 @@ exercises:
     prereqs: [modules-files.reading]
     type: predict
     pattern: file
-    prompt: If {{filename}} contains "hello", what prints?
+    prompt: Assume `{{filename}}` contains exactly `hello` (no newline). What does this code print?
     code: |
       with open("{{filename}}") as f:
           content = f.read()
@@ -572,7 +571,7 @@ exercises:
     expected_answer: "5"
     hints:
       - '"hello" has 5 characters'
-      - len() counts all characters read
+      - "`len()` counts all characters read"
     tags: [files, read, predict]
 
   - slug: path-join-predict
@@ -585,15 +584,15 @@ exercises:
     prereqs: [modules-files.pathlib]
     type: predict
     pattern: construction
-    prompt: What does this pathlib path produce?
+    prompt: What does this code print? (Assume POSIX-style paths)
     code: |
       from pathlib import Path
       p = Path("{{list_name}}") / "data" / "{{filename}}"
       print(p)
     expected_answer: "{{list_name}}/data/{{filename}}"
     hints:
-      - / operator joins {{item_singular}} path components
-      - Creates OS-appropriate path separators for {{item_plural}}
+      - The `/` operator joins path components
+      - Creates OS-appropriate path separators
     tags: [pathlib, join, predict]
 
   # --- Dynamic Exercises (using generators) ---
@@ -630,14 +629,14 @@ exercises:
     type: predict
     pattern: attribute
     generator: path-ops
-    prompt: "What does p.parent return?"
+    prompt: What is printed by `print(p.parent)`?
     code: |
       from pathlib import Path
       p = Path("{{fullPath}}")
       print(p.parent)
     expected_answer: "{{parent}}"
     hints:
-      - .parent gives the directory containing the file
+      - "`.parent` gives the directory containing the file"
       - Returns a Path object, not a string
     tags: [pathlib, parent, dynamic]
 
@@ -744,3 +743,96 @@ exercises:
       - Use the with statement for context management
       - open() takes filename and mode arguments
     tags: [files, write, dynamic]
+
+  # --- Integrated Exercises (Multi-Concept) ---
+  - slug: file-read-to-list
+    objective: Read file lines into a list and process them
+    title: File Lines to List
+    difficulty: 3
+    concept: modules-files
+    subconcept: reading
+    level: integrated
+    prereqs: [reading, lists, string-methods]
+    targets: [reading, lists]
+    type: write
+    pattern: file
+    prompt: |
+      Read all lines from "{{filename}}" into a list, stripping whitespace from each line.
+      Store in {{list_name}}_lines using a list comprehension.
+    expected_answer: |
+      with open("{{filename}}") as f:
+          {{list_name}}_lines = [line.strip() for line in f]
+    accepted_solutions:
+      - |
+        with open("{{filename}}") as f:
+            {{list_name}}_lines = [line.strip() for line in f]
+      - |
+        with open('{{filename}}') as f:
+            {{list_name}}_lines = [line.strip() for line in f]
+      - |
+        with open("{{filename}}") as f:
+            {{list_name}}_lines = [line.strip() for line in f.readlines()]
+    hints:
+      - "Use a context manager with 'with open()'"
+      - "Iterate directly over the file object"
+      - "Use .strip() to remove newlines and whitespace"
+    tags: [files, lists, comprehensions, integrated]
+
+  - slug: file-write-from-list
+    objective: Write list items to a file with newlines
+    title: List to File
+    difficulty: 3
+    concept: modules-files
+    subconcept: writing
+    level: integrated
+    prereqs: [writing, lists, loops]
+    targets: [writing, lists]
+    type: write
+    pattern: file
+    prompt: |
+      Write each item from {{list_name}} to "{{filename}}", one per line.
+      Use a for loop inside a context manager.
+    expected_answer: |
+      with open("{{filename}}", "w") as f:
+          for item in {{list_name}}:
+              f.write(item + "\n")
+    accepted_solutions:
+      - |
+        with open("{{filename}}", "w") as f:
+            for item in {{list_name}}:
+                f.write(item + "\n")
+      - |
+        with open('{{filename}}', 'w') as f:
+            for item in {{list_name}}:
+                f.write(item + '\n')
+      - |
+        with open("{{filename}}", "w") as f:
+            for {{item_singular}} in {{list_name}}:
+                f.write({{item_singular}} + "\n")
+    hints:
+      - "Open file in 'w' mode for writing"
+      - "Use f.write() inside a loop"
+      - "Add newline character after each item"
+    tags: [files, lists, loops, integrated]
+
+  - slug: import-json-parse
+    objective: Import json module and parse a JSON string
+    title: JSON Parse
+    difficulty: 3
+    concept: modules-files
+    subconcept: imports
+    level: integrated
+    prereqs: [imports, dicts]
+    targets: [imports, dicts]
+    type: write
+    pattern: import
+    prompt: |
+      Assume `import json` is already done. Convert `json_str` (a JSON string) into a Python dict named `{{item_singular}}_data`.
+    expected_answer: "{{item_singular}}_data = json.loads(json_str)"
+    accepted_solutions:
+      - "{{item_singular}}_data = json.loads(json_str)"
+    hints:
+      - "`json.loads()` parses a JSON string"
+      - "Returns a Python dictionary"
+      - "`json.load()` is for file objects, `json.loads()` is for strings"
+    tags: [imports, json, dicts, integrated]

@@ -1,0 +1,55 @@
+# paths/python/skins/csv-parser.yaml
+# Skin for data-processor blueprint - CSV data parsing theme
+
+id: csv-parser
+title: "CSV Data Parser"
+icon: table
+blueprints: [data-processor]
+
+vars:
+  list_name: records
+  item_singular: record
+  item_plural: records
+  item_examples:
+    - "alice,25,engineer"
+    - "bob,30,designer"
+    - "carol,28,manager"
+    - "dave,35,analyst"
+  record_keys: ["name", "age", "role"]
+  attr_key_1: name
+  attr_key_2: age
+  status_var: valid
+  action_verb: parse
+  entity_name: Row
+  id_var: row_id
+  filename: data.csv
+  user_role: data analyst
+
+contexts:
+  context-intro: "Open the CSV file to begin processing the {{list_name}}"
+  file-read-lines: "Read all lines from the {{filename}} into memory"
+  string-strip: "Clean whitespace from each {{item_singular}} before parsing"
+  string-split: "Split each line into fields using the comma delimiter"
+  string-slicing-dynamic: "Extract specific columns from the {{item_singular}}"
+  convert-int-fill: "Convert the {{attr_key_2}} field from string to integer"
+  dict-comp-intro: "Build a {{item_singular}} dictionary from the parsed fields"
+  for-loop-list: "Process each {{item_singular}} in the {{list_name}}"
+  enumerate-basic: "Track line numbers for error reporting"
+  list-comp-basic: "Transform all {{attr_key_2}} values at once"
+  list-comp-conditional: "Filter out invalid {{item_plural}} with missing data"
+  generator-exp-intro: "Stream large files without loading all {{item_plural}}"
+  dict-comp-zip: "Combine header names with {{item_singular}} values"
+  generator-exp-sum: "Calculate the total of all {{attr_key_2}} values"
+  string-length: "Count how many {{item_plural}} were processed"
+  try-except-basic: "Handle malformed {{item_plural}} gracefully"
+  except-specific: "Catch ValueError when {{attr_key_2}} is not a number"
+  file-open-write: "Write the processed {{item_plural}} to output file"
+
+dataPack:
+  list_sample: '["alice,25,engineer", "bob,30,designer", "carol,28,manager"]'
+  dict_sample: '{"name": "alice", "age": 25, "role": "engineer"}'
+  records_sample: '[{"name": "alice", "age": 25}, {"name": "bob", "age": 30}]'
+  string_samples:
+    - "alice,25,engineer"
+    - "  bob,30,designer  "
+    - "carol,28"

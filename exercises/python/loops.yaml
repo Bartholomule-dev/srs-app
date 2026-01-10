@@ -76,8 +76,11 @@ exercises:
     prereqs: [if-else]
     type: write
     pattern: iteration
-    prompt: Write just the keyword that starts a conditional loop (not for)
+    prompt: Write just the keyword that starts a condition-based loop (not for)
     expected_answer: "while"
+    accepted_solutions:
+      - "while"
+      - while
     hints:
       - This keyword repeats code as long as condition is True
       - Use when you don't know how many iterations needed
@@ -113,8 +116,10 @@ exercises:
     prereqs: [if-else]
     type: write
     pattern: iteration
-    prompt: Write a while loop that runs while {{item_singular}}_count is less than max_{{item_plural}}
+    prompt: Write a while loop header that runs while {{item_singular}}_count is less than max_{{item_plural}}
     expected_answer: "while {{item_singular}}_count < max_{{item_plural}}:"
+    accepted_solutions:
+      - "while {{item_singular}}_count < max_{{item_plural}}:"
     hints:
       - Use the less-than operator
       - End with a colon
@@ -130,8 +135,10 @@ exercises:
     prereqs: [foundations, for]
     type: write
     pattern: iteration
-    prompt: Write the while loop header (first line only) that runs while count < 5
+    prompt: Write just the while loop header that runs while count < 5
     expected_answer: "while count < 5:"
+    accepted_solutions:
+      - "while count < 5:"
     hints:
       - Use the while keyword followed by the condition
       - End with a colon (just like if statements)
@@ -148,8 +155,11 @@ exercises:
     prereqs: [for]
     type: write
     pattern: iteration
-    prompt: What function gives you both index and value when looping?
+    prompt: What built-in function gives you both index and value when looping?
     expected_answer: "enumerate"
+    accepted_solutions:
+      - "enumerate"
+      - enumerate
     hints:
       - This function counts elements while iterating
       - Starts with 'e', relates to counting
@@ -188,6 +198,9 @@ exercises:
     pattern: iteration
     prompt: Generate numbers 0 through 4 using range
     expected_answer: "range(5)"
+    accepted_solutions:
+      - "range(5)"
+      - range(5)
     hints:
       - range(n) gives 0 to n-1
       - For 0-4, you need 5 numbers total
@@ -224,8 +237,11 @@ exercises:
     prereqs: [foundations, for, while]
     type: write
     pattern: iteration
-    prompt: Write the statement that immediately exits the {{item_singular}} processing loop
+    prompt: Write just the statement that immediately exits a loop
     expected_answer: break
+    accepted_solutions:
+      - break
+      - "break"
     hints:
       - This keyword stops the loop and moves to the code after it
       - It's a single keyword, no parentheses needed
@@ -242,8 +258,11 @@ exercises:
     prereqs: [control-flow.for]
     type: write
     pattern: iteration
-    prompt: Write the statement that skips the current {{item_singular}} and moves to the next
+    prompt: Write just the statement that skips the current iteration and moves to the next
     expected_answer: continue
+    accepted_solutions:
+      - continue
+      - "continue"
     hints:
       - This keyword skips to the next loop iteration
       - It doesn't exit the loop entirely (that's break)
@@ -260,11 +279,13 @@ exercises:
     type: write
     pattern: iteration
     generator: loop-simulation
-    prompt: Write a for loop using range({{start}}, {{stop}}, {{step}})
+    prompt: Write a for-loop header using `range({{start}}, {{stop}}, {{step}})`
     expected_answer: "for i in range({{start}}, {{stop}}, {{step}}):"
     accepted_solutions:
       - "for i in range({{start}}, {{stop}}, {{step}}):"
       - "for i in range({{start}},{{stop}},{{step}}):"
+      - "for x in range({{start}}, {{stop}}, {{step}}):"
+      - "for n in range({{start}}, {{stop}}, {{step}}):"
     hints:
       - range(start, stop, step)
       - Stop value is exclusive
@@ -297,11 +318,14 @@ exercises:
     prereqs: [control-flow.while]
     type: write
     pattern: iteration
-    prompt: Create an infinite loop that can be exited
+    prompt: Write just the header line that creates an infinite loop (the body will use break to exit)
     expected_answer: "while True:"
+    accepted_solutions:
+      - "while True:"
+      - "while 1:"
     hints:
-      - Use while True
-      - Exit with break inside
+      - Use while with a constant truthy value
+      - The loop body (not shown) will use break to exit
     tags: [loops, while, infinite]
 
   - slug: for-else
@@ -315,11 +339,13 @@ exercises:
     type: write
     pattern: iteration
     targets: [for, conditionals]
-    prompt: Write the else clause for a for loop that executes when loop completes without break
+    prompt: Write just the line that starts the else clause of a for-else construct (runs when loop completes without break)
     expected_answer: "else:"
+    accepted_solutions:
+      - "else:"
     hints:
-      - else after for
-      - Runs if no break occurred
+      - Keyword followed by colon
+      - Same indentation as the for keyword
     tags: [loops, else, advanced]
 
   # --- zip Subconcept ---
@@ -330,14 +356,18 @@ exercises:
     concept: loops
     subconcept: zip
     level: intro
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: write
     pattern: iteration
     prompt: Use zip to iterate over {{list_name}} and priorities lists together with {{item_singular}} and {{attr_key_2}}
     expected_answer: "for {{item_singular}}, {{attr_key_2}} in zip({{list_name}}, priorities):"
+    accepted_solutions:
+      - "for {{item_singular}}, {{attr_key_2}} in zip({{list_name}}, priorities):"
+      - "for ({{item_singular}}, {{attr_key_2}}) in zip({{list_name}}, priorities):"
     hints:
-      - zip() combines iterables
-      - Use tuple unpacking
+      - zip() combines iterables into pairs
+      - Use tuple unpacking in the for loop header
+    tags: [loops, zip, parallel]
 
   - slug: zip-intro
     objective: Use zip to combine two lists for parallel iteration
@@ -349,8 +379,10 @@ exercises:
     prereqs: [for]
     type: write
     pattern: iteration
-    prompt: Combine lists {{list_name}} and statuses for parallel iteration
+    prompt: Write the `zip()` call that pairs {{list_name}} and statuses for parallel iteration
     expected_answer: "zip({{list_name}}, statuses)"
+    accepted_solutions:
+      - "zip({{list_name}}, statuses)"
     hints:
       - zip pairs elements at same positions
       - Pass both lists as arguments
@@ -383,14 +415,23 @@ exercises:
     prereqs: [control-flow.zip]
     type: write
     pattern: iteration
-    prompt: Import and use zip_longest to handle {{list_name}} and statuses of different lengths with a fillvalue of "pending"
-    expected_answer: 'for {{item_singular}}, {{status_var}} in zip_longest({{list_name}}, statuses, fillvalue="pending"):'
+    prompt: Import `zip_longest` from itertools and use it to iterate over {{list_name}} and statuses even if their lengths differ. Use fillvalue="pending" for missing values.
+    expected_answer: |
+      from itertools import zip_longest
+      for {{item_singular}}, {{status_var}} in zip_longest({{list_name}}, statuses, fillvalue="pending"):
     accepted_solutions:
-      - 'for {{item_singular}}, {{status_var}} in zip_longest({{list_name}}, statuses, fillvalue="pending"):'
-      - "for {{item_singular}}, {{status_var}} in zip_longest({{list_name}}, statuses, fillvalue='pending'):"
+      - |
+        from itertools import zip_longest
+        for {{item_singular}}, {{status_var}} in zip_longest({{list_name}}, statuses, fillvalue="pending"):
+      - |
+        from itertools import zip_longest
+        for {{item_singular}}, {{status_var}} in zip_longest({{list_name}}, statuses, fillvalue='pending'):
+      - |
+        from itertools import zip_longest
+        for item, status in zip_longest({{list_name}}, statuses, fillvalue="pending"):
     hints:
-      - Import from itertools
-      - Use fillvalue parameter for missing values
+      - First import zip_longest from itertools
+      - Then use it with fillvalue for missing elements
     tags: [zip, itertools, edge-case]
 
   # --- reversed Subconcept ---
@@ -597,7 +638,7 @@ exercises:
     prereqs: [control-flow.conditionals]
     type: write
     pattern: invocation
-    prompt: Check if any {{item_singular}} in {{list_name}} has {{attr_key_1}} greater than 10
+    prompt: Write a Python expression that returns True if any {{item_singular}} in {{list_name}} has {{attr_key_1}} greater than 10
     expected_answer: "any({{item_singular}}.{{attr_key_1}} > 10 for {{item_singular}} in {{list_name}})"
     accepted_solutions:
       - "any({{item_singular}}.{{attr_key_1}} > 10 for {{item_singular}} in {{list_name}})"
@@ -618,7 +659,7 @@ exercises:
     prereqs: [control-flow.conditionals]
     type: write
     pattern: invocation
-    prompt: Check if all {{item_plural}} in {{list_name}} are {{status_var}} (is_{{status_var}} is True)
+    prompt: Write a Python expression that returns True if all {{item_plural}} in {{list_name}} are {{status_var}} (where `is_{{status_var}}` is True)
     expected_answer: "all({{item_singular}}.is_{{status_var}} for {{item_singular}} in {{list_name}})"
     accepted_solutions:
       - "all({{item_singular}}.is_{{status_var}} for {{item_singular}} in {{list_name}})"
@@ -639,7 +680,7 @@ exercises:
     prereqs: [control-flow.any-all]
     type: write
     pattern: invocation
-    prompt: Check if any {{item_singular}} in {{list_name}} starts with the letter 'a'
+    prompt: Write a Python expression that returns True if any {{item_singular}} in {{list_name}} starts with the letter 'a'
     expected_answer: "any({{item_singular}}.startswith('a') for {{item_singular}} in {{list_name}})"
     accepted_solutions:
       - "any({{item_singular}}.startswith('a') for {{item_singular}} in {{list_name}})"
@@ -661,7 +702,7 @@ exercises:
     prereqs: [control-flow.any-all, control-flow.conditionals]
     type: write
     pattern: conditional
-    prompt: Write an if statement that checks if all {{item_plural}} are {{status_var}} AND any {{item_singular}} has {{attr_key_1}}
+    prompt: Write an if-statement header that checks if all {{item_plural}} are {{status_var}} AND at least one {{item_singular}} has a truthy {{attr_key_1}}
     expected_answer: "if all({{item_singular}}.is_{{status_var}} for {{item_singular}} in {{list_name}}) and any({{item_singular}}.{{attr_key_1}} for {{item_singular}} in {{list_name}}):"
     accepted_solutions:
       - "if all({{item_singular}}.is_{{status_var}} for {{item_singular}} in {{list_name}}) and any({{item_singular}}.{{attr_key_1}} for {{item_singular}} in {{list_name}}):"
@@ -982,7 +1023,7 @@ exercises:
     type: write
     pattern: conditional
     generator: arithmetic-values
-    prompt: Write an if statement that checks if {{x}} is greater than {{y}}
+    prompt: Write an if-statement header that checks if {{x}} is greater than {{y}}
     expected_answer: "if {{x}} > {{y}}:"
     accepted_solutions:
       - "if {{x}} > {{y}}:"
@@ -1043,8 +1084,8 @@ exercises:
     tags: [control-flow, for, accumulator, dynamic]
 
   - slug: while-countdown-dynamic
-    objective: Predict the output of a while loop countdown
-    title: Dynamic While Countdown Predict
+    objective: Write a while loop that decrements a counter variable
+    title: Dynamic While Countdown
     difficulty: 2
     concept: loops
     subconcept: while
@@ -1053,7 +1094,7 @@ exercises:
     type: write
     pattern: iteration
     generator: index-values
-    prompt: Write a while loop that decrements count from {{idx}} to 0
+    prompt: Write a while loop that decrements `count` until it reaches 0. Assume `count` starts at {{idx}}.
     expected_answer: |
       while count > 0:
           count -= 1
@@ -1064,9 +1105,12 @@ exercises:
       - |
         while count > 0:
             count = count - 1
+      - |
+        while count >= 1:
+            count -= 1
     hints:
-      - Use while with a condition
-      - Decrement count inside the loop
+      - Loop while count is positive
+      - Decrement count inside the loop body
     tags: [control-flow, while, dynamic]
 
   - slug: range-output-dynamic
@@ -1280,7 +1324,7 @@ exercises:
     type: write
     pattern: logical
     generator: any-all
-    prompt: "Check if {{func}} elements in {{list}} are truthy"
+    prompt: "Write a Python expression that returns True if {{func}} elements in {{list}} are truthy"
     expected_answer: "{{func}}({{list}})"
     hints:
       - "{{func}}() takes an iterable"
@@ -1339,6 +1383,9 @@ exercises:
     pattern: iteration
     prompt: Use range to generate numbers 1 through 5 (inclusive)
     expected_answer: range(1, 6)
+    accepted_solutions:
+      - range(1, 6)
+      - "range(1, 6)"
     hints:
       - range(start, stop) - stop is exclusive
       - To include 5, stop must be 6
@@ -1376,6 +1423,9 @@ exercises:
     pattern: iteration
     prompt: Use range to count down from 5 to 1 (inclusive)
     expected_answer: range(5, 0, -1)
+    accepted_solutions:
+      - range(5, 0, -1)
+      - "range(5, 0, -1)"
     hints:
       - Use negative step
       - Start > stop when going backwards
@@ -1630,5 +1680,83 @@ exercises:
       - else runs if loop completes without break
       - No odd numbers found, so no break
     tags: [break, else, edge]
+
+  # --- Additional Integrated Exercises ---
+  - slug: loop-dict-accumulate
+    objective: Iterate over a dict and accumulate values meeting a condition
+    title: Dict Value Accumulator
+    difficulty: 3
+    concept: loops
+    subconcept: for
+    level: integrated
+    prereqs: [for, dicts, dict-iteration]
+    targets: [for, dicts]
+    type: write
+    pattern: accumulator
+    prompt: |
+      Sum all values in {{item_singular}}_counts dict where the value is greater than 5.
+      Use a for loop with .items() and accumulate into total.
+    expected_answer: |
+      total = 0
+      for key, value in {{item_singular}}_counts.items():
+          if value > 5:
+              total += value
+    accepted_solutions:
+      - |
+        total = 0
+        for key, value in {{item_singular}}_counts.items():
+            if value > 5:
+                total += value
+      - |
+        total = 0
+        for k, v in {{item_singular}}_counts.items():
+            if v > 5:
+                total += v
+      - |
+        total = 0
+        for _, value in {{item_singular}}_counts.items():
+            if value > 5:
+                total += value
+    hints:
+      - "Initialize total before the loop"
+      - "Use .items() to get both keys and values"
+      - "Add to total only when condition is met"
+    tags: [loops, dicts, accumulator, integrated]
+
+  - slug: loop-nested-flatten
+    objective: Flatten a nested list using nested loops
+    title: Flatten Nested List
+    difficulty: 3
+    concept: loops
+    subconcept: for
+    level: integrated
+    prereqs: [for, lists]
+    targets: [for, lists]
+    type: write
+    pattern: transformation
+    prompt: |
+      Flatten {{list_name}}_nested (a list of lists) into a single flat_{{list_name}} list.
+      Use nested for loops to append each item.
+    expected_answer: |
+      flat_{{list_name}} = []
+      for sublist in {{list_name}}_nested:
+          for item in sublist:
+              flat_{{list_name}}.append(item)
+    accepted_solutions:
+      - |
+        flat_{{list_name}} = []
+        for sublist in {{list_name}}_nested:
+            for item in sublist:
+                flat_{{list_name}}.append(item)
+      - |
+        flat_{{list_name}} = []
+        for sub in {{list_name}}_nested:
+            for {{item_singular}} in sub:
+                flat_{{list_name}}.append({{item_singular}})
+    hints:
+      - "Create an empty result list first"
+      - "Outer loop iterates sublists, inner loop iterates items"
+      - "Append each item to the flat list"
+    tags: [loops, lists, nested, flatten, integrated]
 
   # --- Refactor Exercises (Anti-patterns → Idiomatic Python) ---

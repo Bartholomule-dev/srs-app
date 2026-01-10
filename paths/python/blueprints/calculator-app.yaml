@@ -14,7 +14,7 @@ beats:
     exercise: assign-variable
     title: "Store input values"
     sideQuests:
-      - assign-number
+      - assign-number-dynamic
       - multiple-assignment
       - variable-assign-dynamic
 
@@ -49,8 +49,8 @@ beats:
     exercise: operator-precedence-dynamic
     title: "Order of operations"
     sideQuests:
-      - operator-parentheses-dynamic
-      - operator-expression-predict-dynamic
+      - exponentiation-dynamic
+      - comparison-chaining
 
   # ============================================
   # Act 2: Type Conversion (Beats 6-9)
@@ -103,7 +103,7 @@ beats:
       - bool-compound-dynamic
 
   - beat: 12
-    exercise: comparison-is-fill
+    exercise: identity-fill-is
     title: "Identity checks"
     sideQuests:
       - identity-is-none
@@ -111,7 +111,6 @@ beats:
       - identity-vs-equality
       - comparison-in-fill
       - comparison-predict-is
-      - identity-fill-is
       - identity-fill-is-not
       - identity-predict-small-ints
       - identity-pythonic-none

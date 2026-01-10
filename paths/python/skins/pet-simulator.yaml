@@ -3,7 +3,7 @@
 id: pet-simulator
 title: "Pet Simulator"
 icon: "🐕"
-blueprints: [oop-entity]
+# Global skin - works with any blueprint
 
 vars:
   list_name: pets

@@ -99,6 +99,8 @@ exercises:
     pattern: mutation
     prompt: Remove and return the {{item_singular}} at index 2 from {{list_name}}
     expected_answer: "{{list_name}}.pop(2)"
+    accepted_solutions:
+      - "{{list_name}}.pop(2)"
     hints:
       - Use pop() with the index as argument
       - pop() both removes and returns the {{item_singular}}
@@ -122,6 +124,7 @@ exercises:
     hints:
       - Use the index() method with the {{item_singular}} to find
       - Returns the first position where the {{item_singular}} is found
+      - Raises ValueError if the element is not in the list
     tags: [lists, index, query]
 
   - slug: list-count
@@ -156,6 +159,9 @@ exercises:
     pattern: mutation
     prompt: Sort {{list_name}} in place
     expected_answer: "{{list_name}}.sort()"
+    accepted_solutions:
+      - "{{list_name}}.sort()"
+      - "{{list_name}}.sort( )"
     hints:
       - Use the sort() method
       - Modifies the list in place
@@ -173,6 +179,9 @@ exercises:
     pattern: construction
     prompt: Return a sorted copy of {{list_name}} without modifying it
     expected_answer: "sorted({{list_name}})"
+    accepted_solutions:
+      - "sorted({{list_name}})"
+      - "sorted( {{list_name}} )"
     hints:
       - Use sorted() function
       - Returns new list
@@ -190,6 +199,9 @@ exercises:
     pattern: mutation
     prompt: Reverse {{list_name}} in place
     expected_answer: "{{list_name}}.reverse()"
+    accepted_solutions:
+      - "{{list_name}}.reverse()"
+      - "{{list_name}}.reverse( )"
     hints:
       - Use the reverse() method on the list
       - Modifies the list in place (returns None)
@@ -250,6 +262,9 @@ exercises:
     pattern: assignment
     prompt: Unpack tuple {{item_singular}}_coords = (3, 4) into variables {{attr_key_1}} and {{attr_key_2}}
     expected_answer: "{{attr_key_1}}, {{attr_key_2}} = {{item_singular}}_coords"
+    accepted_solutions:
+      - "{{attr_key_1}}, {{attr_key_2}} = {{item_singular}}_coords"
+      - "({{attr_key_1}}, {{attr_key_2}}) = {{item_singular}}_coords"
     hints:
       - Variables go on left, tuple on right of =
       - Number of variables must match tuple length
@@ -267,6 +282,9 @@ exercises:
     pattern: indexing
     prompt: Get the second {{item_singular}} from tuple {{item_singular}}_data
     expected_answer: "{{item_singular}}_data[1]"
+    accepted_solutions:
+      - "{{item_singular}}_data[1]"
+      - "{{item_singular}}_data[ 1 ]"
     hints:
       - Indices start at 0, so second {{item_singular}} is index 1
       - Use square brackets like lists
@@ -377,8 +395,8 @@ exercises:
     tags: [dicts, update, mutation]
 
   - slug: dict-keys-method
-    objective: Use keys() to retrieve all keys from a dictionary
-    title: Dict Keys
+    objective: Use keys() to retrieve a view of all keys from a dictionary
+    title: Dict Keys View
     difficulty: 1
     concept: collections
     subconcept: dicts
@@ -387,16 +405,20 @@ exercises:
     type: write
     pattern: query
     prompt: |
-      Write an expression that returns all keys from {{item_singular}}.
+      Write an expression that returns a view of all keys from {{item_singular}}.
     expected_answer: "{{item_singular}}.keys()"
+    accepted_solutions:
+      - "{{item_singular}}.keys()"
+      - "{{item_singular}}.keys( )"
     hints:
       - Use the keys() method
-      - Returns a view object of all keys
+      - Returns a dict_keys view object (not a list)
+      - You can iterate over it or convert to list() if needed
     tags: [dicts, keys, query]
 
   - slug: dict-values
-    objective: Use values() to retrieve all values from a dictionary
-    title: Dict Values
+    objective: Use values() to retrieve a view of all values from a dictionary
+    title: Dict Values View
     difficulty: 1
     concept: collections
     subconcept: dicts
@@ -405,16 +427,20 @@ exercises:
     type: write
     pattern: query
     prompt: |
-      Write an expression that returns all values from {{item_singular}}.
+      Write an expression that returns a view of all values from {{item_singular}}.
     expected_answer: "{{item_singular}}.values()"
+    accepted_solutions:
+      - "{{item_singular}}.values()"
+      - "{{item_singular}}.values( )"
     hints:
       - Use the values() method
-      - Returns a view object of all values
+      - Returns a dict_values view object (not a list)
+      - You can iterate over it or convert to list() if needed
     tags: [dicts, values, query]
 
   - slug: dict-items
-    objective: Use items() to get key-value pairs as tuples for iteration
-    title: Dict Items
+    objective: Use items() to get a view of key-value pairs for iteration
+    title: Dict Items View
     difficulty: 2
     concept: collections
     subconcept: dicts
@@ -422,11 +448,15 @@ exercises:
     prereqs: [collections.dicts]
     type: write
     pattern: query
-    prompt: Get all key-value pairs from {{item_singular}} as tuples
+    prompt: Get a view of all key-value pairs from {{item_singular}} as tuples
     expected_answer: "{{item_singular}}.items()"
+    accepted_solutions:
+      - "{{item_singular}}.items()"
+      - "{{item_singular}}.items( )"
     hints:
       - Use the items() method
-      - Returns (key, value) pairs
+      - Returns a dict_items view of (key, value) tuples
+      - Commonly used in for loops for iteration
     tags: [dicts, items, query]
 
   - slug: dict-pop
@@ -648,9 +678,14 @@ exercises:
     pattern: assignment
     prompt: Unpack {{list_name}} = ["red", "green", "blue"] into variables a, b, c
     expected_answer: "a, b, c = {{list_name}}"
+    accepted_solutions:
+      - "a, b, c = {{list_name}}"
+      - "(a, b, c) = {{list_name}}"
+      - "a,b,c = {{list_name}}"
     hints:
-      - Same syntax as tuple unpacking for {{item_plural}}
-      - Works with any {{item_singular}} iterable
+      - Same syntax as tuple unpacking
+      - Works with any iterable
+      - Parentheses around the variables are optional
     tags: [unpacking, intro, lists]
 
   - slug: unpacking-swap-intro
@@ -805,11 +840,17 @@ exercises:
     prereqs: [lists, mutability, imports]
     type: write
     pattern: construction
-    prompt: Create a deep copy of nested {{list_name}} using copy module
+    prompt: |
+      Create a deep copy of nested {{list_name}} using the copy module.
+      (Assume `import copy` is already done)
     expected_answer: "copy.deepcopy({{list_name}})"
+    accepted_solutions:
+      - "copy.deepcopy({{list_name}})"
+      - "copy.deepcopy( {{list_name}} )"
     hints:
-      - Import copy module first
       - Use copy.deepcopy() for nested structures
+      - Deep copy creates independent copies of all nested objects
+      - Unlike shallow copy, changes to nested items won't affect the original
     tags: [mutability, lists, deep-copy]
 
   - slug: mutate-vs-reassign
@@ -822,16 +863,17 @@ exercises:
     prereqs: [collections.lists, collections.mutability]
     type: write
     pattern: mutation
-    prompt: Extend {{list_name}} in place with more {{item_plural}} (don't reassign)
-    expected_answer: '{{list_name}}.extend(["{{item_example}}"])'
+    prompt: |
+      Extend {{list_name}} in place with items from new_{{item_plural}}.
+      Do not reassign the variable - mutate the existing list.
+    expected_answer: "{{list_name}}.extend(new_{{item_plural}})"
     accepted_solutions:
-      - '{{list_name}}.extend(["{{item_example}}"])'
-      - "{{list_name}}.extend(['{{item_example}}'])"
-      - '{{list_name}} += ["{{item_example}}"]'
-      - "{{list_name}} += ['{{item_example}}']"
+      - "{{list_name}}.extend(new_{{item_plural}})"
+      - "{{list_name}} += new_{{item_plural}}"
     hints:
-      - Use extend() or += for in-place
-      - Reassigning creates a new list
+      - Use extend() or += for in-place mutation
+      - Reassigning (=) creates a new list object
+      - Other references to the list won't see changes if you reassign
     tags: [mutability, lists, in-place]
 
   - slug: tuple-immutability
@@ -984,7 +1026,9 @@ exercises:
     prereqs: [collections.sets]
     type: predict
     pattern: construction
-    prompt: What does this set union code print?
+    prompt: |
+      What does this set union code print?
+      (Enter the set contents - any order is fine since sets are unordered)
     code: |
       {{item_singular}}_set_a = {1, 2}
       {{item_singular}}_set_b = {2, 3}
@@ -1004,8 +1048,9 @@ exercises:
       - "{3, 2, 1}"
       - "{3,2,1}"
     hints:
-      - Union combines unique {{item_plural}}
+      - Union combines all unique elements from both sets
       - Duplicates (like 2) appear only once
+      - Set display order may vary - focus on the elements
     tags: [sets, union, predict]
 
   # --- Dynamic Exercises ---
@@ -1164,6 +1209,9 @@ exercises:
     difficulty: 1
     prompt: "Get the {{item_singular}} at index {{idx}} from {{list_name}}"
     expected_answer: "{{list_name}}[{{idx}}]"
+    accepted_solutions:
+      - "{{list_name}}[{{idx}}]"
+      - "{{list_name}}[ {{idx}} ]"
     hints:
       - Use square bracket notation
       - Indices start at 0
@@ -1308,15 +1356,20 @@ exercises:
     type: write
     pattern: assignment
     generator: tuple-access
-    prompt: "Given {{tupleVar}} = {{tuple}}, unpack it into {{length}} variables"
+    prompt: |
+      Given {{tupleVar}} = {{tuple}}, unpack it into 3 variables (a, b, c).
     expected_answer: "a, b, c = {{tupleVar}}"
     accepted_solutions:
       - "a, b, c = {{tupleVar}}"
       - "x, y, z = {{tupleVar}}"
       - "(a, b, c) = {{tupleVar}}"
+      - "(x, y, z) = {{tupleVar}}"
+      - "a,b,c = {{tupleVar}}"
+      - "x,y,z = {{tupleVar}}"
     hints:
-      - Number of variables must match tuple length
-      - Use comma-separated variable names
+      - Number of variables must match tuple length (3)
+      - Use comma-separated variable names on the left of =
+      - Parentheses around the variables are optional
     tags: [tuples, unpacking, dynamic]
 
   # --- Dynamic Set Exercises ---
@@ -1331,12 +1384,15 @@ exercises:
     type: predict
     pattern: logical
     generator: set-ops
-    prompt: "What does {{code}} return?"
+    prompt: |
+      What does {{code}} return?
+      (Enter the set contents - any order is fine since sets are unordered)
     code: "{{code}}"
     expected_answer: "{{result}}"
     hints:
       - "{{description}}"
       - The {{operationName}} operation uses {{operation}}
+      - Set element order may vary in output
     tags: [sets, operations, dynamic]
 
   - slug: set-operation-write-dynamic
@@ -1370,7 +1426,7 @@ exercises:
     pattern: iteration
     prompt: |
       Write a for loop that prints each key and value from a dict called {{item_singular}}_data.
-      Use .items() to get both. Each print should output: key value
+      Use .items() to get both. Each print should output: key value (space-separated)
     expected_answer: |
       for key, value in {{item_singular}}_data.items():
           print(key, value)
@@ -1393,10 +1449,16 @@ exercises:
       - |
         for a, b in {{item_singular}}_data.items():
             print(a, b)
+      - |
+        for key, value in {{item_singular}}_data.items():
+            print(f"{key} {value}")
+      - |
+        for k, v in {{item_singular}}_data.items():
+            print(f"{k} {v}")
     hints:
       - .items() returns key-value pairs as tuples
       - Unpack into two loop variables
-      - "print(key, value) outputs them space-separated"
+      - "print(key, value) or print(f\"{key} {value}\") both work"
     tags: [dicts, iteration, items]
 
   - slug: dict-keys-loop
@@ -1559,12 +1621,12 @@ exercises:
     pattern: iteration
     prompt: What does this .items() iteration code print?
     code: |
-      {{item_singular}}_data = {"alpha": 10, "beta": 20}
+      {{item_singular}}_data = {"{{attr_key_1}}": 10, "{{attr_key_2}}": 20}
       for key, val in {{item_singular}}_data.items():
           print(f"{key}={val}")
     expected_answer: |
-      alpha=10
-      beta=20
+      {{attr_key_1}}=10
+      {{attr_key_2}}=20
     hints:
       - .items() yields (key, value) tuples
       - The f-string formats each pair as key=value
@@ -1637,5 +1699,130 @@ exercises:
       - Return immediately when you find a match
       - Return None after the loop if nothing matched
     tags: [dicts, search, functions, edge]
+
+  # --- Integrated Exercises (Multi-Concept) ---
+  - slug: list-to-dict-conversion
+    objective: Convert a list of key-value tuples into a dictionary
+    title: List of Tuples to Dict
+    difficulty: 3
+    concept: collections
+    subconcept: dicts
+    level: integrated
+    prereqs: [lists, tuples, dicts]
+    targets: [lists, tuples, dicts]
+    type: write
+    pattern: conversion
+    prompt: |
+      Convert {{list_name}}_pairs (a list of (key, value) tuples) into a dictionary.
+      Use the dict() constructor.
+    expected_answer: "dict({{list_name}}_pairs)"
+    accepted_solutions:
+      - "dict({{list_name}}_pairs)"
+      - "{k: v for k, v in {{list_name}}_pairs}"
+      - "{key: value for key, value in {{list_name}}_pairs}"
+    hints:
+      - dict() can take an iterable of (key, value) pairs
+      - Alternatively, use a dict comprehension with unpacking
+    tags: [lists, tuples, dicts, conversion, integrated]
+
+  - slug: list-dedup-preserve-order
+    objective: Remove duplicates from a list while preserving original order
+    title: Deduplicate List (Order-Preserving)
+    difficulty: 3
+    concept: collections
+    subconcept: lists
+    level: integrated
+    prereqs: [lists, sets, dicts]
+    targets: [lists, sets]
+    type: write
+    pattern: transformation
+    prompt: |
+      Remove duplicates from {{list_name}} while keeping the original order.
+      Use dict.fromkeys() which preserves insertion order.
+    expected_answer: "list(dict.fromkeys({{list_name}}))"
+    accepted_solutions:
+      - "list(dict.fromkeys({{list_name}}))"
+      - "list(dict.fromkeys({{list_name}}).keys())"
+    hints:
+      - "dict.fromkeys() creates a dict with items as keys (preserves order in Python 3.7+)"
+      - "Converting back to list gives you unique items in original order"
+    tags: [lists, sets, dicts, deduplication, integrated]
+
+  - slug: dict-from-parallel-lists
+    objective: Create a dictionary by zipping two parallel lists together
+    title: Dict from Two Lists
+    difficulty: 3
+    concept: collections
+    subconcept: dicts
+    level: integrated
+    prereqs: [lists, dicts, unpacking]
+    targets: [lists, dicts, unpacking]
+    type: write
+    pattern: construction
+    prompt: |
+      Create a dictionary from {{item_singular}}_keys and {{item_singular}}_values lists.
+      Use zip() to pair them up and dict() to create the dictionary.
+    expected_answer: "dict(zip({{item_singular}}_keys, {{item_singular}}_values))"
+    accepted_solutions:
+      - "dict(zip({{item_singular}}_keys, {{item_singular}}_values))"
+      - "{k: v for k, v in zip({{item_singular}}_keys, {{item_singular}}_values)}"
+    hints:
+      - zip() pairs corresponding elements from each list
+      - dict() accepts an iterable of (key, value) tuples
+    tags: [lists, dicts, zip, construction, integrated]
+
+  - slug: sort-dict-by-value
+    objective: Sort dictionary items by their values in descending order
+    title: Sort Dict by Value
+    difficulty: 3
+    concept: collections
+    subconcept: dict-iteration
+    level: integrated
+    prereqs: [dicts, tuples, dict-iteration]
+    targets: [dicts, tuples, dict-iteration]
+    type: write
+    pattern: transformation
+    prompt: |
+      Sort {{item_singular}}_scores dict by values (highest first).
+      Use sorted() with a key function that extracts the value from each item.
+      Return a list of (key, value) tuples.
+    expected_answer: "sorted({{item_singular}}_scores.items(), key=lambda x: x[1], reverse=True)"
+    accepted_solutions:
+      - "sorted({{item_singular}}_scores.items(), key=lambda x: x[1], reverse=True)"
+      - "sorted({{item_singular}}_scores.items(), key=lambda item: item[1], reverse=True)"
+      - "sorted({{item_singular}}_scores.items(), key=lambda kv: kv[1], reverse=True)"
+    hints:
+      - ".items() returns (key, value) tuples"
+      - "Use lambda x: x[1] to sort by the value (second element)"
+      - "reverse=True for descending order"
+    tags: [dicts, sorting, lambda, tuples, integrated]
+
+  - slug: filter-list-of-dicts
+    objective: Filter a list of dictionaries by a condition on dict values
+    title: Filter List of Dicts
+    difficulty: 3
+    concept: collections
+    subconcept: lists
+    level: integrated
+    prereqs: [lists, dicts, comprehensions.list-comp]
+    targets: [lists, dicts]
+    type: write
+    pattern: filtering
+    prompt: |
+      Filter {{list_name}} (a list of dicts) to keep only items where "{{status_var}}" key is True.
+      Use a list comprehension.
+    expected_answer: '[{{item_singular}} for {{item_singular}} in {{list_name}} if {{item_singular}}["{{status_var}}"]]'
+    accepted_solutions:
+      - '[{{item_singular}} for {{item_singular}} in {{list_name}} if {{item_singular}}["{{status_var}}"]]'
+      - "[{{item_singular}} for {{item_singular}} in {{list_name}} if {{item_singular}}['{{status_var}}']]"
+      - '[item for item in {{list_name}} if item["{{status_var}}"]]'
+      - "[item for item in {{list_name}} if item['{{status_var}}']]"
+      - '[{{item_singular}} for {{item_singular}} in {{list_name}} if {{item_singular}}.get("{{status_var}}")]'
+      - "[{{item_singular}} for {{item_singular}} in {{list_name}} if {{item_singular}}.get('{{status_var}}')]"
+    hints:
+      - Use a list comprehension with an if clause
+      - Access the dict value with ["key"] syntax
+      - The boolean value can be checked directly without == True
+    tags: [lists, dicts, comprehensions, filtering, integrated]
 
   # --- Debug Exercises (Pitfall Subconcepts) ---

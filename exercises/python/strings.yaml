@@ -10,11 +10,11 @@ exercises:
     objective: Use slice notation to extract a substring from a string
     title: Dynamic String Slicing
     difficulty: 2
-    prompt: Get characters from index {{start}} to {{end}} (exclusive) of string {{item_singular}}
+    prompt: Write an expression that slices `{{item_singular}}` from index `{{start}}` up to (but not including) `{{end}}`
     expected_answer: "{{item_singular}}[{{start}}:{{end}}]"
     hints:
-      - Use slice notation [start:end]
-      - End index is exclusive
+      - Use slice notation `[start:end]`
+      - End index is exclusive (stops before it)
     tags: [strings, slicing, intermediate, dynamic]
     concept: strings
     subconcept: slicing
@@ -28,16 +28,18 @@ exercises:
       feedback: "Try using slice notation {{item_singular}}[start:end] for cleaner extraction"
     accepted_solutions:
       - "{{item_singular}}[{{start}}:{{end}}]"
+      - "{{item_singular}}[ {{start}} : {{end}} ]"
+      - "{{item_singular}}[{{start}}: {{end}}]"
 
   - slug: string-index-dynamic
     objective: Use bracket notation to access a specific character by index
     title: Dynamic Character Index
     difficulty: 1
-    prompt: Get the character at index {{idx}} of string {{item_singular}}
+    prompt: Write an expression that gets the character at index `{{idx}}` from `{{item_singular}}`
     expected_answer: "{{item_singular}}[{{idx}}]"
     hints:
       - Use square bracket indexing
-      - Remember indices start at 0
+      - "Remember: indices start at 0"
     tags: [strings, indexing, dynamic]
     concept: strings
     subconcept: indexing
@@ -48,15 +50,16 @@ exercises:
     generator: index-values
     accepted_solutions:
       - "{{item_singular}}[{{idx}}]"
+      - "{{item_singular}}[ {{idx}} ]"
 
   - slug: string-slice-step-dynamic
     objective: Use slice with step parameter to skip characters
     title: Dynamic Slice with Step
     difficulty: 2
-    prompt: Get every other character of string {{item_singular}} starting from index {{idx}}
+    prompt: Write a slice that takes every other character from `{{item_singular}}`, starting at index `{{idx}}`
     expected_answer: "{{item_singular}}[{{idx}}::2]"
     hints:
-      - Use slice notation [start:end:step]
+      - Use slice notation `[start:end:step]`
       - Step of 2 means every other character
     tags: [strings, slicing, step, dynamic]
     concept: strings
@@ -76,10 +79,10 @@ exercises:
     objective: Construct a log message using f-string interpolation
     title: Dynamic Log Message
     difficulty: 2
-    prompt: Create an f-string that outputs "Processing " followed by the value of {{name}}
+    prompt: Write an f-string that prints `Processing` followed by the value of `{{name}}`
     expected_answer: 'f"Processing {{{name}}}"'
     hints:
-      - Start string with f prefix
+      - Start string with `f` prefix
       - Use curly braces for variable interpolation
     tags: [strings, fstrings, logging, dynamic]
     concept: strings
@@ -100,7 +103,7 @@ exercises:
     objective: Use slice notation to get last N characters
     title: Dynamic Slice from End
     difficulty: 2
-    prompt: Get the last {{end}} characters of string {{item_singular}} using negative slicing
+    prompt: Write a slice that returns the last `{{end}}` characters of `{{item_singular}}`
     expected_answer: "{{item_singular}}[-{{end}}:]"
     hints:
       - Negative indices count from the end
@@ -123,11 +126,14 @@ exercises:
     objective: "Apply the upper() method to convert string case"
     title: String Uppercase
     difficulty: 1
-    prompt: Convert string {{item_singular}} to uppercase for {{entity_name}} display
+    prompt: Write an expression that converts `{{item_singular}}` to uppercase
     expected_answer: "{{item_singular}}.upper()"
+    accepted_solutions:
+      - "{{item_singular}}.upper()"
+      - "{{item_singular}}.upper( )"
     hints:
-      - Use the upper() method on {{item_singular}}
-      - Returns a new {{item_singular}} string (doesn't modify the original)
+      - Use the `.upper()` method on a string
+      - Returns a new string (strings are immutable)
     tags: [strings, methods, beginner]
     concept: strings
     subconcept: string-methods
@@ -140,14 +146,14 @@ exercises:
     objective: "Construct a formatted message using f-string formatting"
     title: F-String Format
     difficulty: 2
-    prompt: 'Create an f-string that outputs "{{entity_name}}: " followed by the value of {{item_singular}}'
+    prompt: 'Write an f-string that produces: `{{entity_name}}: <value>` (use the variable `{{item_singular}}`)'
     expected_answer: 'f"{{entity_name}}: {{{item_singular}}}"'
     accepted_solutions:
       - 'f"{{entity_name}}: {{{item_singular}}}"'
       - "f'{{entity_name}}: {{{item_singular}}}'"
     hints:
-      - Start string with f prefix before the quote
-      - Put variable names in curly braces {variable}
+      - Start string with `f` prefix before the quote
+      - Put variable names in curly braces `{variable}`
     tags: [strings, f-strings, intermediate]
     concept: strings
     subconcept: fstrings
@@ -160,14 +166,14 @@ exercises:
     objective: "Use the split() method to convert a string into a list"
     title: String Split
     difficulty: 2
-    prompt: Split string {{item_singular}} by comma
+    prompt: Write an expression that splits `{{item_singular}}` by commas into a list of strings
     expected_answer: '{{item_singular}}.split(",")'
     accepted_solutions:
       - '{{item_singular}}.split(",")'
       - "{{item_singular}}.split(',')"
     hints:
-      - Use the split() method
-      - Pass the delimiter as argument
+      - Use the `.split()` method
+      - Pass the delimiter as an argument
     tags: [strings, methods, intermediate]
     concept: strings
     subconcept: string-methods
@@ -187,13 +193,13 @@ exercises:
     prereqs: [foundations]
     type: write
     pattern: construction
-    prompt: Concatenate strings {{attr_key_1}} and {{attr_key_2}}
+    prompt: Write a single expression that concatenates `{{attr_key_1}}` and `{{attr_key_2}}`
     expected_answer: "{{attr_key_1}} + {{attr_key_2}}"
     accepted_solutions:
       - "{{attr_key_1}} + {{attr_key_2}}"
       - "{{attr_key_1}}+{{attr_key_2}}"
     hints:
-      - Use the + operator
+      - Use the + operator between two string variables
       - Creates a new string from both inputs
     tags: [strings, concatenation, beginner]
 
@@ -207,14 +213,14 @@ exercises:
     prereqs: [foundations]
     type: write
     pattern: construction
-    prompt: Repeat string {{item_singular}} three times
+    prompt: Write an expression that repeats `{{item_singular}}` three times
     expected_answer: "{{item_singular}} * 3"
     accepted_solutions:
       - "{{item_singular}} * 3"
       - "3 * {{item_singular}}"
     hints:
       - Use the * operator with a number
-      - "Order doesn't matter: {{item_singular}} * 3 or 3 * {{item_singular}} both work"
+      - "Order doesn't matter: `{{item_singular}} * 3` or `3 * {{item_singular}}`"
     tags: [strings, repeat, beginner]
 
   - slug: string-length
@@ -227,11 +233,14 @@ exercises:
     prereqs: [foundations]
     type: write
     pattern: query
-    prompt: Get the length of string {{item_singular}} for {{entity_name}} validation
+    prompt: Write an expression that gets the character count of `{{item_singular}}`
     expected_answer: "len({{item_singular}})"
+    accepted_solutions:
+      - "len({{item_singular}})"
+      - "len( {{item_singular}} )"
     hints:
-      - Use the len() function on {{item_singular}}
-      - len() works on any {{item_plural}} sequence type
+      - Use the `len()` function on a string
+      - "`len()` works on any sequence type (strings, lists, etc.)"
     tags: [strings, length, beginner]
 
   # --- Additional Indexing Subconcept ---
@@ -245,11 +254,14 @@ exercises:
     prereqs: [strings.basics]
     type: write
     pattern: indexing
-    prompt: Get the last character of string {{item_singular}} using negative indexing
+    prompt: Write an expression that gets the last character of `{{item_singular}}` using negative indexing
     expected_answer: "{{item_singular}}[-1]"
+    accepted_solutions:
+      - "{{item_singular}}[-1]"
+      - "{{item_singular}}[ -1 ]"
     hints:
-      - Negative indices count from the end of {{item_singular}}
-      - -1 is the last {{item_singular}} character
+      - Negative indices count from the end
+      - "-1 is always the last character"
     tags: [strings, indexing, negative]
 
   - slug: string-second-last
@@ -262,11 +274,14 @@ exercises:
     prereqs: [strings.indexing]
     type: write
     pattern: indexing
-    prompt: Get the second to last character of string {{item_singular}}
+    prompt: Write an expression that gets the second-to-last character of `{{item_singular}}`
     expected_answer: "{{item_singular}}[-2]"
+    accepted_solutions:
+      - "{{item_singular}}[-2]"
+      - "{{item_singular}}[ -2 ]"
     hints:
-      - Use negative indexing on {{item_singular}}
-      - -2 is second from the end of {{item_plural}}
+      - Use negative indexing
+      - "-2 is second from the end"
     tags: [strings, indexing, negative]
 
   # --- Additional Slicing Subconcept ---
@@ -280,14 +295,14 @@ exercises:
     prereqs: [strings.indexing]
     type: write
     pattern: indexing
-    prompt: Get the first 5 characters of string {{item_singular}} for {{entity_name}} preview
+    prompt: Write an expression that returns the first 5 characters of `{{item_singular}}`
     expected_answer: "{{item_singular}}[:5]"
     accepted_solutions:
       - "{{item_singular}}[:5]"
       - "{{item_singular}}[0:5]"
     hints:
-      - Omit start for beginning of {{item_singular}}
-      - End index is exclusive for {{item_plural}}
+      - Omitting start defaults to 0
+      - End index is exclusive (stops before it)
     tags: [strings, slicing, beginner]
 
   - slug: string-slice-end
@@ -300,11 +315,14 @@ exercises:
     prereqs: [strings.indexing]
     type: write
     pattern: indexing
-    prompt: Get all characters from index 3 to the end of string {{item_singular}}
+    prompt: Write an expression that slices `{{item_singular}}` from index 3 to the end
     expected_answer: "{{item_singular}}[3:]"
+    accepted_solutions:
+      - "{{item_singular}}[3:]"
+      - "{{item_singular}}[ 3 : ]"
     hints:
-      - Omit end for going to the end
-      - "{{item_singular}}[3:] means from index 3 to the last character"
+      - Omitting end goes to the last character
+      - "`[3:]` means from index 3 onward"
     tags: [strings, slicing, beginner]
 
   - slug: string-reverse
@@ -317,11 +335,14 @@ exercises:
     prereqs: [strings.slicing]
     type: write
     pattern: indexing
-    prompt: Reverse string {{item_singular}} using slicing for {{entity_name}} display
+    prompt: Write an expression that reverses `{{item_singular}}` using slicing
     expected_answer: "{{item_singular}}[::-1]"
+    accepted_solutions:
+      - "{{item_singular}}[::-1]"
+      - "{{item_singular}}[ : : -1 ]"
     hints:
-      - Use step value of -1 on {{item_singular}}
-      - "'[::-1]' reverses {{item_plural}}"
+      - Use step value of -1
+      - "`[::-1]` is the Pythonic way to reverse"
     tags: [strings, slicing, reverse]
 
   - slug: string-every-other
@@ -334,11 +355,14 @@ exercises:
     prereqs: [strings.slicing]
     type: write
     pattern: indexing
-    prompt: Get every other character of string {{item_singular}} (starting from first)
+    prompt: Write a slice that takes every other character from `{{item_singular}}`, starting at index 0
     expected_answer: "{{item_singular}}[::2]"
+    accepted_solutions:
+      - "{{item_singular}}[::2]"
+      - "{{item_singular}}[ : : 2 ]"
     hints:
-      - Use step value of 2 on {{item_singular}}
-      - Omit start and end for {{item_plural}}
+      - Use step value of 2
+      - Omit start and end to use defaults
     tags: [strings, slicing, step]
 
   # --- Additional Methods Subconcept ---
@@ -352,11 +376,14 @@ exercises:
     prereqs: [strings.basics]
     type: write
     pattern: mutation
-    prompt: Convert string {{item_singular}} to lowercase for {{entity_name}} normalization
+    prompt: Write an expression that converts `{{item_singular}}` to lowercase
     expected_answer: "{{item_singular}}.lower()"
+    accepted_solutions:
+      - "{{item_singular}}.lower()"
+      - "{{item_singular}}.lower( )"
     hints:
-      - Use the lower() method on {{item_singular}}
-      - Returns a new {{item_singular}} string (strings are immutable)
+      - Use the `.lower()` method on a string
+      - Returns a new string (strings are immutable)
     tags: [strings, methods, beginner]
 
   - slug: string-strip
@@ -369,11 +396,14 @@ exercises:
     prereqs: [strings.basics]
     type: write
     pattern: mutation
-    prompt: Remove leading and trailing whitespace from string {{item_singular}} for {{entity_name}} cleanup
+    prompt: Write an expression that removes leading and trailing whitespace from `{{item_singular}}`
     expected_answer: "{{item_singular}}.strip()"
+    accepted_solutions:
+      - "{{item_singular}}.strip()"
+      - "{{item_singular}}.strip( )"
     hints:
-      - Use the strip() method on {{item_singular}}
-      - lstrip() and rstrip() remove from one side of {{item_plural}} only
+      - Use the `.strip()` method
+      - "`.lstrip()` and `.rstrip()` remove from one side only"
     tags: [strings, methods, whitespace]
 
   - slug: string-replace
@@ -386,14 +416,14 @@ exercises:
     prereqs: [string-methods]
     type: write
     pattern: mutation
-    prompt: Replace all occurrences of "{{attr_key_1}}" with "{{attr_key_2}}" in string {{item_singular}}
+    prompt: Write an expression that replaces all occurrences of `"{{attr_key_1}}"` with `"{{attr_key_2}}"` in `{{item_singular}}`
     expected_answer: '{{item_singular}}.replace("{{attr_key_1}}", "{{attr_key_2}}")'
     accepted_solutions:
       - '{{item_singular}}.replace("{{attr_key_1}}", "{{attr_key_2}}")'
       - "{{item_singular}}.replace('{{attr_key_1}}', '{{attr_key_2}}')"
     hints:
-      - Use the replace() method
-      - Takes old and new as arguments
+      - Use the `.replace()` method
+      - Takes old and new strings as arguments
     tags: [strings, methods, replace]
 
   - slug: string-join
@@ -406,14 +436,14 @@ exercises:
     prereqs: [string-methods]
     type: write
     pattern: construction
-    prompt: Join the list {{list_name}} using a comma as the separator
+    prompt: Write an expression that joins `{{list_name}}` using a comma as the separator
     expected_answer: '",".join({{list_name}})'
     accepted_solutions:
       - '",".join({{list_name}})'
       - "','.join({{list_name}})"
     hints:
-      - Call join on the separator
-      - Pass the list as argument
+      - Call `.join()` on the separator string
+      - Pass the list as the argument
     tags: [strings, methods, join]
 
   - slug: string-find
@@ -426,14 +456,14 @@ exercises:
     prereqs: [string-methods]
     type: write
     pattern: query
-    prompt: Find the index of substring "{{item_example}}" in string {{item_singular}}
+    prompt: Write an expression that returns the index of `"{{item_example}}"` inside `{{item_singular}}` (or -1 if not found)
     expected_answer: '{{item_singular}}.find("{{item_example}}")'
     accepted_solutions:
       - '{{item_singular}}.find("{{item_example}}")'
       - "{{item_singular}}.find('{{item_example}}')"
     hints:
-      - Use the find() method
-      - Returns -1 if not found
+      - Use the `.find()` method
+      - Returns -1 if the substring is not found
     tags: [strings, methods, find]
 
   - slug: string-startswith
@@ -446,14 +476,14 @@ exercises:
     prereqs: [string-methods]
     type: write
     pattern: query
-    prompt: Check if string {{item_singular}} starts with "{{item_example}}"
+    prompt: Write an expression that checks whether `{{item_singular}}` starts with `"{{item_example}}"`
     expected_answer: '{{item_singular}}.startswith("{{item_example}}")'
     accepted_solutions:
       - '{{item_singular}}.startswith("{{item_example}}")'
       - "{{item_singular}}.startswith('{{item_example}}')"
     hints:
-      - Use the startswith() method
-      - Returns True or False
+      - Use the `.startswith()` method
+      - Returns `True` or `False`
     tags: [strings, methods, check]
 
   # --- Additional F-Strings Subconcept ---
@@ -467,13 +497,13 @@ exercises:
     prereqs: [strings.fstrings]
     type: write
     pattern: construction
-    prompt: Create an f-string that displays "Total {{item_plural}} is " followed by the result of {{attr_key_1}} + {{attr_key_2}}
+    prompt: Write an f-string that prints the sum of `{{attr_key_1}} + {{attr_key_2}}` like `Total {{item_plural}} is <sum>`
     expected_answer: 'f"Total {{item_plural}} is {{{attr_key_1}} + {{attr_key_2}}}"'
     accepted_solutions:
       - 'f"Total {{item_plural}} is {{{attr_key_1}} + {{attr_key_2}}}"'
       - "f'Total {{item_plural}} is {{{attr_key_1}} + {{attr_key_2}}}'"
     hints:
-      - Expressions work inside {}
+      - Put the expression inside `{}`
       - The expression is evaluated before string interpolation
     tags: [strings, fstrings, expression]
 
@@ -487,14 +517,14 @@ exercises:
     prereqs: [strings.fstrings]
     type: write
     pattern: construction
-    prompt: Format {{item_singular}}_price with 2 decimal places in an f-string
+    prompt: Write an f-string expression that formats `{{item_singular}}_price` to exactly 2 decimal places
     expected_answer: 'f"{{{item_singular}}_price:.2f}"'
     accepted_solutions:
       - 'f"{{{item_singular}}_price:.2f}"'
       - "f'{{{item_singular}}_price:.2f}'"
     hints:
-      - Use :format after variable
-      - .2f means 2 decimal places
+      - Use `:format` after the variable name
+      - "`.2f` means 2 decimal places"
     tags: [strings, fstrings, formatting]
 
   - slug: fstring-padding
@@ -507,14 +537,14 @@ exercises:
     prereqs: [strings.fstrings]
     type: write
     pattern: construction
-    prompt: Format {{item_singular}}_id to be 5 characters wide with zero padding
+    prompt: Write an f-string expression that formats `{{item_singular}}_id` as 5 digits with leading zeros
     expected_answer: 'f"{{{item_singular}}_id:05}"'
     accepted_solutions:
       - 'f"{{{item_singular}}_id:05}"'
       - "f'{{{item_singular}}_id:05}'"
     hints:
-      - 0 before width means zero-pad
-      - 05 = 5 chars wide with zeros
+      - "`0` before width means zero-pad"
+      - "`05` = 5 characters wide with leading zeros"
     tags: [strings, fstrings, padding]
 
   # --- Fill-in Exercises ---
@@ -529,7 +559,7 @@ exercises:
     prereqs: [variables]
     pattern: invocation
     objective: Use len() to get string length
-    prompt: Fill in the function that returns the length of {{item_singular}}_name
+    prompt: "Fill in the function name: `___({{item_singular}}_name)`"
     template: "{{item_singular}}_length = ___({{item_singular}}_name)"
     blank_position: 0
     expected_answer: "len"
@@ -549,7 +579,7 @@ exercises:
     prereqs: [variables]
     pattern: construction
     objective: Concatenate strings
-    prompt: Fill in the operator that joins {{attr_key_1}} and {{attr_key_2}} strings
+    prompt: "Fill in the missing operator: `{{attr_key_1}} ___ {{attr_key_2}}`"
     template: "full_{{item_singular}} = {{attr_key_1}} ___ {{attr_key_2}}"
     blank_position: 0
     expected_answer: "+"
@@ -569,14 +599,14 @@ exercises:
     prereqs: [basics]
     pattern: indexing
     objective: Access first character
-    prompt: Fill in the index for the first character of {{item_singular}}_name
+    prompt: "Fill in the index for the first character: `{{item_singular}}_name[___]`"
     template: "first_char = {{item_singular}}_name[___]"
     blank_position: 0
     expected_answer: "0"
     accepted_solutions: ["0"]
     hints:
-      - Python uses zero-based indexing for {{item_plural}}
-      - First {{item_singular}} element is always index 0
+      - Python uses zero-based indexing
+      - The first element is always at index 0
     tags: [strings, indexing]
 
   - slug: string-index-last-fill
@@ -589,14 +619,14 @@ exercises:
     prereqs: [basics]
     pattern: indexing
     objective: Access last character with negative index
-    prompt: Fill in the index for the last character of {{item_singular}}_name (use negative indexing)
+    prompt: "Fill in the index for the last character (use negative indexing): `{{item_singular}}_name[___]`"
     template: "last_char = {{item_singular}}_name[___]"
     blank_position: 0
     expected_answer: "-1"
     accepted_solutions: ["-1"]
     hints:
-      - Negative indices count from the end of {{item_singular}}
-      - -1 is always the last {{item_singular}} element
+      - Negative indices count from the end
+      - "-1 is always the last element"
     tags: [strings, indexing]
 
   - slug: string-slice-start-fill
@@ -609,14 +639,14 @@ exercises:
     prereqs: [indexing]
     pattern: indexing
     objective: Slice first N characters
-    prompt: Fill in the slice notation for the first 3 characters of {{item_singular}}_name
+    prompt: "Fill in the slice to get the first 3 characters: `{{item_singular}}_name[___]`"
     template: "prefix = {{item_singular}}_name[___]"
     blank_position: 0
     expected_answer: ":3"
     accepted_solutions: [":3", "0:3"]
     hints:
-      - Omitting start defaults to 0 for {{item_singular}}
-      - End index is exclusive for {{item_plural}} (stops before it)
+      - Omitting start defaults to 0
+      - End index is exclusive (stops before it)
     tags: [strings, slicing]
 
   - slug: string-slice-end-fill
@@ -629,14 +659,14 @@ exercises:
     prereqs: [indexing]
     pattern: indexing
     objective: Slice last N characters
-    prompt: Fill in the slice notation for the last 3 characters of {{item_singular}}_name
+    prompt: "Fill in the slice to get the last 3 characters: `{{item_singular}}_name[___]`"
     template: "suffix = {{item_singular}}_name[___]"
     blank_position: 0
     expected_answer: "-3:"
     accepted_solutions: ["-3:"]
     hints:
-      - Negative indices work in {{item_singular}} slices too
-      - Omitting end goes to the end of the {{item_singular}} string
+      - Negative indices work in slices too
+      - Omitting end goes to the last character
     tags: [strings, slicing]
 
   - slug: string-upper-fill
@@ -649,14 +679,14 @@ exercises:
     prereqs: [basics]
     pattern: invocation
     objective: Convert to uppercase
-    prompt: Fill in the method that converts {{item_singular}}_name to uppercase
+    prompt: "Fill in the method name (no parentheses): `{{item_singular}}_name.___()`"
     template: "loud_{{item_singular}} = {{item_singular}}_name.___()"
     blank_position: 0
     expected_answer: "upper"
     accepted_solutions: ["upper"]
     hints:
       - Which string method converts to uppercase?
-      - lower() does the opposite
+      - "`lower()` does the opposite"
     tags: [strings, methods]
 
   - slug: string-strip-fill
@@ -669,7 +699,7 @@ exercises:
     prereqs: [basics]
     pattern: invocation
     objective: Remove surrounding whitespace
-    prompt: Fill in the method that removes whitespace from {{item_singular}}_input
+    prompt: "Fill in the method name (no parentheses): `{{item_singular}}_input.___()`"
     template: "clean_{{item_singular}} = {{item_singular}}_input.___()"
     blank_position: 0
     expected_answer: "strip"
@@ -689,7 +719,7 @@ exercises:
     prereqs: [basics]
     pattern: construction
     objective: Use f-string for variable interpolation
-    prompt: "Given {{item_singular}}_name = \"{{item_example}}\", fill in the variable to interpolate"
+    prompt: 'Given `{{item_singular}}_name = "{{item_example}}"`, fill in the variable name to insert into: `f"{___}"`'
     template: "greeting = f\"Hello, {___}!\""
     blank_position: 0
     expected_answer: "{{item_singular}}_name"
@@ -708,7 +738,7 @@ exercises:
     prereqs: [basics]
     pattern: construction
     objective: Use expression in f-string
-    prompt: Fill in the operator to double the {{item_singular}}_count value
+    prompt: "Fill in the operator: `{{{item_singular}}_count ___ 2}`"
     template: "result = f\"Double {{item_plural}} is {{{item_singular}}_count ___ 2}\""
     blank_position: 0
     expected_answer: "*"
@@ -729,16 +759,15 @@ exercises:
     level: intro
     prereqs: [variables]
     pattern: invocation
-    objective: Predict len() result
-    prompt: What does this len() code print?
+    objective: Predict len() result for a given string
+    prompt: What does this code print?
     code: |
-      {{item_singular}}_name = "hello"
-      print(len({{item_singular}}_name))
+      user_token = "admin"
+      print(len(user_token))
     expected_answer: "5"
-    accepted_solutions: []
     hints:
-      - len() counts all {{item_singular}} characters
-      - Including spaces if there were any
+      - "`len()` counts all characters in the string"
+      - 'The word "admin" has exactly 5 letters'
     tags: [strings, len]
 
   - slug: string-predict-concat
@@ -751,16 +780,15 @@ exercises:
     prereqs: [variables]
     pattern: construction
     objective: Predict concatenation result
-    prompt: What does this string concatenation print?
+    prompt: What does this code print?
     code: |
       {{attr_key_1}} = "{{entity_name}}"
       {{attr_key_2}} = "{{item_example}}"
       print({{attr_key_1}} + " " + {{attr_key_2}})
     expected_answer: "{{entity_name}} {{item_example}}"
-    accepted_solutions: []
     hints:
-      - + joins strings exactly as they are
-      - The middle " " adds a space between them
+      - "`+` joins strings exactly as they are"
+      - 'The middle `" "` adds a space between them'
     tags: [strings, concatenation]
 
   - slug: string-predict-index
@@ -772,15 +800,14 @@ exercises:
     level: intro
     prereqs: [basics]
     pattern: indexing
-    objective: Predict character at index
-    prompt: What does this string indexing print?
+    objective: Predict character at a specific index position
+    prompt: What does this code print?
     code: |
-      {{item_singular}}_name = "hello"
+      {{item_singular}}_name = "python"
       print({{item_singular}}_name[2])
-    expected_answer: "l"
-    accepted_solutions: []
+    expected_answer: "t"
     hints:
-      - "Count from 0: h=0, e=1, l=2, l=3, o=4"
+      - "Count from 0: p=0, y=1, t=2, h=3, o=4, n=5"
       - Index 2 is the third character
     tags: [strings, indexing]
 
@@ -793,16 +820,15 @@ exercises:
     level: practice
     prereqs: [basics]
     pattern: indexing
-    objective: Predict negative index result
-    prompt: What does this negative indexing print?
+    objective: Predict result of negative indexing
+    prompt: What does this code print?
     code: |
-      {{item_singular}}_name = "hello"
-      print({{item_singular}}_name[-2])
-    expected_answer: "l"
-    accepted_solutions: []
+      module_name = "system"
+      print(module_name[-2])
+    expected_answer: "e"
     hints:
-      - -1 is last, -2 is second to last
-      - "In 'hello': h-e-l-l-o where l is at -2"
+      - "-1 is last (m), -2 is second to last (e)"
+      - "In 'system': s-y-s-t-e-m where e is at -2"
     tags: [strings, indexing]
 
   - slug: string-predict-slice
@@ -814,16 +840,15 @@ exercises:
     level: intro
     prereqs: [indexing]
     pattern: indexing
-    objective: Predict slice result
-    prompt: What does this slice code print?
+    objective: Predict basic slice result
+    prompt: What does this code print?
     code: |
-      {{item_singular}}_name = "hello"
-      print({{item_singular}}_name[1:4])
-    expected_answer: "ell"
-    accepted_solutions: []
+      module_name = "system"
+      print(module_name[1:4])
+    expected_answer: "yst"
     hints:
-      - Slice includes start, excludes end
-      - Index 1 is 'e', goes up to but not including index 4
+      - Slice includes start index, excludes end index
+      - "Index 1 is 'y', goes up to but not including index 4 ('e')"
     tags: [strings, slicing]
 
   - slug: string-predict-reverse
@@ -835,16 +860,15 @@ exercises:
     level: practice
     prereqs: [indexing]
     pattern: indexing
-    objective: Predict reverse slice result
-    prompt: What does this reverse slice print?
+    objective: Predict result of reverse slice
+    prompt: What does this code print?
     code: |
-      {{item_singular}}_code = "abc"
-      print({{item_singular}}_code[::-1])
-    expected_answer: "cba"
-    accepted_solutions: []
+      code_segment = "test"
+      print(code_segment[::-1])
+    expected_answer: "tset"
     hints:
       - Step of -1 reverses the string
-      - Goes from end to start, one character at a time
+      - Each character is read from end to start
     tags: [strings, slicing]
 
   - slug: string-predict-upper
@@ -856,16 +880,15 @@ exercises:
     level: intro
     prereqs: [basics]
     pattern: invocation
-    objective: Predict upper() result
-    prompt: What does this .upper() code print?
+    objective: Predict result of upper() method
+    prompt: What does this code print?
     code: |
-      {{item_singular}}_name = "hello"
-      print({{item_singular}}_name.upper())
-    expected_answer: "HELLO"
-    accepted_solutions: []
+      user_status = "active"
+      print(user_status.upper())
+    expected_answer: "ACTIVE"
     hints:
-      - upper() converts all letters to uppercase
-      - Non-letter characters stay the same
+      - "`.upper()` converts all letters to uppercase"
+      - Numbers and symbols remain unchanged
     tags: [strings, methods]
 
   - slug: string-predict-replace
@@ -877,16 +900,15 @@ exercises:
     level: practice
     prereqs: [basics]
     pattern: invocation
-    objective: Predict replace() result
-    prompt: What does this .replace() code print?
+    objective: Predict result of replace() method
+    prompt: What does this code print?
     code: |
-      {{item_singular}}_text = "hello world"
-      print({{item_singular}}_text.replace("l", "L"))
-    expected_answer: "heLLo worLd"
-    accepted_solutions: []
+      {{item_singular}}_data = "hello world"
+      print({{item_singular}}_data.replace("o", "0"))
+    expected_answer: "hell0 w0rld"
     hints:
-      - replace() changes all occurrences
-      - Count the 'l's - there are 3 of them
+      - "`.replace()` changes ALL occurrences of the target"
+      - "Count the 'o's - there are 2 of them"
     tags: [strings, methods]
 
   - slug: fstring-predict-basic
@@ -899,15 +921,14 @@ exercises:
     prereqs: [basics]
     pattern: construction
     objective: Predict f-string output
-    prompt: What does this f-string code print?
+    prompt: What does this code print?
     code: |
       {{item_singular}}_name = "{{item_example}}"
       {{item_singular}}_count = 30
       print(f"{{{item_singular}}_name} is {{{item_singular}}_count}")
     expected_answer: "{{item_example}} is 30"
-    accepted_solutions: []
     hints:
-      - Variables in {} are replaced with their values
+      - Variables in `{}` are replaced with their values
       - Numbers are automatically converted to strings
     tags: [strings, fstrings]
 
@@ -921,15 +942,14 @@ exercises:
     prereqs: [basics]
     pattern: construction
     objective: Predict f-string with expression
-    prompt: What does this f-string expression print?
+    prompt: What does this code print?
     code: |
       {{item_singular}}_count = 5
       print(f"Double {{item_plural}} is {{{item_singular}}_count * 2}")
     expected_answer: "Double {{item_plural}} is 10"
-    accepted_solutions: []
     hints:
-      - Expressions in {} are evaluated
-      - 5 * 2 = 10, which gets inserted into the string
+      - Expressions in `{}` are evaluated first
+      - "5 * 2 = 10, which gets inserted into the string"
     tags: [strings, fstrings]
 
   - slug: string-method-dynamic
@@ -987,8 +1007,11 @@ exercises:
     type: write
     pattern: construction
     generator: string-format
-    prompt: "Write an f-string that produces: {{result}}"
+    prompt: "Given variables from the code, write an f-string that produces: {{result}}"
     expected_answer: "{{fstring}}"
+    accepted_solutions:
+      - "{{fstring}}"
+      - '{{fstring}}'
     hints:
       - Use f before the string quote
       - Put variable names in curly braces
@@ -1021,7 +1044,7 @@ exercises:
       feedback: "String slicing is powerful for extracting substrings"
 
   - slug: string-reverse-dynamic
-    objective: Write code to reverse a string using slicing
+    objective: Write code to reverse a string variable using slicing
     title: Dynamic String Reverse
     difficulty: 2
     concept: strings
@@ -1031,12 +1054,12 @@ exercises:
     type: write
     pattern: slicing
     generator: string-slice
-    prompt: "Reverse the string '{{word}}' using slice notation"
-    expected_answer: '"{{word}}"[::-1]'
+    prompt: "Given s = '{{word}}', reverse the string using slice notation on variable s"
+    expected_answer: "s[::-1]"
     accepted_solutions:
-      - '"{{word}}"[::-1]'
-      - "'{{word}}'[::-1]"
       - "s[::-1]"
+      - "s[ : : -1 ]"
+      - "s[: :-1]"
     hints:
       - Use step of -1 to reverse
       - The pattern is [::-1]
@@ -1044,5 +1067,84 @@ exercises:
     target_construct:
       type: slice
       feedback: "[::-1] is the Pythonic way to reverse a string"
+
+  # --- Integrated Exercises (Multi-Concept) ---
+  - slug: string-split-filter
+    objective: Split a string and filter the resulting list by a condition
+    title: Split and Filter
+    difficulty: 3
+    concept: strings
+    subconcept: string-methods
+    level: integrated
+    prereqs: [string-methods, lists, comprehensions.list-comp]
+    targets: [string-methods, lists]
+    type: write
+    pattern: transformation
+    prompt: |
+      Split `{{item_singular}}_text` by comma, then return a list of only the non-empty parts.
+      Use `.split()` and a list comprehension.
+    expected_answer: '[s for s in {{item_singular}}_text.split(",") if s]'
+    accepted_solutions:
+      - '[s for s in {{item_singular}}_text.split(",") if s]'
+      - "[s for s in {{item_singular}}_text.split(',') if s]"
+      - '[part for part in {{item_singular}}_text.split(",") if part]'
+      - "[part for part in {{item_singular}}_text.split(',') if part]"
+      - '[s.strip() for s in {{item_singular}}_text.split(",") if s.strip()]'
+    hints:
+      - "`.split(',')` returns a list of strings"
+      - "Empty strings are falsy, so `if s` filters them out"
+      - "Optionally use `.strip()` to also remove whitespace"
+    tags: [strings, split, lists, comprehensions, integrated]
+
+  - slug: fstring-from-dict
+    objective: Format a string using values from a dictionary
+    title: F-String from Dict
+    difficulty: 3
+    concept: strings
+    subconcept: fstrings
+    level: integrated
+    prereqs: [fstrings, dicts]
+    targets: [fstrings, dicts]
+    type: write
+    pattern: construction
+    prompt: |
+      Given `{{item_singular}}_info = {"name": ..., "status": ...}`, write an f-string that prints:
+      `{{entity_name}}: <name> - <status>` by indexing the dict inside the f-string.
+    expected_answer: 'f"{{entity_name}}: {{{item_singular}}_info[\"name\"]} - {{{item_singular}}_info[\"status\"]}"'
+    accepted_solutions:
+      - 'f"{{entity_name}}: {{{item_singular}}_info[\"name\"]} - {{{item_singular}}_info[\"status\"]}"'
+      - "f'{{entity_name}}: {{{item_singular}}_info[\"name\"]} - {{{item_singular}}_info[\"status\"]}'"
+      - 'f"{{entity_name}}: {{{item_singular}}_info[''name'']} - {{{item_singular}}_info[''status'']}"'
+    hints:
+      - "Access dict values with `dict[\"key\"]` inside f-string braces"
+      - "Prefer single quotes inside: `dict['key']`"
+    tags: [strings, fstrings, dicts, integrated]
+
+  - slug: string-join-transformed
+    objective: Transform list items and join them into a single string
+    title: Transform and Join
+    difficulty: 3
+    concept: strings
+    subconcept: string-methods
+    level: integrated
+    prereqs: [string-methods, lists, comprehensions.list-comp]
+    targets: [string-methods, lists]
+    type: write
+    pattern: transformation
+    prompt: |
+      Write one expression that uppercases each string in `{{list_name}}` and joins them with `" | "`.
+      Use a generator expression inside `.join()`.
+    expected_answer: '" | ".join(s.upper() for s in {{list_name}})'
+    accepted_solutions:
+      - '" | ".join(s.upper() for s in {{list_name}})'
+      - "' | '.join(s.upper() for s in {{list_name}})"
+      - '" | ".join(item.upper() for item in {{list_name}})'
+      - "' | '.join(item.upper() for item in {{list_name}})"
+      - '" | ".join([s.upper() for s in {{list_name}}])'
+    hints:
+      - "Call `.join()` on the separator string"
+      - "Use a generator expression to transform each item"
+      - "A list comprehension also works but generator is more memory-efficient"
+    tags: [strings, join, lists, comprehensions, integrated]
 
   # --- Debug Exercises (Pitfall Subconcepts) ---
