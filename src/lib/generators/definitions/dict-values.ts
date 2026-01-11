@@ -3,16 +3,19 @@
 
 import type { Generator, GeneratorParams } from '../types';
 import { seededRandom } from '../utils';
+import { tinyStoreLexicon } from '../tinystore-data';
 
-const KEY_POOL = ['a', 'b', 'c', 'x', 'y', 'name', 'age', 'count'];
+// Use TinyStore product names as keys for more realistic dictionary exercises
+const KEY_POOL = tinyStoreLexicon.productNames;
 
 /**
  * dict-values generator
  *
  * Generates dictionary access scenarios with existing/missing keys.
+ * Uses TinyStore product names as dictionary keys for narrative consistency.
  * Constraints:
  * - dict_str: Valid Python dict syntax
- * - key: String key to access
+ * - key: String key to access (TinyStore product name)
  * - value: The value at key (or 'KeyError' if missing)
  * - exists: Boolean indicating if key exists in dict
  * - ~80% chance of existing key, ~20% missing key
