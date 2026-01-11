@@ -121,12 +121,13 @@ describe('validateYamlExercise', () => {
       expect(errors).toHaveLength(0);
     });
 
-    it('accepts exercises without accepted_solutions (optional)', () => {
+    it('rejects write exercises without accepted_solutions', () => {
       const exercise = createMockYamlExercise({
         slug: 'test-no-accepted',
+        accepted_solutions: undefined,
       });
       const errors = validateYamlExercise(exercise, 'test.yaml');
-      expect(errors).toHaveLength(0);
+      expect(errors.some(e => e.field === 'accepted_solutions')).toBe(true);
     });
 
     it('rejects accepted_solutions with non-string values', () => {
@@ -157,13 +158,13 @@ describe('validateYamlExercise', () => {
       expect(errors.some(e => e.field === 'accepted_solutions')).toBe(true);
     });
 
-    it('accepts empty accepted_solutions array', () => {
+    it('rejects empty accepted_solutions array for write exercises', () => {
       const exercise = createMockYamlExercise({
         slug: 'test-empty-accepted',
         accepted_solutions: [],
       });
       const errors = validateYamlExercise(exercise, 'test.yaml');
-      expect(errors).toHaveLength(0);
+      expect(errors.some(e => e.field === 'accepted_solutions')).toBe(true);
     });
   });
 });
@@ -176,6 +177,7 @@ describe('generator field validation', () => {
       prompt: 'Get chars from {{start}} to {{end}}',
       expected_answer: 's[{{start}}:{{end}}]',
       hints: ['Use slice'],
+      accepted_solutions: ['s[{{start}}:{{end}}]'],
       concept: 'strings',
       subconcept: 'slicing',
       level: 'practice',
@@ -196,6 +198,7 @@ describe('generator field validation', () => {
       prompt: 'Sum the list',
       expected_answer: 'sum(nums)',
       hints: ['Use sum()'],
+      accepted_solutions: ['sum(nums)'],
       concept: 'collections',
       subconcept: 'lists',
       level: 'practice',
@@ -218,6 +221,7 @@ describe('generator field validation', () => {
       prompt: 'Write a function that doubles a number',
       expected_answer: 'def double(n): return n * 2',
       hints: ['Use return'],
+      accepted_solutions: ['def double(n): return n * 2'],
       concept: 'functions',
       subconcept: 'definition',
       level: 'practice',
@@ -237,6 +241,7 @@ describe('generator field validation', () => {
       prompt: 'Test {{param}}',
       expected_answer: 'result',
       hints: ['hint'],
+      accepted_solutions: ['result'],
       concept: 'strings',
       subconcept: 'slicing',
       level: 'practice',
@@ -260,6 +265,7 @@ describe('generator field validation', () => {
       prompt: 'Get chars from {{start}} to {{end}}',
       expected_answer: 's[{{start}}:{{end}}]',
       hints: ['Use slice'],
+      accepted_solutions: ['s[{{start}}:{{end}}]'],
       concept: 'strings',
       subconcept: 'slicing',
       level: 'practice',
@@ -280,6 +286,7 @@ describe('generator field validation', () => {
       prompt: 'Test prompt',
       expected_answer: 'result',
       hints: ['hint'],
+      accepted_solutions: ['result'],
       concept: 'strings',
       subconcept: 'slicing',
       level: 'practice',
@@ -305,6 +312,7 @@ describe('generator field validation', () => {
       prompt: 'This prompt has no placeholders',
       expected_answer: 'result',
       hints: ['hint'],
+      accepted_solutions: ['result'],
       concept: 'strings',
       subconcept: 'slicing',
       level: 'practice',
@@ -329,8 +337,9 @@ describe('grading_strategy field', () => {
     prompt: 'Test prompt',
     expected_answer: 'x',
     hints: ['hint'],
+    accepted_solutions: ['x'],
     concept: 'foundations',
-    subconcept: 'print',
+    subconcept: 'io',
     level: 'intro',
     prereqs: [],
     type: 'write',
@@ -382,6 +391,18 @@ describe('grading_strategy field', () => {
     const exercise = createExercise({});
     const errors = validateYamlExercise(exercise, 'test.yaml');
     expect(errors.filter(e => e.field === 'grading_strategy')).toHaveLength(0);
+  });
+
+  it('rejects predict exercises without grading_strategy', () => {
+    const exercise = createExercise({
+      type: 'predict',
+      code: 'print(\"ok\")',
+      grading_strategy: undefined,
+    });
+    const errors = validateYamlExercise(exercise, 'test.yaml');
+    expect(errors).toContainEqual(expect.objectContaining({
+      field: 'grading_strategy',
+    }));
   });
 
   it('accepts verification_script when grading_strategy is not set', () => {

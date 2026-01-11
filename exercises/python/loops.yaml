@@ -334,11 +334,10 @@ exercises:
     difficulty: 3
     concept: loops
     subconcept: for
-    level: integrated
+    level: edge
     prereqs: [control-flow.for]
     type: write
     pattern: iteration
-    targets: [for, conditionals]
     prompt: Write just the line that starts the else clause of a for-else construct (runs when loop completes without break)
     expected_answer: "else:"
     accepted_solutions:
@@ -1692,9 +1691,8 @@ exercises:
     difficulty: 3
     concept: loops
     subconcept: for
-    level: integrated
+    level: edge
     prereqs: [for, dicts, dict-iteration]
-    targets: [for, dicts]
     type: write
     pattern: accumulator
     prompt: |
@@ -1725,7 +1723,7 @@ exercises:
       - "Initialize total before the loop"
       - "Use .items() to get both keys and values"
       - "Add to total only when condition is met"
-    tags: [loops, dicts, accumulator, integrated]
+    tags: [loops, dicts, accumulator]
 
   - slug: loop-nested-flatten
     objective: Flatten a nested list using nested loops
@@ -1733,9 +1731,8 @@ exercises:
     difficulty: 3
     concept: loops
     subconcept: for
-    level: integrated
+    level: edge
     prereqs: [for, lists]
-    targets: [for, lists]
     type: write
     pattern: transformation
     prompt: |
@@ -1761,6 +1758,6 @@ exercises:
       - "Create an empty result list first"
       - "Outer loop iterates sublists, inner loop iterates items"
       - "Append each item to the flat list"
-    tags: [loops, lists, nested, flatten, integrated]
+    tags: [loops, lists, nested, flatten]
 
   # --- Refactor Exercises (Anti-patterns → Idiomatic Python) ---

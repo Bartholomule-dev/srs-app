@@ -69,7 +69,8 @@ describe('path-ops generator', () => {
     const seed = createSeed('user1', 'test', new Date());
     const params = pathOpsGenerator.generate(seed);
 
-    expect(['.py', '.json', '.yaml', '.txt', '.md']).toContain(params.suffix);
+    // TinyStore lexicon file extensions
+    expect(['.csv', '.json', '.log', '.txt']).toContain(params.suffix);
   });
 
   describe('property-based tests', () => {

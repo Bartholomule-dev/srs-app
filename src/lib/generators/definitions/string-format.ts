@@ -3,37 +3,11 @@
 
 import type { Generator, GeneratorParams } from '../types';
 import { seededRandom } from '../utils';
+import { tinyStoreLexicon } from '../tinystore-data';
 
-const NAMES = [
-  'Alice',
-  'Bob',
-  'Charlie',
-  'Diana',
-  'Eve',
-  'Frank',
-  'Grace',
-  'Henry',
-];
-const ITEMS = [
-  'laptop',
-  'phone',
-  'book',
-  'coffee',
-  'ticket',
-  'shirt',
-  'watch',
-  'headphones',
-];
-const CITIES = [
-  'Paris',
-  'Tokyo',
-  'London',
-  'Sydney',
-  'Berlin',
-  'Toronto',
-  'Boston',
-  'Seattle',
-];
+const NAMES = tinyStoreLexicon.customerNames;
+const ITEMS = tinyStoreLexicon.productNames;
+const CITIES = tinyStoreLexicon.warehouseCities;
 /**
  * string-format generator
  *

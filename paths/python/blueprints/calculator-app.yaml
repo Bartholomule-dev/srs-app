@@ -4,7 +4,7 @@ id: calculator-app
 title: "Build a Calculator"
 description: "Build a calculator application that handles arithmetic, comparisons, type conversions, and input validation"
 difficulty: beginner
-concepts: [foundations, numbers-booleans, conditionals, functions, error-handling]
+concepts: [foundations, numbers-booleans, conditionals, functions, error-handling, strings]
 
 beats:
   # ============================================
@@ -167,3 +167,18 @@ beats:
     sideQuests:
       - match-case-basic
       - elif-http-status
+
+  # ============================================
+  # Act 5: Integrated Capstone (Beats 19-21)
+  # ============================================
+  - beat: 19
+    exercise: number-round-format
+    title: "Round and Format"
+
+  - beat: 20
+    exercise: error-handling-conversion
+    title: "Safe Type Conversion"
+
+  - beat: 21
+    exercise: parse-quantity-safe
+    title: "Parse Quantity Safely"

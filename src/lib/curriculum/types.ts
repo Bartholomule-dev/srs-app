@@ -16,7 +16,7 @@ export type ConceptSlug =
   | 'modules-files';
 
 /** Exercise difficulty level within a subconcept */
-export type ExerciseLevel = 'intro' | 'practice' | 'edge' | 'integrated';
+export type ExerciseLevel = 'intro' | 'practice' | 'edge';
 
 /** Exercise format/type */
 export type ExerciseType = 'write' | 'fill-in' | 'predict';
@@ -137,6 +137,13 @@ export interface SubconceptTeaching {
   pitfall?: SubconceptPitfall;
 }
 
+/** Target ladder counts per subconcept level */
+export interface SubconceptLadder {
+  intro: number;
+  practice: number;
+  edge: number;
+}
+
 /** Subconcept definition in curriculum graph */
 export interface SubconceptDefinition {
   /** Display name of the subconcept */
@@ -145,6 +152,8 @@ export interface SubconceptDefinition {
   concept: string;
   /** Required subconcepts to unlock */
   prereqs: string[];
+  /** Target ladder counts per level */
+  ladder?: SubconceptLadder;
   /** Teaching content for first encounter */
   teaching: SubconceptTeaching;
 }

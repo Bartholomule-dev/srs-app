@@ -116,3 +116,5 @@ contexts:
   nested-loop-predict: "Predict nested iteration."
   nested-comp-predict: "Predict nested comprehension."
   for-sum-pair-dynamic: "Sum pairs dynamically."
+  filter-orders-fn: "Use this step in the Batch Processor workflow: Filter Orders Function."
+  product-tags-to-set: "Use this step in the Batch Processor workflow: Product Tags Set."

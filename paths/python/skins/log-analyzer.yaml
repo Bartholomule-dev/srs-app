@@ -58,7 +58,6 @@ contexts:
   nested-comp: "Nested log extraction."
   nested-comp-predict: "Predict nested result."
   active-users-integrated: "Filter active log sources."
-  error-code-extractor-integrated: "Extract error codes."
 
   # Dict & Set Comprehensions
   dict-comp-intro: "Create level-to-count mapping."
@@ -82,3 +81,7 @@ contexts:
   generator-countdown: "Countdown log processor."
   generator-evens: "Filter even timestamps."
   generator-fibonacci: "Generate sequence IDs."
+  dict-from-parallel-lists: "Use this step in the Log Analyzer workflow: Dict from Two Lists."
+  inventory-dict-comp: "Use this step in the Log Analyzer workflow: Inventory Dict Comprehension."
+  list-dedup-preserve-order: "Use this step in the Log Analyzer workflow: Deduplicate List (Order-Preserving)."
+  loop-nested-flatten: "Use this step in the Log Analyzer workflow: Flatten Nested List."

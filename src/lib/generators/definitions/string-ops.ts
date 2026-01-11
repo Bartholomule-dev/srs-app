@@ -3,20 +3,12 @@
 
 import type { Generator, GeneratorParams } from '../types';
 import { seededRandom } from '../utils';
+import { tinyStoreLexicon } from '../tinystore-data';
 
 const METHODS = ['upper', 'lower', 'strip', 'title', 'capitalize'] as const;
 type StringMethod = (typeof METHODS)[number];
 
-const WORD_POOL = [
-  '  hello  ',
-  'WORLD',
-  'Python',
-  '  code  ',
-  'TEST',
-  'Example',
-  '  space  ',
-  'hello world',
-];
+const WORD_POOL = tinyStoreLexicon.wordPool;
 
 /**
  * string-ops generator

@@ -3,6 +3,7 @@
 
 import type { Generator, GeneratorParams } from '../types';
 import { seededRandom } from '../utils';
+import { tinyStoreLexicon } from '../tinystore-data';
 
 /**
  * File I/O scenarios
@@ -21,27 +22,8 @@ interface FileIOScenario {
   };
 }
 
-const FILENAMES = [
-  'data.txt',
-  'output.txt',
-  'log.txt',
-  'notes.txt',
-  'config.txt',
-  'report.txt',
-  'results.txt',
-  'info.txt',
-];
-
-const SAMPLE_LINES = [
-  'Hello, World!',
-  'Python is fun',
-  'Learning to code',
-  'Data processing',
-  'File operations',
-  'Text analysis',
-  'Line by line',
-  'Read and write',
-];
+const FILENAMES = tinyStoreLexicon.fileNames;
+const SAMPLE_LINES = tinyStoreLexicon.sampleLines;
 
 const SCENARIOS: FileIOScenario[] = [
   {

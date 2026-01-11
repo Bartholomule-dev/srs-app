@@ -79,3 +79,4 @@ contexts:
   comparison-chaining: "Chain multiple validation conditions."
   if-elif-else-predict-dynamic: "Predict complex validation."
   comparison-predict-chain: "Predict chained comparison."
+  conditional-early-return: "Use this step in the Signup Form workflow: Guard Clause Pattern."

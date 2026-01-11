@@ -67,7 +67,7 @@ export interface Exercise {
   // Learning objective
   objective: string;
 
-  // Multi-subconcept targeting (for integrated exercises)
+  // Multi-subconcept targeting (for exercises testing multiple skills)
   targets: string[] | null;
 
   // Fill-in specific (optional)

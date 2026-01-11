@@ -103,4 +103,4 @@ contexts:
   default-args-predict-dynamic: "Predict default behavior."
   default-args-call-dynamic: "Call with various defaults."
   retry-decorator-integrated: "Add retry logic with decorator."
-  config-loader-integrated: "Load API config from file."
+  api-response-model-integrated: "Use this step in the API Client workflow: API Response Model."

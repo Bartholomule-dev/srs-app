@@ -33,7 +33,7 @@ export interface YamlExercise {
   // Learning objective
   objective: string;
 
-  // Multi-subconcept targeting (required for integrated)
+  // Multi-subconcept targeting (optional, for exercises testing multiple skills)
   targets?: string[];
 
   // Fill-in specific

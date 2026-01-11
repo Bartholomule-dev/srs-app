@@ -162,3 +162,18 @@ beats:
     sideQuests:
       - import-from
       - import-module
+
+  # ============================================
+  # Act 5: Integrated Capstone (Beats 21-23)
+  # ============================================
+  - beat: 21
+    exercise: conditional-dict-validation
+    title: "Dict Key Validation"
+
+  - beat: 22
+    exercise: list-to-dict-conversion
+    title: "List of Tuples to Dict"
+
+  - beat: 23
+    exercise: apply-coupon
+    title: "Apply Coupon"

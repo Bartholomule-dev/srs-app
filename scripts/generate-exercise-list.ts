@@ -13,7 +13,7 @@ interface Exercise {
   prompt: string;
   expected_answer: string;
   type: 'write' | 'fill-in' | 'predict';
-  level: 'intro' | 'practice' | 'edge' | 'integrated';
+  level: 'intro' | 'practice' | 'edge';
   concept: string;
   subconcept: string;
   generator?: string;
@@ -77,7 +77,6 @@ const LEVEL_ABBREV: Record<string, string> = {
   intro: 'I',
   practice: 'P',
   edge: 'E',
-  integrated: 'Int',
 };
 
 /**
@@ -219,7 +218,7 @@ function generateIndexMarkdown(stats: Stats, pathData: PathData): string {
   lines.push('');
 
   // Compact type/level stats on one line
-  lines.push(`Types: W=${stats.byType.write || 0} F=${stats.byType['fill-in'] || 0} P=${stats.byType.predict || 0} | Levels: I=${stats.byLevel.intro || 0} P=${stats.byLevel.practice || 0} E=${stats.byLevel.edge || 0} Int=${stats.byLevel.integrated || 0}`);
+  lines.push(`Types: W=${stats.byType.write || 0} F=${stats.byType['fill-in'] || 0} P=${stats.byType.predict || 0} | Levels: I=${stats.byLevel.intro || 0} P=${stats.byLevel.practice || 0} E=${stats.byLevel.edge || 0}`);
   lines.push('');
 
   if (stats.duplicates.length > 0) {
@@ -267,7 +266,7 @@ function generateIndexMarkdown(stats: Stats, pathData: PathData): string {
   lines.push('');
   lines.push('## Legend');
   lines.push('');
-  lines.push('W=Write, F=Fill-in, P=Predict | I=Intro, P=Practice, E=Edge, Int=Integrated | Dyn=Dynamic');
+  lines.push('W=Write, F=Fill-in, P=Predict | I=Intro, P=Practice, E=Edge | Dyn=Dynamic');
   lines.push('');
   lines.push(`*Generated: ${now}*`);
 
@@ -318,7 +317,7 @@ function generateConceptMarkdown(concept: string, stats: Stats, pathData: PathDa
     lines.push('|------|-----|--------|------|--------|-----|----| ');
 
     // Sort by level, then slug
-    const levelOrder = ['intro', 'practice', 'edge', 'integrated'];
+    const levelOrder = ['intro', 'practice', 'edge'];
     const sorted = [...exercises].sort((a, b) => {
       const levelDiff = levelOrder.indexOf(a.level) - levelOrder.indexOf(b.level);
       if (levelDiff !== 0) return levelDiff;
@@ -477,7 +476,6 @@ function generateRubricMarkdown(): string {
   lines.push('| Intro | 1-2 |');
   lines.push('| Practice | 3-4 |');
   lines.push('| Edge | 4-5 |');
-  lines.push('| Integrated | 5 |');
   lines.push('');
   lines.push(`*Generated: ${now}*`);
 

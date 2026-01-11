@@ -4,7 +4,7 @@ id: file-manager
 title: "Build a File Manager"
 description: "Create a file management utility with reading, writing, path handling, and proper resource management"
 difficulty: intermediate
-concepts: [modules-files, error-handling, strings, functions]
+concepts: [modules-files, error-handling, strings, functions, collections]
 
 beats:
   # ============================================
@@ -118,3 +118,22 @@ beats:
     title: "Call main function"
     sideQuests:
       - main-guard-with-definition
+
+  # ============================================
+  # Act 6: Integrated Capstone (Beats 17-20)
+  # ============================================
+  - beat: 17
+    exercise: file-read-to-list
+    title: "File Lines to List"
+
+  - beat: 18
+    exercise: file-write-from-list
+    title: "List to File"
+
+  - beat: 19
+    exercise: parse-events-log
+    title: "Parse Events Log"
+
+  - beat: 20
+    exercise: error-handling-file-read
+    title: "Safe File Read"

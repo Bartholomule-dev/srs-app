@@ -100,3 +100,5 @@ contexts:
   fstring-padding: "Pad line numbers."
   string-method-dynamic: "Apply string method."
   string-slice-from-end-dynamic: "Get ending of content."
+  string-join-transformed: "Use this step in the Markdown Editor workflow: Transform and Join."
+  string-split-filter: "Use this step in the Markdown Editor workflow: Split and Filter."

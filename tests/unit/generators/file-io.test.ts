@@ -61,12 +61,13 @@ describe('file-io generator', () => {
     expect(validOps).toContain(params.operation);
   });
 
-  it('filename ends with .txt', () => {
+  it('filename has valid extension', () => {
     const seed = createSeed('user1', 'test', new Date());
     const params = fileIOGenerator.generate(seed);
     const filename = params.filename as string;
 
-    expect(filename).toMatch(/\.txt$/);
+    // TinyStore lexicon uses various file extensions
+    expect(filename).toMatch(/\.(csv|json|log|txt)$/);
   });
 
   it('code contains open()', () => {

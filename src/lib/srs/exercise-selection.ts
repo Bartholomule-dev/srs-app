@@ -10,7 +10,7 @@ import type { FSRSState } from './fsrs/types';
 type TypeRatios = Record<'write' | 'fill-in' | 'predict', number>;
 
 // Constants
-export const LEVEL_ORDER: ExerciseLevel[] = ['intro', 'practice', 'edge', 'integrated'];
+export const LEVEL_ORDER: ExerciseLevel[] = ['intro', 'practice', 'edge'];
 
 /**
  * Subconcept info needed for exercise selection
@@ -34,7 +34,7 @@ export function mapFSRSStateToPhase(state: FSRSState): 'learning' | 'review' {
 /**
  * Select an exercise for a subconcept based on phase and attempt history
  *
- * Learning phase: level progression (intro -> practice -> edge -> integrated)
+ * Learning phase: level progression (intro -> practice -> edge)
  *   - Prioritize unseen exercises at current level
  *   - Progress to next level when all current level exercises seen
  *
@@ -75,7 +75,7 @@ export function selectExercise(
 
 /**
  * Learning phase: level progression algorithm
- * - Work through levels in order: intro -> practice -> edge -> integrated
+ * - Work through levels in order: intro -> practice -> edge
  * - Prioritize unseen exercises at current level (randomized)
  * - Move to next level when all exercises at current level have been seen
  * - Prefer different pattern from lastPattern when possible

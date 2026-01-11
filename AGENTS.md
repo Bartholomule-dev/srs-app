@@ -123,6 +123,13 @@ Dynamic exercises additionally have: `generator`, `target_construct`, `verify_by
 
 ---
 
+## Curriculum Plan Notes
+- Overall premium curriculum plan: `docs/plans/2026-01-11-premium-exercise-curriculum-plan.md`
+- Phase 0 audit baseline: `docs/plans/2026-01-11-phase0-audit.md`
+- Phase 1 completed: normalized prereqs/tags across `exercises/python/*.yaml`, relocated misplaced conditionals/comparisons to their correct concepts, and added semantic validation + tag registry (`src/lib/exercise/yaml-validation.ts`, `src/lib/exercise/tag-registry.ts`, `scripts/validate-exercises.ts`).
+
+---
+
 ## Coding Conventions
 
 - TypeScript strict mode, no `any`

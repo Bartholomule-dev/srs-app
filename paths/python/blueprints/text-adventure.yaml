@@ -116,3 +116,14 @@ beats:
     sideQuests:
       - function-multiple-return
       - function-return-predict
+
+  # ============================================
+  # Act 5: Integrated Capstone (Beats 16-17)
+  # ============================================
+  - beat: 16
+    exercise: fstring-from-dict
+    title: "F-String from Dict"
+
+  - beat: 17
+    exercise: conditional-list-any
+    title: "Any Product Matches"

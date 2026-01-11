@@ -803,9 +803,8 @@ exercises:
     difficulty: 3
     concept: conditionals
     subconcept: if-else
-    level: integrated
+    level: edge
     prereqs: [if-else, dicts]
-    targets: [if-else, dicts]
     type: write
     pattern: branching
     prompt: |
@@ -830,7 +829,7 @@ exercises:
     hints:
       - "Use 'in' operator to check if a key exists in a dict"
       - "Combine conditions with 'and' for both keys"
-    tags: [conditionals, dicts, validation, integrated]
+    tags: [conditionals, dicts, validation]
 
   - slug: conditional-list-any
     objective: Check if any item in a list meets a condition
@@ -838,9 +837,8 @@ exercises:
     difficulty: 3
     concept: conditionals
     subconcept: if-else
-    level: integrated
+    level: edge
     prereqs: [if-else, lists, comprehensions.generator-exp]
-    targets: [if-else, lists]
     type: write
     pattern: branching
     prompt: |
@@ -865,7 +863,7 @@ exercises:
     hints:
       - "any() returns True if any element in the iterable is truthy"
       - "Use a generator expression inside any()"
-    tags: [conditionals, lists, any, generator, integrated]
+    tags: [conditionals, lists, any, generator]
 
   - slug: conditional-early-return
     objective: Write a function with guard clauses for early returns
@@ -873,9 +871,8 @@ exercises:
     difficulty: 3
     concept: conditionals
     subconcept: if-else
-    level: integrated
+    level: edge
     prereqs: [if-else, functions.define]
-    targets: [if-else, functions]
     type: write
     pattern: branching
     prompt: |
@@ -907,4 +904,4 @@ exercises:
       - "Guard clauses check edge cases first and return early"
       - "No else needed when you return early"
       - "This pattern reduces nesting and improves readability"
-    tags: [conditionals, functions, guard-clause, integrated]
+    tags: [conditionals, functions, guard-clause]

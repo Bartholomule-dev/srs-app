@@ -320,7 +320,7 @@ export function useConceptSRS(): UseConceptSRSReturn {
   /**
    * Get next exercise for a subconcept using hybrid selection algorithm
    *
-   * Learning phase: level progression (intro -> practice -> edge -> integrated)
+   * Learning phase: level progression (intro -> practice -> edge)
    * Review phase: least-seen with random tie-breaking
    * Anti-repeat: avoids same pattern as lastPattern when possible
    */

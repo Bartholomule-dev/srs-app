@@ -751,9 +751,8 @@ exercises:
     difficulty: 3
     concept: modules-files
     subconcept: reading
-    level: integrated
+    level: edge
     prereqs: [reading, lists, string-methods]
-    targets: [reading, lists]
     type: write
     pattern: file
     prompt: |
@@ -776,7 +775,7 @@ exercises:
       - "Use a context manager with 'with open()'"
       - "Iterate directly over the file object"
       - "Use .strip() to remove newlines and whitespace"
-    tags: [files, lists, comprehensions, integrated]
+    tags: [files, lists, comprehensions]
 
   - slug: file-write-from-list
     objective: Write list items to a file with newlines
@@ -784,9 +783,8 @@ exercises:
     difficulty: 3
     concept: modules-files
     subconcept: writing
-    level: integrated
+    level: edge
     prereqs: [writing, lists, loops]
-    targets: [writing, lists]
     type: write
     pattern: file
     prompt: |
@@ -813,7 +811,7 @@ exercises:
       - "Open file in 'w' mode for writing"
       - "Use f.write() inside a loop"
       - "Add newline character after each item"
-    tags: [files, lists, loops, integrated]
+    tags: [files, lists, loops]
 
   - slug: import-json-parse
     objective: Import json module and parse a JSON string
@@ -821,9 +819,8 @@ exercises:
     difficulty: 3
     concept: modules-files
     subconcept: imports
-    level: integrated
+    level: edge
     prereqs: [imports, dicts]
-    targets: [imports, dicts]
     type: write
     pattern: import
     prompt: |
@@ -835,4 +832,4 @@ exercises:
       - "`json.loads()` parses a JSON string"
       - "Returns a Python dictionary"
       - "`json.load()` is for file objects, `json.loads()` is for strings"
-    tags: [imports, json, dicts, integrated]
+    tags: [imports, json, dicts]

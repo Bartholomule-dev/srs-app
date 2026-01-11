@@ -74,3 +74,4 @@ contexts:
   finally-exception-propagation: "Propagate through finally."
   finally-trace-dynamic: "Trace exception flow."
   else-clause: "Log success in else."
+  validate-order-status: "Use this step in the API Guardian workflow: Validate Order Status."

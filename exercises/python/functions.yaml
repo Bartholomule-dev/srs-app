@@ -312,11 +312,10 @@ exercises:
     difficulty: 2
     concept: functions
     subconcept: lambda
-    level: integrated
+    level: edge
     prereqs: [functions.lambda, collections.lists]
     type: write
     pattern: construction
-    targets: [lambda, lists]
     prompt: Given `{{list_name}}` is a list of 2-item tuples, write an expression that returns it sorted by the second element
     expected_answer: "sorted({{list_name}}, key=lambda x: x[1])"
     accepted_solutions:
@@ -503,11 +502,10 @@ exercises:
     difficulty: 3
     concept: functions
     subconcept: typehints
-    level: integrated
+    level: edge
     prereqs: [functions.typehints, functions.lambda]
     type: write
     pattern: definition
-    targets: [typehints, lambda]
     prompt: Write the function header where `func` takes `int` and returns `int`. Assume `Callable` is imported
     expected_answer: "def {{action_verb}}_{{item_singular}}(func: Callable[[int], int]):"
     accepted_solutions:
@@ -1112,81 +1110,14 @@ exercises:
     tags: [functions, defaults, dynamic, write]
 
   # --- Integrated Exercises (Premium - Combining Multiple Subconcepts) ---
-  - slug: retry-decorator-integrated
-    objective: Build a retry decorator combining decorators, loops, and exception handling
-    title: Retry Connection Decorator
-    difficulty: 3
-    concept: functions
-    subconcept: decorators
-    level: integrated
-    prereqs: [decorators, while, try-except, args-kwargs]
-    targets: [decorators, while, try-except, args-kwargs]
-    type: write
-    pattern: definition
-    prompt: |
-      Write a decorator `retry` that retries the wrapped function up to 3 total attempts
-      when ConnectionError occurs. If all attempts fail, re-raise the last ConnectionError.
-      The wrapper must accept *args, **kwargs and forward them.
-    expected_answer: |
-      def retry(func):
-          def wrapper(*args, **kwargs):
-              last_err = None
-              for _ in range(3):
-                  try:
-                      return func(*args, **kwargs)
-                  except ConnectionError as e:
-                      last_err = e
-              raise last_err
-          return wrapper
-    accepted_solutions:
-      - |
-        def retry(func):
-            def wrapper(*args, **kwargs):
-                last_err = None
-                for _ in range(3):
-                    try:
-                        return func(*args, **kwargs)
-                    except ConnectionError as e:
-                        last_err = e
-                raise last_err
-            return wrapper
-      - |
-        def retry(func):
-            def wrapper(*args, **kwargs):
-                attempts = 0
-                while attempts < 3:
-                    try:
-                        return func(*args, **kwargs)
-                    except ConnectionError as e:
-                        attempts += 1
-                        last_err = e
-                raise last_err
-            return wrapper
-      - |
-        def retry(func):
-            def wrapper(*args, **kwargs):
-                for i in range(3):
-                    try:
-                        return func(*args, **kwargs)
-                    except ConnectionError:
-                        if i == 2:
-                            raise
-            return wrapper
-    hints:
-      - Decorator returns a wrapper function
-      - Use for loop with range(3) for exactly 3 attempts
-      - Store the exception to re-raise after all attempts fail
-    tags: [decorators, retry, integrated, production]
-
   - slug: config-loader-integrated
     objective: Build a safe config loader combining context managers, try-except, and dict handling
     title: Safe JSON Config Loader
     difficulty: 3
     concept: functions
     subconcept: fn-basics
-    level: integrated
+    level: edge
     prereqs: [context, try-except, imports-basic, dicts]
-    targets: [context, try-except, imports-basic, dicts]
     type: write
     pattern: definition
     prompt: |
@@ -1219,5 +1150,5 @@ exercises:
       - Use `with` statement for file handling
       - Catch multiple exceptions with a tuple
       - Return empty dict on error
-    tags: [context-manager, json, error-handling, integrated]
+    tags: [context-manager, json, error-handling]
   # --- Debug Exercises (Pitfall Subconcepts) ---

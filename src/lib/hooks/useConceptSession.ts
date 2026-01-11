@@ -97,7 +97,7 @@ function createInitialStats(): SessionStats {
  *
  * Uses subconcept-level SRS scheduling instead of exercise-level.
  * For each due subconcept, selects an exercise using the hybrid algorithm:
- * - Learning phase: level progression (intro → practice → edge → integrated)
+ * - Learning phase: level progression (intro → practice → edge)
  * - Review phase: least-seen with randomization
  */
 export function useConceptSession(): UseConceptSessionReturn {

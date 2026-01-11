@@ -4,7 +4,7 @@ id: text-formatter
 title: "Build a Text Formatter"
 description: "Create a text processing utility that cleans, transforms, and formats user input"
 difficulty: beginner
-concepts: [strings, foundations, conditionals, functions]
+concepts: [strings, foundations, conditionals, functions, collections]
 
 beats:
   # ============================================
@@ -122,3 +122,14 @@ beats:
       - fstring-padding
       - string-method-dynamic
       - string-slice-from-end-dynamic
+
+  # ============================================
+  # Act 4: Integrated Capstone (Beats 15-16)
+  # ============================================
+  - beat: 15
+    exercise: string-join-transformed
+    title: "Transform and Join"
+
+  - beat: 16
+    exercise: string-split-filter
+    title: "Split and Filter"

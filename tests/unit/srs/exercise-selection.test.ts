@@ -319,10 +319,10 @@ describe('selectExerciseByType', () => {
 
 describe('LEVEL_ORDER constant', () => {
   it('has correct order', () => {
-    expect(LEVEL_ORDER).toEqual(['intro', 'practice', 'edge', 'integrated']);
+    expect(LEVEL_ORDER).toEqual(['intro', 'practice', 'edge']);
   });
 
-  it('has 4 levels', () => {
-    expect(LEVEL_ORDER).toHaveLength(4);
+  it('has 3 levels', () => {
+    expect(LEVEL_ORDER).toHaveLength(3);
   });
 });

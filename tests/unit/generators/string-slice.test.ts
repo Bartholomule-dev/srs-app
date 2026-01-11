@@ -95,22 +95,20 @@ describe('string-slice generator', () => {
     });
 
     it('word is always a valid word', () => {
+      // TinyStore lexicon uses product names for slice exercises
       const validWords = [
-        'python',
-        'coding',
-        'string',
-        'method',
-        'syntax',
-        'module',
-        'lambda',
-        'object',
-        'branch',
-        'global',
-        'return',
-        'except',
-        'import',
-        'assert',
-        'define',
+        'mug',
+        'notebook',
+        'lamp',
+        'keyboard',
+        'mouse',
+        'cable',
+        'charger',
+        'bottle',
+        'backpack',
+        'planner',
+        'sticker',
+        'timer',
       ];
       fc.assert(
         fc.property(fc.string({ minLength: 10 }), (seed) => {

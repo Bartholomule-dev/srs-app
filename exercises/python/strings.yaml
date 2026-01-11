@@ -1075,9 +1075,8 @@ exercises:
     difficulty: 3
     concept: strings
     subconcept: string-methods
-    level: integrated
+    level: edge
     prereqs: [string-methods, lists, comprehensions.list-comp]
-    targets: [string-methods, lists]
     type: write
     pattern: transformation
     prompt: |
@@ -1094,7 +1093,7 @@ exercises:
       - "`.split(',')` returns a list of strings"
       - "Empty strings are falsy, so `if s` filters them out"
       - "Optionally use `.strip()` to also remove whitespace"
-    tags: [strings, split, lists, comprehensions, integrated]
+    tags: [strings, split, lists, comprehensions]
 
   - slug: fstring-from-dict
     objective: Format a string using values from a dictionary
@@ -1102,9 +1101,8 @@ exercises:
     difficulty: 3
     concept: strings
     subconcept: fstrings
-    level: integrated
+    level: edge
     prereqs: [fstrings, dicts]
-    targets: [fstrings, dicts]
     type: write
     pattern: construction
     prompt: |
@@ -1118,7 +1116,7 @@ exercises:
     hints:
       - "Access dict values with `dict[\"key\"]` inside f-string braces"
       - "Prefer single quotes inside: `dict['key']`"
-    tags: [strings, fstrings, dicts, integrated]
+    tags: [strings, fstrings, dicts]
 
   - slug: string-join-transformed
     objective: Transform list items and join them into a single string
@@ -1126,9 +1124,8 @@ exercises:
     difficulty: 3
     concept: strings
     subconcept: string-methods
-    level: integrated
+    level: edge
     prereqs: [string-methods, lists, comprehensions.list-comp]
-    targets: [string-methods, lists]
     type: write
     pattern: transformation
     prompt: |
@@ -1145,6 +1142,6 @@ exercises:
       - "Call `.join()` on the separator string"
       - "Use a generator expression to transform each item"
       - "A list comprehension also works but generator is more memory-efficient"
-    tags: [strings, join, lists, comprehensions, integrated]
+    tags: [strings, join, lists, comprehensions]
 
   # --- Debug Exercises (Pitfall Subconcepts) ---

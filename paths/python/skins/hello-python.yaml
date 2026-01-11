@@ -95,3 +95,5 @@ contexts:
   import-datetime: "Import datetime."
   import-multiple-basic: "Import multiple modules."
   import-as-alias: "Use import alias."
+  discount-tier-elif: "Use this step in the Hello Python workflow: Discount Tier."
+  order-status-ternary: "Use this step in the Hello Python workflow: Paid Status Label."

@@ -6,8 +6,46 @@ import type {
   YamlValidationResult
 } from './yaml-types';
 import { hasGenerator } from '@/lib/generators';
+import curriculumData from '@/lib/curriculum/python.json';
+import { TAG_ALIASES, TAG_REGISTRY } from './tag-registry';
 
 const KEBAB_CASE_REGEX = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+const curriculum = curriculumData as {
+  concepts: Array<{ slug: string; subconcepts: string[] }>;
+};
+const conceptSlugs = new Set(curriculum.concepts.map(concept => concept.slug));
+const subconceptSlugs = new Set(curriculum.concepts.flatMap(concept => concept.subconcepts));
+const conceptSubconcepts = new Map(
+  curriculum.concepts.map(concept => [concept.slug, new Set(concept.subconcepts)])
+);
+
+const PREREQ_ALIASES: Record<string, string> = {
+  'control-flow.for': 'for',
+  'control-flow.while': 'while',
+  'control-flow.zip': 'zip',
+  'control-flow.sorted': 'sorted',
+  'control-flow.reversed': 'reversed',
+  'control-flow.any-all': 'any-all',
+  'control-flow.conditionals': 'if-else',
+  'functions.define': 'fn-basics',
+};
+
+function normalizeLegacyPrereq(prereq: string): string | null {
+  if (PREREQ_ALIASES[prereq]) {
+    return PREREQ_ALIASES[prereq];
+  }
+
+  const dotIndex = prereq.indexOf('.');
+  if (dotIndex !== -1) {
+    const prefix = prereq.slice(0, dotIndex);
+    const remainder = prereq.slice(dotIndex + 1);
+    if (conceptSlugs.has(prefix) && subconceptSlugs.has(remainder)) {
+      return remainder;
+    }
+  }
+
+  return null;
+}
 
 /**
  * Validate a single exercise from YAML
@@ -52,6 +90,17 @@ export function validateYamlExercise(
     });
   }
 
+  // Subconcept must belong to its concept
+  const allowedSubconcepts = conceptSubconcepts.get(exercise.concept);
+  if (!allowedSubconcepts || !allowedSubconcepts.has(exercise.subconcept)) {
+    errors.push({
+      file,
+      slug,
+      field: 'subconcept',
+      message: `subconcept "${exercise.subconcept}" is not valid for concept "${exercise.concept}"`,
+    });
+  }
+
   // Hints validation
   if (!exercise.hints || exercise.hints.length === 0) {
     errors.push({
@@ -60,6 +109,79 @@ export function validateYamlExercise(
       field: 'hints',
       message: 'hints must have at least 1 item'
     });
+  }
+
+  // Tags validation (canonical registry + aliases)
+  if (exercise.tags) {
+    for (const tag of exercise.tags) {
+      if (TAG_ALIASES[tag]) {
+        errors.push({
+          file,
+          slug,
+          field: 'tags',
+          message: `tag "${tag}" is legacy; use "${TAG_ALIASES[tag]}"`,
+        });
+        continue;
+      }
+      if (!TAG_REGISTRY.has(tag)) {
+        errors.push({
+          file,
+          slug,
+          field: 'tags',
+          message: `unknown tag "${tag}"`,
+        });
+      }
+    }
+  }
+
+  // Prereq validation (canonical subconcepts or concepts only)
+  if (exercise.prereqs) {
+    for (const prereq of exercise.prereqs) {
+      const normalized = normalizeLegacyPrereq(prereq);
+      if (normalized) {
+        errors.push({
+          file,
+          slug,
+          field: 'prereqs',
+          message: `prereq "${prereq}" is legacy; use "${normalized}"`,
+        });
+        continue;
+      }
+
+      if (!conceptSlugs.has(prereq) && !subconceptSlugs.has(prereq)) {
+        errors.push({
+          file,
+          slug,
+          field: 'prereqs',
+          message: `unknown prereq "${prereq}"`,
+        });
+      }
+    }
+  }
+
+  // Targets validation (canonical subconcepts or concepts only)
+  if (exercise.targets) {
+    for (const target of exercise.targets) {
+      const normalized = normalizeLegacyPrereq(target);
+      if (normalized) {
+        errors.push({
+          file,
+          slug,
+          field: 'targets',
+          message: `target "${target}" is legacy; use "${normalized}"`,
+        });
+        continue;
+      }
+
+      if (!conceptSlugs.has(target) && !subconceptSlugs.has(target)) {
+        errors.push({
+          file,
+          slug,
+          field: 'targets',
+          message: `unknown target "${target}"`,
+        });
+      }
+    }
   }
 
   // Validate accepted_solutions if present
@@ -85,6 +207,18 @@ export function validateYamlExercise(
     }
   }
 
+  // Require accepted_solutions for write exercises
+  if (exercise.type === 'write') {
+    if (!exercise.accepted_solutions || exercise.accepted_solutions.length === 0) {
+      errors.push({
+        file,
+        slug,
+        field: 'accepted_solutions',
+        message: 'write exercises must include accepted_solutions',
+      });
+    }
+  }
+
   // Type-specific field validation
   if (exercise.type === 'predict' && !exercise.code) {
     errors.push({
@@ -92,6 +226,15 @@ export function validateYamlExercise(
       slug,
       field: 'code',
       message: "predict type requires 'code' field",
+    });
+  }
+
+  if (exercise.type === 'predict' && !exercise.grading_strategy) {
+    errors.push({
+      file,
+      slug,
+      field: 'grading_strategy',
+      message: 'predict exercises must include grading_strategy',
     });
   }
 

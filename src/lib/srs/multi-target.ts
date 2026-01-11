@@ -1,9 +1,9 @@
 // src/lib/srs/multi-target.ts
-// Multi-subconcept credit/penalty logic for integrated exercises
+// Multi-subconcept credit/penalty logic for exercises with targets
 
 /**
  * Get subconcepts to credit on success.
- * For integrated exercises with targets: credit all targets.
+ * For exercises with targets: credit all targets.
  * Otherwise: credit primary subconcept.
  */
 export function getTargetsToCredit(

@@ -20,7 +20,7 @@ describe('Path Loader', () => {
       expect(blueprints.length).toBeGreaterThanOrEqual(1);
       const cliApp = blueprints.find(b => b.id === 'collection-cli-app');
       expect(cliApp).toBeDefined();
-      expect(cliApp?.beats.length).toBe(20);
+      expect(cliApp?.beats.length).toBe(23);
     });
 
     it('validates blueprint structure', async () => {

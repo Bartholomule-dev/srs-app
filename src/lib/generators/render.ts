@@ -4,8 +4,10 @@
 import Mustache from 'mustache';
 import { createSeed, hashString } from './seed';
 import { getGenerator } from './index';
+import { tinyStoreDataPack } from './tinystore-data';
 import type { RenderedExerciseMetadata, VariantMap } from './types';
 import type { Skin, SkinVars, SkinDataPack } from '@/lib/paths/types';
+import type { ExerciseType } from '@/lib/curriculum/types';
 
 // Disable Mustache's HTML escaping (we're not rendering to HTML)
 Mustache.escape = (text: string) => text;
@@ -46,6 +48,8 @@ export interface RenderableExercise {
   prompt: string;
   expectedAnswer: string;
   acceptedSolutions: string[];
+  type?: ExerciseType;
+  exerciseType?: ExerciseType;
   generator?: string | null;
   code?: string | null;
   template?: string | null;
@@ -116,10 +120,14 @@ export function renderExercise<T extends RenderableExercise>(
 ): RenderedExercise<T> {
   // Derive additional skin vars (like item_example from item_examples)
   const derivedSkinVars = skinVars ? deriveSkinVars(skinVars, exercise.slug) : undefined;
+  const exerciseType = exercise.type ?? exercise.exerciseType;
+  const defaultDataPack =
+    !skinDataPack && exerciseType === 'predict' ? tinyStoreDataPack : undefined;
+  const effectiveDataPack = skinDataPack ?? defaultDataPack;
 
   // Merge skin vars with data pack (skinVars take precedence over dataPack)
-  const skinContext = skinDataPack
-    ? { ...skinDataPack, ...derivedSkinVars }
+  const skinContext = effectiveDataPack
+    ? { ...effectiveDataPack, ...derivedSkinVars }
     : derivedSkinVars;
 
   // Static exercises with no skinContext pass through unchanged

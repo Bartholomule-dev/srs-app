@@ -113,3 +113,6 @@ contexts:
   elif-grade: "Handle different operations (+, -, *, /)."
   match-case-basic: "Match on the operation type."
   elif-http-status: "Handle different calculator modes."
+  error-handling-conversion: "Use this step in the Calculator App workflow: Safe Type Conversion."
+  number-round-format: "Use this step in the Calculator App workflow: Round and Format."
+  parse-quantity-safe: "Use this step in the Calculator App workflow: Parse Quantity Safely."

@@ -41,8 +41,6 @@ beats:
   - beat: 5
     exercise: active-users-integrated
     title: "Filter active users"
-    sideQuests:
-      - error-code-extractor-integrated
 
   # ============================================
   # Act 2: Dict & Set Comprehensions (Beats 6-9)
@@ -98,3 +96,22 @@ beats:
   - beat: 13
     exercise: generator-fibonacci
     title: "Infinite sequences"
+
+  # ============================================
+  # Act 4: Integrated Capstone (Beats 14-17)
+  # ============================================
+  - beat: 14
+    exercise: list-dedup-preserve-order
+    title: "Deduplicate List (Order-Preserving)"
+
+  - beat: 15
+    exercise: dict-from-parallel-lists
+    title: "Dict from Two Lists"
+
+  - beat: 16
+    exercise: loop-nested-flatten
+    title: "Flatten Nested List"
+
+  - beat: 17
+    exercise: inventory-dict-comp
+    title: "Inventory Dict Comprehension"

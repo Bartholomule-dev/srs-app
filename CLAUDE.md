@@ -37,7 +37,7 @@
 
 A gamified web platform for practicing code syntax through spaced repetition. Target users are AI-assisted developers who want to maintain their programming fundamentals.
 
-**Current Status:** Blueprint + Skin System Complete - Presentation layer wraps atomic exercises in narrative context through 15 blueprints (234 beats total) and 22 skins. 529 exercises (109 dynamic with 38 generators). Phase 3 Gamification complete. Next: Onboarding flow, then JavaScript/TypeScript exercises.
+**Current Status:** Blueprint + Skin System Complete - Presentation layer wraps atomic exercises in narrative context through 15 blueprints (234 beats total) and 22 skins. 524 exercises (109 dynamic with 38 generators). 3-level progression (intro → practice → edge). Phase 3 Gamification complete. Next: Onboarding flow, then JavaScript/TypeScript exercises.
 
 ---
 
@@ -374,7 +374,7 @@ Full tool list: run `mcp__daem0nmcp__health` or see Daem0n docs.
 
 ## Exercise Content Management
 
-**Source of Truth:** `exercises/python/*.yaml` files (529 exercises across 11 files)
+**Source of Truth:** `exercises/python/*.yaml` files (524 exercises across 11 files)
 
 **Workflow for adding/modifying exercises:**
 1. Edit the appropriate YAML file in `exercises/python/`
@@ -421,16 +421,15 @@ RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UU
 |-------|-------------|
 | `concept` | Primary milestone (e.g., `conditionals`, `functions`) |
 | `subconcept` | Specific skill (e.g., `for`, `enumerate`, `lambda`) |
-| `level` | `intro` → `practice` → `edge` → `integrated` |
+| `level` | `intro` → `practice` → `edge` |
 | `type` | `write`, `fill-in`, or `predict` |
 | `objective` | Learning target, 10-150 chars starting with verb |
-| `targets` | Subconcepts tested (required for `integrated` level) |
 
 **Curriculum:** `src/lib/curriculum/python.json` - 11 concepts, 65 subconcepts (DAG structure)
 
-**Exercise Levels:** intro (206), practice (238), edge (53), integrated (32)
+**Exercise Levels:** intro (207), practice (237), edge (80)
 
-**Algorithm Features:** Anti-repeat pattern selection, multi-subconcept SRS credit for integrated exercises
+**Algorithm Features:** Anti-repeat pattern selection, level-based progression
 
 ---
 

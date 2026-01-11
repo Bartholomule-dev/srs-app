@@ -1707,9 +1707,8 @@ exercises:
     difficulty: 3
     concept: collections
     subconcept: dicts
-    level: integrated
+    level: edge
     prereqs: [lists, tuples, dicts]
-    targets: [lists, tuples, dicts]
     type: write
     pattern: conversion
     prompt: |
@@ -1723,7 +1722,7 @@ exercises:
     hints:
       - dict() can take an iterable of (key, value) pairs
       - Alternatively, use a dict comprehension with unpacking
-    tags: [lists, tuples, dicts, conversion, integrated]
+    tags: [lists, tuples, dicts, conversion]
 
   - slug: list-dedup-preserve-order
     objective: Remove duplicates from a list while preserving original order
@@ -1731,9 +1730,8 @@ exercises:
     difficulty: 3
     concept: collections
     subconcept: lists
-    level: integrated
+    level: edge
     prereqs: [lists, sets, dicts]
-    targets: [lists, sets]
     type: write
     pattern: transformation
     prompt: |
@@ -1746,7 +1744,7 @@ exercises:
     hints:
       - "dict.fromkeys() creates a dict with items as keys (preserves order in Python 3.7+)"
       - "Converting back to list gives you unique items in original order"
-    tags: [lists, sets, dicts, deduplication, integrated]
+    tags: [lists, sets, dicts, deduplication]
 
   - slug: dict-from-parallel-lists
     objective: Create a dictionary by zipping two parallel lists together
@@ -1754,9 +1752,8 @@ exercises:
     difficulty: 3
     concept: collections
     subconcept: dicts
-    level: integrated
+    level: edge
     prereqs: [lists, dicts, unpacking]
-    targets: [lists, dicts, unpacking]
     type: write
     pattern: construction
     prompt: |
@@ -1769,7 +1766,7 @@ exercises:
     hints:
       - zip() pairs corresponding elements from each list
       - dict() accepts an iterable of (key, value) tuples
-    tags: [lists, dicts, zip, construction, integrated]
+    tags: [lists, dicts, zip, construction]
 
   - slug: sort-dict-by-value
     objective: Sort dictionary items by their values in descending order
@@ -1777,9 +1774,8 @@ exercises:
     difficulty: 3
     concept: collections
     subconcept: dict-iteration
-    level: integrated
+    level: edge
     prereqs: [dicts, tuples, dict-iteration]
-    targets: [dicts, tuples, dict-iteration]
     type: write
     pattern: transformation
     prompt: |
@@ -1795,7 +1791,7 @@ exercises:
       - ".items() returns (key, value) tuples"
       - "Use lambda x: x[1] to sort by the value (second element)"
       - "reverse=True for descending order"
-    tags: [dicts, sorting, lambda, tuples, integrated]
+    tags: [dicts, sorting, lambda, tuples]
 
   - slug: filter-list-of-dicts
     objective: Filter a list of dictionaries by a condition on dict values
@@ -1803,9 +1799,8 @@ exercises:
     difficulty: 3
     concept: collections
     subconcept: lists
-    level: integrated
+    level: edge
     prereqs: [lists, dicts, comprehensions.list-comp]
-    targets: [lists, dicts]
     type: write
     pattern: filtering
     prompt: |
@@ -1823,6 +1818,6 @@ exercises:
       - Use a list comprehension with an if clause
       - Access the dict value with ["key"] syntax
       - The boolean value can be checked directly without == True
-    tags: [lists, dicts, comprehensions, filtering, integrated]
+    tags: [lists, dicts, comprehensions, filtering]
 
   # --- Debug Exercises (Pitfall Subconcepts) ---

@@ -3,6 +3,7 @@
 
 import type { Generator, GeneratorParams } from '../types';
 import { seededRandom } from '../utils';
+import { tinyStoreLexicon } from '../tinystore-data';
 
 /**
  * String slicing scenarios with computed results
@@ -14,23 +15,7 @@ interface SliceScenario {
   generateSliceExpr: (start: number, end: number, step: number, length: number) => string;
 }
 
-const WORDS = [
-  'python',
-  'coding',
-  'string',
-  'method',
-  'syntax',
-  'module',
-  'lambda',
-  'object',
-  'branch',
-  'global',
-  'return',
-  'except',
-  'import',
-  'assert',
-  'define',
-];
+const WORDS = tinyStoreLexicon.sliceWords;
 
 const SCENARIOS: SliceScenario[] = [
   {

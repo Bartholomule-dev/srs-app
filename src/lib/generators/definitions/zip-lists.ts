@@ -1,18 +1,21 @@
 import type { Generator, GeneratorParams } from '../types';
 import { seededRandom } from '../utils';
+import { tinyStoreLexicon } from '../tinystore-data';
+
+const PRODUCT_NAMES = tinyStoreLexicon.productNames;
 
 const SCENARIOS = [
   {
     name: 'equal_length',
     generate: (rng: ReturnType<typeof seededRandom>) => {
       const list1 = [rng.int(1, 10), rng.int(11, 20), rng.int(21, 30)];
-      const list2 = ['a', 'b', 'c'];
+      const list2 = rng.shuffle([...PRODUCT_NAMES]).slice(0, 3);
       const zipped = list1.map((v, i) => `(${v}, '${list2[i]}')`);
       return {
         list1: `[${list1.join(', ')}]`,
-        list2: "['a', 'b', 'c']",
+        list2: `[${list2.map((item) => `'${item}'`).join(', ')}]`,
         output: `[${zipped.join(', ')}]`,
-        code: `list(zip([${list1.join(', ')}], ['a', 'b', 'c']))`,
+        code: `list(zip([${list1.join(', ')}], [${list2.map((item) => `'${item}'`).join(', ')}]))`,
         description: 'zip pairs elements by position',
       };
     },
@@ -21,13 +24,13 @@ const SCENARIOS = [
     name: 'unequal_length',
     generate: (rng: ReturnType<typeof seededRandom>) => {
       const list1 = [rng.int(1, 10), rng.int(11, 20)];
-      const list2 = ['x', 'y', 'z'];
+      const list2 = rng.shuffle([...PRODUCT_NAMES]).slice(0, 3);
       const zipped = list1.map((v, i) => `(${v}, '${list2[i]}')`);
       return {
         list1: `[${list1.join(', ')}]`,
-        list2: "['x', 'y', 'z']",
+        list2: `[${list2.map((item) => `'${item}'`).join(', ')}]`,
         output: `[${zipped.join(', ')}]`,
-        code: `list(zip([${list1.join(', ')}], ['x', 'y', 'z']))`,
+        code: `list(zip([${list1.join(', ')}], [${list2.map((item) => `'${item}'`).join(', ')}]))`,
         description: 'zip stops at shortest list',
       };
     },

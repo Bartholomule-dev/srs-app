@@ -3,6 +3,7 @@
 
 import type { Generator, GeneratorParams } from '../types';
 import { seededRandom } from '../utils';
+import { tinyStoreLexicon } from '../tinystore-data';
 
 /**
  * oop-instance generator
@@ -15,23 +16,7 @@ import { seededRandom } from '../utils';
  * - age: [18, 65]
  */
 
-const PERSON_NAMES = [
-  'Alice',
-  'Bob',
-  'Charlie',
-  'Diana',
-  'Eve',
-  'Frank',
-  'Grace',
-  'Henry',
-  'Iris',
-  'Jack',
-  'Kate',
-  'Leo',
-  'Maya',
-  'Noah',
-  'Olivia',
-];
+const PERSON_NAMES = tinyStoreLexicon.customerNames;
 
 export const oopInstanceGenerator: Generator = {
   name: 'oop-instance',

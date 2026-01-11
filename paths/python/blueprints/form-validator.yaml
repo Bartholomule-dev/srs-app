@@ -92,3 +92,10 @@ beats:
       - if-bool-logic-dynamic
       - if-elif-chain-trace-dynamic
       - if-greater-dynamic
+
+  # ============================================
+  # Act 4: Integrated Capstone (Beat 12)
+  # ============================================
+  - beat: 12
+    exercise: conditional-early-return
+    title: "Guard Clause Pattern"

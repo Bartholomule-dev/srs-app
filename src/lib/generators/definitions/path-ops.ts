@@ -3,46 +3,17 @@
 
 import type { Generator, GeneratorParams } from '../types';
 import { seededRandom } from '../utils';
+import { tinyStoreLexicon } from '../tinystore-data';
 
 /**
  * Realistic directory and file names for premium exercises
  */
-const DIRECTORIES = [
-  'src',
-  'lib',
-  'tests',
-  'docs',
-  'config',
-  'data',
-  'scripts',
-  'utils',
-  'components',
-  'models',
-];
-
-const SUBDIRECTORIES = [
-  'api',
-  'auth',
-  'core',
-  'db',
-  'handlers',
-  'helpers',
-  'services',
-  'validators',
-];
-
-const FILE_NAMES = [
-  'main',
-  'index',
-  'config',
-  'utils',
-  'helpers',
-  'constants',
-  'types',
-  'schema',
-];
-
-const EXTENSIONS = ['.py', '.json', '.yaml', '.txt', '.md'];
+const DIRECTORIES = tinyStoreLexicon.pathDirs;
+const SUBDIRECTORIES = tinyStoreLexicon.pathSubdirs;
+const FILE_NAMES = tinyStoreLexicon.fileNames.map((name) => name.split('.')[0]);
+const EXTENSIONS = Array.from(
+  new Set(tinyStoreLexicon.fileNames.map((name) => name.slice(name.lastIndexOf('.'))))
+);
 
 /**
  * path-ops generator

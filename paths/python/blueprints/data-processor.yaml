@@ -4,7 +4,7 @@ id: data-processor
 title: "Build a Data Processor"
 description: "Build a log parsing and data cleaning pipeline that reads, transforms, and aggregates data"
 difficulty: intermediate
-concepts: [strings, loops, comprehensions, numbers-booleans, modules-files, error-handling]
+concepts: [strings, loops, comprehensions, numbers-booleans, modules-files, error-handling, collections, conditionals]
 
 beats:
   # Act 1: Setup - read file, string basics, split/strip
@@ -138,3 +138,34 @@ beats:
     sideQuests:
       - file-write-text
       - file-writelines
+
+  # ============================================
+  # Act 5: Integrated Capstone (Beats 19-25)
+  # ============================================
+  - beat: 19
+    exercise: number-stats-from-list
+    title: "List Statistics"
+
+  - beat: 20
+    exercise: boolean-all-check
+    title: "All Products Check"
+
+  - beat: 21
+    exercise: orders-total-accumulator
+    title: "Order Totals Summary"
+
+  - beat: 22
+    exercise: orders-parse-to-records
+    title: "Order Lines to Records"
+
+  - beat: 23
+    exercise: high-value-orders-comp
+    title: "High-Value Orders"
+
+  - beat: 24
+    exercise: error-code-extractor-integrated
+    title: "Error Code Extractor"
+
+  - beat: 25
+    exercise: export-orders-csv
+    title: "Export Orders CSV"

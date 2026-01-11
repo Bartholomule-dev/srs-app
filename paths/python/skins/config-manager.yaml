@@ -89,3 +89,7 @@ contexts:
   name-main-predict: "Predict __name__ value."
   main-guard-call-main: "Call main function."
   main-guard-with-definition: "Define and guard main."
+  error-handling-file-read: "Use this step in the Config Manager workflow: Safe File Read."
+  file-read-to-list: "Use this step in the Config Manager workflow: File Lines to List."
+  file-write-from-list: "Use this step in the Config Manager workflow: List to File."
+  parse-events-log: "Use this step in the Config Manager workflow: Parse Events Log."

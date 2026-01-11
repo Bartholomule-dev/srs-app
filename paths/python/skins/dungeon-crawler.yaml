@@ -50,3 +50,5 @@ dataPack:
     - "go north"
     - "take torch"
     - "use healing potion"
+  conditional-list-any: "Use this step in the Dungeon Crawler workflow: Any Product Matches."
+  fstring-from-dict: "Use this step in the Dungeon Crawler workflow: F-String from Dict."

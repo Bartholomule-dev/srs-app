@@ -379,11 +379,10 @@ exercises:
     difficulty: 2
     concept: foundations
     subconcept: io
-    level: integrated
+    level: edge
     prereqs: [io, operators]
     type: write
     pattern: input
-    targets: [io, conversion]
     prompt: 'Read input using the prompt "Enter count: ", convert it to an int, and store it in `{{item_singular}}_count`'
     expected_answer: '{{item_singular}}_count = int(input("Enter count: "))'
     accepted_solutions:

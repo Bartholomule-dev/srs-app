@@ -578,9 +578,8 @@ exercises:
     difficulty: 3
     concept: error-handling
     subconcept: try-except
-    level: integrated
+    level: edge
     prereqs: [try-except, modules-files.reading]
-    targets: [try-except, reading]
     type: write
     pattern: handling
     prompt: |
@@ -609,7 +608,7 @@ exercises:
       - "Use with statement for safe file handling"
       - "Catch FileNotFoundError specifically"
       - "Provide a fallback value in the except block"
-    tags: [exceptions, files, integrated]
+    tags: [exceptions, files]
 
   - slug: error-handling-dict-access
     objective: Safely access dictionary keys with exception handling
@@ -617,9 +616,8 @@ exercises:
     difficulty: 3
     concept: error-handling
     subconcept: try-except
-    level: integrated
+    level: edge
     prereqs: [try-except, dicts]
-    targets: [try-except, dicts]
     type: write
     pattern: handling
     prompt: |
@@ -645,7 +643,7 @@ exercises:
       - "KeyError is raised when a key doesn't exist"
       - "Provide a default value in the except block"
       - "Alternatively, use .get() method for simpler cases"
-    tags: [exceptions, dicts, integrated]
+    tags: [exceptions, dicts]
 
   - slug: error-handling-conversion
     objective: Handle type conversion errors with proper fallback
@@ -653,9 +651,8 @@ exercises:
     difficulty: 3
     concept: error-handling
     subconcept: try-except
-    level: integrated
+    level: edge
     prereqs: [try-except, foundations.conversion]
-    targets: [try-except, conversion]
     type: write
     pattern: handling
     prompt: |
@@ -675,6 +672,6 @@ exercises:
     hints:
       - "int() raises ValueError for non-numeric strings"
       - "Provide a sensible default in the except block"
-    tags: [exceptions, conversion, integrated]
+    tags: [exceptions, conversion]
 
   # --- Trade-off Exercises (Senior-Level Decision Making) ---

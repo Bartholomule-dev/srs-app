@@ -3,6 +3,7 @@ import Ajv from 'ajv';
 import { existsSync, readFileSync, readdirSync } from 'fs';
 import { parse } from 'yaml';
 import { join } from 'path';
+import { validateYamlFile } from '../src/lib/exercise/yaml-validation';
 
 const ajv = new Ajv({ allErrors: true });
 
@@ -48,6 +49,16 @@ function validateExercises() {
       hasErrors = true;
     } else {
       console.log(`✓ ${file}`);
+    }
+
+    const semanticResult = validateYamlFile(data, file);
+    if (!semanticResult.valid) {
+      console.error(`\n❌ ${file}: semantic validation`);
+      semanticResult.errors.forEach(err => {
+        const slugLabel = err.slug ? ` (${err.slug})` : '';
+        console.error(`  ${err.field}${slugLabel}: ${err.message}`);
+      });
+      hasErrors = true;
     }
 
     // Check for duplicate slugs and type-specific fields

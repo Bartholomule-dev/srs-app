@@ -17,14 +17,14 @@ export function createMockExercise(overrides: Partial<Exercise> = {}): Exercise 
     acceptedSolutions: [],
     hints: ['Hint 1'],
     explanation: null,
-    tags: ['test'],
+    tags: [],
     timesPracticed: 0,
     avgSuccessRate: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     // Taxonomy fields (Phase 2)
     concept: 'foundations',
-    subconcept: 'basics',
+    subconcept: 'variables',
     level: 'intro',
     prereqs: [],
     exerciseType: 'write',
@@ -42,23 +42,26 @@ export function createMockExercise(overrides: Partial<Exercise> = {}): Exercise 
  * Create a mock YamlExercise with all required fields including taxonomy
  */
 export function createMockYamlExercise(overrides: Partial<YamlExercise> = {}): YamlExercise {
-  return {
+  const baseExercise: YamlExercise = {
     slug: 'test-exercise',
     title: 'Test Exercise',
     difficulty: 1,
     prompt: 'Test prompt',
     expected_answer: 'test answer',
     hints: ['Hint 1'],
-    tags: ['test'],
+    accepted_solutions: ['test answer'],
     // Taxonomy fields (Phase 2)
     concept: 'foundations',
-    subconcept: 'basics',
+    subconcept: 'variables',
     level: 'intro',
     prereqs: [],
     type: 'write',
     pattern: 'construction',
     // Phase 2.5 fields
     objective: 'Test objective',
+  };
+  return {
+    ...baseExercise,
     ...overrides,
   };
 }

@@ -23,6 +23,12 @@ interface SubconceptDefinition {
   name: string;
   prereqs: string[];
   teaching: SubconceptTeaching;
+  ladder?: {
+    intro: number;
+    practice: number;
+    edge: number;
+    integrated: number;
+  };
 }
 
 interface CurriculumGraph {
@@ -323,6 +329,47 @@ function validateCurriculum() {
   const targetIssues = issues.filter(i => i.type === 'MISSING_TARGETS' || i.type === 'INVALID_TARGET');
   console.log(`Issues: ${targetIssues.length}`);
   targetIssues.forEach(i => console.log(`  ✗ ${i.file}: ${i.slug} - ${i.message}`));
+  console.log('');
+
+  // === Check 10: Ladder coverage per subconcept ===
+  console.log('=== Check 10: Ladder Coverage ===');
+  for (const [subSlug, subDef] of Object.entries(curriculum.subconcepts)) {
+    const ladder = subDef.ladder;
+    if (!ladder) {
+      issues.push({
+        type: 'MISSING_LADDER',
+        file: 'python.json',
+        slug: subSlug,
+        message: 'Missing ladder specification for subconcept',
+      });
+      continue;
+    }
+
+    const subExercises = exercisesBySubconcept.get(subSlug) || [];
+    const counts = {
+      intro: subExercises.filter(e => e.level === 'intro').length,
+      practice: subExercises.filter(e => e.level === 'practice').length,
+      edge: subExercises.filter(e => e.level === 'edge').length,
+      integrated: subExercises.filter(e => e.level === 'integrated').length,
+    };
+
+    for (const level of Object.keys(ladder) as Array<keyof typeof ladder>) {
+      if (counts[level] < ladder[level]) {
+        issues.push({
+          type: 'LADDER_GAP',
+          file: 'curriculum',
+          slug: subSlug,
+          message: `Missing ${level} exercises: ${counts[level]}/${ladder[level]}`,
+        });
+      }
+    }
+  }
+  const ladderIssues = issues.filter(i => i.type === 'MISSING_LADDER' || i.type === 'LADDER_GAP');
+  console.log(`Issues: ${ladderIssues.length}`);
+  ladderIssues.slice(0, 10).forEach(i => console.log(`  ✗ ${i.slug} - ${i.message}`));
+  if (ladderIssues.length > 10) {
+    console.log(`  (showing first 10 of ${ladderIssues.length})`);
+  }
   console.log('');
 
   // === Summary ===

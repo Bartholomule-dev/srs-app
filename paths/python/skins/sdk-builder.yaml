@@ -47,3 +47,6 @@ dataPack:
     - "https://api.example.com"
     - "Bearer sk-xxx123"
     - "application/json"
+  config-loader-integrated: "Use this step in the SDK Builder workflow: Safe JSON Config Loader."
+  health-check-dataclass-integrated: "Use this step in the SDK Builder workflow: Health Check with Logging."
+  import-json-parse: "Use this step in the SDK Builder workflow: JSON Parse."

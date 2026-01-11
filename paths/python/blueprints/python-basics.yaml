@@ -104,7 +104,6 @@ beats:
     title: "Get user input"
     sideQuests:
       - io-input-fill
-      - input-to-int
 
   - beat: 14
     exercise: print-fstring
@@ -131,3 +130,18 @@ beats:
       - import-datetime
       - import-multiple-basic
       - import-as-alias
+
+  # ============================================
+  # Act 5: Integrated Capstone (Beats 17-19)
+  # ============================================
+  - beat: 17
+    exercise: input-to-int
+    title: "Input to Integer"
+
+  - beat: 18
+    exercise: discount-tier-elif
+    title: "Discount Tier"
+
+  - beat: 19
+    exercise: order-status-ternary
+    title: "Paid Status Label"

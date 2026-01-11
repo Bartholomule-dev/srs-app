@@ -4,7 +4,7 @@ id: module-library
 title: "Build a Reusable Module"
 description: "Design a well-structured, reusable Python module with clean APIs, data models, and robust error handling"
 difficulty: advanced
-concepts: [modules-files, functions, oop, error-handling]
+concepts: [modules-files, functions, oop, error-handling, collections, strings]
 
 beats:
   # Act 1: Module Setup - imports, main guard, file handling
@@ -89,3 +89,18 @@ beats:
       - except-specific
       - finally-basic
       - reraise
+
+  # ============================================
+  # Act 5: Integrated Capstone (Beats 13-15)
+  # ============================================
+  - beat: 13
+    exercise: config-loader-integrated
+    title: "Safe JSON Config Loader"
+
+  - beat: 14
+    exercise: import-json-parse
+    title: "JSON Parse"
+
+  - beat: 15
+    exercise: health-check-dataclass-integrated
+    title: "Health Check with Logging"
