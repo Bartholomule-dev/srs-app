@@ -26,6 +26,8 @@
     "validate:curriculum": "npx tsx scripts/validate-curriculum.ts",
     "validate:dynamic": "npx tsx scripts/validate-dynamic-exercises.ts",
     "validate:paths": "npx tsx scripts/validate-paths.ts",
+    "validate:paths:js": "npx tsx scripts/validate-paths.ts --language=javascript",
+    "validate:paths:all": "pnpm validate:paths && pnpm validate:paths:js",
     "validate:strategies": "npx tsx scripts/validate-strategies.ts",
     "validate:templates": "npx tsx scripts/validate-templates.ts",
     "coverage:blueprints": "npx tsx scripts/blueprint-coverage.ts",

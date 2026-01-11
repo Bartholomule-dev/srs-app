@@ -1,11 +1,22 @@
 // scripts/validate-paths.ts
 // Validates blueprint and skin YAML files for the path system
-import { readdir, readFile } from 'fs/promises';
+import { readdir, readFile, access } from 'fs/promises';
 import { join } from 'path';
+import { parseArgs } from 'util';
 import yaml from 'js-yaml';
 import { loadBlueprints, loadSkins } from '../src/lib/paths/loader';
 
-const EXERCISES_DIR = join(process.cwd(), 'exercises', 'python');
+// Parse command line arguments
+const { values } = parseArgs({
+  args: process.argv.slice(2),
+  options: {
+    language: { type: 'string', default: 'python' },
+  },
+});
+
+const language = values.language ?? 'python';
+const pathsDir = join(process.cwd(), 'paths', language);
+const exercisesDir = join(process.cwd(), 'exercises', language);
 
 interface ExerciseEntry {
   slug: string;
@@ -23,11 +34,12 @@ async function loadExerciseSlugs(): Promise<Set<string>> {
   const slugs = new Set<string>();
 
   try {
-    const files = await readdir(EXERCISES_DIR);
+    await access(exercisesDir);
+    const files = await readdir(exercisesDir);
     const yamlFiles = files.filter(f => f.endsWith('.yaml') || f.endsWith('.yml'));
 
     for (const file of yamlFiles) {
-      const content = await readFile(join(EXERCISES_DIR, file), 'utf-8');
+      const content = await readFile(join(exercisesDir, file), 'utf-8');
       const data = yaml.load(content) as ExerciseFile;
 
       if (data?.exercises && Array.isArray(data.exercises)) {
@@ -39,41 +51,52 @@ async function loadExerciseSlugs(): Promise<Set<string>> {
       }
     }
   } catch (err) {
-    console.warn('  ⚠ Could not load exercises for validation:', (err as Error).message);
+    console.warn(`  Warning: Could not load exercises for ${language}:`, (err as Error).message);
   }
 
   return slugs;
 }
 
 async function main() {
-  console.log('Validating paths...\n');
+  console.log(`Validating paths for language: ${language}\n`);
+
+  // Check if paths directory exists for this language
+  try {
+    await access(pathsDir);
+  } catch {
+    console.log(`Note: No paths directory found for '${language}' at ${pathsDir}`);
+    console.log('This is expected for languages without blueprints/skins yet.');
+    console.log('\n---');
+    console.log('Validation skipped (no paths to validate)');
+    process.exit(0);
+  }
 
   let errors = 0;
 
   try {
     // Load exercise slugs for validation
     const exerciseSlugs = await loadExerciseSlugs();
-    console.log(`✓ Loaded ${exerciseSlugs.size} exercise slugs for validation`);
+    console.log(`Loaded ${exerciseSlugs.size} exercise slugs for validation`);
 
     // Load and validate blueprints
-    const blueprints = await loadBlueprints();
-    console.log(`✓ Loaded ${blueprints.length} blueprints`);
+    const blueprints = await loadBlueprints(language);
+    console.log(`Loaded ${blueprints.length} blueprints`);
 
     for (const bp of blueprints) {
       // Check for required fields
       if (!bp.description) {
-        console.error(`  ✗ Blueprint ${bp.id}: missing description`);
+        console.error(`  Error: Blueprint ${bp.id}: missing description`);
         errors++;
       }
       if (bp.beats.length === 0) {
-        console.error(`  ✗ Blueprint ${bp.id}: no beats defined`);
+        console.error(`  Error: Blueprint ${bp.id}: no beats defined`);
         errors++;
       }
       // Check beat numbering (should be 1, 2, 3, ... with no gaps)
       const beats = bp.beats.map(b => b.beat).sort((a, b) => a - b);
       for (let i = 0; i < beats.length; i++) {
         if (beats[i] !== i + 1) {
-          console.error(`  ✗ Blueprint ${bp.id}: beat numbering gap at ${i + 1}`);
+          console.error(`  Error: Blueprint ${bp.id}: beat numbering gap at ${i + 1}`);
           errors++;
           break;
         }
@@ -83,20 +106,20 @@ async function main() {
       const uniqueSlugs = new Set(bpExerciseSlugs);
       if (uniqueSlugs.size !== bpExerciseSlugs.length) {
         const duplicates = bpExerciseSlugs.filter((slug, index) => bpExerciseSlugs.indexOf(slug) !== index);
-        console.error(`  ✗ Blueprint ${bp.id}: duplicate exercises: ${[...new Set(duplicates)].join(', ')}`);
+        console.error(`  Error: Blueprint ${bp.id}: duplicate exercises: ${[...new Set(duplicates)].join(', ')}`);
         errors++;
       }
       // Check that all exercises exist in exercise YAML files
       for (const beat of bp.beats) {
         if (!exerciseSlugs.has(beat.exercise)) {
-          console.error(`  ✗ Blueprint ${bp.id}: exercise '${beat.exercise}' (beat ${beat.beat}) not found in exercises/`);
+          console.error(`  Error: Blueprint ${bp.id}: exercise '${beat.exercise}' (beat ${beat.beat}) not found in exercises/`);
           errors++;
         }
         // Validate side-quest exercises exist
         if (beat.sideQuests) {
           for (const sideQuest of beat.sideQuests) {
             if (!exerciseSlugs.has(sideQuest)) {
-              console.error(`  ✗ Blueprint ${bp.id} beat ${beat.beat}: side-quest exercise '${sideQuest}' not found in exercises/`);
+              console.error(`  Error: Blueprint ${bp.id} beat ${beat.beat}: side-quest exercise '${sideQuest}' not found in exercises/`);
               errors++;
             }
           }
@@ -105,8 +128,8 @@ async function main() {
     }
 
     // Load and validate skins
-    const skins = await loadSkins();
-    console.log(`✓ Loaded ${skins.length} skins`);
+    const skins = await loadSkins(language);
+    console.log(`Loaded ${skins.length} skins`);
 
     // Extended structural variable validation
     const REQUIRED_STRUCTURAL_VARS = [
@@ -125,25 +148,25 @@ async function main() {
       for (const v of REQUIRED_STRUCTURAL_VARS) {
         const value = skin.vars[v];
         if (value === undefined || value === null || value === '') {
-          console.error(`  ✗ Skin ${skin.id}: missing structural var ${v}`);
+          console.error(`  Error: Skin ${skin.id}: missing structural var ${v}`);
           errors++;
         }
       }
 
       // Check array lengths
       if (!Array.isArray(skin.vars.item_examples) || skin.vars.item_examples.length < 3) {
-        console.error(`  ✗ Skin ${skin.id}: item_examples needs 3+ values`);
+        console.error(`  Error: Skin ${skin.id}: item_examples needs 3+ values`);
         errors++;
       }
       if (!Array.isArray(skin.vars.record_keys) || skin.vars.record_keys.length < 2) {
-        console.error(`  ✗ Skin ${skin.id}: record_keys needs 2+ values`);
+        console.error(`  Error: Skin ${skin.id}: record_keys needs 2+ values`);
         errors++;
       }
       // Check blueprint references (if skin is blueprint-restricted)
       if (skin.blueprints) {
         for (const bpId of skin.blueprints) {
           if (!blueprints.find(bp => bp.id === bpId)) {
-            console.error(`  ✗ Skin ${skin.id}: references unknown blueprint ${bpId}`);
+            console.error(`  Error: Skin ${skin.id}: references unknown blueprint ${bpId}`);
             errors++;
           }
         }
@@ -157,7 +180,7 @@ async function main() {
             );
           });
           if (!isInBlueprint) {
-            console.warn(`  ⚠ Skin ${skin.id}: context for '${exerciseSlug}' not in any linked blueprint`);
+            console.warn(`  Warning: Skin ${skin.id}: context for '${exerciseSlug}' not in any linked blueprint`);
           }
         }
       }
@@ -178,7 +201,7 @@ async function main() {
             placeholderCount++;
             // Only warn, don't error - we'll fix these incrementally
             if (placeholderCount <= 10) {
-              console.warn(`  ⚠ Skin ${skin.id}: placeholder context for '${exercise}'`);
+              console.warn(`  Warning: Skin ${skin.id}: placeholder context for '${exercise}'`);
             }
             break;
           }
@@ -186,19 +209,19 @@ async function main() {
       }
     }
     if (placeholderCount > 10) {
-      console.warn(`  ⚠ ... and ${placeholderCount - 10} more placeholder contexts`);
+      console.warn(`  Warning: ... and ${placeholderCount - 10} more placeholder contexts`);
     }
     if (placeholderCount > 0) {
-      console.warn(`  ⚠ Total: ${placeholderCount} placeholder contexts need real text`);
+      console.warn(`  Warning: Total: ${placeholderCount} placeholder contexts need real text`);
     }
 
     // Summary
     console.log('\n---');
     if (errors === 0) {
-      console.log('✓ All paths valid!');
+      console.log('All paths valid!');
       process.exit(0);
     } else {
-      console.error(`✗ Found ${errors} error(s)`);
+      console.error(`Found ${errors} error(s)`);
       process.exit(1);
     }
   } catch (err) {
