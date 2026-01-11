@@ -38,38 +38,50 @@ export interface Blueprint {
 }
 
 /**
- * Variable values provided by a skin for Mustache templating
+ * Variable values provided by a skin for Mustache templating.
+ *
+ * These map to TinyStore's canonical entities:
+ * - list_name → products/orders/customers collection
+ * - item_singular → product/order/customer
+ * - entity_name → Product/Order/Customer (class name)
+ * - record_keys → product_id, name, price / order_id, total, status
  */
 export interface SkinVars {
-  /** Variable name for the main collection (e.g., "tasks", "cart", "playlist") */
+  // === REQUIRED: Core collection variables ===
+
+  /** Collection variable name. TinyStore: products, orders, customers */
   list_name: string;
-  /** Singular form of item (e.g., "task", "item", "song") */
+  /** Singular item. TinyStore: product, order, customer */
   item_singular: string;
-  /** Plural form of item */
+  /** Plural items. TinyStore: products, orders, customers */
   item_plural: string;
-  /** Example item values for exercises */
+  /** Example item values for string exercises */
   item_examples: string[];
-  /** Keys for dict/record exercises */
+  /** Dict/record keys. TinyStore: ["product_id", "name", "price"] */
   record_keys: string[];
 
-  // Extended optional slots for broader exercise coverage
-  /** First attribute key (e.g., "power", "price") */
+  // === REQUIRED: Extended structural variables ===
+
+  /** Primary attribute key. TinyStore: price, total, rating */
   attr_key_1?: string;
-  /** Second attribute key (e.g., "rarity", "quantity") */
+  /** Secondary attribute key. TinyStore: quantity, status, tier */
   attr_key_2?: string;
-  /** ID variable name (e.g., "item_id", "task_id") */
+  /** ID field name. TinyStore: product_id, order_id, customer_id */
   id_var?: string;
+
+  // === OPTIONAL: Domain-specific variables ===
+
   /** Filename for file I/O exercises */
   filename?: string;
-  /** File type (e.g., "json", "csv", "txt") */
+  /** File type (json, csv, txt) */
   filetype?: string;
-  /** User role in the domain (e.g., "player", "admin", "user") */
+  /** User role in the domain (player, admin, chef) */
   user_role?: string;
-  /** Status variable name (e.g., "equipped", "completed", "active") */
+  /** Status variable name (equipped, completed, active) */
   status_var?: string;
-  /** Action verb for the domain (e.g., "equip", "complete", "add") */
+  /** Action verb for the domain (equip, complete, add) */
   action_verb?: string;
-  /** Entity name for OOP exercises (e.g., "Equipment", "Task", "Product") */
+  /** Entity class name for OOP (Equipment, Task, Product) */
   entity_name?: string;
 
   /** Allow additional custom variables */
