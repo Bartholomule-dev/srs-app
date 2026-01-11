@@ -111,6 +111,7 @@ src/
     ├── generators/       # Dynamic exercise generation (38 Python generators), language-scoped registry
     │   ├── python/       # Python generators (38 total)
     │   └── javascript/   # JavaScript generators (stub)
+    ├── runtime/          # Multi-language execution (LanguageRuntime interface, Pyodide, JS Worker)
     ├── paths/            # Blueprint + Skin system (types, loader, grouping, apply-skin)
     ├── stats/            # Stats queries, streak calculation
     ├── errors/           # AppError, handleSupabaseError
@@ -404,6 +405,70 @@ Full tool list: run `mcp__daem0nmcp__health` or see Daem0n docs.
 
 ---
 
+## Runtime System
+
+The app supports multiple programming languages through a language-agnostic runtime infrastructure for code execution and comparison.
+
+**Key Files:**
+```
+src/lib/runtime/
+├── types.ts              # LanguageRuntime interface, ExecutionResult type
+├── registry.ts           # RuntimeRegistry for managing runtime instances
+├── python-runtime.ts     # Python runtime (Pyodide WASM)
+├── javascript-runtime.ts # JavaScript runtime (Web Worker + Acorn)
+├── javascript-worker.ts  # Web Worker for sandboxed JS execution
+├── javascript-ast.ts     # Acorn-based AST comparison
+└── index.ts              # Barrel exports + getRuntimeForLanguage()
+```
+
+**Supported Languages:**
+| Language | Runtime | Execution | Token Compare | AST Compare |
+|----------|---------|-----------|---------------|-------------|
+| Python | Pyodide (WASM) | Worker | Pyodide tokenizer | Pyodide AST |
+| JavaScript | Web Worker | Sandboxed eval | Acorn tokenizer | Acorn AST |
+
+**LanguageRuntime Interface:**
+```typescript
+interface LanguageRuntime {
+  readonly language: Language;
+  initialize(): Promise<void>;
+  isReady(): boolean;
+  execute(code: string, timeoutMs?: number): Promise<ExecutionResult>;
+  tokenize(code: string): Promise<[number | string, string][] | null>;
+  compareByTokens(userAnswer: string, expectedAnswer: string, acceptedSolutions?: string[]): Promise<TokenCompareResult>;
+  compareByAst(userAnswer: string, expectedAnswer: string, acceptedSolutions?: string[], options?: AstCompareOptions): Promise<AstCompareResult>;
+  terminate(): void;
+}
+```
+
+**Main API:**
+```typescript
+import { getRuntimeForLanguage } from '@/lib/runtime';
+
+// Get runtime for a language (returns singleton or undefined if unsupported)
+const runtime = getRuntimeForLanguage('javascript');
+if (runtime) {
+  await runtime.initialize();
+  const result = await runtime.execute('console.log("hello")');
+  // result: { success: boolean, output: string | null, error: string | null }
+}
+```
+
+**Grading Integration:**
+The strategy router in `src/lib/exercise/strategy-router.ts` automatically selects the appropriate runtime based on `exercise.language`:
+- Python exercises use Pyodide (existing flow)
+- JavaScript exercises use the new JavaScriptRuntime
+- Unsupported languages fall back to exact string matching
+
+**Adding a New Language:**
+1. Create `src/lib/runtime/{language}-runtime.ts` implementing `LanguageRuntime`
+2. Implement `execute()`, `tokenize()`, `compareByTokens()`, `compareByAst()`
+3. Export singleton getter from `index.ts` (e.g., `getGoRuntime()`)
+4. Add case to `getRuntimeForLanguage()` switch statement
+5. Update strategy router if language-specific grading logic needed
+
+---
+
 ## Database (Implemented)
 
 See `Database-Schema.md` in Obsidian for full schema. Key tables:
@@ -532,9 +597,9 @@ paths/python/
 
 ---
 
-## Completed Milestones (32+)
+## Completed Milestones (33+)
 
-1. Database & Types | 2. Auth & Hooks | 3. SRS Engine | 4. Exercise Engine | 5. Practice Session | 6. Exercise Library | 7. Basic Stats | 8. MVP Deployment | 9. UI/UX Redesign | 10. Custom UI Components | 11. Theme System | 12. Phase 2.5 Curriculum Enhancement | 13. Learning Mode | 14. Phase 2.7 Exercise Variety | 15. Curriculum Restructure | 16. SM-2→FSRS Migration | 17. Dedicated Teaching Examples | 18-23. Dynamic Exercises (Phases 1-6) | 24. Exercise-List Auto-Gen | 25. Skill Tree Visualization | 26. Premium Curriculum Restructure | 27. Phase 3 Gamification | 28. Blueprint + Skin System | 29. Robust Answer Grading System (strategy-based grading, AST normalization, 5 failure modes fixed) | 30. Integrated Level Removal (simplified to intro→practice→edge) | 31. Structural Skin Mapping (TinyStore lexicon, 488 placeholder contexts replaced, 11 generators using TinyStore) | 32. **Multi-Language Infrastructure** (database schema, language-parameterized loaders, useActiveLanguage hook, LanguageSwitcher, SkillTree tabs, per-language stats)
+1. Database & Types | 2. Auth & Hooks | 3. SRS Engine | 4. Exercise Engine | 5. Practice Session | 6. Exercise Library | 7. Basic Stats | 8. MVP Deployment | 9. UI/UX Redesign | 10. Custom UI Components | 11. Theme System | 12. Phase 2.5 Curriculum Enhancement | 13. Learning Mode | 14. Phase 2.7 Exercise Variety | 15. Curriculum Restructure | 16. SM-2→FSRS Migration | 17. Dedicated Teaching Examples | 18-23. Dynamic Exercises (Phases 1-6) | 24. Exercise-List Auto-Gen | 25. Skill Tree Visualization | 26. Premium Curriculum Restructure | 27. Phase 3 Gamification | 28. Blueprint + Skin System | 29. Robust Answer Grading System (strategy-based grading, AST normalization, 5 failure modes fixed) | 30. Integrated Level Removal (simplified to intro→practice→edge) | 31. Structural Skin Mapping (TinyStore lexicon, 488 placeholder contexts replaced, 11 generators using TinyStore) | 32. Multi-Language Infrastructure (database schema, language-parameterized loaders, useActiveLanguage hook, LanguageSwitcher, SkillTree tabs, per-language stats) | 33. **Multi-Language Runtime System** (LanguageRuntime interface, RuntimeRegistry, PythonRuntime via Pyodide, JavaScriptRuntime via Web Worker + Acorn, language-agnostic grading)
 
 *Details in design docs: `docs/plans/`*
 
