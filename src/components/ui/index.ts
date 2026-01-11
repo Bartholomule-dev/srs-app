@@ -41,3 +41,6 @@ export type { CodeEditorProps } from './CodeEditor';
 export { FlameIcon } from './FlameIcon';
 
 export { FeatureErrorBoundary } from './FeatureErrorBoundary';
+
+export { LanguageBadge } from './LanguageBadge';
+export type { LanguageBadgeProps } from './LanguageBadge';
