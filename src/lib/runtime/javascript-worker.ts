@@ -118,6 +118,7 @@ self.onmessage = function(e) {
 export class JavaScriptWorkerManager {
   private worker: Worker | null = null;
   private ready = false;
+  private initPromise: Promise<void> | null = null; // Concurrency guard
   private pendingRequests = new Map<
     string,
     {
@@ -130,11 +131,34 @@ export class JavaScriptWorkerManager {
   /**
    * Initialize the worker.
    * Unlike Pyodide, JavaScript doesn't need heavy initialization.
+   *
+   * Concurrency-safe: Multiple calls before initialization completes
+   * will all wait for the same initialization Promise.
+   *
    * @param timeoutMs - Maximum time to wait for initialization (default: 5s)
    */
   async initialize(timeoutMs = 5000): Promise<void> {
+    // Already initialized
     if (this.ready) return;
 
+    // Initialization in progress - wait for it
+    if (this.initPromise) return this.initPromise;
+
+    // Start initialization and store the promise for concurrency safety
+    this.initPromise = this.doInitialize(timeoutMs);
+
+    try {
+      await this.initPromise;
+    } finally {
+      // Clear the promise on completion (success or failure)
+      this.initPromise = null;
+    }
+  }
+
+  /**
+   * Internal initialization logic.
+   */
+  private async doInitialize(timeoutMs: number): Promise<void> {
     // Create worker from Blob URL
     const blob = new Blob([WORKER_CODE], { type: 'application/javascript' });
     const workerUrl = URL.createObjectURL(blob);
@@ -149,6 +173,7 @@ export class JavaScriptWorkerManager {
 
     return new Promise((resolve, reject) => {
       const timeoutId = setTimeout(() => {
+        this.initPromise = null;
         reject(new Error('JavaScript worker initialization timeout'));
         this.terminate();
       }, timeoutMs);
@@ -170,6 +195,7 @@ export class JavaScriptWorkerManager {
 
       this.worker!.onerror = (error) => {
         clearTimeout(timeoutId);
+        this.initPromise = null;
         reject(new Error(`Worker error: ${error.message}`));
       };
 
@@ -269,26 +295,46 @@ export class JavaScriptWorkerManager {
   }
 
   /**
-   * Terminate the worker without cleanup (for timeout scenarios).
+   * Terminate the worker and resolve all pending requests with an error.
    * Worker will need to be reinitialized.
+   *
+   * @param excludeId - Optional request ID to exclude (already handled by caller)
    */
-  private terminateAndReset(): void {
+  private terminateAndReset(excludeId?: string): void {
+    // Resolve all pending requests with error before clearing
+    // This prevents callers from hanging indefinitely
+    for (const [id, pending] of this.pendingRequests) {
+      if (id !== excludeId) {
+        clearTimeout(pending.timeoutId);
+        pending.resolve({
+          success: false,
+          output: null,
+          error: 'Worker terminated due to timeout in another request',
+        });
+      }
+    }
+    this.pendingRequests.clear();
+
     if (this.worker) {
       this.worker.terminate();
       this.worker = null;
     }
     this.ready = false;
-    this.pendingRequests.clear();
+    this.initPromise = null;
   }
 
   /**
    * Cleanly terminate the worker.
    */
   terminate(): void {
-    // Reject all pending requests
+    // Resolve all pending requests with error
     for (const [id, pending] of this.pendingRequests) {
       clearTimeout(pending.timeoutId);
-      pending.reject(new Error('Worker terminated'));
+      pending.resolve({
+        success: false,
+        output: null,
+        error: 'Worker terminated',
+      });
       this.pendingRequests.delete(id);
     }
 

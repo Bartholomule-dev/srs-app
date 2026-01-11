@@ -56,15 +56,26 @@ export class JavaScriptRuntime implements LanguageRuntime {
 
   /**
    * Execute JavaScript code in an isolated Web Worker.
+   * Auto-initializes the runtime if not already initialized.
+   *
    * @param code - JavaScript code to execute
    * @param timeoutMs - Maximum execution time (default: 5s)
    */
   async execute(code: string, timeoutMs = 5000): Promise<ExecutionResult> {
-    if (!this.workerManager || !this.isReady()) {
-      return { success: false, output: null, error: 'Runtime not initialized' };
+    // Auto-initialize if not ready
+    if (!this.isReady()) {
+      try {
+        await this.initialize();
+      } catch (error) {
+        return {
+          success: false,
+          output: null,
+          error: `Runtime initialization failed: ${error instanceof Error ? error.message : String(error)}`,
+        };
+      }
     }
 
-    return this.workerManager.execute(code, timeoutMs);
+    return this.workerManager!.execute(code, timeoutMs);
   }
 
   /**

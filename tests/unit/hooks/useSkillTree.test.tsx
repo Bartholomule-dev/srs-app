@@ -271,10 +271,10 @@ describe('useSkillTree', () => {
         expect(result.current.loading).toBe(false);
       });
 
-      // JavaScript curriculum has 3 clusters (concepts)
-      expect(result.current.data?.clusters).toHaveLength(3);
-      // JavaScript has fewer subconcepts (9 total in the current curriculum)
-      expect(result.current.data?.totalSubconcepts).toBe(9);
+      // JavaScript curriculum has 13 clusters (concepts)
+      expect(result.current.data?.clusters).toHaveLength(13);
+      // JavaScript has 59 subconcepts in the current curriculum
+      expect(result.current.data?.totalSubconcepts).toBe(59);
     });
 
     it('filters progress by language in query', async () => {
@@ -339,7 +339,7 @@ describe('useSkillTree', () => {
       rerender({ lang: 'javascript' });
 
       await waitFor(() => {
-        expect(result.current.data?.clusters).toHaveLength(3);
+        expect(result.current.data?.clusters).toHaveLength(13);
       });
     });
   });

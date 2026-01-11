@@ -258,7 +258,8 @@ async function executeExecutionStrategy(
   }
 
   // For non-Python languages, use the runtime for execution
-  if (language !== 'python' && runtime && runtime.isReady()) {
+  // Note: runtime.execute() auto-initializes if needed
+  if (language !== 'python' && runtime) {
     return executeWithRuntime(runtime, userAnswer, exercise);
   }
 

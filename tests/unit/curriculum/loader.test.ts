@@ -29,7 +29,7 @@ describe('Curriculum Loader', () => {
       const curriculum = loadCurriculum('javascript');
 
       expect(curriculum.language).toBe('javascript');
-      expect(curriculum.version).toBe('1.0.0');
+      expect(curriculum.version).toBe('1.1.0');
       expect(curriculum.concepts.length).toBeGreaterThan(0);
     });
 
@@ -77,8 +77,8 @@ describe('Curriculum Loader', () => {
       const teaching = getSubconceptTeaching('for-of', 'javascript');
 
       expect(teaching).not.toBeNull();
-      expect(teaching?.explanation).toContain('for-of');
-      expect(teaching?.exampleCode).toContain('for (const item of array)');
+      expect(teaching?.explanation).toContain('iteration');
+      expect(teaching?.exampleCode).toContain('for (const item of');
     });
 
     it('returns null for unknown subconcept', () => {
@@ -118,7 +118,7 @@ describe('Curriculum Loader', () => {
 
       expect(definition).not.toBeNull();
       expect(definition?.name).toBe('For-Of Loops');
-      expect(definition?.concept).toBe('async');
+      expect(definition?.concept).toBe('loops');
       expect(definition?.teaching).toBeDefined();
     });
 
@@ -126,7 +126,7 @@ describe('Curriculum Loader', () => {
       const definition = getSubconceptDefinition('async-await', 'javascript');
 
       expect(definition).not.toBeNull();
-      expect(definition?.name).toBe('Async/Await');
+      expect(definition?.name).toBe('Async / Await');
       expect(definition?.concept).toBe('async');
       expect(definition?.prereqs).toContain('promises');
     });
@@ -167,7 +167,7 @@ describe('Curriculum Loader', () => {
 
       expect(subconcepts.length).toBeGreaterThan(5);
       expect(subconcepts).toContain('variables');
-      expect(subconcepts).toContain('constants');
+      expect(subconcepts).toContain('hoisting');
       expect(subconcepts).toContain('for-of');
       expect(subconcepts).toContain('async-await');
       expect(subconcepts).toContain('promises');
@@ -210,11 +210,12 @@ describe('Curriculum Loader', () => {
       const asyncConcept = concepts.find((c) => c.slug === 'async');
 
       expect(asyncConcept).toBeDefined();
-      expect(asyncConcept?.name).toBe('Asynchronous JavaScript');
+      expect(asyncConcept?.name).toBe('Async');
       expect(asyncConcept?.prereqs).toContain('functions');
+      expect(asyncConcept?.prereqs).toContain('error-handling');
       expect(asyncConcept?.subconcepts).toContain('promises');
       expect(asyncConcept?.subconcepts).toContain('async-await');
-      expect(asyncConcept?.subconcepts).toContain('for-of');
+      expect(asyncConcept?.subconcepts).toContain('async-patterns');
     });
   });
 });

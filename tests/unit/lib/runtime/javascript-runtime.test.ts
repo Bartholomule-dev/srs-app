@@ -69,13 +69,17 @@ describe('JavaScriptRuntime', () => {
   });
 
   describe('execute', () => {
-    it('should return error if runtime not initialized', async () => {
+    it('should auto-initialize if runtime not initialized', async () => {
+      const { getJavaScriptWorkerManager } = await import('@/lib/runtime/javascript-worker');
       const runtime = new JavaScriptRuntime();
 
+      // Don't call initialize() explicitly - execute should auto-initialize
       const result = await runtime.execute('console.log("hello")');
 
-      expect(result.success).toBe(false);
-      expect(result.error).toBe('Runtime not initialized');
+      // Should auto-initialize and succeed
+      expect(getJavaScriptWorkerManager).toHaveBeenCalled();
+      expect(result.success).toBe(true);
+      expect(result.output).toBe('test output');
     });
 
     it('should delegate execution to worker manager', async () => {

@@ -27,11 +27,12 @@ interface AcornTokenWithValue extends acorn.Token {
 export function tokenizeJavaScript(code: string): TokenTuple[] | null {
   try {
     // First validate that code parses successfully
+    // Use sourceType: 'module' to support import/export syntax
     acorn.parse(code, { ecmaVersion: 'latest', sourceType: 'module' });
 
-    // Then tokenize
+    // Then tokenize (also with sourceType: 'module' for consistency)
     const tokens: TokenTuple[] = [];
-    const tokenizer = acorn.tokenizer(code, { ecmaVersion: 'latest' });
+    const tokenizer = acorn.tokenizer(code, { ecmaVersion: 'latest', sourceType: 'module' });
 
     for (const token of tokenizer) {
       // Cast to our extended type that includes value
@@ -104,8 +105,10 @@ function astMatch(a: unknown, b: unknown, _options: AstCompareOptions): boolean 
   const aObj = a as Record<string, unknown>;
   const bObj = b as Record<string, unknown>;
 
-  // Skip position properties that don't affect semantics
-  const skip = new Set(['start', 'end', 'loc', 'range']);
+  // Skip properties that don't affect semantics:
+  // - start, end, loc, range: position info
+  // - raw: original source text (e.g., "a" vs 'a', 1 vs 1.0)
+  const skip = new Set(['start', 'end', 'loc', 'range', 'raw']);
 
   const aKeys = Object.keys(aObj).filter((k) => !skip.has(k));
   const bKeys = Object.keys(bObj).filter((k) => !skip.has(k));
