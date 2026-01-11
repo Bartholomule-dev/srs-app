@@ -1,6 +1,6 @@
 // tests/component/layout/LandingHeader.test.tsx
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { LandingHeader } from '@/components/layout/LandingHeader';
 
 describe('LandingHeader', () => {
@@ -38,7 +38,11 @@ describe('LandingHeader', () => {
     expect(header).toHaveClass('backdrop-blur-lg');
   });
 
-  it('scrolls to auth form when buttons clicked', () => {
+  it('dispatches showAuthForm event and scrolls to auth form when buttons clicked', async () => {
+    // Track custom event dispatch
+    const eventHandler = vi.fn();
+    window.addEventListener('showAuthForm', eventHandler);
+
     // Create a mock email input
     const mockInput = document.createElement('input');
     mockInput.type = 'email';
@@ -51,10 +55,18 @@ describe('LandingHeader', () => {
     const signInButton = screen.getByRole('button', { name: /sign in/i });
     fireEvent.click(signInButton);
 
-    expect(mockInput.focus).toHaveBeenCalled();
+    // Verify the custom event is dispatched immediately
+    expect(eventHandler).toHaveBeenCalled();
+
+    // Wait for the setTimeout(100ms) to execute focus/scroll
+    await waitFor(() => {
+      expect(mockInput.focus).toHaveBeenCalled();
+    }, { timeout: 200 });
+
     expect(mockInput.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'center' });
 
     // Clean up
     document.body.removeChild(mockInput);
+    window.removeEventListener('showAuthForm', eventHandler);
   });
 });

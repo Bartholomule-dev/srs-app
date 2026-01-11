@@ -13,6 +13,13 @@ export function Hero() {
     document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
+  // Listen for header button clicks to show auth form
+  useEffect(() => {
+    const handleShowAuthForm = () => setShowAuthForm(true);
+    window.addEventListener('showAuthForm', handleShowAuthForm);
+    return () => window.removeEventListener('showAuthForm', handleShowAuthForm);
+  }, []);
+
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden">
       {/* Aurora gradient background */}

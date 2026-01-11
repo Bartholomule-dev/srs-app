@@ -36,6 +36,7 @@ export interface AttemptRecord {
   hint_used: boolean;
   quality_score: number;
   attempted_at: string;
+  is_correct: boolean;
 }
 
 /**
@@ -60,6 +61,7 @@ export function buildAttemptRecord(data: AttemptLogData): AttemptRecord {
     hint_used: data.hintUsed,
     quality_score: data.qualityScore,
     attempted_at: now,
+    is_correct: data.gradingResult.isCorrect,
   };
 }
 
@@ -74,12 +76,13 @@ export async function logExerciseAttempt(data: AttemptLogData): Promise<void> {
   const record = buildAttemptRecord(data);
 
   // First, try to get existing record
+  // Using maybeSingle() to avoid 406 error when no record exists
   const { data: existing } = await supabase
     .from('exercise_attempts')
     .select('times_seen, times_correct')
     .eq('user_id', data.userId)
     .eq('exercise_slug', data.exerciseSlug)
-    .single();
+    .maybeSingle();
 
   if (existing) {
     // Update existing record
@@ -98,6 +101,7 @@ export async function logExerciseAttempt(data: AttemptLogData): Promise<void> {
         hint_used: record.hint_used,
         quality_score: record.quality_score,
         attempted_at: record.attempted_at,
+        is_correct: record.is_correct,
       })
       .eq('user_id', data.userId)
       .eq('exercise_slug', data.exerciseSlug);

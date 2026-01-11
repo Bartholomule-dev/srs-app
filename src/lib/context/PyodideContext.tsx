@@ -76,8 +76,25 @@ export function PyodideProvider({ children }: PyodideProviderProps) {
 
     loadPromiseRef.current = (async () => {
       try {
-        // Dynamic import to avoid loading Pyodide until needed
-        const { loadPyodide: loadPyodideFromCDN } = await import('pyodide');
+        // Load Pyodide from CDN via script injection (avoids webpack bundling issues)
+        // Check if loadPyodide is already available globally
+        if (typeof window !== 'undefined' && !(window as unknown as { loadPyodide?: unknown }).loadPyodide) {
+          await new Promise<void>((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = `${PYODIDE_CDN_URL}pyodide.js`;
+            script.async = true;
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error('Failed to load Pyodide script'));
+            document.head.appendChild(script);
+          });
+        }
+
+        // Access loadPyodide from global scope
+        const loadPyodideFromCDN = (window as unknown as { loadPyodide: (config: { indexURL: string }) => Promise<PyodideInterface> }).loadPyodide;
+
+        if (!loadPyodideFromCDN) {
+          throw new Error('loadPyodide not available after script load');
+        }
 
         const instance = await loadPyodideFromCDN({
           indexURL: PYODIDE_CDN_URL,

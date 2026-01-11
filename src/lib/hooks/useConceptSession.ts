@@ -130,6 +130,8 @@ export function useConceptSession(): UseConceptSessionReturn {
   const [error, setError] = useState<AppError | null>(null);
   const [fetchKey, setFetchKey] = useState(0);
   const [forceComplete, setForceComplete] = useState(false);
+  // Track whether profile stats have been persisted (prevents double-update)
+  const [statsPersisted, setStatsPersisted] = useState(false);
   // Track whether session has been initialized (prevents rebuilding on dueSubconcepts changes)
   const [sessionInitialized, setSessionInitialized] = useState(false);
   // Track whether exercises have been fetched (to distinguish "loading" from "empty")
@@ -699,6 +701,29 @@ export function useConceptSession(): UseConceptSessionReturn {
     [cards, currentIndex, stats.completed, stats.total, cardProgressMap, recordSubconceptResult, showToast, user, cardStartTime]
   );
 
+  // Persist profile stats (called once when session ends)
+  const persistProfileStats = useCallback(async () => {
+    if (statsPersisted || stats.completed === 0 || !user) return;
+
+    setStatsPersisted(true);
+    try {
+      await updateProfileStats({
+        userId: user.id,
+        exercisesCompleted: stats.completed,
+        lastPracticed: new Date(),
+      });
+    } catch {
+      showToast({ title: 'Failed to update stats', variant: 'error' });
+    }
+  }, [statsPersisted, stats.completed, user, showToast]);
+
+  // Auto-persist stats when session completes naturally
+  useEffect(() => {
+    if (isComplete && !statsPersisted && stats.completed > 0 && user) {
+      persistProfileStats();
+    }
+  }, [isComplete, statsPersisted, stats.completed, user, persistProfileStats]);
+
   const endSession = useCallback(async () => {
     setForceComplete(true);
     setStats((prev) => ({
@@ -706,25 +731,17 @@ export function useConceptSession(): UseConceptSessionReturn {
       endTime: new Date(),
     }));
 
-    // Update profile stats if any cards were completed
-    if (stats.completed > 0 && user) {
-      try {
-        await updateProfileStats({
-          userId: user.id,
-          exercisesCompleted: stats.completed,
-          lastPracticed: new Date(),
-        });
-      } catch {
-        showToast({ title: 'Failed to update stats', variant: 'error' });
-      }
-    }
-  }, [stats.completed, user, showToast]);
+    // Persist stats if not already done
+    await persistProfileStats();
+  }, [persistProfileStats]);
 
   const retry = useCallback(() => {
     setSessionInitialized(false); // Allow session to rebuild
     setExercisesFetched(false); // Reset exercises fetch state
     setSessionTypeHistory([]); // Reset type history for new session
     setSkinnedCards(new Map()); // Clear skinned cards for new session
+    setStatsPersisted(false); // Allow stats to be persisted for new session
+    setForceComplete(false); // Reset completion state
     setError(null); // Clear any previous error
     setLoading(true); // Reset loading state
     setFetchKey((k) => k + 1);

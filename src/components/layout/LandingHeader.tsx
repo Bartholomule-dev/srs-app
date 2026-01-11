@@ -5,11 +5,17 @@ import { Button } from '@/components/ui';
 
 export function LandingHeader() {
   const scrollToAuthForm = () => {
-    const emailInput = document.querySelector('input[type="email"]') as HTMLInputElement | null;
-    if (emailInput) {
-      emailInput.focus();
-      emailInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+    // Dispatch event to show auth form in Hero component
+    window.dispatchEvent(new CustomEvent('showAuthForm'));
+
+    // Wait for auth form to render, then focus
+    setTimeout(() => {
+      const emailInput = document.querySelector('input[type="email"]') as HTMLInputElement | null;
+      if (emailInput) {
+        emailInput.focus();
+        emailInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
   };
 
   return (

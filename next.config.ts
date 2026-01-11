@@ -41,18 +41,18 @@ const securityHeaders = [
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      // Scripts: self + Pyodide CDN + unsafe-eval for Pyodide Python execution
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net",
+      // Scripts: self + Pyodide CDN + unsafe-eval for Pyodide Python execution + Vercel analytics
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://va.vercel-scripts.com",
       // Styles: self + unsafe-inline for Framer Motion and Tailwind
       "style-src 'self' 'unsafe-inline'",
       // Images: self + data URIs + Supabase storage
       "img-src 'self' data: blob: https://*.supabase.co",
       // Fonts: self
       "font-src 'self'",
-      // Connect: self + Supabase APIs + Pyodide CDN
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net",
+      // Connect: self + Supabase APIs + Pyodide CDN + Vercel analytics
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net https://va.vercel-scripts.com https://vitals.vercel-insights.com",
       // WebAssembly for Pyodide
-      "script-src-elem 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
+      "script-src-elem 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://va.vercel-scripts.com",
       // Workers for potential future Pyodide isolation
       "worker-src 'self' blob:",
       // Frame ancestors - prevent clickjacking
