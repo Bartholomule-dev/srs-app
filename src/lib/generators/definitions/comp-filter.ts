@@ -104,7 +104,8 @@ export const compFilterGenerator: Generator = {
       if (!Array.isArray(items) || items.length !== n) {
         return false;
       }
-      for (const item of items) {
+      const itemsArr = items as string[];
+      for (const item of itemsArr) {
         if (!tinyStoreLexicon.productNames.includes(item)) {
           return false;
         }
@@ -116,14 +117,19 @@ export const compFilterGenerator: Generator = {
       if (typeof filter_char !== 'string' || filter_char.length !== 1) {
         return false;
       }
-      const expectedFiltered = items.filter(
-        (item: string) => item[0].toLowerCase() === filter_char
+      if (!Array.isArray(items)) return false;
+      const itemsArr = items as string[];
+      const expectedFiltered = itemsArr.filter(
+        (item) => item[0].toLowerCase() === filter_char
       );
       if (
         !Array.isArray(filtered_items) ||
-        filtered_items.length !== expectedFiltered.length ||
-        !filtered_items.every((item: string, i: number) => item === expectedFiltered[i])
+        filtered_items.length !== expectedFiltered.length
       ) {
+        return false;
+      }
+      const filteredArr = filtered_items as string[];
+      if (!filteredArr.every((item, i) => item === expectedFiltered[i])) {
         return false;
       }
     }
@@ -133,12 +139,17 @@ export const compFilterGenerator: Generator = {
       if (typeof min_len !== 'number' || min_len < 4 || min_len > 6) {
         return false;
       }
-      const expectedLong = items.filter((item: string) => item.length > min_len);
+      if (!Array.isArray(items)) return false;
+      const itemsArr = items as string[];
+      const expectedLong = itemsArr.filter((item) => item.length > min_len);
       if (
         !Array.isArray(long_items) ||
-        long_items.length !== expectedLong.length ||
-        !long_items.every((item: string, i: number) => item === expectedLong[i])
+        long_items.length !== expectedLong.length
       ) {
+        return false;
+      }
+      const longArr = long_items as string[];
+      if (!longArr.every((item, i) => item === expectedLong[i])) {
         return false;
       }
     }

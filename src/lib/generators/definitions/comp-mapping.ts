@@ -77,7 +77,8 @@ export const compMappingGenerator: Generator = {
       if (!Array.isArray(items) || items.length !== n) {
         return false;
       }
-      for (const item of items) {
+      const itemsArr = items as string[];
+      for (const item of itemsArr) {
         if (!tinyStoreLexicon.productNames.includes(item)) {
           return false;
         }
@@ -86,11 +87,16 @@ export const compMappingGenerator: Generator = {
 
     // Validate items_upper is consistent (if present)
     if (items_upper !== undefined && items !== undefined) {
-      if (!Array.isArray(items_upper) || items_upper.length !== items.length) {
+      if (!Array.isArray(items) || !Array.isArray(items_upper)) {
         return false;
       }
-      for (let i = 0; i < items.length; i++) {
-        if (items_upper[i] !== items[i].toUpperCase()) {
+      if (items_upper.length !== items.length) {
+        return false;
+      }
+      const itemsArr = items as string[];
+      const upperArr = items_upper as string[];
+      for (let i = 0; i < itemsArr.length; i++) {
+        if (upperArr[i] !== itemsArr[i].toUpperCase()) {
           return false;
         }
       }
