@@ -1,26 +1,36 @@
 // Server-only module - uses Node.js fs
 // For client-side code, use client-loader.ts instead
-import { readdir, readFile } from 'fs/promises';
+import { readdir, readFile, access } from 'fs/promises';
 import { join } from 'path';
 import yaml from 'js-yaml';
 import type { Blueprint, Skin, PathIndex, BlueprintRef } from './types';
 
-// Path to YAML files (relative to project root)
-const PATHS_DIR = join(process.cwd(), 'paths', 'python');
-const BLUEPRINTS_DIR = join(PATHS_DIR, 'blueprints');
-const SKINS_DIR = join(PATHS_DIR, 'skins');
+/**
+ * Get the paths directory for a specific language
+ */
+function getPathsDir(language: string = 'python'): string {
+  return join(process.cwd(), 'paths', language);
+}
 
 /**
- * Load all blueprints from YAML files
+ * Load all blueprints from YAML files for a specific language
  */
-export async function loadBlueprints(): Promise<Blueprint[]> {
-  const files = await readdir(BLUEPRINTS_DIR);
+export async function loadBlueprints(language: string = 'python'): Promise<Blueprint[]> {
+  const blueprintsDir = join(getPathsDir(language), 'blueprints');
+
+  try {
+    await access(blueprintsDir);
+  } catch {
+    return []; // Directory doesn't exist for this language yet
+  }
+
+  const files = await readdir(blueprintsDir);
   const yamlFiles = files.filter(f => f.endsWith('.yaml') || f.endsWith('.yml'));
 
   const blueprints: Blueprint[] = [];
 
   for (const file of yamlFiles) {
-    const content = await readFile(join(BLUEPRINTS_DIR, file), 'utf-8');
+    const content = await readFile(join(blueprintsDir, file), 'utf-8');
     const data = yaml.load(content) as Blueprint;
 
     // Basic validation
@@ -36,16 +46,24 @@ export async function loadBlueprints(): Promise<Blueprint[]> {
 }
 
 /**
- * Load all skins from YAML files
+ * Load all skins from YAML files for a specific language
  */
-export async function loadSkins(): Promise<Skin[]> {
-  const files = await readdir(SKINS_DIR);
+export async function loadSkins(language: string = 'python'): Promise<Skin[]> {
+  const skinsDir = join(getPathsDir(language), 'skins');
+
+  try {
+    await access(skinsDir);
+  } catch {
+    return []; // Directory doesn't exist for this language yet
+  }
+
+  const files = await readdir(skinsDir);
   const yamlFiles = files.filter(f => f.endsWith('.yaml') || f.endsWith('.yml'));
 
   const skins: Skin[] = [];
 
   for (const file of yamlFiles) {
-    const content = await readFile(join(SKINS_DIR, file), 'utf-8');
+    const content = await readFile(join(skinsDir, file), 'utf-8');
     const data = yaml.load(content) as Skin;
 
     // Basic validation - blueprints is optional for global skins
@@ -145,27 +163,33 @@ export function buildPathIndex(blueprints: Blueprint[], skins: Skin[]): PathInde
   return index;
 }
 
-// Singleton index cache
-let cachedIndex: PathIndex | null = null;
+// Per-language index cache
+const cachedIndexes = new Map<string, PathIndex>();
 
 /**
- * Get the path index (loads and caches on first call)
+ * Get the path index for a specific language (loads and caches on first call)
  */
-export async function getPathIndex(): Promise<PathIndex> {
-  if (cachedIndex) {
-    return cachedIndex;
+export async function getPathIndex(language: string = 'python'): Promise<PathIndex> {
+  if (cachedIndexes.has(language)) {
+    return cachedIndexes.get(language)!;
   }
 
-  const blueprints = await loadBlueprints();
-  const skins = await loadSkins();
-  cachedIndex = buildPathIndex(blueprints, skins);
+  const blueprints = await loadBlueprints(language);
+  const skins = await loadSkins(language);
+  const index = buildPathIndex(blueprints, skins);
+  cachedIndexes.set(language, index);
 
-  return cachedIndex;
+  return index;
 }
 
 /**
  * Clear the cached index (useful for testing)
+ * @param language - If specified, only clear cache for that language. If omitted, clear all caches.
  */
-export function clearPathIndexCache(): void {
-  cachedIndex = null;
+export function clearPathIndexCache(language?: string): void {
+  if (language) {
+    cachedIndexes.delete(language);
+  } else {
+    cachedIndexes.clear();
+  }
 }

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import {
   loadBlueprints,
   loadSkins,
@@ -11,6 +11,134 @@ import type { Beat, SkinnedCard } from '@/lib/paths/types';
 describe('Path Loader', () => {
   beforeAll(() => {
     clearPathIndexCache();
+  });
+
+  describe('Language-Scoped Loading', () => {
+    beforeEach(() => {
+      clearPathIndexCache();
+    });
+
+    describe('loadBlueprints with language parameter', () => {
+      it('loads blueprints for python (default)', async () => {
+        const blueprints = await loadBlueprints();
+        expect(blueprints.length).toBeGreaterThan(0);
+      });
+
+      it('loads blueprints for explicit python language', async () => {
+        const blueprints = await loadBlueprints('python');
+        expect(blueprints.length).toBeGreaterThan(0);
+        const cliApp = blueprints.find(b => b.id === 'collection-cli-app');
+        expect(cliApp).toBeDefined();
+      });
+
+      it('returns empty array for non-existent language', async () => {
+        const blueprints = await loadBlueprints('nonexistent-language');
+        expect(blueprints).toEqual([]);
+      });
+    });
+
+    describe('loadSkins with language parameter', () => {
+      it('loads skins for python (default)', async () => {
+        const skins = await loadSkins();
+        expect(skins.length).toBeGreaterThan(0);
+      });
+
+      it('loads skins for explicit python language', async () => {
+        const skins = await loadSkins('python');
+        expect(skins.length).toBeGreaterThan(0);
+        const taskManager = skins.find(s => s.id === 'task-manager');
+        expect(taskManager).toBeDefined();
+      });
+
+      it('returns empty array for non-existent language', async () => {
+        const skins = await loadSkins('nonexistent-language');
+        expect(skins).toEqual([]);
+      });
+    });
+
+    describe('getPathIndex with language-scoped caching', () => {
+      it('returns same reference for same language (cache hit)', async () => {
+        const index1 = await getPathIndex('python');
+        const index2 = await getPathIndex('python');
+        expect(index1).toBe(index2);
+      });
+
+      it('returns same reference for default language', async () => {
+        const index1 = await getPathIndex();
+        const index2 = await getPathIndex('python');
+        expect(index1).toBe(index2);
+      });
+
+      it('returns different caches for different languages', async () => {
+        const pythonIndex = await getPathIndex('python');
+        const nonExistentIndex = await getPathIndex('nonexistent-language');
+
+        // Should be different objects
+        expect(pythonIndex).not.toBe(nonExistentIndex);
+
+        // Python has content
+        expect(pythonIndex.blueprints.size).toBeGreaterThan(0);
+        expect(pythonIndex.skins.size).toBeGreaterThan(0);
+
+        // Non-existent language has empty content
+        expect(nonExistentIndex.blueprints.size).toBe(0);
+        expect(nonExistentIndex.skins.size).toBe(0);
+      });
+
+      it('maintains separate caches per language', async () => {
+        const python1 = await getPathIndex('python');
+        const nonExistent1 = await getPathIndex('nonexistent-language');
+        const python2 = await getPathIndex('python');
+        const nonExistent2 = await getPathIndex('nonexistent-language');
+
+        // Each language should return its own cached instance
+        expect(python1).toBe(python2);
+        expect(nonExistent1).toBe(nonExistent2);
+        expect(python1).not.toBe(nonExistent1);
+      });
+    });
+
+    describe('clearPathIndexCache', () => {
+      it('clears cache for specific language', async () => {
+        const index1 = await getPathIndex('python');
+        clearPathIndexCache('python');
+        const index2 = await getPathIndex('python');
+
+        // Should be different instances after clearing
+        expect(index1).not.toBe(index2);
+        // But both should have the same content
+        expect(index1.blueprints.size).toBe(index2.blueprints.size);
+      });
+
+      it('clears all caches when no language specified', async () => {
+        const pythonIndex1 = await getPathIndex('python');
+        const nonExistentIndex1 = await getPathIndex('nonexistent-language');
+
+        clearPathIndexCache();
+
+        const pythonIndex2 = await getPathIndex('python');
+        const nonExistentIndex2 = await getPathIndex('nonexistent-language');
+
+        // All should be new instances
+        expect(pythonIndex1).not.toBe(pythonIndex2);
+        expect(nonExistentIndex1).not.toBe(nonExistentIndex2);
+      });
+
+      it('only clears specified language, leaves others intact', async () => {
+        const pythonIndex1 = await getPathIndex('python');
+        const nonExistentIndex1 = await getPathIndex('nonexistent-language');
+
+        clearPathIndexCache('python');
+
+        const pythonIndex2 = await getPathIndex('python');
+        const nonExistentIndex2 = await getPathIndex('nonexistent-language');
+
+        // Python should be new instance
+        expect(pythonIndex1).not.toBe(pythonIndex2);
+        // Non-existent should be same instance (not cleared)
+        expect(nonExistentIndex1).toBe(nonExistentIndex2);
+      });
+    });
   });
 
   describe('loadBlueprints', () => {
