@@ -338,6 +338,7 @@ exercises:
     level: intro
     prereqs: [fn-basics]
     type: predict
+    grading_strategy: execution
     pattern: scope
     prompt: What does this print?
     code: |
@@ -361,6 +362,7 @@ exercises:
     level: intro
     prereqs: [fn-basics]
     type: predict
+    grading_strategy: execution
     pattern: scope
     prompt: What does this print?
     code: |
@@ -826,6 +828,7 @@ exercises:
     level: intro
     prereqs: [fn-basics]
     type: predict
+    grading_strategy: execution
     pattern: invocation
     prompt: What does this function addition code print?
     code: |
@@ -847,6 +850,7 @@ exercises:
     level: practice
     prereqs: [defaults]
     type: predict
+    grading_strategy: execution
     pattern: invocation
     prompt: What does this default parameter code print?
     code: |
@@ -868,6 +872,7 @@ exercises:
     level: practice
     prereqs: [lambda]
     type: predict
+    grading_strategy: execution
     pattern: invocation
     prompt: What does this lambda expression print?
     code: |
@@ -888,6 +893,7 @@ exercises:
     level: practice
     prereqs: [scope]
     type: predict
+    grading_strategy: execution
     pattern: scope
     prompt: What does this variable scope code print?
     code: |
@@ -914,6 +920,7 @@ exercises:
     level: practice
     prereqs: [args-kwargs]
     type: predict
+    grading_strategy: execution
     pattern: invocation
     prompt: What does this *args code print?
     code: |
@@ -935,6 +942,7 @@ exercises:
     level: edge
     prereqs: [defaults]
     type: predict
+    grading_strategy: execution
     pattern: gotcha
     prompt: What does this mutable default code print?
     code: |
@@ -961,6 +969,7 @@ exercises:
     level: practice
     prereqs: [fn-basics]
     type: predict
+    grading_strategy: execution
     pattern: invocation
     generator: function-call
     prompt: "What does {{funcName}}({{argList}}) return?"
@@ -984,6 +993,8 @@ exercises:
     generator: function-call
     prompt: "Call {{funcName}} with arguments {{argList}}"
     expected_answer: "{{funcName}}({{argList}})"
+    accepted_solutions:
+      - "{{funcName}}({{argList}})"
     hints:
       - Function calls use parentheses
       - Pass arguments in order
@@ -998,6 +1009,7 @@ exercises:
     level: practice
     prereqs: [fn-basics]
     type: predict
+    grading_strategy: execution
     pattern: invocation
     generator: function-call
     prompt: "What does this function call return?"
@@ -1017,6 +1029,7 @@ exercises:
     level: practice
     prereqs: [lambda]
     type: predict
+    grading_strategy: execution
     pattern: invocation
     generator: lambda-expr
     prompt: "What does this code print?"
@@ -1045,6 +1058,8 @@ exercises:
     generator: lambda-expr
     prompt: "Write a lambda that {{description}}"
     expected_answer: "{{lambdaExpr}}"
+    accepted_solutions:
+      - "{{lambdaExpr}}"
     hints:
       - "Lambda syntax: lambda params: expression"
       - "Use the parameters {{params}}"
@@ -1066,6 +1081,8 @@ exercises:
     generator: lambda-expr
     prompt: "Call the lambda {{opName}} = {{lambdaExpr}} with arguments {{argList}}"
     expected_answer: "{{opName}}({{argList}})"
+    accepted_solutions:
+      - "{{opName}}({{argList}})"
     hints:
       - Call lambdas just like regular functions
       - Use parentheses with arguments inside
@@ -1081,6 +1098,7 @@ exercises:
     level: practice
     prereqs: [fn-basics]
     type: predict
+    grading_strategy: execution
     pattern: invocation
     generator: default-args
     prompt: "What does this code print?"
@@ -1104,6 +1122,8 @@ exercises:
     generator: default-args
     prompt: "Given def {{funcName}}({{params}}), call it to get the result '{{result}}'"
     expected_answer: "{{funcName}}({{callArgs}})"
+    accepted_solutions:
+      - "{{funcName}}({{callArgs}})"
     hints:
       - "Default parameters can be omitted"
       - "Explicit args override defaults"

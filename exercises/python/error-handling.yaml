@@ -190,6 +190,7 @@ exercises:
     level: practice
     prereqs: [finally]
     type: predict
+    grading_strategy: execution
     pattern: handling
     prompt: What does this code print? List each line of output.
     code: |
@@ -217,6 +218,7 @@ exercises:
     level: edge
     prereqs: [finally]
     type: predict
+    grading_strategy: execution
     pattern: handling
     prompt: What does this code print before it crashes? List each line.
     code: |
@@ -332,6 +334,8 @@ exercises:
     pattern: handling
     prompt: Write the statement to re-raise the current exception (inside an except block).
     expected_answer: raise
+    accepted_solutions:
+      - raise
     hints:
       - Bare 'raise' re-raises current {{item_singular}} exception
       - Preserves original traceback for debugging
@@ -433,6 +437,7 @@ exercises:
     level: intro
     prereqs: [try-except]
     type: predict
+    grading_strategy: execution
     pattern: handling
     generator: try-except-flow
     prompt: What does this code print?
@@ -457,6 +462,7 @@ exercises:
     level: practice
     prereqs: [try-except]
     type: predict
+    grading_strategy: execution
     pattern: handling
     prompt: What does this try-except code print?
     code: |
@@ -481,6 +487,7 @@ exercises:
     level: practice
     prereqs: [try-except]
     type: predict
+    grading_strategy: execution
     pattern: handling
     prompt: What does this try-except code print?
     code: |
@@ -508,6 +515,8 @@ exercises:
     generator: exception-scenario
     prompt: "Write the except clause to catch a {{exceptionType}} ({{context}} context)"
     expected_answer: "{{catchBlock}}"
+    accepted_solutions:
+      - "{{catchBlock}}"
     hints:
       - "This exception is raised during {{operation}}"
       - "Use except followed by the exception type"
@@ -522,6 +531,7 @@ exercises:
     level: practice
     prereqs: [try-except]
     type: predict
+    grading_strategy: execution
     pattern: handling
     generator: exception-scenario
     prompt: "What exception type does this code raise? (Answer with just the exception class name, e.g. ValueError)"
@@ -542,6 +552,7 @@ exercises:
     level: practice
     prereqs: [try-except]
     type: predict
+    grading_strategy: execution
     pattern: handling
     generator: finally-flow
     prompt: "What does this code print? (List each line of output)"
@@ -561,6 +572,7 @@ exercises:
     level: edge
     prereqs: [finally]
     type: predict
+    grading_strategy: execution
     pattern: handling
     generator: finally-flow
     prompt: "How many times does print() run? Answer with a single integer."

@@ -753,6 +753,7 @@ exercises:
   - slug: string-predict-len
     title: String Length
     type: predict
+    grading_strategy: execution
     difficulty: 1
     concept: strings
     subconcept: basics
@@ -773,6 +774,7 @@ exercises:
   - slug: string-predict-concat
     title: String Concatenation
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: strings
     subconcept: basics
@@ -794,6 +796,7 @@ exercises:
   - slug: string-predict-index
     title: String Index
     type: predict
+    grading_strategy: execution
     difficulty: 1
     concept: strings
     subconcept: indexing
@@ -814,6 +817,7 @@ exercises:
   - slug: string-predict-negative
     title: Negative Index
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: strings
     subconcept: indexing
@@ -834,6 +838,7 @@ exercises:
   - slug: string-predict-slice
     title: String Slice
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: strings
     subconcept: slicing
@@ -854,6 +859,7 @@ exercises:
   - slug: string-predict-reverse
     title: String Reverse
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: strings
     subconcept: slicing
@@ -874,6 +880,7 @@ exercises:
   - slug: string-predict-upper
     title: Uppercase Result
     type: predict
+    grading_strategy: execution
     difficulty: 1
     concept: strings
     subconcept: string-methods
@@ -894,6 +901,7 @@ exercises:
   - slug: string-predict-replace
     title: Replace Result
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: strings
     subconcept: string-methods
@@ -914,6 +922,7 @@ exercises:
   - slug: fstring-predict-basic
     title: F-String Output
     type: predict
+    grading_strategy: execution
     difficulty: 1
     concept: strings
     subconcept: fstrings
@@ -935,6 +944,7 @@ exercises:
   - slug: fstring-predict-expr
     title: F-String Expression
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: strings
     subconcept: fstrings
@@ -961,6 +971,7 @@ exercises:
     level: intro
     prereqs: [basics]
     type: predict
+    grading_strategy: execution
     pattern: invocation
     generator: string-ops
     prompt: 'What does "{{original}}".{{method}}() return?'
@@ -983,6 +994,7 @@ exercises:
     level: practice
     prereqs: [fstrings]
     type: predict
+    grading_strategy: execution
     pattern: construction
     generator: string-format
     prompt: "What does this code print?"
@@ -1030,6 +1042,7 @@ exercises:
     level: practice
     prereqs: [slicing]
     type: predict
+    grading_strategy: execution
     pattern: slicing
     generator: string-slice
     prompt: "What does this code print?"

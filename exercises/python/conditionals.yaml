@@ -180,6 +180,7 @@ exercises:
     level: intro
     prereqs: [if-else]
     type: predict
+    grading_strategy: execution
     pattern: branching
     prompt: What does this if-else code print?
     code: |
@@ -203,6 +204,7 @@ exercises:
     level: practice
     prereqs: [if-else]
     type: predict
+    grading_strategy: execution
     pattern: branching
     prompt: What does this truthiness check print?
     code: |
@@ -349,6 +351,7 @@ exercises:
     level: practice
     prereqs: [elif-chains]
     type: predict
+    grading_strategy: execution
     pattern: branching
     prompt: What does this elif grading code print?
     code: |
@@ -375,6 +378,7 @@ exercises:
     level: practice
     prereqs: [elif-chains]
     type: predict
+    grading_strategy: execution
     pattern: branching
     prompt: What does this elif threshold code print?
     code: |
@@ -485,6 +489,7 @@ exercises:
     level: practice
     prereqs: [ternary]
     type: predict
+    grading_strategy: execution
     pattern: expression
     prompt: What does this ternary expression print?
     code: |
@@ -506,6 +511,7 @@ exercises:
     level: edge
     prereqs: [ternary]
     type: predict
+    grading_strategy: execution
     pattern: expression
     prompt: What does this nested ternary expression print?
     code: |
@@ -632,6 +638,7 @@ exercises:
     level: practice
     prereqs: [match-case]
     type: predict
+    grading_strategy: execution
     pattern: branching
     prompt: What does this code print?
     code: |
@@ -713,6 +720,7 @@ exercises:
     level: edge
     prereqs: [if-else]
     type: predict
+    grading_strategy: execution
     pattern: idiomatic
     prompt: |
       Option B is the Pythonic way to check for empty collections.
@@ -774,6 +782,7 @@ exercises:
     level: edge
     prereqs: [elif-chains]
     type: predict
+    grading_strategy: execution
     pattern: error-first
     prompt: |
       This grading function has a bug. What does it print?

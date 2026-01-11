@@ -46,9 +46,19 @@ contexts:
   fstring-from-dict: "Format item details from a dictionary."
 
 dataPack:
-  list_sample: '["torch", "rusty key", "healing potion"]'
-  dict_sample: '{"health": 100, "room": "entrance", "gold": 50}'
-  records_sample: '[{"name": "goblin", "power": 10}, {"name": "dragon", "power": 50}]'
+  list_sample:
+    - "torch"
+    - "rusty key"
+    - "healing potion"
+  dict_sample:
+    health: 100
+    room: "entrance"
+    gold: 50
+  records_sample:
+    - name: "goblin"
+      power: 10
+    - name: "dragon"
+      power: 50
   string_samples:
     - "go north"
     - "take torch"

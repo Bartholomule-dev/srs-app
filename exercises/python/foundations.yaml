@@ -563,6 +563,7 @@ exercises:
   - slug: variable-predict-assign
     title: Variable Value
     type: predict
+    grading_strategy: execution
     difficulty: 1
     concept: foundations
     subconcept: variables
@@ -585,6 +586,7 @@ exercises:
   - slug: variable-predict-reassign
     title: Variable Reassignment
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: foundations
     subconcept: variables
@@ -608,6 +610,7 @@ exercises:
   - slug: operator-predict-modulo
     title: Modulo Result
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: foundations
     subconcept: operators
@@ -630,6 +633,7 @@ exercises:
   - slug: operator-predict-floor
     title: Floor Division Result
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: foundations
     subconcept: operators
@@ -652,6 +656,7 @@ exercises:
   - slug: expression-predict-and
     title: Boolean AND Result
     type: predict
+    grading_strategy: execution
     difficulty: 1
     concept: foundations
     subconcept: expressions
@@ -673,6 +678,7 @@ exercises:
   - slug: expression-predict-or
     title: Boolean OR Result
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: foundations
     subconcept: expressions
@@ -694,6 +700,7 @@ exercises:
   - slug: io-predict-print-concat
     title: Print Concatenation
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: foundations
     subconcept: io
@@ -715,6 +722,7 @@ exercises:
   - slug: io-predict-print-sep
     title: Print Separator
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: foundations
     subconcept: io
@@ -765,6 +773,7 @@ exercises:
     level: practice
     prereqs: [operators]
     type: predict
+    grading_strategy: execution
     pattern: arithmetic
     generator: operator-chain
     prompt: "What does this expression evaluate to?"
@@ -923,6 +932,7 @@ exercises:
     level: intro
     prereqs: [imports-basic]
     type: predict
+    grading_strategy: execution
     pattern: import
     prompt: What does this math.pi code print? (to 2 decimal places)
     code: |
@@ -943,6 +953,7 @@ exercises:
     level: practice
     prereqs: [imports-basic]
     type: predict
+    grading_strategy: execution
     pattern: import
     generator: arithmetic-values
     prompt: What does this math.ceil() code print?

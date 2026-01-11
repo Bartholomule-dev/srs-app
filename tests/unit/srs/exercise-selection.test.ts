@@ -119,7 +119,6 @@ describe('selectExercise', () => {
         createExercise({ id: '1', slug: 'intro-1', level: 'intro' }),
         createExercise({ id: '2', slug: 'practice-1', level: 'practice' }),
         createExercise({ id: '3', slug: 'edge-1', level: 'edge' }),
-        createExercise({ id: '4', slug: 'integrated-1', level: 'integrated' }),
       ];
 
       // All intro and practice seen

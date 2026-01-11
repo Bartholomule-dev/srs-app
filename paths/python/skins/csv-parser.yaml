@@ -49,9 +49,19 @@ contexts:
   number-stats-from-list: "Calculate statistics from records."
 
 dataPack:
-  list_sample: '["alice,25,engineer", "bob,30,designer", "carol,28,manager"]'
-  dict_sample: '{"name": "alice", "age": 25, "role": "engineer"}'
-  records_sample: '[{"name": "alice", "age": 25}, {"name": "bob", "age": 30}]'
+  list_sample:
+    - "alice,25,engineer"
+    - "bob,30,designer"
+    - "carol,28,manager"
+  dict_sample:
+    name: "alice"
+    age: 25
+    role: "engineer"
+  records_sample:
+    - name: "alice"
+      age: 25
+    - name: "bob"
+      age: 30
   string_samples:
     - "alice,25,engineer"
     - "  bob,30,designer  "

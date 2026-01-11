@@ -61,3 +61,4 @@ screenshots/
 
 # Daem0nMCP local database
 .daem0nmcp/
+.playwright-mcp/

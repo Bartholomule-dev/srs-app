@@ -41,6 +41,7 @@ export type ExercisePattern =
   | 'expression'
   | 'file'
   | 'filtering'
+  | 'formatting'
   | 'function'
   | 'gotcha'
   | 'handling'

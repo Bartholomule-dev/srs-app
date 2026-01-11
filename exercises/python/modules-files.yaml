@@ -16,6 +16,8 @@ exercises:
     pattern: import
     prompt: Import the `math` module
     expected_answer: import math
+    accepted_solutions:
+      - import math
     hints:
       - Use `import` keyword
       - No quotes around module name
@@ -33,6 +35,8 @@ exercises:
     pattern: import
     prompt: Import only `sqrt` from the `math` module
     expected_answer: from math import sqrt
+    accepted_solutions:
+      - from math import sqrt
     hints:
       - Use `from ... import` syntax
       - You can then use `sqrt()` directly without `math.` prefix
@@ -50,6 +54,8 @@ exercises:
     pattern: import
     prompt: Import `numpy` as `np`
     expected_answer: import numpy as np
+    accepted_solutions:
+      - import numpy as np
     hints:
       - Use `as` keyword for alias
       - Common convention in data science
@@ -110,6 +116,8 @@ exercises:
     pattern: file
     prompt: Read the entire contents of file object `f`
     expected_answer: f.read()
+    accepted_solutions:
+      - f.read()
     hints:
       - Use `.read()` method
       - Returns all content as a single string
@@ -127,6 +135,8 @@ exercises:
     pattern: file
     prompt: Read all lines from file `f` into a list (each line keeps its newline)
     expected_answer: f.readlines()
+    accepted_solutions:
+      - f.readlines()
     hints:
       - Use `.readlines()` method
       - Each line becomes a list item with newline included
@@ -144,6 +154,8 @@ exercises:
     pattern: file
     prompt: Read the next line from file `f` (including the trailing newline)
     expected_answer: f.readline()
+    accepted_solutions:
+      - f.readline()
     hints:
       - Use `.readline()` method
       - Returns a single line with newline included
@@ -222,6 +234,8 @@ exercises:
     pattern: file
     prompt: Write a list of strings called `{{list_name}}` to file `f` (each item is already a full line including `\n`)
     expected_answer: f.writelines({{list_name}})
+    accepted_solutions:
+      - f.writelines({{list_name}})
     hints:
       - Use `.writelines()` method
       - Does NOT add newlines automatically
@@ -365,6 +379,8 @@ exercises:
     pattern: attribute
     prompt: Given `p` is a `Path`, write the expression that returns its parent directory
     expected_answer: p.parent
+    accepted_solutions:
+      - p.parent
     hints:
       - Use the `.parent` attribute
       - Returns a Path object
@@ -542,6 +558,7 @@ exercises:
     level: intro
     prereqs: [main-guard]
     type: predict
+    grading_strategy: execution
     pattern: conditional
     prompt: When you run a Python file directly, what does `__name__` print?
     code: |
@@ -562,6 +579,7 @@ exercises:
     level: practice
     prereqs: [reading]
     type: predict
+    grading_strategy: execution
     pattern: file
     prompt: Assume `{{filename}}` contains exactly `hello` (no newline). What does this code print?
     code: |
@@ -583,6 +601,7 @@ exercises:
     level: practice
     prereqs: [pathlib]
     type: predict
+    grading_strategy: execution
     pattern: construction
     prompt: What does this code print? (Assume POSIX-style paths)
     code: |
@@ -605,6 +624,7 @@ exercises:
     level: practice
     prereqs: [pathlib]
     type: predict
+    grading_strategy: execution
     pattern: construction
     generator: path-ops
     prompt: "What does this code print?"
@@ -627,6 +647,7 @@ exercises:
     level: practice
     prereqs: [pathlib]
     type: predict
+    grading_strategy: execution
     pattern: attribute
     generator: path-ops
     prompt: What is printed by `print(p.parent)`?
@@ -649,6 +670,7 @@ exercises:
     level: practice
     prereqs: [pathlib]
     type: predict
+    grading_strategy: execution
     pattern: attribute
     generator: path-ops
     prompt: "What does p.stem return?"
@@ -671,6 +693,7 @@ exercises:
     level: practice
     prereqs: [pathlib]
     type: predict
+    grading_strategy: execution
     pattern: attribute
     generator: path-ops
     prompt: "What does p.suffix return?"
@@ -694,6 +717,7 @@ exercises:
     level: practice
     prereqs: [reading]
     type: predict
+    grading_strategy: execution
     pattern: file
     generator: file-io
     prompt: "What does this code print? (Assume {{filename}} contains '{{content}}')"
@@ -713,6 +737,7 @@ exercises:
     level: practice
     prereqs: [reading]
     type: predict
+    grading_strategy: execution
     pattern: context
     generator: file-io
     prompt: "What does this code print?"

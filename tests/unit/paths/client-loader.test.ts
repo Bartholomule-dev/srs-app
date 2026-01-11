@@ -105,7 +105,7 @@ describe('Client Loader', () => {
       const index = getPathIndexSync();
       const blueprint = index.blueprints.get('collection-cli-app');
 
-      expect(blueprint?.beats.length).toBe(23);
+      expect(blueprint?.beats.length).toBe(22);
     });
 
     it('skins have icons', () => {

@@ -569,6 +569,7 @@ exercises:
     level: intro
     prereqs: [classes]
     type: predict
+    grading_strategy: execution
     pattern: invocation
     generator: oop-instance
     prompt: What does this code print?
@@ -593,6 +594,7 @@ exercises:
     level: practice
     prereqs: [methods]
     type: predict
+    grading_strategy: execution
     pattern: invocation
     prompt: What does this code print? (Enter each line of output on a separate line)
     code: |
@@ -627,6 +629,7 @@ exercises:
     level: practice
     prereqs: [inheritance]
     type: predict
+    grading_strategy: execution
     pattern: invocation
     prompt: The subclass overrides a method. What does this code print?
     code: |
@@ -654,6 +657,7 @@ exercises:
     level: practice
     prereqs: [methods]
     type: predict
+    grading_strategy: execution
     pattern: invocation
     generator: class-method
     prompt: "What does this code print? (Focus on what the method returns)"
@@ -694,6 +698,7 @@ exercises:
     level: practice
     prereqs: [inheritance]
     type: predict
+    grading_strategy: execution
     pattern: invocation
     generator: inheritance-method
     prompt: "What does this code print? (Focus on method overriding)"
@@ -713,6 +718,7 @@ exercises:
     level: practice
     prereqs: [inheritance]
     type: predict
+    grading_strategy: execution
     pattern: invocation
     generator: inheritance-method
     prompt: "When calling `{{method}}()` on `obj`, which class provides the implementation: `{{parentClass}}` or `{{childClass}}`?"

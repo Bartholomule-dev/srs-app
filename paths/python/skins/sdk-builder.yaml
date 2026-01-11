@@ -43,9 +43,18 @@ contexts:
   import-json-parse: "Parse endpoint data from JSON format."
 
 dataPack:
-  list_sample: '["/users", "/auth", "/data"]'
-  dict_sample: '{"base_url": "https://api.example.com", "api_key": "sk-xxx"}'
-  records_sample: '[{"path": "/users", "method": "GET"}, {"path": "/auth", "method": "POST"}]'
+  list_sample:
+    - "/users"
+    - "/auth"
+    - "/data"
+  dict_sample:
+    base_url: "https://api.example.com"
+    api_key: "sk-xxx"
+  records_sample:
+    - path: "/users"
+      method: "GET"
+    - path: "/auth"
+      method: "POST"
   string_samples:
     - "https://api.example.com"
     - "Bearer sk-xxx123"

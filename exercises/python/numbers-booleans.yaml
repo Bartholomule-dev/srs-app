@@ -231,6 +231,7 @@ exercises:
   - slug: int-predict-floor
     title: Floor Division
     type: predict
+    grading_strategy: execution
     difficulty: 1
     concept: numbers-booleans
     subconcept: integers
@@ -252,6 +253,7 @@ exercises:
   - slug: int-predict-modulo
     title: Modulo Operation
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: numbers-booleans
     subconcept: integers
@@ -273,6 +275,7 @@ exercises:
   - slug: float-predict-division
     title: Float Division
     type: predict
+    grading_strategy: execution
     difficulty: 1
     concept: numbers-booleans
     subconcept: floats
@@ -294,6 +297,7 @@ exercises:
   - slug: float-predict-round
     title: Round Result
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: numbers-booleans
     subconcept: floats
@@ -315,6 +319,7 @@ exercises:
   - slug: bool-predict-and
     title: AND Result
     type: predict
+    grading_strategy: execution
     difficulty: 1
     concept: numbers-booleans
     subconcept: booleans
@@ -336,6 +341,7 @@ exercises:
   - slug: bool-predict-not
     title: NOT Result
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: numbers-booleans
     subconcept: booleans
@@ -356,6 +362,7 @@ exercises:
   - slug: convert-predict-int
     title: Int Conversion
     type: predict
+    grading_strategy: execution
     difficulty: 1
     concept: numbers-booleans
     subconcept: conversion
@@ -377,6 +384,7 @@ exercises:
   - slug: convert-predict-bool
     title: Bool Conversion
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: numbers-booleans
     subconcept: conversion
@@ -397,6 +405,7 @@ exercises:
   - slug: truthiness-predict-empty
     title: Empty List Truthiness
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: numbers-booleans
     subconcept: truthiness
@@ -420,6 +429,7 @@ exercises:
   - slug: truthiness-predict-zero
     title: Zero Truthiness
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: numbers-booleans
     subconcept: truthiness
@@ -440,6 +450,7 @@ exercises:
   - slug: comparison-predict-chain
     title: Chained Comparison
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: numbers-booleans
     subconcept: comparisons
@@ -460,6 +471,7 @@ exercises:
   - slug: comparison-predict-is
     title: Identity vs Equality
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: numbers-booleans
     subconcept: comparisons
@@ -483,6 +495,7 @@ exercises:
   - slug: int-addition-dynamic
     title: Dynamic Addition
     type: predict
+    grading_strategy: execution
     difficulty: 1
     concept: numbers-booleans
     subconcept: integers
@@ -505,6 +518,7 @@ exercises:
   - slug: int-multiply-dynamic
     title: Dynamic Multiplication
     type: predict
+    grading_strategy: execution
     difficulty: 2
     concept: numbers-booleans
     subconcept: integers
@@ -599,6 +613,7 @@ exercises:
     level: practice
     prereqs: [comparisons]
     type: predict
+    grading_strategy: execution
     pattern: comparison
     generator: bool-logic
     prompt: "What does this expression evaluate to?"
@@ -643,6 +658,7 @@ exercises:
     level: intro
     prereqs: [booleans]
     type: predict
+    grading_strategy: execution
     pattern: conversion
     prompt: What does bool(0) return for {{item_singular}} count?
     code: |
@@ -663,6 +679,7 @@ exercises:
     level: intro
     prereqs: [booleans]
     type: predict
+    grading_strategy: execution
     pattern: conversion
     prompt: What does bool([]) return for an empty {{list_name}}?
     code: |
@@ -705,6 +722,7 @@ exercises:
     level: practice
     prereqs: [booleans]
     type: predict
+    grading_strategy: execution
     pattern: logical
     generator: truthiness
     prompt: "What does bool({{valueStr}}) return?"
@@ -730,6 +748,8 @@ exercises:
     generator: truthiness
     prompt: "Convert {{valueStr}} to a boolean using bool()"
     expected_answer: "bool({{valueStr}})"
+    accepted_solutions:
+      - "bool({{valueStr}})"
     hints:
       - "Use the bool() function"
       - "This will return {{isTruthy}}"
@@ -745,6 +765,7 @@ exercises:
     level: practice
     prereqs: [booleans]
     type: predict
+    grading_strategy: execution
     pattern: logical
     generator: bool-logic
     prompt: "What is the result of this expression?"
@@ -769,6 +790,7 @@ exercises:
     level: practice
     prereqs: [integers, floats]
     type: predict
+    grading_strategy: execution
     pattern: conversion
     generator: type-conversion
     prompt: "What does this conversion print?"
@@ -794,6 +816,8 @@ exercises:
     generator: type-conversion
     prompt: "Convert `{{inputValue}}` to type `{{targetType}}`"
     expected_answer: "{{conversionCall}}"
+    accepted_solutions:
+      - "{{conversionCall}}"
     hints:
       - "Use the {{targetType}}() constructor"
       - "Pass the value as an argument"
@@ -851,6 +875,7 @@ exercises:
     level: practice
     prereqs: [identity]
     type: predict
+    grading_strategy: execution
     pattern: comparison
     prompt: What does this print?
     code: |
@@ -912,6 +937,7 @@ exercises:
     level: edge
     prereqs: [identity]
     type: predict
+    grading_strategy: execution
     pattern: comparison
     prompt: "In CPython, what does this print? (Small integers -5 to 256 are cached)"
     code: |
@@ -934,6 +960,7 @@ exercises:
     level: edge
     prereqs: [identity]
     type: predict
+    grading_strategy: execution
     pattern: error-first
     prompt: What does this print? (Large integers are not cached like small ones)
     code: |
@@ -973,15 +1000,15 @@ exercises:
       - Pythonic and handles edge cases better
     tags: [identity, pythonic, none]
 
-  # --- Integrated Exercises (Multi-Concept) ---
+  # --- Edge Exercises (Cross-Concept) ---
   - slug: number-stats-from-list
     objective: Calculate statistics from a list of numbers
     title: List Statistics
     difficulty: 3
     concept: numbers-booleans
-    subconcept: arithmetic
+    subconcept: floats
     level: edge
-    prereqs: [arithmetic, lists]
+    prereqs: [floats]
     type: write
     pattern: arithmetic
     prompt: |
@@ -1001,9 +1028,9 @@ exercises:
     title: All Items Check
     difficulty: 3
     concept: numbers-booleans
-    subconcept: boolean-ops
+    subconcept: booleans
     level: edge
-    prereqs: [boolean-ops, lists, generator-exp]
+    prereqs: [booleans]
     type: write
     pattern: logical
     prompt: |
@@ -1024,11 +1051,11 @@ exercises:
     title: Round and Format
     difficulty: 3
     concept: numbers-booleans
-    subconcept: arithmetic
+    subconcept: floats
     level: edge
-    prereqs: [arithmetic, fstrings]
+    prereqs: [floats]
     type: write
-    pattern: arithmetic
+    pattern: formatting
     prompt: |
       Format `{{item_singular}}_value` as currency with exactly 2 decimal places.
       Create an f-string that outputs: "{{entity_name}}: $X.XX"

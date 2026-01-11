@@ -303,6 +303,8 @@ exercises:
     pattern: iteration
     prompt: Loop over {{list_name}} and statuses lists simultaneously using {{item_singular}} and {{status_var}} variables
     expected_answer: "for {{item_singular}}, {{status_var}} in zip({{list_name}}, statuses):"
+    accepted_solutions:
+      - "for {{item_singular}}, {{status_var}} in zip({{list_name}}, statuses):"
     hints:
       - Use zip() to pair elements
       - Unpack with two variables
@@ -399,6 +401,8 @@ exercises:
     pattern: iteration
     prompt: Use zip to iterate over {{list_name}}, statuses, and priorities lists simultaneously using {{item_singular}}, {{status_var}}, {{attr_key_2}}
     expected_answer: "for {{item_singular}}, {{status_var}}, {{attr_key_2}} in zip({{list_name}}, statuses, priorities):"
+    accepted_solutions:
+      - "for {{item_singular}}, {{status_var}}, {{attr_key_2}} in zip({{list_name}}, statuses, priorities):"
     hints:
       - zip() can take multiple iterables
       - Unpack all three variables
@@ -846,6 +850,7 @@ exercises:
     level: intro
     prereqs: [for]
     type: predict
+    grading_strategy: execution
     pattern: iteration
     prompt: What does this range loop print?
     code: |
@@ -869,6 +874,7 @@ exercises:
     level: practice
     prereqs: [for]
     type: predict
+    grading_strategy: execution
     pattern: iteration
     prompt: What does this enumerate loop print?
     code: |
@@ -892,6 +898,7 @@ exercises:
     level: practice
     prereqs: [for]
     type: predict
+    grading_strategy: execution
     pattern: control
     prompt: What does this loop with break print?
     code: |
@@ -917,6 +924,7 @@ exercises:
     level: practice
     prereqs: [for]
     type: predict
+    grading_strategy: execution
     pattern: control
     prompt: What does this loop with continue print?
     code: |
@@ -943,6 +951,7 @@ exercises:
     level: practice
     prereqs: [for]
     type: predict
+    grading_strategy: execution
     pattern: iteration
     prompt: What does this zip loop print?
     code: |
@@ -965,6 +974,7 @@ exercises:
     level: edge
     prereqs: [for]
     type: predict
+    grading_strategy: execution
     pattern: iteration
     prompt: What does this nested {{item_singular}} loop print?
     code: |
@@ -1019,8 +1029,8 @@ exercises:
     objective: Write an if statement comparing two dynamic values
     title: Dynamic If Greater
     difficulty: 1
-    concept: loops
-    subconcept: conditionals
+    concept: conditionals
+    subconcept: if-else
     level: intro
     prereqs: [foundations]
     type: write
@@ -1072,6 +1082,7 @@ exercises:
     level: practice
     prereqs: [for]
     type: predict
+    grading_strategy: execution
     pattern: accumulator
     generator: arithmetic-values
     prompt: "Given {{item_plural}} [{{x}}, {{y}}], what does this code print?"
@@ -1125,6 +1136,7 @@ exercises:
     level: practice
     prereqs: [for]
     type: predict
+    grading_strategy: execution
     pattern: iteration
     generator: loop-simulation
     prompt: "What does this code print?"
@@ -1141,11 +1153,12 @@ exercises:
     objective: Predict the result of a comparison expression
     title: Dynamic Comparison Result
     difficulty: 1
-    concept: loops
-    subconcept: conditionals
+    concept: conditionals
+    subconcept: if-else
     level: intro
     prereqs: [foundations]
     type: predict
+    grading_strategy: execution
     pattern: comparison
     generator: comparison-logic
     prompt: "What does {{a}} {{op}} {{b}} evaluate to?"
@@ -1161,11 +1174,12 @@ exercises:
     objective: Predict the result of a compound boolean expression
     title: Dynamic Compound Boolean
     difficulty: 2
-    concept: loops
-    subconcept: conditionals
+    concept: conditionals
+    subconcept: if-else
     level: practice
     prereqs: [foundations, comparisons]
     type: predict
+    grading_strategy: execution
     pattern: logical
     generator: bool-logic
     prompt: "What does this expression evaluate to?"
@@ -1181,8 +1195,8 @@ exercises:
     objective: Write an if statement with a compound boolean condition
     title: Dynamic Boolean If Statement
     difficulty: 2
-    concept: loops
-    subconcept: conditionals
+    concept: conditionals
+    subconcept: if-else
     level: practice
     prereqs: [if-else, comparisons]
     type: write
@@ -1190,6 +1204,8 @@ exercises:
     generator: bool-logic
     prompt: "Write an if statement that checks if {{description}} (using a={{a}}, b={{b}})"
     expected_answer: "if {{expression}}:"
+    accepted_solutions:
+      - "if {{expression}}:"
     hints:
       - "Use the boolean operators (and, or, not)"
       - End with a colon
@@ -1204,6 +1220,7 @@ exercises:
     level: practice
     prereqs: [for]
     type: predict
+    grading_strategy: execution
     pattern: accumulator
     generator: list-values
     prompt: "What does this code print when summing the {{list_name}}?"
@@ -1223,11 +1240,12 @@ exercises:
     objective: Predict which branch is taken in an if/elif/else chain
     title: Dynamic If/Elif/Else Chain
     difficulty: 2
-    concept: loops
-    subconcept: conditionals
+    concept: conditionals
+    subconcept: elif-chains
     level: practice
     prereqs: [if-else]
     type: predict
+    grading_strategy: execution
     pattern: conditional
     generator: conditional-chain
     prompt: "What does this code print?"
@@ -1243,11 +1261,12 @@ exercises:
     objective: Identify which branch executes for a given input value
     title: Dynamic Branch Trace
     difficulty: 2
-    concept: loops
-    subconcept: conditionals
+    concept: conditionals
+    subconcept: elif-chains
     level: edge
     prereqs: [if-else]
     type: predict
+    grading_strategy: execution
     pattern: conditional
     generator: conditional-chain
     prompt: "For input value {{value}}, which branch executes (output the result)?"
@@ -1268,6 +1287,7 @@ exercises:
     level: practice
     prereqs: [for]
     type: predict
+    grading_strategy: execution
     pattern: transformation
     generator: sorted-list
     prompt: "What does this code return?"
@@ -1291,6 +1311,8 @@ exercises:
     generator: sorted-list
     prompt: "Transform {{input}} to get {{output}}"
     expected_answer: "{{code}}"
+    accepted_solutions:
+      - "{{code}}"
     hints:
       - Use sorted() with reverse parameter if needed
       - Use list(reversed(...)) to reverse order
@@ -1306,6 +1328,7 @@ exercises:
     level: practice
     prereqs: [truthiness]
     type: predict
+    grading_strategy: execution
     pattern: logical
     generator: any-all
     prompt: "What does this code return?"
@@ -1329,6 +1352,8 @@ exercises:
     generator: any-all
     prompt: "Write a Python expression that returns True if {{func}} elements in {{list}} are truthy"
     expected_answer: "{{func}}({{list}})"
+    accepted_solutions:
+      - "{{func}}({{list}})"
     hints:
       - "{{func}}() takes an iterable"
       - "Returns True or False based on element truthiness"
@@ -1344,6 +1369,7 @@ exercises:
     level: practice
     prereqs: [for]
     type: predict
+    grading_strategy: execution
     pattern: iteration
     generator: zip-lists
     prompt: "What does this code return?"
@@ -1363,6 +1389,7 @@ exercises:
     level: practice
     prereqs: [zip, list-comp]
     type: predict
+    grading_strategy: execution
     pattern: iteration
     generator: zip-lists
     prompt: "What does this code return?"
@@ -1462,6 +1489,7 @@ exercises:
     level: practice
     prereqs: [range]
     type: predict
+    grading_strategy: execution
     pattern: iteration
     prompt: What does this code print?
     code: |
@@ -1484,6 +1512,7 @@ exercises:
     level: edge
     prereqs: [range, iteration]
     type: predict
+    grading_strategy: execution
     pattern: idiomatic
     prompt: Which version is more Pythonic?
     code: |
@@ -1618,6 +1647,7 @@ exercises:
     level: practice
     prereqs: [break-continue]
     type: predict
+    grading_strategy: execution
     pattern: control
     prompt: What does this code print?
     code: |
@@ -1643,6 +1673,7 @@ exercises:
     level: practice
     prereqs: [break-continue]
     type: predict
+    grading_strategy: execution
     pattern: control
     prompt: What does this code print?
     code: |
@@ -1669,6 +1700,7 @@ exercises:
     level: edge
     prereqs: [break-continue]
     type: predict
+    grading_strategy: execution
     pattern: control
     prompt: What does this code print?
     code: |

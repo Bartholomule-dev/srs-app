@@ -64,7 +64,7 @@
         },
         "level": {
           "type": "string",
-          "enum": ["intro", "practice", "edge", "integrated"],
+          "enum": ["intro", "practice", "edge"],
           "description": "Difficulty progression within subconcept"
         },
         "prereqs": {
@@ -85,7 +85,7 @@
             "comparison", "conditional", "construction", "context", "control", "conversion",
             "declaration", "definition",
             "error-first", "expression",
-            "file", "filtering", "function",
+            "file", "filtering", "formatting", "function",
             "gotcha",
             "handling",
             "idiomatic", "import", "indexing", "input", "invocation", "io", "iteration",

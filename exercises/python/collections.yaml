@@ -700,6 +700,8 @@ exercises:
     pattern: assignment
     prompt: Swap the {{item_singular}} values of variables a and b using unpacking (one line)
     expected_answer: "a, b = b, a"
+    accepted_solutions:
+      - "a, b = b, a"
     hints:
       - Python evaluates the right side first for {{item_plural}}
       - No temp {{item_singular}} variable needed
@@ -717,6 +719,8 @@ exercises:
     pattern: assignment
     prompt: Unpack first {{item_singular}} to a, rest to remaining from list [1, 2, 3, 4]
     expected_answer: a, *remaining = [1, 2, 3, 4]
+    accepted_solutions:
+      - a, *remaining = [1, 2, 3, 4]
     hints:
       - Use * for rest {{item_plural}}
       - remaining will contain the other {{item_plural}}
@@ -734,6 +738,8 @@ exercises:
     pattern: construction
     prompt: Call {{action_verb}}_{{item_singular}} with list args unpacked as positional arguments
     expected_answer: "{{action_verb}}_{{item_singular}}(*args)"
+    accepted_solutions:
+      - "{{action_verb}}_{{item_singular}}(*args)"
     hints:
       - Use * to unpack {{item_singular}} list
       - Turns [1, 2, 3] into {{action_verb}}_{{item_singular}}(1, 2, 3)
@@ -751,6 +757,8 @@ exercises:
     pattern: construction
     prompt: Call {{action_verb}}_{{item_singular}} with dict kwargs unpacked as keyword arguments
     expected_answer: "{{action_verb}}_{{item_singular}}(**kwargs)"
+    accepted_solutions:
+      - "{{action_verb}}_{{item_singular}}(**kwargs)"
     hints:
       - Use ** to unpack {{item_singular}} dict
       - 'Turns {"{{attr_key_1}}": 1} into {{action_verb}}_{{item_singular}}({{attr_key_1}}=1)'
@@ -774,6 +782,8 @@ exercises:
               target = []
           target.append({{item_singular}})
           return target
+    accepted_solutions:
+      - |
     hints:
       - Never use [] or {} as default for {{item_plural}}
       - Use None and create {{item_singular}} list inside function
@@ -791,6 +801,8 @@ exercises:
     pattern: assignment
     prompt: Create {{item_singular}}_copy that references the same list as {{list_name}} (not a copy)
     expected_answer: "{{item_singular}}_copy = {{list_name}}"
+    accepted_solutions:
+      - "{{item_singular}}_copy = {{list_name}}"
     hints:
       - Simple assignment creates an alias for {{item_plural}}
       - Both {{item_singular}} names point to same object
@@ -808,6 +820,8 @@ exercises:
     pattern: construction
     prompt: Create a shallow copy of {{list_name}} using the copy method
     expected_answer: "{{list_name}}.copy()"
+    accepted_solutions:
+      - "{{list_name}}.copy()"
     hints:
       - Use the .copy() method
       - Returns a new list with same {{item_plural}}
@@ -825,6 +839,8 @@ exercises:
     pattern: construction
     prompt: Create a shallow copy of {{list_name}} using the list constructor
     expected_answer: "list({{list_name}})"
+    accepted_solutions:
+      - "list({{list_name}})"
     hints:
       - Pass list to list() constructor
       - Creates new list from existing
@@ -888,6 +904,8 @@ exercises:
     pattern: construction
     prompt: Create new {{item_singular}} tuple by concatenating t with (4, 5) since tuples are immutable
     expected_answer: t + (4, 5)
+    accepted_solutions:
+      - t + (4, 5)
     hints:
       - Cannot modify {{item_singular}} tuple in place
       - Must create new {{item_singular}} tuple via concatenation
@@ -981,6 +999,7 @@ exercises:
     level: intro
     prereqs: [lists]
     type: predict
+    grading_strategy: execution
     pattern: mutation
     prompt: What does this list append code print?
     code: |
@@ -1005,6 +1024,7 @@ exercises:
     level: practice
     prereqs: [dicts]
     type: predict
+    grading_strategy: execution
     pattern: lookup
     prompt: What does this dict.get() code print?
     code: |
@@ -1025,6 +1045,7 @@ exercises:
     level: practice
     prereqs: [sets]
     type: predict
+    grading_strategy: execution
     pattern: construction
     prompt: |
       What does this set union code print?
@@ -1069,6 +1090,7 @@ exercises:
     level: intro
     prereqs: []
     type: predict
+    grading_strategy: execution
     pattern: indexing
     generator: list-values
     code: |
@@ -1090,6 +1112,7 @@ exercises:
     level: practice
     prereqs: []
     type: predict
+    grading_strategy: execution
     pattern: arithmetic
     generator: arithmetic-values
     code: |
@@ -1103,6 +1126,8 @@ exercises:
     difficulty: 2
     prompt: "Extract elements from index {{start}} to {{end}} (exclusive) from {{list_name}}"
     expected_answer: "{{list_name}}[{{start}}:{{end}}]"
+    accepted_solutions:
+      - "{{list_name}}[{{start}}:{{end}}]"
     hints:
       - List slicing uses [start:end] syntax
       - The end index is exclusive
@@ -1133,6 +1158,7 @@ exercises:
     level: practice
     prereqs: [lists]
     type: predict
+    grading_strategy: execution
     pattern: indexing
     generator: list-values
     code: |
@@ -1154,6 +1180,7 @@ exercises:
     level: intro
     prereqs: [lists]
     type: predict
+    grading_strategy: execution
     pattern: query
     generator: list-values
     code: |
@@ -1175,6 +1202,7 @@ exercises:
     level: practice
     prereqs: [lists]
     type: predict
+    grading_strategy: execution
     pattern: mutation
     generator: list-values
     code: |
@@ -1197,6 +1225,7 @@ exercises:
     level: practice
     prereqs: [lists]
     type: predict
+    grading_strategy: execution
     pattern: mutation
     generator: list-values
     code: |
@@ -1233,6 +1262,7 @@ exercises:
     level: intro
     prereqs: [dicts]
     type: predict
+    grading_strategy: execution
     pattern: indexing
     generator: dict-values
     prompt: 'Given d = {{dict_str}}, what does d["{{key}}"] return?'
@@ -1275,6 +1305,7 @@ exercises:
     level: practice
     prereqs: [lists]
     type: predict
+    grading_strategy: execution
     pattern: query
     generator: list-method
     prompt: "What does this code print?"
@@ -1294,6 +1325,7 @@ exercises:
     level: practice
     prereqs: [dicts, lists]
     type: predict
+    grading_strategy: execution
     pattern: indexing
     generator: nested-access
     prompt: "What does this code print?"
@@ -1318,6 +1350,8 @@ exercises:
     prompt: |
       Given {{varName}} = {{dataStr}}, write an expression to access the value {{result}}.
     expected_answer: "{{accessExpr}}"
+    accepted_solutions:
+      - "{{accessExpr}}"
     hints:
       - "This is a {{description}}"
       - "Chain bracket notation: dict keys use strings, list indices use integers"
@@ -1333,6 +1367,7 @@ exercises:
     level: practice
     prereqs: [tuples]
     type: predict
+    grading_strategy: execution
     pattern: indexing
     generator: tuple-access
     prompt: "What does {{tupleVar}}[{{index}}] return?"
@@ -1382,6 +1417,7 @@ exercises:
     level: practice
     prereqs: [sets]
     type: predict
+    grading_strategy: execution
     pattern: logical
     generator: set-ops
     prompt: |
@@ -1408,6 +1444,8 @@ exercises:
     generator: set-ops
     prompt: "Write the {{operationName}} of {{set1}} and {{set2}}"
     expected_answer: "{{set1}} {{operation}} {{set2}}"
+    accepted_solutions:
+      - "{{set1}} {{operation}} {{set2}}"
     hints:
       - "{{operationName}} uses the {{operation}} operator"
       - "Place the operator between the two sets"
@@ -1594,6 +1632,7 @@ exercises:
     level: practice
     prereqs: [dict-iteration]
     type: predict
+    grading_strategy: execution
     pattern: iteration
     prompt: What does this code print when iterating over the dict?
     code: |
@@ -1618,6 +1657,7 @@ exercises:
     level: practice
     prereqs: [dict-iteration]
     type: predict
+    grading_strategy: execution
     pattern: iteration
     prompt: What does this .items() iteration code print?
     code: |

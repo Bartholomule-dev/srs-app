@@ -87,6 +87,7 @@ exercises:
     level: intro
     prereqs: [list-comp]
     type: predict
+    grading_strategy: execution
     pattern: mapping
     prompt: What does this dict comprehension create?
     code: "{{{item_singular}}_id: {{item_singular}}_id*2 for {{item_singular}}_id in [1, 2, 3]}"
@@ -156,6 +157,7 @@ exercises:
     level: intro
     prereqs: [set-comp]
     type: predict
+    grading_strategy: execution
     pattern: mapping
     prompt: What values are in this set? (order doesn't matter)
     code: "{{{item_singular}}_id % 3 for {{item_singular}}_id in [1, 2, 3, 4, 5, 6]}"
@@ -433,6 +435,7 @@ exercises:
     level: intro
     prereqs: [list-comp]
     type: predict
+    grading_strategy: execution
     pattern: mapping
     generator: comp-mapping
     prompt: What list gets printed?
@@ -454,6 +457,7 @@ exercises:
     level: practice
     prereqs: [list-comp]
     type: predict
+    grading_strategy: execution
     pattern: filtering
     generator: comp-filter
     prompt: What list gets printed?
@@ -475,6 +479,7 @@ exercises:
     level: practice
     prereqs: [dict-comp]
     type: predict
+    grading_strategy: execution
     pattern: mapping
     prompt: What dictionary gets printed?
     code: |
@@ -500,6 +505,7 @@ exercises:
     level: edge
     prereqs: [list-comp]
     type: predict
+    grading_strategy: execution
     pattern: mapping
     prompt: What list gets printed?
     code: |
@@ -526,6 +532,7 @@ exercises:
     level: practice
     prereqs: [dict-comp]
     type: predict
+    grading_strategy: execution
     pattern: mapping
     generator: dict-comp
     prompt: "What dictionary does this dict comprehension produce?"
@@ -551,6 +558,8 @@ exercises:
     generator: dict-comp
     prompt: "Write a dict comprehension that {{description}} for range({{n}})"
     expected_answer: "{{code}}"
+    accepted_solutions:
+      - "{{code}}"
     hints:
       - "Use {key: value for x in range({{n}})}"
       - "The colon separates key from value"
@@ -566,6 +575,7 @@ exercises:
     level: practice
     prereqs: [list-comp]
     type: predict
+    grading_strategy: execution
     pattern: mapping
     generator: list-transform
     prompt: "What does this code print for the {{list_name}}?"
@@ -588,6 +598,7 @@ exercises:
     level: practice
     prereqs: [list-comp]
     type: predict
+    grading_strategy: execution
     pattern: filtering
     generator: list-transform
     prompt: "What does this code print when filtering the {{list_name}}?"
@@ -614,6 +625,8 @@ exercises:
     generator: list-transform
     prompt: "Write a list comprehension to {{description}} from {{list_name}} = {{inputStr}}"
     expected_answer: "{{expression}}"
+    accepted_solutions:
+      - "{{expression}}"
     hints:
       - "Use [expression for {{item_singular}} in {{list_name}}] syntax"
       - "The expression should {{description}}"
@@ -700,6 +713,7 @@ exercises:
     level: practice
     prereqs: [generators]
     type: predict
+    grading_strategy: execution
     pattern: output
     prompt: "What gets printed? Write each line of output."
     code: |
