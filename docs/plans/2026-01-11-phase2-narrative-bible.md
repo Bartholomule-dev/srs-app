@@ -159,3 +159,51 @@ shows the current values pulled from `paths/python/skins/*.yaml`.
 - Narrative Bible approved and linked in plan doc.
 - Canonical dataset names and shapes defined for generators.
 - Prompt language guide agreed upon for future rewrites.
+
+## Skin Authoring Guide
+
+### Purpose
+
+Skins translate TinyStore's canonical entities into domain-specific names while maintaining the same structural relationships. This allows exercises to feel contextually relevant while the underlying learning progression stays consistent.
+
+### Required Structural Variables
+
+Every skin MUST define these variables that map to TinyStore concepts:
+
+| Variable | TinyStore Concept | Example (task-manager) |
+|----------|-------------------|------------------------|
+| `list_name` | products/orders/customers | tasks |
+| `item_singular` | product/order/customer | task |
+| `item_plural` | products/orders/customers | tasks |
+| `item_examples` | ["mug", "notebook", "lamp"] | ["buy groceries", "call mom"] |
+| `record_keys` | ["product_id", "name", "price"] | ["title", "done", "priority"] |
+| `attr_key_1` | price, total, rating | priority |
+| `attr_key_2` | quantity, status, tier | due_date |
+| `id_var` | product_id, order_id | task_id |
+
+### Structural Consistency
+
+The skin's domain should support these patterns:
+
+1. **Collection of records**: `list_name` contains multiple `item_singular` items
+2. **Record with ID**: Each item has an `id_var` for unique identification
+3. **Numeric/Status attributes**: `attr_key_1` and `attr_key_2` for comparison/filtering
+4. **File persistence**: `filename` for saving/loading the collection
+
+### Context Text Guidelines
+
+Each context should:
+- Be 20-80 characters
+- Reference the skin's domain terms
+- Explain WHY this step matters in the workflow
+- Avoid generic phrases like "Use this step" or "TODO"
+
+Good: "Save tasks to a file so they persist between sessions."
+Bad: "Use this step in the Task Manager workflow: File Write."
+
+### Validation
+
+Run `pnpm validate:paths` to check:
+- All required structural variables are present
+- No placeholder contexts remain
+- Context text meets minimum length
