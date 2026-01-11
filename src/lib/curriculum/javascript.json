@@ -1,0 +1,110 @@
+{
+  "language": "javascript",
+  "version": "1.0.0",
+  "concepts": [
+    {
+      "slug": "foundations",
+      "name": "JavaScript Foundations",
+      "description": "Variables, constants, and basic types in JavaScript",
+      "prereqs": [],
+      "subconcepts": ["variables", "constants", "types"]
+    },
+    {
+      "slug": "functions",
+      "name": "Functions",
+      "description": "Function declarations, expressions, arrow functions, and closures",
+      "prereqs": ["foundations"],
+      "subconcepts": ["fn-declaration", "arrow-functions", "closures"]
+    },
+    {
+      "slug": "async",
+      "name": "Asynchronous JavaScript",
+      "description": "Promises, async/await, and event loop",
+      "prereqs": ["functions"],
+      "subconcepts": ["promises", "async-await", "for-of"]
+    }
+  ],
+  "subconcepts": {
+    "variables": {
+      "name": "Variables",
+      "concept": "foundations",
+      "prereqs": [],
+      "teaching": {
+        "explanation": "Use let for variables that change, const for constants. Avoid var in modern JavaScript.",
+        "exampleCode": "let count = 0;\nconst name = 'Alice';"
+      }
+    },
+    "constants": {
+      "name": "Constants",
+      "concept": "foundations",
+      "prereqs": ["variables"],
+      "teaching": {
+        "explanation": "const declares block-scoped constants. The binding is immutable, but object properties can still change.",
+        "exampleCode": "const API_URL = 'https://api.example.com';"
+      }
+    },
+    "types": {
+      "name": "Types",
+      "concept": "foundations",
+      "prereqs": ["variables"],
+      "teaching": {
+        "explanation": "JavaScript has primitives (string, number, boolean, null, undefined, symbol, bigint) and objects.",
+        "exampleCode": "typeof 'hello' // 'string'\ntypeof 42 // 'number'"
+      }
+    },
+    "fn-declaration": {
+      "name": "Function Declarations",
+      "concept": "functions",
+      "prereqs": [],
+      "teaching": {
+        "explanation": "Function declarations are hoisted. Use function keyword followed by name and parameters.",
+        "exampleCode": "function greet(name) {\n  return `Hello, ${name}!`;\n}"
+      }
+    },
+    "arrow-functions": {
+      "name": "Arrow Functions",
+      "concept": "functions",
+      "prereqs": ["fn-declaration"],
+      "teaching": {
+        "explanation": "Arrow functions provide concise syntax and lexical this binding. Use for callbacks and short functions.",
+        "exampleCode": "const double = (x) => x * 2;\nconst greet = name => `Hello, ${name}!`;"
+      }
+    },
+    "closures": {
+      "name": "Closures",
+      "concept": "functions",
+      "prereqs": ["fn-declaration"],
+      "teaching": {
+        "explanation": "A closure is a function that remembers variables from its outer scope even after the outer function returns.",
+        "exampleCode": "function counter() {\n  let count = 0;\n  return () => ++count;\n}"
+      }
+    },
+    "promises": {
+      "name": "Promises",
+      "concept": "async",
+      "prereqs": ["fn-declaration"],
+      "teaching": {
+        "explanation": "Promises represent eventual completion or failure. Use .then() for success, .catch() for errors.",
+        "exampleCode": "fetch(url)\n  .then(res => res.json())\n  .catch(err => console.error(err));"
+      }
+    },
+    "async-await": {
+      "name": "Async/Await",
+      "concept": "async",
+      "prereqs": ["promises"],
+      "teaching": {
+        "explanation": "async/await provides synchronous-looking syntax for promises. Use try/catch for error handling.",
+        "exampleCode": "async function fetchData() {\n  const res = await fetch(url);\n  return res.json();\n}"
+      }
+    },
+    "for-of": {
+      "name": "For-Of Loops",
+      "concept": "async",
+      "prereqs": [],
+      "teaching": {
+        "explanation": "for-of loops iterate over iterable objects like arrays and strings.",
+        "exampleCode": "for (const item of array) {\n  console.log(item);\n}"
+      }
+    }
+  }
+}

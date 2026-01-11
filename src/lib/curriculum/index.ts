@@ -20,7 +20,11 @@ export {
   getSubconceptDefinition,
   getAllSubconcepts,
   getCurriculumConcepts,
+  loadCurriculum,
+  getSupportedLanguages,
 } from './loader';
+
+export type { CurriculumWithSubconcepts } from './loader';
 
 export {
   getUnlockedConcepts,
