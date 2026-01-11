@@ -163,6 +163,35 @@ async function main() {
       }
     }
 
+    // Placeholder context detection
+    const PLACEHOLDER_PATTERNS = [
+      /Use this step in the .* workflow/i,
+      /\[TODO\]/i,
+      /PLACEHOLDER/i,
+    ];
+
+    let placeholderCount = 0;
+    for (const skin of skins) {
+      for (const [exercise, context] of Object.entries(skin.contexts)) {
+        for (const pattern of PLACEHOLDER_PATTERNS) {
+          if (pattern.test(context)) {
+            placeholderCount++;
+            // Only warn, don't error - we'll fix these incrementally
+            if (placeholderCount <= 10) {
+              console.warn(`  ⚠ Skin ${skin.id}: placeholder context for '${exercise}'`);
+            }
+            break;
+          }
+        }
+      }
+    }
+    if (placeholderCount > 10) {
+      console.warn(`  ⚠ ... and ${placeholderCount - 10} more placeholder contexts`);
+    }
+    if (placeholderCount > 0) {
+      console.warn(`  ⚠ Total: ${placeholderCount} placeholder contexts need real text`);
+    }
+
     // Summary
     console.log('\n---');
     if (errors === 0) {
