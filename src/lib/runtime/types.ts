@@ -2,6 +2,11 @@
 // Abstract interface for language-specific code execution and comparison
 
 import type { Language } from '@/lib/types';
+import type { TokenCompareResult } from '@/lib/exercise/token-compare';
+import type { AstCompareResult, AstCompareOptions } from '@/lib/exercise/ast-compare';
+
+// Re-export existing types instead of redefining them
+export type { TokenCompareResult, AstCompareResult, AstCompareOptions };
 
 /**
  * Result of code execution.
@@ -10,33 +15,6 @@ export interface ExecutionResult {
   success: boolean;
   output: string | null;
   error: string | null;
-}
-
-/**
- * Result of token-based comparison.
- */
-export interface TokenCompareResult {
-  match: boolean;
-  matchedAlternative: string | null;
-}
-
-/**
- * Result of AST-based comparison.
- */
-export interface AstCompareResult {
-  match: boolean;
-  matchedAlternative: string | null;
-  infraAvailable: boolean;
-  error?: string;
-}
-
-/**
- * Options for AST comparison.
- */
-export interface AstCompareOptions {
-  renameLocals?: boolean;
-  normalizeSlices?: boolean;
-  ignoreDocstrings?: boolean;
 }
 
 /**
