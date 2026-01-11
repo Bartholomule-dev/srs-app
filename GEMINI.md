@@ -20,7 +20,7 @@
 
 A gamified web platform for practicing code syntax through spaced repetition. Target users are AI-assisted developers who want to maintain their programming fundamentals.
 
-**Current Status:** Blueprint + Skin System Complete - 529 exercises (109 dynamic with 38 generators), 15 blueprints (234 beats), 22 skins. Phase 3 Gamification complete (points, streaks, achievements, skill tree). Next: Onboarding flow, then JavaScript/TypeScript exercises.
+**Current Status:** Multi-Language Infrastructure Complete - 529 Python exercises (109 dynamic with 38 generators), JavaScript curriculum stub ready, 15 blueprints (234 beats), 22 skins. Phase 3 Gamification complete (points, streaks, achievements, skill tree). Per-language progress tracking. Next: JavaScript exercises, then onboarding flow.
 
 ---
 
@@ -82,11 +82,11 @@ src/
 │   ├── dashboard/        # Greeting, PracticeCTA, DueCardsBanner, SkillTree
 │   └── stats/            # StatsCard, StatsGrid
 └── lib/
-    ├── hooks/            # useAuth, useProfile, useConceptSRS, useConceptSession, useStats, useSkillTree
+    ├── hooks/            # useAuth, useProfile, useActiveLanguage, useConceptSRS(lang), useConceptSession(lang), useSkillTree(lang), useLanguageStats(lang), useStats
     ├── srs/              # FSRS algorithm (ts-fsrs adapter)
     ├── exercise/         # Answer matching, quality inference, two-pass grading, construct detection
     ├── session/          # Session types, interleaving, teaching cards, anti-repeat
-    ├── curriculum/       # python.json curriculum graph, types, loader
+    ├── curriculum/       # python.json, javascript.json (stub), multi-language loader
     ├── generators/       # Dynamic exercise generation (13 generators)
     ├── context/          # PyodideContext for Python execution
     ├── stats/            # Stats queries, streak calculation, dynamic metrics
@@ -155,12 +155,12 @@ exercises/python/         # 352 exercises across 10 YAML files (source of truth)
 ## Database Schema
 
 Key tables:
-- `profiles` - User data with auto-generated username, stats
-- `exercises` - Exercise content with slug-based identity (352 Python exercises)
-- `subconcept_progress` - FSRS state per subconcept (stability, difficulty, fsrs_state, reps, lapses)
-- `exercise_attempts` - Exercise usage tracking for selection algorithm
+- `profiles` - User data with auto-generated username, stats, preferred_language
+- `exercises` - Exercise content with slug-based identity (529 Python exercises)
+- `subconcept_progress` - FSRS state per subconcept with **language column** (unique: user_id, language, subconcept_slug)
+- `exercise_attempts` - Exercise usage tracking with **language column** (unique: user_id, language, exercise_slug)
 
-RLS enabled on all user tables.
+RLS enabled on all user tables. Progress tracked independently per language.
 
 ---
 
@@ -199,12 +199,13 @@ RLS enabled on all user tables.
 21. Skill Tree Visualization - 65 subconcept nodes, 4 states, dependency lines
 22. Phase 3 Gamification - Points, streaks, achievements, contribution graph
 23. Blueprint + Skin System - 15 blueprints (234 beats), 22 skins
+24. Multi-Language Infrastructure - Language-aware loaders, hooks, UI, JavaScript stub
 
 ---
 
 ## Next Steps
 
-1. **Onboarding:** Integrate ExperienceLevelSelector into user flow
-2. **Languages:** JavaScript/TypeScript exercises
-3. **Leaderboards:** Daily/weekly/all-time rankings (deferred from Phase 3)
-4. **More Blueprints/Skins:** Expand content coverage
+1. **JavaScript Exercises:** Create content for JavaScript curriculum
+2. **JavaScript Blueprints/Skins:** Presentation layer for JavaScript
+3. **Onboarding:** Integrate ExperienceLevelSelector into user flow
+4. **Leaderboards:** Daily/weekly/all-time rankings (deferred from Phase 3)

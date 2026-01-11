@@ -6,7 +6,7 @@ A spaced repetition platform for practicing code syntax. Users get short practic
 
 **Stack:** Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, Supabase (PostgreSQL + Auth), Vitest + Playwright
 
-**Current State:** Blueprint + Skin System complete. 529 exercises (109 dynamic with 38 generators) across 65 subconcepts. Phase 3 Gamification complete (points, streaks, achievements, skill tree). 15 blueprints (234 beats), 22 skins.
+**Current State:** Multi-Language Infrastructure complete. 529 Python exercises (109 dynamic with 38 generators) across 65 subconcepts + JavaScript curriculum stub. Phase 3 Gamification complete (points, streaks, achievements, skill tree). 15 blueprints (234 beats), 22 skins. Per-language progress tracking.
 
 ---
 
@@ -24,9 +24,9 @@ src/
 │   ├── stats/              # StatsCard, StatsGrid, ContributionGraph
 │   └── skill-tree/         # SkillTree, ConceptCluster, SubconceptNode
 └── lib/
-    ├── hooks/              # useAuth, useProfile, useConceptSRS, useConceptSession, useStats, usePathContext
+    ├── hooks/              # useAuth, useProfile, useActiveLanguage, useConceptSRS(lang), useConceptSession(lang), useSkillTree(lang), useLanguageStats(lang), useStats, usePathContext
     ├── srs/                # FSRS algorithm (ts-fsrs adapter), concept-based scheduling
-    ├── curriculum/         # python.json (11 concepts, 65 subconcepts), loader
+    ├── curriculum/         # python.json, javascript.json (stub), loader with language param
     ├── session/            # Card interleaving, teaching pairs, anti-repeat
     ├── exercise/           # Answer normalization, matching, two-pass grading, construct detection
     ├── generators/         # Dynamic exercise generation (38 generators)
@@ -52,9 +52,11 @@ pnpm build                  # Production build
 pnpm lint && pnpm typecheck # Code quality
 pnpm test                   # Vitest (2219 tests)
 pnpm test:e2e               # Playwright E2E
-pnpm validate:exercises     # Validate exercise YAML
+pnpm validate:exercises     # Validate Python exercise YAML
+pnpm validate:exercises:js  # Validate JavaScript exercise YAML
 pnpm validate:dynamic       # Validate dynamic exercises
-pnpm validate:paths         # Validate blueprints/skins
+pnpm validate:paths         # Validate Python blueprints/skins
+pnpm validate:paths:js      # Validate JavaScript blueprints/skins
 pnpm generate:exercise-list # Generate Obsidian docs
 pnpm db:start               # Local Supabase
 pnpm db:reset               # Reset + migrate
@@ -73,13 +75,13 @@ Tailwind CSS 4 with CSS variables in `globals.css`. Use `cn()` from `@/lib/utils
 ### Database Tables
 | Table | Purpose |
 |-------|---------|
-| `profiles` | User data, stats (streak, accuracy), experience_level, recent_skins |
+| `profiles` | User data, stats (streak, accuracy), experience_level, preferred_language, recent_skins |
 | `exercises` | Content with taxonomy (concept, subconcept, level, type, generator) |
-| `subconcept_progress` | FSRS state per subconcept (stability, difficulty, fsrs_state) |
-| `exercise_attempts` | Usage tracking, points_earned, rating |
+| `subconcept_progress` | FSRS state per subconcept + **language column** (unique: user_id, language, subconcept_slug) |
+| `exercise_attempts` | Usage tracking, points_earned, rating + **language column** (unique: user_id, language, exercise_slug) |
 | `user_achievements` | Unlocked achievements |
 
-RLS enabled on all user tables. Use `auth.uid()` for user scoping.
+RLS enabled on all user tables. Use `auth.uid()` for user scoping. Progress tracked per-language.
 
 ### Exercise Taxonomy
 Every exercise has: `concept`, `subconcept`, `level` (intro/practice/edge/integrated), `type` (write/fill-in/predict), `pattern`, `objective`.

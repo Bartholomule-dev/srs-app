@@ -23,6 +23,7 @@ SRS-App is a gamified web platform for practicing code syntax through spaced rep
 - **Phase 3 Gamification:** ✅ Complete (points, streaks, achievements, skill tree)
 - **Blueprint + Skin System:** ✅ Complete (15 blueprints, 22 skins, 234 beats)
 - **Dynamic Exercises:** ✅ Complete (38 generators, 109 dynamic exercises)
+- **Multi-Language Infrastructure:** ✅ Complete (Python + JavaScript stub, per-language progress)
 
 ## Completed Milestones
 1. **Milestone 1: Database & Types** - Migrations, RLS, types, seed data
@@ -48,11 +49,14 @@ SRS-App is a gamified web platform for practicing code syntax through spaced rep
 26. **Milestone 26: Skill Tree Visualization** - Badge tiers, dependency lines
 27. **Milestone 27: Phase 3 Gamification** - Points, streaks, achievements, contribution graph
 28. **Milestone 28: Blueprint + Skin System** - 15 blueprints, 22 skins, presentation layer
+29-31. Milestones 29-31 documented in CLAUDE.md
+32. **Milestone 32: Multi-Language Infrastructure** - Language-aware loaders, hooks, UI, JavaScript stub
 
 ## Next Up
-- **Username Selection UI** (auto-generated for now)
-- **Advanced Gamification:** Achievements, leaderboards
-- **Additional Languages:** JavaScript/TypeScript, SQL
+- **JavaScript Exercises:** Create content for JavaScript curriculum
+- **JavaScript Blueprints/Skins:** Presentation layer for JavaScript
+- **Onboarding Flow:** Integrate ExperienceLevelSelector into user flow
+- **Leaderboards:** Daily/weekly/all-time rankings
 
 ## Tech Stack
 | Layer | Technology |
