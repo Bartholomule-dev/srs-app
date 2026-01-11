@@ -47,7 +47,7 @@ function LoadingSkeleton() {
 
 function DashboardContent() {
   const { user } = useAuth();
-  const { stats, loading: statsLoading } = useStats();
+  const { stats } = useStats();
   const { days: contributionDays, loading: contributionLoading } = useContributionGraph();
   const { dueCount, isLoading: dueLoading, error } = useDueCount(user?.id);
 
@@ -89,7 +89,7 @@ function DashboardContent() {
             <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
               Your Progress
             </h2>
-            <StatsGrid stats={stats} loading={statsLoading} />
+            <StatsGrid />
           </section>
 
           {/* Recent Achievements Section */}

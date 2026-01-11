@@ -3,12 +3,7 @@
 import { StatsCard } from './StatsCard';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
-import type { UserStats } from '@/lib/stats';
-
-export interface StatsGridProps {
-  stats: UserStats | null;
-  loading?: boolean;
-}
+import { useStats, useLanguageStats, useActiveLanguage } from '@/lib/hooks';
 
 function HeroSkeleton() {
   return (
@@ -38,8 +33,25 @@ function SupportingSkeleton() {
   );
 }
 
-export function StatsGrid({ stats, loading = false }: StatsGridProps) {
-  if (loading || !stats) {
+/**
+ * StatsGrid displays hybrid stats:
+ * - Global stats (streak) from useStats - not filtered by language
+ * - Per-language stats (accuracy, exercises today) from useLanguageStats
+ *
+ * Stats automatically update when user switches language via LanguageSwitcher.
+ */
+export function StatsGrid() {
+  const { language } = useActiveLanguage();
+  const { stats: globalStats, loading: globalLoading } = useStats();
+  const {
+    accuracy,
+    exercisesToday,
+    isLoading: languageLoading,
+  } = useLanguageStats(language);
+
+  const loading = globalLoading || languageLoading;
+
+  if (loading || !globalStats) {
     return (
       <div className="space-y-4">
         {/* Hero skeleton */}
@@ -54,29 +66,37 @@ export function StatsGrid({ stats, loading = false }: StatsGridProps) {
     );
   }
 
+  // Format language name for display
+  const languageLabel =
+    language === 'python'
+      ? 'Python'
+      : language === 'javascript'
+        ? 'JS'
+        : language.charAt(0).toUpperCase() + language.slice(1);
+
   return (
     <div className="space-y-4">
-      {/* Hero stat: Current Streak */}
+      {/* Hero stat: Current Streak (global, not filtered by language) */}
       <StatsCard
         label="Streak"
-        value={stats.currentStreak}
+        value={globalStats.currentStreak}
         icon="fire"
         variant="hero"
         delay={0}
       />
 
-      {/* Supporting stats row */}
+      {/* Supporting stats row (per-language) */}
       <div className="grid grid-cols-3 gap-4">
         <StatsCard
-          label="Today"
-          value={stats.cardsReviewedToday}
+          label={`${languageLabel} Today`}
+          value={exercisesToday}
           icon="check"
           variant="supporting"
           delay={0.05}
         />
         <StatsCard
-          label="Accuracy"
-          value={stats.accuracyPercent}
+          label={`${languageLabel} Accuracy`}
+          value={accuracy}
           suffix="%"
           icon="target"
           variant="supporting"
@@ -84,7 +104,7 @@ export function StatsGrid({ stats, loading = false }: StatsGridProps) {
         />
         <StatsCard
           label="Total"
-          value={stats.totalExercisesCompleted}
+          value={globalStats.totalExercisesCompleted}
           icon="chart"
           variant="supporting"
           delay={0.15}
