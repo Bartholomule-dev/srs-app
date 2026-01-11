@@ -10,16 +10,20 @@ export interface UseDueCountReturn {
   refetch: () => void;
 }
 
-export function useDueCount(userId: string | undefined): UseDueCountReturn {
+export function useDueCount(
+  userId: string | undefined,
+  language: string = 'python'
+): UseDueCountReturn {
   const query = useQuery({
-    queryKey: ['dueCount', userId],
+    queryKey: ['dueCount', userId, language],
     queryFn: async () => {
       if (!userId) return 0;
 
       const { data, error } = await supabase
         .from('subconcept_progress')
         .select('next_review')
-        .eq('user_id', userId);
+        .eq('user_id', userId)
+        .eq('language', language);
 
       if (error) throw error;
 
