@@ -55,7 +55,8 @@ function getDueSubconcepts(progress: SubconceptProgress[], now: Date): Subconcep
 function createInitialSubconceptState(
   subconceptSlug: string,
   conceptSlug: ConceptSlug,
-  userId: string
+  userId: string,
+  language: string = 'python'
 ): SubconceptProgress {
   const card = createEmptyFSRSCard(new Date());
   return {
@@ -63,6 +64,7 @@ function createInitialSubconceptState(
     userId,
     subconceptSlug,
     conceptSlug,
+    language,
     stability: card.stability,
     difficulty: card.difficulty,
     fsrsState: STATE_MAP[card.state] as 0 | 1 | 2 | 3,

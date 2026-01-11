@@ -1,19 +1,54 @@
 // src/lib/curriculum/types.ts
 // Types for curriculum taxonomy and learning progression
 
-/** Concept (milestone) in the curriculum DAG */
-export type ConceptSlug =
-  | 'foundations'
-  | 'strings'
-  | 'numbers-booleans'
-  | 'conditionals'
-  | 'collections'
-  | 'loops'
-  | 'functions'
-  | 'comprehensions'
-  | 'error-handling'
-  | 'oop'
-  | 'modules-files';
+/** Supported programming languages */
+export type Language = 'python' | 'javascript';
+
+/** Python concept slugs */
+export const PYTHON_CONCEPTS = [
+  'foundations',
+  'strings',
+  'numbers-booleans',
+  'conditionals',
+  'collections',
+  'loops',
+  'functions',
+  'comprehensions',
+  'error-handling',
+  'oop',
+  'modules-files',
+] as const;
+
+/** JavaScript concept slugs */
+export const JAVASCRIPT_CONCEPTS = [
+  'foundations',
+  'strings',
+  'numbers-booleans',
+  'conditionals',
+  'arrays-objects',
+  'loops',
+  'functions',
+  'async',
+  'error-handling',
+  'oop',
+  'modules-dom',
+] as const;
+
+/** Concept (milestone) in the curriculum DAG - validated per-language at runtime */
+export type ConceptSlug = string;
+
+/**
+ * Validate that a concept slug is valid for a given language
+ */
+export function isValidConcept(slug: string, language: string): boolean {
+  if (language === 'python') {
+    return (PYTHON_CONCEPTS as readonly string[]).includes(slug);
+  }
+  if (language === 'javascript') {
+    return (JAVASCRIPT_CONCEPTS as readonly string[]).includes(slug);
+  }
+  return false;
+}
 
 /** Exercise difficulty level within a subconcept */
 export type ExerciseLevel = 'intro' | 'practice' | 'edge';
@@ -81,6 +116,7 @@ export interface SubconceptProgress {
   userId: string;
   subconceptSlug: string;
   conceptSlug: ConceptSlug;
+  language: string;
 
   // FSRS fields
   stability: number;
@@ -103,6 +139,7 @@ export interface ExerciseAttempt {
   id: string;
   userId: string;
   exerciseSlug: string;
+  language: string;
   timesSeen: number;
   timesCorrect: number;
   lastSeenAt: Date;

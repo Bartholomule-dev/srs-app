@@ -17,6 +17,7 @@ export interface DbExerciseAttempt {
   id: string;
   user_id: string;
   exercise_slug: string;
+  language: string;
   times_seen: number;
   times_correct: number;
   last_seen_at: string | null;
@@ -31,6 +32,7 @@ export interface DbSubconceptProgress {
   user_id: string;
   subconcept_slug: string;
   concept_slug: string;
+  language: string;
   stability: number | null;
   difficulty: number | null;
   fsrs_state: number | null;
@@ -52,6 +54,7 @@ export function mapDbToExerciseAttempt(row: DbExerciseAttempt): ExerciseAttempt 
     id: row.id,
     userId: row.user_id,
     exerciseSlug: row.exercise_slug,
+    language: row.language,
     timesSeen: row.times_seen,
     timesCorrect: row.times_correct,
     lastSeenAt: row.last_seen_at ? new Date(row.last_seen_at) : new Date(),
@@ -82,6 +85,7 @@ export function mapDbToSubconceptProgress(row: DbSubconceptProgress): Subconcept
     userId: row.user_id,
     subconceptSlug: row.subconcept_slug,
     conceptSlug: row.concept_slug as ConceptSlug,
+    language: row.language,
     stability: row.stability ?? 0,
     difficulty: row.difficulty ?? 0,
     fsrsState: validateFsrsState(row.fsrs_state),

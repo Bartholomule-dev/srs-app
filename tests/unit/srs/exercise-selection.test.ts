@@ -60,6 +60,7 @@ function createAttempt(slug: string, timesSeen: number, timesCorrect: number = t
     id: `attempt-${slug}`,
     userId: 'user-123',
     exerciseSlug: slug,
+    language: 'python',
     timesSeen,
     timesCorrect,
     lastSeenAt: new Date(),

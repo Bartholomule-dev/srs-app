@@ -307,6 +307,7 @@ describe('Edge Cases - Exercise Selection', () => {
       id: 'a-1',
       userId: 'user',
       exerciseSlug: 'ex-1',
+      language: 'python',
       timesSeen: 1000, // Seen many times
       timesCorrect: 999,
       lastSeenAt: new Date(),

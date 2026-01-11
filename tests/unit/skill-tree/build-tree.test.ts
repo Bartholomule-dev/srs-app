@@ -16,6 +16,7 @@ describe('buildSkillTreeData', () => {
     userId: 'user-1',
     subconceptSlug: slug,
     conceptSlug: concept,
+    language: 'python',
     stability,
     difficulty: 5,
     fsrsState: 2,

@@ -18,6 +18,7 @@ const mockDueSubconcepts: SubconceptProgress[] = [
     userId: 'user-123',
     subconceptSlug: 'for',
     conceptSlug: 'loops',
+    language: 'python',
     stability: 0,
     difficulty: 0,
     fsrsState: 0 as 0 | 1 | 2 | 3,

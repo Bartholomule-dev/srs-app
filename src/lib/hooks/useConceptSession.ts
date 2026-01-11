@@ -419,6 +419,7 @@ export function useConceptSession(): UseConceptSessionReturn {
               userId: userId,
               subconceptSlug: slug,
               conceptSlug: practiceExercise.concept,
+              language: 'python', // TODO: Use session language when multi-language support is added
               stability: initialCard.stability,
               difficulty: initialCard.difficulty,
               fsrsState: 0 as 0 | 1 | 2 | 3, // New state

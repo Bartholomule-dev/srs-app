@@ -66,6 +66,7 @@ function createAttempt(overrides: Partial<ExerciseAttempt>): ExerciseAttempt {
     id: 'test-id',
     userId: 'user-1',
     exerciseSlug: 'test-exercise',
+    language: 'python',
     timesSeen: 0,
     timesCorrect: 0,
     lastSeenAt: new Date('2026-01-01T00:00:00Z'),

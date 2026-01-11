@@ -17,6 +17,7 @@ describe('getSubconceptState', () => {
     userId: 'user-1',
     subconceptSlug: 'test-subconcept',
     conceptSlug: 'foundations',
+    language: 'python',
     stability,
     difficulty: 5,
     fsrsState: 2,
