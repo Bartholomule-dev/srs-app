@@ -6,6 +6,11 @@ const runtimes = new Map<Language, LanguageRuntime>();
 
 /**
  * Registry for language runtimes.
+ *
+ * **Thread Safety:** This registry is not thread-safe. All runtime registrations
+ * should be performed synchronously during application startup before any
+ * concurrent access occurs. The module-level Map is shared across all imports,
+ * so registrations are global within the process.
  */
 export const RuntimeRegistry = {
   get(language: Language): LanguageRuntime | undefined {
