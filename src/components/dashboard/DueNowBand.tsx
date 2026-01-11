@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Button } from '@/components/ui';
 import { respiratoryPulse } from '@/lib/motion';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 interface DueNowBandProps {
   dueCount: number;
@@ -44,7 +45,11 @@ export function DueNowBand({ dueCount, streak, isLoading = false }: DueNowBandPr
       `}
     >
       <div className="flex items-center justify-between gap-4">
-        <div>
+        <div className="flex items-center gap-4">
+          <LanguageSwitcher />
+          <div className="h-8 w-px bg-[var(--border)]" aria-hidden="true" />
+        </div>
+        <div className="flex-1">
           {hasDueCards ? (
             <>
               <div className="flex items-baseline gap-2">
@@ -72,7 +77,6 @@ export function DueNowBand({ dueCount, streak, isLoading = false }: DueNowBandPr
             </div>
           )}
         </div>
-
         <motion.div
           animate={hasDueCards && !reduceMotion ? respiratoryPulse.animate : undefined}
           transition={hasDueCards && !reduceMotion ? respiratoryPulse.transition : undefined}

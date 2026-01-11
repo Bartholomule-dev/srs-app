@@ -2,6 +2,7 @@ export { DueCardsBanner } from './DueCardsBanner';
 export { DueNowBand } from './DueNowBand';
 export { EmptyState } from './EmptyState';
 export { Greeting } from './Greeting';
+export { LanguageSwitcher } from './LanguageSwitcher';
 export { PracticeCTA } from './PracticeCTA';
 export { RecentAchievements } from './RecentAchievements';
 export { RecentAchievementsLazy } from './RecentAchievementsLazy';
