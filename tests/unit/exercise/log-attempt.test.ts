@@ -127,4 +127,35 @@ describe('buildAttemptRecord', () => {
 
     expect(record.grading_method).toBe('execution');
   });
+
+  it('defaults language to python when not provided', () => {
+    const data: AttemptLogData = {
+      userId: 'user-123',
+      exerciseSlug: 'test-exercise',
+      gradingResult: baseGradingResult,
+      responseTimeMs: 5000,
+      hintUsed: false,
+      qualityScore: 4,
+    };
+
+    const record = buildAttemptRecord(data);
+
+    expect(record.language).toBe('python');
+  });
+
+  it('uses provided language when specified', () => {
+    const data: AttemptLogData = {
+      userId: 'user-123',
+      exerciseSlug: 'test-exercise',
+      gradingResult: baseGradingResult,
+      responseTimeMs: 5000,
+      hintUsed: false,
+      qualityScore: 4,
+      language: 'javascript',
+    };
+
+    const record = buildAttemptRecord(data);
+
+    expect(record.language).toBe('javascript');
+  });
 });

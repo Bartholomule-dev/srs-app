@@ -12,13 +12,13 @@ const mockRecordSubconceptResult = vi.fn();
 const mockGetNextExercise = vi.fn();
 const mockRefetch = vi.fn();
 
-const mockDueSubconcepts: SubconceptProgress[] = [
+const createMockDueSubconcepts = (language: string = 'python'): SubconceptProgress[] => [
   {
     id: 'sp-1',
     userId: 'user-123',
     subconceptSlug: 'for',
     conceptSlug: 'loops',
-    language: 'python',
+    language,
     stability: 0,
     difficulty: 0,
     fsrsState: 0 as 0 | 1 | 2 | 3,
@@ -33,16 +33,18 @@ const mockDueSubconcepts: SubconceptProgress[] = [
   },
 ];
 
+const mockDueSubconcepts = createMockDueSubconcepts();
+
 vi.mock('@/lib/hooks/useConceptSRS', () => ({
-  useConceptSRS: () => ({
-    dueSubconcepts: mockDueSubconcepts,
-    currentSubconcept: mockDueSubconcepts[0],
+  useConceptSRS: (language: string = 'python') => ({
+    dueSubconcepts: createMockDueSubconcepts(language),
+    currentSubconcept: createMockDueSubconcepts(language)[0],
     loading: false,
     error: null,
     recordSubconceptResult: mockRecordSubconceptResult,
     getNextExercise: mockGetNextExercise,
     refetch: mockRefetch,
-    remainingCount: mockDueSubconcepts.length,
+    remainingCount: createMockDueSubconcepts(language).length,
   }),
 }));
 
@@ -322,6 +324,42 @@ describe('useConceptSession', () => {
 
       // With paths mocked to reject, currentSkinnedCard should be null
       expect(result.current.currentSkinnedCard).toBeNull();
+    });
+  });
+
+  describe('language parameter', () => {
+    it('defaults to python when no language provided', async () => {
+      const { result } = renderHook(() => useConceptSession(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // Session should initialize without errors with default language
+      expect(result.current.error).toBeNull();
+    });
+
+    it('accepts explicit language parameter', async () => {
+      const { result } = renderHook(() => useConceptSession('python'), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // Session should initialize without errors with explicit language
+      expect(result.current.error).toBeNull();
+    });
+
+    it('accepts javascript language parameter', async () => {
+      const { result } = renderHook(() => useConceptSession('javascript'), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // Session should initialize without errors (even with no exercises for that language)
+      // Note: In real scenario, this would show "no exercises" state
+      expect(result.current.error).toBeNull();
     });
   });
 });

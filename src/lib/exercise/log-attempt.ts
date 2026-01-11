@@ -16,6 +16,8 @@ export interface AttemptLogData {
   qualityScore: number;
   generatedParams?: GeneratorParams;
   seed?: string;
+  /** Programming language (default: 'python') */
+  language?: string;
 }
 
 /**
@@ -24,6 +26,7 @@ export interface AttemptLogData {
 export interface AttemptRecord {
   user_id: string;
   exercise_slug: string;
+  language: string;
   times_seen: number;
   times_correct: number;
   last_seen_at: string;
@@ -49,6 +52,7 @@ export function buildAttemptRecord(data: AttemptLogData): AttemptRecord {
   return {
     user_id: data.userId,
     exercise_slug: data.exerciseSlug,
+    language: data.language ?? 'python',
     times_seen: 1, // Will be incremented via upsert
     times_correct: data.gradingResult.isCorrect ? 1 : 0,
     last_seen_at: now,
@@ -74,6 +78,7 @@ export async function logExerciseAttempt(data: AttemptLogData): Promise<void> {
   // Dynamic import to avoid Supabase initialization during module load in tests
   const { supabase } = await import('@/lib/supabase/client');
   const record = buildAttemptRecord(data);
+  const language = data.language ?? 'python';
 
   // First, try to get existing record
   // Using maybeSingle() to avoid 406 error when no record exists
@@ -82,6 +87,7 @@ export async function logExerciseAttempt(data: AttemptLogData): Promise<void> {
     .select('times_seen, times_correct')
     .eq('user_id', data.userId)
     .eq('exercise_slug', data.exerciseSlug)
+    .eq('language', language)
     .maybeSingle();
 
   if (existing) {
@@ -104,7 +110,8 @@ export async function logExerciseAttempt(data: AttemptLogData): Promise<void> {
         is_correct: record.is_correct,
       })
       .eq('user_id', data.userId)
-      .eq('exercise_slug', data.exerciseSlug);
+      .eq('exercise_slug', data.exerciseSlug)
+      .eq('language', language);
   } else {
     // Insert new record
     await supabase.from('exercise_attempts').insert(record);

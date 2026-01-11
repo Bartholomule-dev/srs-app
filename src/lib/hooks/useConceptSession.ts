@@ -99,8 +99,10 @@ function createInitialStats(): SessionStats {
  * For each due subconcept, selects an exercise using the hybrid algorithm:
  * - Learning phase: level progression (intro → practice → edge)
  * - Review phase: least-seen with randomization
+ *
+ * @param language - Programming language to filter exercises (default: 'python')
  */
-export function useConceptSession(): UseConceptSessionReturn {
+export function useConceptSession(language: string = 'python'): UseConceptSessionReturn {
   const { user, loading: authLoading } = useAuth();
   const { profile } = useProfile();
   const {
@@ -110,7 +112,7 @@ export function useConceptSession(): UseConceptSessionReturn {
     recordSubconceptResult,
     getNextExercise,
     refetch: refetchSRS,
-  } = useConceptSRS();
+  } = useConceptSRS(language);
   const { showToast } = useToast();
   const { loadPyodide } = usePyodide();
 
@@ -176,7 +178,8 @@ export function useConceptSession(): UseConceptSessionReturn {
       try {
         const { data, error: fetchError } = await supabase
           .from('exercises')
-          .select('*');
+          .select('*')
+          .eq('language', language);
 
         if (cancelled) return;
 
@@ -212,7 +215,7 @@ export function useConceptSession(): UseConceptSessionReturn {
     return () => {
       cancelled = true;
     };
-  }, [user, authLoading, fetchKey]);
+  }, [user, authLoading, fetchKey, language]);
 
   // Build session cards when due subconcepts and exercises are ready
   // Only runs once per session - skip if already initialized
@@ -419,7 +422,7 @@ export function useConceptSession(): UseConceptSessionReturn {
               userId: userId,
               subconceptSlug: slug,
               conceptSlug: practiceExercise.concept,
-              language: 'python', // TODO: Use session language when multi-language support is added
+              language,
               stability: initialCard.stability,
               difficulty: initialCard.difficulty,
               fsrsState: 0 as 0 | 1 | 2 | 3, // New state
@@ -676,6 +679,7 @@ export function useConceptSession(): UseConceptSessionReturn {
         logExerciseAttempt({
           userId: user.id,
           exerciseSlug: exercise.slug,
+          language,
           gradingResult: {
             isCorrect,
             usedTargetConstruct: null, // Full grading result not available here
@@ -699,7 +703,7 @@ export function useConceptSession(): UseConceptSessionReturn {
         setCardStartTime(Date.now());
       }
     },
-    [cards, currentIndex, stats.completed, stats.total, cardProgressMap, recordSubconceptResult, showToast, user, cardStartTime]
+    [cards, currentIndex, stats.completed, stats.total, cardProgressMap, recordSubconceptResult, showToast, user, cardStartTime, language]
   );
 
   // Persist profile stats (called once when session ends)
