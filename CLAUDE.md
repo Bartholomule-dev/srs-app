@@ -37,7 +37,7 @@
 
 A gamified web platform for practicing code syntax through spaced repetition. Target users are AI-assisted developers who want to maintain their programming fundamentals.
 
-**Current Status:** Blueprint + Skin System Complete - Presentation layer wraps atomic exercises in narrative context through 15 blueprints (234 beats total) and 22 skins. 524 exercises (109 dynamic with 38 generators). 3-level progression (intro → practice → edge). Phase 3 Gamification complete. Next: Onboarding flow, then JavaScript/TypeScript exercises.
+**Current Status:** Multi-Language Infrastructure Complete - Full multi-language support with JavaScript as second language. Language switcher in dashboard, view-only language tabs in skill tree, per-language stats. 524 Python exercises (109 dynamic with 38 generators). JavaScript curriculum stub ready for content. Next: JavaScript exercises, then onboarding flow.
 
 ---
 
@@ -70,10 +70,14 @@ pnpm db:reset         # Reset database with migrations
 pnpm db:import-exercises  # Import exercises from YAML
 
 # Exercise Management
-pnpm validate:exercises   # Validate YAML against schema
-pnpm validate:dynamic     # Validate dynamic exercises
-pnpm validate:paths       # Validate blueprint/skin YAML files
-pnpm coverage:blueprints  # Check exercise coverage across blueprints
+pnpm validate:exercises      # Validate Python YAML against schema
+pnpm validate:exercises:js   # Validate JavaScript YAML
+pnpm validate:exercises:all  # Validate both languages
+pnpm validate:dynamic        # Validate dynamic exercises
+pnpm validate:paths          # Validate Python paths YAML
+pnpm validate:paths:js       # Validate JavaScript paths
+pnpm validate:paths:all      # Validate both languages
+pnpm coverage:blueprints     # Check exercise coverage across blueprints
 pnpm generate:exercise-list  # Generate Exercises/ folder to Obsidian vault
 ```
 
@@ -99,12 +103,14 @@ src/
 │   ├── dashboard/        # Greeting, PracticeCTA, DueCardsBanner, EmptyState
 │   └── stats/            # StatsCard, StatsGrid
 └── lib/
-    ├── hooks/            # useAuth, useProfile, useConceptSRS, useConceptSession, useStats
+    ├── hooks/            # useAuth, useProfile, useActiveLanguage, useConceptSRS, useConceptSession, useStats, useLanguageStats, useDueCount, useSkillTree
     ├── srs/              # FSRS algorithm (ts-fsrs adapter)
     ├── exercise/         # Answer matching, quality inference, two-pass grading, construct detection
     ├── session/          # Session types, interleaving, teaching cards
-    ├── curriculum/       # python.json curriculum graph, types, loader
-    ├── generators/       # Dynamic exercise generation (38 generators, seed, utils, render, registry)
+    ├── curriculum/       # python.json, javascript.json (stub), types, loader (language-parameterized)
+    ├── generators/       # Dynamic exercise generation (38 Python generators), language-scoped registry
+    │   ├── python/       # Python generators (38 total)
+    │   └── javascript/   # JavaScript generators (stub)
     ├── paths/            # Blueprint + Skin system (types, loader, grouping, apply-skin)
     ├── stats/            # Stats queries, streak calculation
     ├── errors/           # AppError, handleSupabaseError
@@ -402,30 +408,44 @@ Full tool list: run `mcp__daem0nmcp__health` or see Daem0n docs.
 
 See `Database-Schema.md` in Obsidian for full schema. Key tables:
 
-- `profiles` - User data with auto-generated username, stats (streak, accuracy, total)
-- `exercises` - Exercise content with slug-based identity (529 Python exercises)
+- `profiles` - User data with auto-generated username, stats (streak, accuracy, total), `preferred_language`
+- `exercises` - Exercise content with slug-based identity, `language` column
 - `user_progress` - SRS state per user/exercise (FSRS algorithm)
-- `subconcept_progress` - **(Phase 2)** Concept-based SRS state per subconcept
-- `exercise_attempts` - **(Phase 2)** Exercise usage tracking for selection algorithm
+- `subconcept_progress` - Concept-based SRS state per subconcept PER LANGUAGE (unique: user_id, language, subconcept_slug)
+- `exercise_attempts` - Exercise usage tracking PER LANGUAGE (unique: user_id, language, exercise_slug)
+
+**Multi-Language Schema:** Both `subconcept_progress` and `exercise_attempts` include a `language` column with indexes for language-filtered queries. This allows users to track progress independently per language.
 
 RLS enabled on all user tables. Auto-generated usernames on signup (`user_` + UUID prefix).
 
 ---
 
-## Curriculum System (Phase 2/2.5)
+## Curriculum System (Multi-Language)
 
-**Concept-Based SRS:** Tracks subconcept mastery via `useConceptSRS` hook. Tables: `subconcept_progress`, `exercise_attempts`. Hybrid selection (level progression + least-seen).
+**Concept-Based SRS:** Tracks subconcept mastery via `useConceptSRS(language)` hook. Tables: `subconcept_progress`, `exercise_attempts` (both with language column). Hybrid selection (level progression + least-seen).
+
+**Supported Languages:**
+- **Python:** Full curriculum - 11 concepts, 65 subconcepts, 524 exercises
+- **JavaScript:** Curriculum stub - 3 concepts, 9 subconcepts (ready for exercises)
 
 **Taxonomy Fields:**
 | Field | Description |
 |-------|-------------|
+| `language` | `python` or `javascript` |
 | `concept` | Primary milestone (e.g., `conditionals`, `functions`) |
 | `subconcept` | Specific skill (e.g., `for`, `enumerate`, `lambda`) |
 | `level` | `intro` → `practice` → `edge` |
 | `type` | `write`, `fill-in`, or `predict` |
 | `objective` | Learning target, 10-150 chars starting with verb |
 
-**Curriculum:** `src/lib/curriculum/python.json` - 11 concepts, 65 subconcepts (DAG structure)
+**Curriculum Files:**
+- `src/lib/curriculum/python.json` - 11 concepts, 65 subconcepts
+- `src/lib/curriculum/javascript.json` - 3 concepts, 9 subconcepts (stub)
+
+**Key Functions:**
+- `loadCurriculum(language)` - Load curriculum for specified language
+- `getSubconceptTeaching(slug, language)` - Get teaching content
+- `isValidConcept(slug, language)` - Validate concept exists for language
 
 **Exercise Levels:** intro (207), practice (237), edge (80)
 
@@ -512,9 +532,9 @@ paths/python/
 
 ---
 
-## Completed Milestones (31+)
+## Completed Milestones (32+)
 
-1. Database & Types | 2. Auth & Hooks | 3. SRS Engine | 4. Exercise Engine | 5. Practice Session | 6. Exercise Library | 7. Basic Stats | 8. MVP Deployment | 9. UI/UX Redesign | 10. Custom UI Components | 11. Theme System | 12. Phase 2.5 Curriculum Enhancement | 13. Learning Mode | 14. Phase 2.7 Exercise Variety | 15. Curriculum Restructure | 16. SM-2→FSRS Migration | 17. Dedicated Teaching Examples | 18-23. Dynamic Exercises (Phases 1-6) | 24. Exercise-List Auto-Gen | 25. Skill Tree Visualization | 26. Premium Curriculum Restructure | 27. Phase 3 Gamification | 28. Blueprint + Skin System | 29. Robust Answer Grading System (strategy-based grading, AST normalization, 5 failure modes fixed) | 30. Integrated Level Removal (simplified to intro→practice→edge) | 31. Structural Skin Mapping (TinyStore lexicon, 488 placeholder contexts replaced, 11 generators using TinyStore)
+1. Database & Types | 2. Auth & Hooks | 3. SRS Engine | 4. Exercise Engine | 5. Practice Session | 6. Exercise Library | 7. Basic Stats | 8. MVP Deployment | 9. UI/UX Redesign | 10. Custom UI Components | 11. Theme System | 12. Phase 2.5 Curriculum Enhancement | 13. Learning Mode | 14. Phase 2.7 Exercise Variety | 15. Curriculum Restructure | 16. SM-2→FSRS Migration | 17. Dedicated Teaching Examples | 18-23. Dynamic Exercises (Phases 1-6) | 24. Exercise-List Auto-Gen | 25. Skill Tree Visualization | 26. Premium Curriculum Restructure | 27. Phase 3 Gamification | 28. Blueprint + Skin System | 29. Robust Answer Grading System (strategy-based grading, AST normalization, 5 failure modes fixed) | 30. Integrated Level Removal (simplified to intro→practice→edge) | 31. Structural Skin Mapping (TinyStore lexicon, 488 placeholder contexts replaced, 11 generators using TinyStore) | 32. **Multi-Language Infrastructure** (database schema, language-parameterized loaders, useActiveLanguage hook, LanguageSwitcher, SkillTree tabs, per-language stats)
 
 *Details in design docs: `docs/plans/`*
 
@@ -522,9 +542,9 @@ paths/python/
 
 ## Next Steps
 
-1. **Onboarding:** Integrate ExperienceLevelSelector into user flow
-2. **Languages:** JavaScript/TypeScript exercises
-3. **More Dynamic Exercises:** Continue migrating static exercises to use generators
-4. **More Blueprints/Skins:** Expand content coverage for additional concepts
+1. **JavaScript Exercises:** Create exercises for the JavaScript curriculum
+2. **JavaScript Blueprints/Skins:** Build narrative content for JavaScript
+3. **Onboarding:** Integrate ExperienceLevelSelector into user flow
+4. **More Dynamic Exercises:** Continue migrating static exercises to use generators
 5. **Leaderboards:** Daily/weekly/all-time rankings (deferred from Phase 3)
 

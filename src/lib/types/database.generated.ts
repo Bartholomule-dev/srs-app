@@ -79,6 +79,7 @@ export type Database = {
           id: string
           is_correct: boolean | null
           is_first_attempt: boolean | null
+          language: string
           last_seen_at: string | null
           points_earned: number | null
           quality_score: number | null
@@ -102,6 +103,7 @@ export type Database = {
           id?: string
           is_correct?: boolean | null
           is_first_attempt?: boolean | null
+          language?: string
           last_seen_at?: string | null
           points_earned?: number | null
           quality_score?: number | null
@@ -125,6 +127,7 @@ export type Database = {
           id?: string
           is_correct?: boolean | null
           is_first_attempt?: boolean | null
+          language?: string
           last_seen_at?: string | null
           points_earned?: number | null
           quality_score?: number | null
@@ -153,6 +156,7 @@ export type Database = {
           expected_answer: string
           explanation: string | null
           generator: string | null
+          grading_strategy: string | null
           hints: Json | null
           id: string
           language: string
@@ -170,6 +174,7 @@ export type Database = {
           times_practiced: number | null
           title: string
           updated_at: string | null
+          verification_script: string | null
           verify_by_execution: boolean | null
         }
         Insert: {
@@ -185,6 +190,7 @@ export type Database = {
           expected_answer: string
           explanation?: string | null
           generator?: string | null
+          grading_strategy?: string | null
           hints?: Json | null
           id?: string
           language: string
@@ -202,6 +208,7 @@ export type Database = {
           times_practiced?: number | null
           title: string
           updated_at?: string | null
+          verification_script?: string | null
           verify_by_execution?: boolean | null
         }
         Update: {
@@ -217,6 +224,7 @@ export type Database = {
           expected_answer?: string
           explanation?: string | null
           generator?: string | null
+          grading_strategy?: string | null
           hints?: Json | null
           id?: string
           language?: string
@@ -234,9 +242,51 @@ export type Database = {
           times_practiced?: number | null
           title?: string
           updated_at?: string | null
+          verification_script?: string | null
           verify_by_execution?: boolean | null
         }
         Relationships: []
+      }
+      grading_telemetry: {
+        Row: {
+          created_at: string | null
+          exercise_slug: string
+          fallback_reason: string | null
+          fallback_used: boolean | null
+          id: string
+          strategy: string
+          user_id: string | null
+          was_correct: boolean
+        }
+        Insert: {
+          created_at?: string | null
+          exercise_slug: string
+          fallback_reason?: string | null
+          fallback_used?: boolean | null
+          id?: string
+          strategy: string
+          user_id?: string | null
+          was_correct: boolean
+        }
+        Update: {
+          created_at?: string | null
+          exercise_slug?: string
+          fallback_reason?: string | null
+          fallback_used?: boolean | null
+          id?: string
+          strategy?: string
+          user_id?: string | null
+          was_correct?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "grading_telemetry_exercise_slug_fkey"
+            columns: ["exercise_slug"]
+            isOneToOne: false
+            referencedRelation: "exercises"
+            referencedColumns: ["slug"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -252,6 +302,7 @@ export type Database = {
           longest_streak: number | null
           notification_time: string | null
           preferred_language: string | null
+          recent_skins: string[] | null
           streak_freezes: number | null
           total_exercises_completed: number | null
           updated_at: string | null
@@ -270,6 +321,7 @@ export type Database = {
           longest_streak?: number | null
           notification_time?: string | null
           preferred_language?: string | null
+          recent_skins?: string[] | null
           streak_freezes?: number | null
           total_exercises_completed?: number | null
           updated_at?: string | null
@@ -288,6 +340,7 @@ export type Database = {
           longest_streak?: number | null
           notification_time?: string | null
           preferred_language?: string | null
+          recent_skins?: string[] | null
           streak_freezes?: number | null
           total_exercises_completed?: number | null
           updated_at?: string | null
@@ -303,6 +356,7 @@ export type Database = {
           elapsed_days: number | null
           fsrs_state: number | null
           id: string
+          language: string
           lapses: number | null
           last_reviewed: string | null
           next_review: string
@@ -320,6 +374,7 @@ export type Database = {
           elapsed_days?: number | null
           fsrs_state?: number | null
           id?: string
+          language?: string
           lapses?: number | null
           last_reviewed?: string | null
           next_review?: string
@@ -337,6 +392,7 @@ export type Database = {
           elapsed_days?: number | null
           fsrs_state?: number | null
           id?: string
+          language?: string
           lapses?: number | null
           last_reviewed?: string | null
           next_review?: string
