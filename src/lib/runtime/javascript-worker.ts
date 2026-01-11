@@ -143,40 +143,29 @@ export class JavaScriptWorkerManager {
     // Clean up blob URL after worker loads
     URL.revokeObjectURL(workerUrl);
 
+    // Set up unified message handler ONCE that handles all message types
+    // This avoids the race condition of reassigning onmessage after ready
+    this.setupMessageHandler();
+
     return new Promise((resolve, reject) => {
       const timeoutId = setTimeout(() => {
         reject(new Error('JavaScript worker initialization timeout'));
         this.terminate();
       }, timeoutMs);
 
-      this.worker!.onmessage = (e: MessageEvent<WorkerMessage>) => {
-        const { type, id, error } = e.data;
-
-        if (type === 'ready') {
+      // Store init callbacks for the unified handler to use
+      this.initCallbacks = {
+        resolve: () => {
           clearTimeout(timeoutId);
           this.ready = true;
-          this.setupMessageHandler();
+          this.initCallbacks = null;
           resolve();
-        }
-
-        if (type === 'error' && !this.ready) {
+        },
+        reject: (error: Error) => {
           clearTimeout(timeoutId);
-          reject(new Error(error || 'Worker initialization failed'));
-        }
-
-        // Handle execution results after ready
-        if (type === 'result' && id) {
-          const pending = this.pendingRequests.get(id);
-          if (pending) {
-            clearTimeout(pending.timeoutId);
-            this.pendingRequests.delete(id);
-            pending.resolve({
-              success: e.data.success ?? false,
-              output: e.data.output ?? null,
-              error: e.data.error ?? null,
-            });
-          }
-        }
+          this.initCallbacks = null;
+          reject(error);
+        },
       };
 
       this.worker!.onerror = (error) => {
@@ -189,15 +178,34 @@ export class JavaScriptWorkerManager {
     });
   }
 
+  // Callbacks for initialization (used by unified message handler)
+  private initCallbacks: {
+    resolve: () => void;
+    reject: (error: Error) => void;
+  } | null = null;
+
   /**
-   * Set up message handler for execution results.
+   * Set up unified message handler for all worker messages.
+   * Called once during initialization to avoid race conditions.
    */
   private setupMessageHandler(): void {
     if (!this.worker) return;
 
     this.worker.onmessage = (e: MessageEvent<WorkerMessage>) => {
-      const { type, id } = e.data;
+      const { type, id, error } = e.data;
 
+      // Handle initialization response
+      if (type === 'ready' && this.initCallbacks) {
+        this.initCallbacks.resolve();
+        return;
+      }
+
+      if (type === 'error' && this.initCallbacks) {
+        this.initCallbacks.reject(new Error(error || 'Worker initialization failed'));
+        return;
+      }
+
+      // Handle execution results
       if (type === 'result' && id) {
         const pending = this.pendingRequests.get(id);
         if (pending) {
@@ -215,17 +223,29 @@ export class JavaScriptWorkerManager {
 
   /**
    * Execute JavaScript code in the worker with timeout.
-   * If timeout is exceeded, the worker is terminated and recreated.
+   * If timeout is exceeded, the worker is terminated.
+   *
+   * Auto-recovery: If the worker was previously terminated (e.g., due to timeout),
+   * this method will automatically reinitialize it before execution.
    *
    * @param code - JavaScript code to execute
    * @param timeoutMs - Maximum execution time (default: 5s)
    */
   async execute(code: string, timeoutMs = 5000): Promise<ExecutionResult> {
+    // Auto-recovery: reinitialize worker if it was terminated
     if (!this.ready || !this.worker) {
-      return { success: false, output: null, error: 'Worker not initialized' };
+      try {
+        await this.initialize();
+      } catch (error) {
+        return {
+          success: false,
+          output: null,
+          error: `Worker initialization failed: ${error instanceof Error ? error.message : String(error)}`,
+        };
+      }
     }
 
-    const id = `exec_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    const id = crypto.randomUUID();
 
     return new Promise((resolve) => {
       const timeoutId = setTimeout(() => {

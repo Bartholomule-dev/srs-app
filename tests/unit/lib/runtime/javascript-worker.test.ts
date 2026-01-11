@@ -169,11 +169,15 @@ describe('JavaScriptWorkerManager', () => {
   });
 
   describe('execute', () => {
-    it('should return error if manager not initialized', async () => {
+    it('should auto-recover and execute if manager not initialized', async () => {
       const manager = new JavaScriptWorkerManager();
+      expect(manager.isReady()).toBe(false);
+
+      // Execute should auto-initialize and succeed
       const result = await manager.execute('console.log("hello")');
-      expect(result.success).toBe(false);
-      expect(result.error).toBe('Worker not initialized');
+      expect(result.success).toBe(true);
+      expect(result.output).toBe('hello');
+      expect(manager.isReady()).toBe(true);
     });
 
     it('should execute simple JavaScript and return output', async () => {
@@ -214,6 +218,23 @@ describe('JavaScriptWorkerManager', () => {
       const result = await manager.execute('while(true){}', 100);
       expect(result.success).toBe(false);
       expect(result.error).toContain('timeout');
+    });
+
+    it('should auto-recover after timeout and execute next code', async () => {
+      const manager = new JavaScriptWorkerManager();
+      await manager.initialize();
+
+      // First: trigger timeout which terminates the worker
+      const timeoutResult = await manager.execute('while(true){}', 100);
+      expect(timeoutResult.success).toBe(false);
+      expect(timeoutResult.error).toContain('timeout');
+      expect(manager.isReady()).toBe(false);
+
+      // Second: should auto-recover and execute successfully
+      const recoveryResult = await manager.execute('console.log("recovered")');
+      expect(recoveryResult.success).toBe(true);
+      expect(recoveryResult.output).toBe('recovered');
+      expect(manager.isReady()).toBe(true);
     });
 
     it('should return expression value when no console.log', async () => {
