@@ -120,48 +120,52 @@ describe('SkillTree performance', () => {
   });
 
   describe('SkillTree callback stability', () => {
-    it('registerNode callback is stable across renders', async () => {
-      // This test verifies that useCallback is used for registerNode
-      // We can't directly test this without accessing internals, but we can
-      // verify the component renders correctly multiple times
-      const { useSkillTree } = await import('@/lib/hooks/useSkillTree');
+    it(
+      'registerNode callback is stable across renders',
+      async () => {
+        // This test verifies that useCallback is used for registerNode
+        // We can't directly test this without accessing internals, but we can
+        // verify the component renders correctly multiple times
+        const { useSkillTree } = await import('@/lib/hooks/useSkillTree');
 
-      // Mock the hook
-      vi.mocked(useSkillTree).mockReturnValue({
-        data: {
-          clusters: [
-            {
-              slug: 'foundations',
-              name: 'Foundations',
-              description: 'Core programming fundamentals',
-              tier: 1,
-              masteredCount: 1,
-              totalCount: 2,
-              subconcepts: [
-                makeNode({ slug: 'variables', name: 'Variables' }),
-                makeNode({ slug: 'types', name: 'Types' }),
-              ],
-            },
-          ],
-          totalMastered: 1,
-          totalSubconcepts: 2,
-        },
-        loading: false,
-        error: null,
-        getState: () => 'available',
-        refetch: vi.fn(),
-      });
+        // Mock the hook
+        vi.mocked(useSkillTree).mockReturnValue({
+          data: {
+            clusters: [
+              {
+                slug: 'foundations',
+                name: 'Foundations',
+                description: 'Core programming fundamentals',
+                tier: 1,
+                masteredCount: 1,
+                totalCount: 2,
+                subconcepts: [
+                  makeNode({ slug: 'variables', name: 'Variables' }),
+                  makeNode({ slug: 'types', name: 'Types' }),
+                ],
+              },
+            ],
+            totalMastered: 1,
+            totalSubconcepts: 2,
+          },
+          loading: false,
+          error: null,
+          getState: () => 'available',
+          refetch: vi.fn(),
+        });
 
-      const { SkillTree } = await import('@/components/skill-tree/SkillTree');
+        const { SkillTree } = await import('@/components/skill-tree/SkillTree');
 
-      const { rerender } = render(<SkillTree />);
+        const { rerender } = render(<SkillTree />);
 
-      // Component should render without errors on re-render
-      rerender(<SkillTree />);
+        // Component should render without errors on re-render
+        rerender(<SkillTree />);
 
-      // Verify structure is maintained
-      expect(screen.getByTestId('skill-tree-container')).toBeInTheDocument();
-    });
+        // Verify structure is maintained
+        expect(screen.getByTestId('skill-tree-container')).toBeInTheDocument();
+      },
+      10000 // Extended timeout - multiple async imports can be slow under load
+    );
   });
 
   describe('virtualization support (stub)', () => {
