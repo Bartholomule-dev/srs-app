@@ -140,7 +140,7 @@ beats:
       - file-writelines
 
   # ============================================
-  # Act 5: Integrated Capstone (Beats 19-25)
+  # Act 5: Edge Cases (Beats 19-20)
   # ============================================
   - beat: 19
     exercise: number-stats-from-list
@@ -149,23 +149,3 @@ beats:
   - beat: 20
     exercise: boolean-all-check
     title: "All Products Check"
-
-  - beat: 21
-    exercise: orders-total-accumulator
-    title: "Order Totals Summary"
-
-  - beat: 22
-    exercise: orders-parse-to-records
-    title: "Order Lines to Records"
-
-  - beat: 23
-    exercise: high-value-orders-comp
-    title: "High-Value Orders"
-
-  - beat: 24
-    exercise: error-code-extractor-integrated
-    title: "Error Code Extractor"
-
-  - beat: 25
-    exercise: export-orders-csv
-    title: "Export Orders CSV"

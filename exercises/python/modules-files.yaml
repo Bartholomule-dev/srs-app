@@ -28,7 +28,7 @@ exercises:
     concept: modules-files
     subconcept: imports
     level: intro
-    prereqs: [modules-files.imports]
+    prereqs: [imports]
     type: write
     pattern: import
     prompt: Import only `sqrt` from the `math` module
@@ -45,7 +45,7 @@ exercises:
     concept: modules-files
     subconcept: imports
     level: practice
-    prereqs: [modules-files.imports]
+    prereqs: [imports]
     type: write
     pattern: import
     prompt: Import `numpy` as `np`
@@ -62,7 +62,7 @@ exercises:
     concept: modules-files
     subconcept: imports
     level: practice
-    prereqs: [modules-files.imports]
+    prereqs: [imports]
     type: write
     pattern: import
     prompt: Import `sin` and `cos` from `math` in one statement
@@ -105,7 +105,7 @@ exercises:
     concept: modules-files
     subconcept: reading
     level: intro
-    prereqs: [modules-files.reading]
+    prereqs: [reading]
     type: write
     pattern: file
     prompt: Read the entire contents of file object `f`
@@ -122,7 +122,7 @@ exercises:
     concept: modules-files
     subconcept: reading
     level: practice
-    prereqs: [modules-files.reading]
+    prereqs: [reading]
     type: write
     pattern: file
     prompt: Read all lines from file `f` into a list (each line keeps its newline)
@@ -139,7 +139,7 @@ exercises:
     concept: modules-files
     subconcept: reading
     level: practice
-    prereqs: [modules-files.reading]
+    prereqs: [reading]
     type: write
     pattern: file
     prompt: Read the next line from file `f` (including the trailing newline)
@@ -157,7 +157,7 @@ exercises:
     concept: modules-files
     subconcept: writing
     level: intro
-    prereqs: [modules-files.reading]
+    prereqs: [reading]
     type: write
     pattern: file
     prompt: Write the function call that opens `{{filename}}` in write mode
@@ -177,7 +177,7 @@ exercises:
     concept: modules-files
     subconcept: writing
     level: intro
-    prereqs: [modules-files.writing]
+    prereqs: [writing]
     type: write
     pattern: file
     prompt: Write the string `{{item_example}}` to the open file object `f`
@@ -197,7 +197,7 @@ exercises:
     concept: modules-files
     subconcept: writing
     level: practice
-    prereqs: [modules-files.writing]
+    prereqs: [writing]
     type: write
     pattern: file
     prompt: Write the function call that opens `{{filename}}` in append mode
@@ -217,7 +217,7 @@ exercises:
     concept: modules-files
     subconcept: writing
     level: practice
-    prereqs: [modules-files.writing]
+    prereqs: [writing]
     type: write
     pattern: file
     prompt: Write a list of strings called `{{list_name}}` to file `f` (each item is already a full line including `\n`)
@@ -235,7 +235,7 @@ exercises:
     concept: modules-files
     subconcept: context
     level: intro
-    prereqs: [modules-files.reading]
+    prereqs: [reading]
     type: write
     pattern: context
     prompt: Open `{{filename}}` in **write** mode using a context manager, binding to `f`
@@ -277,7 +277,7 @@ exercises:
     concept: modules-files
     subconcept: context
     level: practice
-    prereqs: [modules-files.context]
+    prereqs: [context]
     type: write
     pattern: context
     prompt: In one `with` statement, open `{{filename}}` for reading as `inp` and `output.txt` for writing as `out`
@@ -300,7 +300,7 @@ exercises:
     concept: modules-files
     subconcept: pathlib
     level: intro
-    prereqs: [modules-files.imports]
+    prereqs: [imports]
     type: write
     pattern: construction
     prompt: Assume `Path` is imported. Create a `Path` for the current working directory
@@ -340,7 +340,7 @@ exercises:
     concept: modules-files
     subconcept: pathlib
     level: practice
-    prereqs: [modules-files.pathlib]
+    prereqs: [pathlib]
     type: write
     pattern: construction
     prompt: Assume `base` is a `Path`. Join it with `{{list_name}}` and `{{filename}}` using the `/` operator
@@ -360,7 +360,7 @@ exercises:
     concept: modules-files
     subconcept: pathlib
     level: practice
-    prereqs: [modules-files.pathlib]
+    prereqs: [pathlib]
     type: write
     pattern: attribute
     prompt: Given `p` is a `Path`, write the expression that returns its parent directory
@@ -377,7 +377,7 @@ exercises:
     concept: modules-files
     subconcept: pathlib
     level: edge
-    prereqs: [modules-files.pathlib]
+    prereqs: [pathlib]
     type: write
     pattern: conditional
     prompt: Write a boolean expression that is `True` only if `Path` object `p` exists and is a directory
@@ -399,7 +399,7 @@ exercises:
     concept: modules-files
     subconcept: main-guard
     level: intro
-    prereqs: [modules-files.imports]
+    prereqs: [imports]
     type: write
     pattern: conditional
     prompt: Write the standard main guard line used to run code only when the file is executed directly
@@ -419,7 +419,7 @@ exercises:
     concept: modules-files
     subconcept: main-guard
     level: practice
-    prereqs: [modules-files.main-guard]
+    prereqs: [main-guard]
     type: write
     pattern: conditional
     prompt: Write a main guard that calls `{{action_verb}}_{{item_plural}}()`
@@ -501,7 +501,7 @@ exercises:
     concept: modules-files
     subconcept: imports
     level: intro
-    prereqs: [modules-files.imports]
+    prereqs: [imports]
     type: fill-in
     blank_position: 0
     pattern: import
@@ -520,7 +520,7 @@ exercises:
     concept: modules-files
     subconcept: context
     level: practice
-    prereqs: [modules-files.reading]
+    prereqs: [reading]
     type: fill-in
     blank_position: 0
     pattern: context
@@ -540,7 +540,7 @@ exercises:
     concept: modules-files
     subconcept: main-guard
     level: intro
-    prereqs: [modules-files.main-guard]
+    prereqs: [main-guard]
     type: predict
     pattern: conditional
     prompt: When you run a Python file directly, what does `__name__` print?
@@ -560,7 +560,7 @@ exercises:
     concept: modules-files
     subconcept: reading
     level: practice
-    prereqs: [modules-files.reading]
+    prereqs: [reading]
     type: predict
     pattern: file
     prompt: Assume `{{filename}}` contains exactly `hello` (no newline). What does this code print?
@@ -581,7 +581,7 @@ exercises:
     concept: modules-files
     subconcept: pathlib
     level: practice
-    prereqs: [modules-files.pathlib]
+    prereqs: [pathlib]
     type: predict
     pattern: construction
     prompt: What does this code print? (Assume POSIX-style paths)
@@ -603,7 +603,7 @@ exercises:
     concept: modules-files
     subconcept: pathlib
     level: practice
-    prereqs: [modules-files.pathlib]
+    prereqs: [pathlib]
     type: predict
     pattern: construction
     generator: path-ops
@@ -625,7 +625,7 @@ exercises:
     concept: modules-files
     subconcept: pathlib
     level: practice
-    prereqs: [modules-files.pathlib]
+    prereqs: [pathlib]
     type: predict
     pattern: attribute
     generator: path-ops
@@ -647,7 +647,7 @@ exercises:
     concept: modules-files
     subconcept: pathlib
     level: practice
-    prereqs: [modules-files.pathlib]
+    prereqs: [pathlib]
     type: predict
     pattern: attribute
     generator: path-ops
@@ -669,7 +669,7 @@ exercises:
     concept: modules-files
     subconcept: pathlib
     level: practice
-    prereqs: [modules-files.pathlib]
+    prereqs: [pathlib]
     type: predict
     pattern: attribute
     generator: path-ops

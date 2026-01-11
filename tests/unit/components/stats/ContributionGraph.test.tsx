@@ -53,9 +53,9 @@ describe('ContributionGraph', () => {
 
   it('shows month labels', () => {
     render(<ContributionGraph days={mockDays} loading={false} />);
-    // Should show at least one month label
+    // Should show at least one month label (may have multiple due to desktop + mobile views)
     const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const hasMonthLabel = monthLabels.some((month) => screen.queryByText(month));
+    const hasMonthLabel = monthLabels.some((month) => screen.queryAllByText(month).length > 0);
     expect(hasMonthLabel).toBe(true);
   });
 

@@ -104,7 +104,7 @@ exercises:
     concept: error-handling
     subconcept: finally
     level: intro
-    prereqs: [error-handling.try-except]
+    prereqs: [try-except]
     type: write
     pattern: handling
     prompt: Write only the line that begins a finally block.
@@ -124,7 +124,7 @@ exercises:
     concept: error-handling
     subconcept: finally
     level: intro
-    prereqs: [error-handling.finally]
+    prereqs: [finally]
     type: write
     pattern: handling
     prompt: Close the {{filename}} file object f in a finally block after {{action_verb}}ing {{item_plural}}
@@ -150,7 +150,7 @@ exercises:
     concept: error-handling
     subconcept: finally
     level: practice
-    prereqs: [error-handling.finally]
+    prereqs: [finally]
     type: write
     pattern: handling
     prompt: Write a try/except/finally skeleton. Use pass in each block and catch Exception.
@@ -188,7 +188,7 @@ exercises:
     concept: error-handling
     subconcept: finally
     level: practice
-    prereqs: [error-handling.finally]
+    prereqs: [finally]
     type: predict
     pattern: handling
     prompt: What does this code print? List each line of output.
@@ -215,7 +215,7 @@ exercises:
     concept: error-handling
     subconcept: finally
     level: edge
-    prereqs: [error-handling.finally]
+    prereqs: [finally]
     type: predict
     pattern: handling
     prompt: What does this code print before it crashes? List each line.
@@ -240,7 +240,7 @@ exercises:
     concept: error-handling
     subconcept: finally
     level: intro
-    prereqs: [error-handling.try-except]
+    prereqs: [try-except]
     type: write
     pattern: handling
     prompt: In a try/except, write an else block that runs only when no exception occurs. Use pass for the body.
@@ -287,7 +287,7 @@ exercises:
     concept: error-handling
     subconcept: raising
     level: intro
-    prereqs: [error-handling.try-except]
+    prereqs: [try-except]
     type: write
     pattern: handling
     prompt: Raise a ValueError when {{item_singular}} with message "{{entity_name}} not found"
@@ -307,7 +307,7 @@ exercises:
     concept: error-handling
     subconcept: raising
     level: practice
-    prereqs: [error-handling.raising]
+    prereqs: [raising]
     type: write
     pattern: handling
     prompt: Raise RuntimeError with message "Failed to {{action_verb}} {{item_singular}}" from an existing exception e
@@ -327,7 +327,7 @@ exercises:
     concept: error-handling
     subconcept: raising
     level: practice
-    prereqs: [error-handling.raising]
+    prereqs: [raising]
     type: write
     pattern: handling
     prompt: Write the statement to re-raise the current exception (inside an except block).
@@ -344,7 +344,7 @@ exercises:
     concept: error-handling
     subconcept: raising
     level: edge
-    prereqs: [error-handling.raising, oop.inheritance]
+    prereqs: [raising, inheritance]
     type: write
     pattern: definition
     prompt: Define a custom exception class {{entity_name}}Error that inherits from Exception. Use pass for the body.
@@ -392,7 +392,7 @@ exercises:
     concept: error-handling
     subconcept: try-except
     level: intro
-    prereqs: [error-handling.try-except]
+    prereqs: [try-except]
     type: fill-in
     blank_position: 0
     pattern: handling
@@ -411,7 +411,7 @@ exercises:
     concept: error-handling
     subconcept: raising
     level: practice
-    prereqs: [error-handling.try-except]
+    prereqs: [try-except]
     type: fill-in
     blank_position: 0
     pattern: handling
@@ -431,7 +431,7 @@ exercises:
     concept: error-handling
     subconcept: try-except
     level: intro
-    prereqs: [error-handling.try-except]
+    prereqs: [try-except]
     type: predict
     pattern: handling
     generator: try-except-flow
@@ -455,7 +455,7 @@ exercises:
     concept: error-handling
     subconcept: try-except
     level: practice
-    prereqs: [error-handling.try-except]
+    prereqs: [try-except]
     type: predict
     pattern: handling
     prompt: What does this try-except code print?
@@ -479,7 +479,7 @@ exercises:
     concept: error-handling
     subconcept: try-except
     level: practice
-    prereqs: [error-handling.try-except]
+    prereqs: [try-except]
     type: predict
     pattern: handling
     prompt: What does this try-except code print?
@@ -502,7 +502,7 @@ exercises:
     concept: error-handling
     subconcept: try-except
     level: practice
-    prereqs: [error-handling.try-except]
+    prereqs: [try-except]
     type: write
     pattern: handling
     generator: exception-scenario
@@ -520,7 +520,7 @@ exercises:
     concept: error-handling
     subconcept: try-except
     level: practice
-    prereqs: [error-handling.try-except]
+    prereqs: [try-except]
     type: predict
     pattern: handling
     generator: exception-scenario
@@ -540,7 +540,7 @@ exercises:
     concept: error-handling
     subconcept: finally
     level: practice
-    prereqs: [error-handling.try-except]
+    prereqs: [try-except]
     type: predict
     pattern: handling
     generator: finally-flow
@@ -559,7 +559,7 @@ exercises:
     concept: error-handling
     subconcept: finally
     level: edge
-    prereqs: [error-handling.finally]
+    prereqs: [finally]
     type: predict
     pattern: handling
     generator: finally-flow
@@ -579,7 +579,7 @@ exercises:
     concept: error-handling
     subconcept: try-except
     level: edge
-    prereqs: [try-except, modules-files.reading]
+    prereqs: [try-except, reading]
     type: write
     pattern: handling
     prompt: |
@@ -652,7 +652,7 @@ exercises:
     concept: error-handling
     subconcept: try-except
     level: edge
-    prereqs: [try-except, foundations.conversion]
+    prereqs: [try-except, conversion]
     type: write
     pattern: handling
     prompt: |

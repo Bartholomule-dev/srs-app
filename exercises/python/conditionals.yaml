@@ -838,7 +838,7 @@ exercises:
     concept: conditionals
     subconcept: if-else
     level: edge
-    prereqs: [if-else, lists, comprehensions.generator-exp]
+    prereqs: [if-else, lists, generator-exp]
     type: write
     pattern: branching
     prompt: |
@@ -872,7 +872,7 @@ exercises:
     concept: conditionals
     subconcept: if-else
     level: edge
-    prereqs: [if-else, functions.define]
+    prereqs: [if-else, fn-basics]
     type: write
     pattern: branching
     prompt: |

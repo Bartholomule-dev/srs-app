@@ -105,4 +105,3 @@ contexts:
   elif-http-status: "Handle different calculator modes."
   error-handling-conversion: "Handle type conversion errors for calculation."
   number-round-format: "Round and format calculation values."
-  parse-quantity-safe: "Safely parse calculation quantity."

@@ -116,9 +116,14 @@ describe('useContributionGraph', () => {
   });
 
   it('returns current streak from consecutive recent days', async () => {
-    const today = new Date().toISOString().split('T')[0];
-    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-    const twoDaysAgo = new Date(Date.now() - 172800000).toISOString().split('T')[0];
+    // Use fake timers with shouldAdvanceTime to freeze date while allowing async to work
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    const fixedTime = new Date('2026-01-10T12:00:00Z').getTime();
+    vi.setSystemTime(fixedTime);
+
+    const today = '2026-01-10';
+    const yesterday = '2026-01-09';
+    const twoDaysAgo = '2026-01-08';
 
     vi.mocked(supabase.auth.getUser).mockResolvedValue({
       data: { user: mockUser },
@@ -141,6 +146,8 @@ describe('useContributionGraph', () => {
     });
 
     expect(result.current.currentStreakDays).toBe(3);
+
+    vi.useRealTimers();
   });
 
   it('returns null summary when not authenticated', async () => {

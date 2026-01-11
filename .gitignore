@@ -58,3 +58,6 @@ debates/
 
 # Test screenshots
 screenshots/
+
+# Daem0nMCP local database
+.daem0nmcp/

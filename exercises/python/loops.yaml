@@ -255,7 +255,7 @@ exercises:
     concept: loops
     subconcept: for
     level: intro
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: write
     pattern: iteration
     prompt: Write just the statement that skips the current iteration and moves to the next
@@ -275,7 +275,7 @@ exercises:
     concept: loops
     subconcept: for
     level: practice
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: write
     pattern: iteration
     generator: loop-simulation
@@ -298,7 +298,7 @@ exercises:
     concept: loops
     subconcept: iteration
     level: practice
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: write
     pattern: iteration
     prompt: Loop over {{list_name}} and statuses lists simultaneously using {{item_singular}} and {{status_var}} variables
@@ -315,7 +315,7 @@ exercises:
     concept: loops
     subconcept: while
     level: edge
-    prereqs: [control-flow.while]
+    prereqs: [while]
     type: write
     pattern: iteration
     prompt: Write just the header line that creates an infinite loop (the body will use break to exit)
@@ -335,7 +335,7 @@ exercises:
     concept: loops
     subconcept: for
     level: edge
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: write
     pattern: iteration
     prompt: Write just the line that starts the else clause of a for-else construct (runs when loop completes without break)
@@ -394,7 +394,7 @@ exercises:
     concept: loops
     subconcept: zip
     level: practice
-    prereqs: [control-flow.zip]
+    prereqs: [zip]
     type: write
     pattern: iteration
     prompt: Use zip to iterate over {{list_name}}, statuses, and priorities lists simultaneously using {{item_singular}}, {{status_var}}, {{attr_key_2}}
@@ -411,7 +411,7 @@ exercises:
     concept: loops
     subconcept: zip
     level: edge
-    prereqs: [control-flow.zip]
+    prereqs: [zip]
     type: write
     pattern: iteration
     prompt: Import `zip_longest` from itertools and use it to iterate over {{list_name}} and statuses even if their lengths differ. Use fillvalue="pending" for missing values.
@@ -441,7 +441,7 @@ exercises:
     concept: loops
     subconcept: reversed
     level: intro
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: write
     pattern: iteration
     prompt: Iterate over {{list_name}} in reverse order
@@ -482,7 +482,7 @@ exercises:
     concept: loops
     subconcept: reversed
     level: practice
-    prereqs: [control-flow.reversed, control-flow.for]
+    prereqs: [reversed, for]
     type: write
     pattern: iteration
     prompt: Count down from 5 to 1 using reversed and range
@@ -527,7 +527,7 @@ exercises:
     concept: loops
     subconcept: sorted
     level: intro
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: write
     pattern: iteration
     prompt: Iterate over {{list_name}} in sorted order
@@ -569,7 +569,7 @@ exercises:
     concept: loops
     subconcept: sorted
     level: practice
-    prereqs: [control-flow.sorted]
+    prereqs: [sorted]
     type: write
     pattern: iteration
     prompt: Iterate over {{list_name}} in descending (reverse) order
@@ -590,7 +590,7 @@ exercises:
     concept: loops
     subconcept: sorted
     level: practice
-    prereqs: [control-flow.sorted]
+    prereqs: [sorted]
     type: write
     pattern: iteration
     prompt: Sort {{list_name}} list by string length using the key parameter
@@ -611,7 +611,7 @@ exercises:
     concept: loops
     subconcept: sorted
     level: edge
-    prereqs: [control-flow.sorted, functions.lambda]
+    prereqs: [sorted, lambda]
     type: write
     pattern: iteration
     prompt: Sort a list of {{item_singular}} tuples by the {{attr_key_1}} (second element) using a lambda
@@ -634,7 +634,7 @@ exercises:
     concept: loops
     subconcept: any-all
     level: intro
-    prereqs: [control-flow.conditionals]
+    prereqs: [if-else]
     type: write
     pattern: invocation
     prompt: Write a Python expression that returns True if any {{item_singular}} in {{list_name}} has {{attr_key_1}} greater than 10
@@ -655,7 +655,7 @@ exercises:
     concept: loops
     subconcept: any-all
     level: intro
-    prereqs: [control-flow.conditionals]
+    prereqs: [if-else]
     type: write
     pattern: invocation
     prompt: Write a Python expression that returns True if all {{item_plural}} in {{list_name}} are {{status_var}} (where `is_{{status_var}}` is True)
@@ -676,7 +676,7 @@ exercises:
     concept: loops
     subconcept: any-all
     level: practice
-    prereqs: [control-flow.any-all]
+    prereqs: [any-all]
     type: write
     pattern: invocation
     prompt: Write a Python expression that returns True if any {{item_singular}} in {{list_name}} starts with the letter 'a'
@@ -702,7 +702,7 @@ exercises:
     concept: loops
     subconcept: any-all
     level: edge
-    prereqs: [control-flow.any-all, control-flow.conditionals]
+    prereqs: [any-all, if-else]
     type: write
     pattern: conditional
     prompt: Write an if-statement header that checks if all {{item_plural}} are {{status_var}} AND at least one {{item_singular}} has a truthy {{attr_key_1}}
@@ -742,7 +742,7 @@ exercises:
     concept: loops
     subconcept: for
     level: intro
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: fill-in
     blank_position: 0
     pattern: iteration
@@ -761,7 +761,7 @@ exercises:
     concept: loops
     subconcept: iteration
     level: practice
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: fill-in
     blank_position: 0
     pattern: iteration
@@ -780,7 +780,7 @@ exercises:
     concept: loops
     subconcept: for
     level: intro
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: fill-in
     blank_position: 0
     pattern: control
@@ -802,7 +802,7 @@ exercises:
     concept: loops
     subconcept: for
     level: intro
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: fill-in
     blank_position: 0
     pattern: control
@@ -824,7 +824,7 @@ exercises:
     concept: loops
     subconcept: while
     level: practice
-    prereqs: [control-flow.while]
+    prereqs: [while]
     type: fill-in
     blank_position: 0
     pattern: iteration
@@ -844,7 +844,7 @@ exercises:
     concept: loops
     subconcept: for
     level: intro
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: predict
     pattern: iteration
     prompt: What does this range loop print?
@@ -867,7 +867,7 @@ exercises:
     concept: loops
     subconcept: iteration
     level: practice
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: predict
     pattern: iteration
     prompt: What does this enumerate loop print?
@@ -890,7 +890,7 @@ exercises:
     concept: loops
     subconcept: for
     level: practice
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: predict
     pattern: control
     prompt: What does this loop with break print?
@@ -915,7 +915,7 @@ exercises:
     concept: loops
     subconcept: for
     level: practice
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: predict
     pattern: control
     prompt: What does this loop with continue print?
@@ -941,7 +941,7 @@ exercises:
     concept: loops
     subconcept: zip
     level: practice
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: predict
     pattern: iteration
     prompt: What does this zip loop print?
@@ -963,7 +963,7 @@ exercises:
     concept: loops
     subconcept: for
     level: edge
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: predict
     pattern: iteration
     prompt: What does this nested {{item_singular}} loop print?
@@ -1042,7 +1042,7 @@ exercises:
     concept: loops
     subconcept: iteration
     level: practice
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: write
     pattern: iteration
     generator: index-values
@@ -1070,7 +1070,7 @@ exercises:
     concept: loops
     subconcept: for
     level: practice
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: predict
     pattern: accumulator
     generator: arithmetic-values
@@ -1093,7 +1093,7 @@ exercises:
     concept: loops
     subconcept: while
     level: practice
-    prereqs: [control-flow.while]
+    prereqs: [while]
     type: write
     pattern: iteration
     generator: index-values
@@ -1123,7 +1123,7 @@ exercises:
     concept: loops
     subconcept: for
     level: practice
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: predict
     pattern: iteration
     generator: loop-simulation
@@ -1164,7 +1164,7 @@ exercises:
     concept: loops
     subconcept: conditionals
     level: practice
-    prereqs: [foundations, numbers-booleans.comparisons]
+    prereqs: [foundations, comparisons]
     type: predict
     pattern: logical
     generator: bool-logic
@@ -1184,7 +1184,7 @@ exercises:
     concept: loops
     subconcept: conditionals
     level: practice
-    prereqs: [control-flow.conditionals, numbers-booleans.comparisons]
+    prereqs: [if-else, comparisons]
     type: write
     pattern: conditional
     generator: bool-logic
@@ -1202,7 +1202,7 @@ exercises:
     concept: loops
     subconcept: for
     level: practice
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: predict
     pattern: accumulator
     generator: list-values
@@ -1226,7 +1226,7 @@ exercises:
     concept: loops
     subconcept: conditionals
     level: practice
-    prereqs: [control-flow.conditionals]
+    prereqs: [if-else]
     type: predict
     pattern: conditional
     generator: conditional-chain
@@ -1246,7 +1246,7 @@ exercises:
     concept: loops
     subconcept: conditionals
     level: edge
-    prereqs: [control-flow.conditionals]
+    prereqs: [if-else]
     type: predict
     pattern: conditional
     generator: conditional-chain
@@ -1266,7 +1266,7 @@ exercises:
     concept: loops
     subconcept: sorted
     level: practice
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: predict
     pattern: transformation
     generator: sorted-list
@@ -1285,7 +1285,7 @@ exercises:
     concept: loops
     subconcept: sorted
     level: practice
-    prereqs: [control-flow.sorted]
+    prereqs: [sorted]
     type: write
     pattern: transformation
     generator: sorted-list
@@ -1304,7 +1304,7 @@ exercises:
     concept: loops
     subconcept: any-all
     level: practice
-    prereqs: [numbers-booleans.truthiness]
+    prereqs: [truthiness]
     type: predict
     pattern: logical
     generator: any-all
@@ -1323,7 +1323,7 @@ exercises:
     concept: loops
     subconcept: any-all
     level: practice
-    prereqs: [control-flow.any-all]
+    prereqs: [any-all]
     type: write
     pattern: logical
     generator: any-all
@@ -1342,7 +1342,7 @@ exercises:
     concept: loops
     subconcept: zip
     level: practice
-    prereqs: [control-flow.for]
+    prereqs: [for]
     type: predict
     pattern: iteration
     generator: zip-lists
@@ -1361,7 +1361,7 @@ exercises:
     concept: loops
     subconcept: zip
     level: practice
-    prereqs: [control-flow.zip, comprehensions.list-comp]
+    prereqs: [zip, list-comp]
     type: predict
     pattern: iteration
     generator: zip-lists

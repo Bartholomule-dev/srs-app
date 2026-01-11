@@ -597,7 +597,7 @@ exercises:
     concept: numbers-booleans
     subconcept: comparisons
     level: practice
-    prereqs: [numbers-booleans.comparisons]
+    prereqs: [comparisons]
     type: predict
     pattern: comparison
     generator: bool-logic
@@ -619,7 +619,7 @@ exercises:
     concept: numbers-booleans
     subconcept: comparisons
     level: practice
-    prereqs: [numbers-booleans.comparisons]
+    prereqs: [comparisons]
     type: write
     pattern: comparison
     generator: bool-logic
@@ -641,7 +641,7 @@ exercises:
     concept: numbers-booleans
     subconcept: truthiness
     level: intro
-    prereqs: [numbers-booleans.booleans]
+    prereqs: [booleans]
     type: predict
     pattern: conversion
     prompt: What does bool(0) return for {{item_singular}} count?
@@ -661,7 +661,7 @@ exercises:
     concept: numbers-booleans
     subconcept: truthiness
     level: intro
-    prereqs: [numbers-booleans.booleans]
+    prereqs: [booleans]
     type: predict
     pattern: conversion
     prompt: What does bool([]) return for an empty {{list_name}}?
@@ -681,7 +681,7 @@ exercises:
     concept: numbers-booleans
     subconcept: truthiness
     level: intro
-    prereqs: [numbers-booleans.truthiness]
+    prereqs: [truthiness]
     type: write
     pattern: conditional
     prompt: Write a Pythonic if statement that checks if list {{list_name}} is non-empty (use truthiness, not len())
@@ -1003,7 +1003,7 @@ exercises:
     concept: numbers-booleans
     subconcept: boolean-ops
     level: edge
-    prereqs: [boolean-ops, lists, comprehensions.generator-exp]
+    prereqs: [boolean-ops, lists, generator-exp]
     type: write
     pattern: logical
     prompt: |

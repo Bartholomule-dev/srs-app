@@ -106,5 +106,3 @@ contexts:
   args-kwargs-forward: "Forward arguments to underlying request."
   default-args-predict-dynamic: "Predict default behavior."
   default-args-call-dynamic: "Call with various defaults."
-  retry-decorator-integrated: "Add retry logic with decorator."
-  api-response-model-integrated: "Define a data model for Endpoint API responses."

@@ -93,4 +93,3 @@ contexts:
   error-handling-file-read: "Handle errors when loading config data."
   file-read-to-list: "Load configs from a file into a list."
   file-write-from-list: "Save configs to a file."
-  parse-events-log: "Parse config event log entries."

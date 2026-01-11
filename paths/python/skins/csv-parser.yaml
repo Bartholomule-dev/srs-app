@@ -46,12 +46,7 @@ contexts:
   file-open-write: "Write the processed {{item_plural}} to output file"
 
   boolean-all-check: "Check if all records in records meet a condition."
-  error-code-extractor-integrated: "Extract error codes from record operation results."
-  export-orders-csv: "Export records to a CSV file."
-  high-value-orders-comp: "Find high-value records using comprehension."
   number-stats-from-list: "Calculate statistics from records."
-  orders-parse-to-records: "Parse record lines into records."
-  orders-total-accumulator: "Accumulate totals across records."
 
 dataPack:
   list_sample: '["alice,25,engineer", "bob,30,designer", "carol,28,manager"]'

@@ -171,13 +171,3 @@ beats:
       - nested-comp-predict
       - for-sum-pair-dynamic
 
-  # ============================================
-  # Act 5: Integrated Capstone (Beats 19-20)
-  # ============================================
-  - beat: 19
-    exercise: product-tags-to-set
-    title: "Product Tags Set"
-
-  - beat: 20
-    exercise: filter-orders-fn
-    title: "Filter Orders Function"

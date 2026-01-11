@@ -139,16 +139,5 @@ beats:
       - default-args-call-dynamic
 
   - beat: 18
-    exercise: retry-decorator-integrated
-    title: "Decorator pattern"
-
-  # ============================================
-  # Act 5: Integrated Capstone (Beats 19-20)
-  # ============================================
-  - beat: 19
-    exercise: api-response-model-integrated
-    title: "API Response Model"
-
-  - beat: 20
     exercise: typehint-callable
     title: "Type Hint Callable"

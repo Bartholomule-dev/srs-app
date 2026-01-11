@@ -158,7 +158,7 @@ exercises:
     concept: functions
     subconcept: fn-basics
     level: intro
-    prereqs: [functions.fn-basics]
+    prereqs: [fn-basics]
     type: write
     pattern: invocation
     prompt: Write the call passing the string `"{{item_example}}"` into `get_{{item_singular}}`
@@ -178,7 +178,7 @@ exercises:
     concept: functions
     subconcept: fn-basics
     level: practice
-    prereqs: [functions.fn-basics]
+    prereqs: [fn-basics]
     type: write
     pattern: definition
     prompt: Write a return statement that returns both `{{attr_key_1}}` and `{{attr_key_2}}` as a tuple
@@ -200,7 +200,7 @@ exercises:
     concept: functions
     subconcept: arguments
     level: edge
-    prereqs: [functions.arguments]
+    prereqs: [arguments]
     type: write
     pattern: definition
     prompt: Write the function header where `{{status_var}}` is keyword-only
@@ -220,7 +220,7 @@ exercises:
     concept: functions
     subconcept: arguments
     level: edge
-    prereqs: [functions.arguments]
+    prereqs: [arguments]
     type: write
     pattern: definition
     prompt: Write the function header where `{{id_var}}` is positional-only (use `/`)
@@ -241,7 +241,7 @@ exercises:
     concept: functions
     subconcept: lambda
     level: intro
-    prereqs: [functions.fn-basics]
+    prereqs: [fn-basics]
     type: write
     pattern: definition
     prompt: Write a lambda that takes `{{item_singular}}_count` and returns it doubled
@@ -268,7 +268,7 @@ exercises:
     concept: functions
     subconcept: lambda
     level: practice
-    prereqs: [functions.lambda]
+    prereqs: [lambda]
     type: write
     pattern: definition
     prompt: Write a lambda that takes two parameters and adds them together
@@ -291,7 +291,7 @@ exercises:
     concept: functions
     subconcept: lambda
     level: edge
-    prereqs: [functions.lambda]
+    prereqs: [lambda]
     type: write
     pattern: definition
     prompt: Create a lambda that takes `is_{{status_var}}` and returns `"{{status_var}}"` if true, otherwise `"pending"`
@@ -313,7 +313,7 @@ exercises:
     concept: functions
     subconcept: lambda
     level: edge
-    prereqs: [functions.lambda, collections.lists]
+    prereqs: [lambda, lists]
     type: write
     pattern: construction
     prompt: Given `{{list_name}}` is a list of 2-item tuples, write an expression that returns it sorted by the second element
@@ -336,7 +336,7 @@ exercises:
     concept: functions
     subconcept: scope
     level: intro
-    prereqs: [functions.fn-basics]
+    prereqs: [fn-basics]
     type: predict
     pattern: scope
     prompt: What does this print?
@@ -359,7 +359,7 @@ exercises:
     concept: functions
     subconcept: scope
     level: intro
-    prereqs: [functions.fn-basics]
+    prereqs: [fn-basics]
     type: predict
     pattern: scope
     prompt: What does this print?
@@ -401,7 +401,7 @@ exercises:
     concept: functions
     subconcept: scope
     level: edge
-    prereqs: [functions.scope]
+    prereqs: [scope]
     type: write
     pattern: declaration
     prompt: Write the statement to access the outer function's `{{item_singular}}_count` from an inner function
@@ -442,7 +442,7 @@ exercises:
     concept: functions
     subconcept: typehints
     level: intro
-    prereqs: [functions.typehints]
+    prereqs: [typehints]
     type: write
     pattern: definition
     prompt: Define `count_{{list_name}}` that takes `{{list_name}}` and returns `int`
@@ -462,7 +462,7 @@ exercises:
     concept: functions
     subconcept: typehints
     level: practice
-    prereqs: [functions.typehints]
+    prereqs: [typehints]
     type: write
     pattern: definition
     prompt: Write the function header with `{{list_name}}` typed as `list[str]`
@@ -482,7 +482,7 @@ exercises:
     concept: functions
     subconcept: typehints
     level: edge
-    prereqs: [functions.typehints]
+    prereqs: [typehints]
     type: write
     pattern: definition
     prompt: Write the function header where `{{attr_key_1}}` can be `str` or `None`
@@ -503,7 +503,7 @@ exercises:
     concept: functions
     subconcept: typehints
     level: edge
-    prereqs: [functions.typehints, functions.lambda]
+    prereqs: [typehints, lambda]
     type: write
     pattern: definition
     prompt: Write the function header where `func` takes `int` and returns `int`. Assume `Callable` is imported
@@ -564,7 +564,7 @@ exercises:
     concept: functions
     subconcept: defaults
     level: practice
-    prereqs: [functions.defaults]
+    prereqs: [defaults]
     type: write
     pattern: definition
     prompt: Write the function header with defaults `{{attr_key_2}}="medium"` and `{{status_var}}=False`
@@ -584,7 +584,7 @@ exercises:
     concept: functions
     subconcept: defaults
     level: practice
-    prereqs: [functions.defaults]
+    prereqs: [defaults]
     type: write
     pattern: definition
     prompt: Write the function header using `None` as the default for `{{list_name}}` (to avoid mutable defaults)
@@ -604,7 +604,7 @@ exercises:
     concept: functions
     subconcept: defaults
     level: edge
-    prereqs: [functions.defaults]
+    prereqs: [defaults]
     type: write
     pattern: definition
     prompt: Write the function header for `add_item` using `None` as the default for `items` (not `[]`)
@@ -615,7 +615,7 @@ exercises:
     hints:
       - Never use `[]` as default - it's shared across calls
       - Use `None` then create list inside function
-    tags: [functions, defaults, mutable, antipattern]
+    tags: [functions, defaults, mutable, anti-pattern]
 
   # --- Args-Kwargs Subconcept ---
   - slug: args-intro
@@ -666,7 +666,7 @@ exercises:
     concept: functions
     subconcept: args-kwargs
     level: practice
-    prereqs: [functions.args-kwargs]
+    prereqs: [args-kwargs]
     type: write
     pattern: definition
     prompt: Write the function header for `{{action_verb}}_{{item_singular}}` that accepts any positional and keyword arguments
@@ -686,7 +686,7 @@ exercises:
     concept: functions
     subconcept: args-kwargs
     level: edge
-    prereqs: [functions.args-kwargs]
+    prereqs: [args-kwargs]
     type: write
     pattern: invocation
     prompt: Inside `wrapper(*args, **kwargs)`, write the call that forwards all arguments to `inner_func`
@@ -804,7 +804,7 @@ exercises:
     concept: functions
     subconcept: args-kwargs
     level: practice
-    prereqs: [functions.args-kwargs]
+    prereqs: [args-kwargs]
     type: fill-in
     blank_position: 0
     pattern: definition
@@ -845,7 +845,7 @@ exercises:
     concept: functions
     subconcept: defaults
     level: practice
-    prereqs: [functions.defaults]
+    prereqs: [defaults]
     type: predict
     pattern: invocation
     prompt: What does this default parameter code print?
@@ -866,7 +866,7 @@ exercises:
     concept: functions
     subconcept: lambda
     level: practice
-    prereqs: [functions.lambda]
+    prereqs: [lambda]
     type: predict
     pattern: invocation
     prompt: What does this lambda expression print?
@@ -886,7 +886,7 @@ exercises:
     concept: functions
     subconcept: scope
     level: practice
-    prereqs: [functions.scope]
+    prereqs: [scope]
     type: predict
     pattern: scope
     prompt: What does this variable scope code print?
@@ -912,7 +912,7 @@ exercises:
     concept: functions
     subconcept: args-kwargs
     level: practice
-    prereqs: [functions.args-kwargs]
+    prereqs: [args-kwargs]
     type: predict
     pattern: invocation
     prompt: What does this *args code print?
@@ -933,7 +933,7 @@ exercises:
     concept: functions
     subconcept: defaults
     level: edge
-    prereqs: [functions.defaults]
+    prereqs: [defaults]
     type: predict
     pattern: gotcha
     prompt: What does this mutable default code print?
@@ -1015,7 +1015,7 @@ exercises:
     concept: functions
     subconcept: lambda
     level: practice
-    prereqs: [functions.lambda]
+    prereqs: [lambda]
     type: predict
     pattern: invocation
     generator: lambda-expr
@@ -1039,7 +1039,7 @@ exercises:
     concept: functions
     subconcept: lambda
     level: practice
-    prereqs: [functions.lambda]
+    prereqs: [lambda]
     type: write
     pattern: definition
     generator: lambda-expr
@@ -1060,7 +1060,7 @@ exercises:
     concept: functions
     subconcept: lambda
     level: practice
-    prereqs: [functions.lambda]
+    prereqs: [lambda]
     type: write
     pattern: invocation
     generator: lambda-expr
@@ -1079,7 +1079,7 @@ exercises:
     concept: functions
     subconcept: defaults
     level: practice
-    prereqs: [functions.fn-basics]
+    prereqs: [fn-basics]
     type: predict
     pattern: invocation
     generator: default-args
@@ -1098,7 +1098,7 @@ exercises:
     concept: functions
     subconcept: defaults
     level: practice
-    prereqs: [functions.defaults]
+    prereqs: [defaults]
     type: write
     pattern: invocation
     generator: default-args

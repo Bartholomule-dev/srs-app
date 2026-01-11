@@ -164,7 +164,7 @@ beats:
       - import-module
 
   # ============================================
-  # Act 5: Integrated Capstone (Beats 21-23)
+  # Act 5: Edge Cases (Beats 21-22)
   # ============================================
   - beat: 21
     exercise: conditional-dict-validation
@@ -173,7 +173,3 @@ beats:
   - beat: 22
     exercise: list-to-dict-conversion
     title: "List of Tuples to Dict"
-
-  - beat: 23
-    exercise: apply-coupon
-    title: "Apply Coupon"

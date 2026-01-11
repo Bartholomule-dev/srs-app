@@ -91,7 +91,7 @@ beats:
       - reraise
 
   # ============================================
-  # Act 5: Integrated Capstone (Beats 13-15)
+  # Act 5: Edge Cases (Beats 13-14)
   # ============================================
   - beat: 13
     exercise: config-loader-integrated
@@ -100,7 +100,3 @@ beats:
   - beat: 14
     exercise: import-json-parse
     title: "JSON Parse"
-
-  - beat: 15
-    exercise: health-check-dataclass-integrated
-    title: "Health Check with Logging"

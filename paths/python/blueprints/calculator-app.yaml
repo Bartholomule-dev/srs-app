@@ -169,7 +169,7 @@ beats:
       - elif-http-status
 
   # ============================================
-  # Act 5: Integrated Capstone (Beats 19-21)
+  # Act 5: Edge Cases (Beats 19-20)
   # ============================================
   - beat: 19
     exercise: number-round-format
@@ -178,7 +178,3 @@ beats:
   - beat: 20
     exercise: error-handling-conversion
     title: "Safe Type Conversion"
-
-  - beat: 21
-    exercise: parse-quantity-safe
-    title: "Parse Quantity Safely"

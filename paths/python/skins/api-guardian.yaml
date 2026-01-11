@@ -79,4 +79,3 @@ contexts:
   finally-exception-propagation: "Propagate through finally."
   finally-trace-dynamic: "Trace exception flow."
   else-clause: "Log success in else."
-  validate-order-status: "Validate request status before changes."

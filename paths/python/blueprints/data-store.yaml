@@ -162,32 +162,20 @@ beats:
       - mutable-default-trap
 
   # ============================================
-  # Act 5: Integrated Capstone (Beats 19-25)
+  # Act 5: Edge Cases (Beats 19-22)
   # ============================================
   - beat: 19
-    exercise: inventory-reorder-loop
-    title: "Inventory Reorder List"
-
-  - beat: 20
     exercise: loop-dict-accumulate
     title: "Dict Value Accumulator"
 
-  - beat: 21
+  - beat: 20
     exercise: filter-list-of-dicts
     title: "Filter List of Dicts"
 
-  - beat: 22
+  - beat: 21
     exercise: sort-dict-by-value
     title: "Sort Dict by Value"
 
-  - beat: 23
-    exercise: summarize-customers
-    title: "Count Active Customers"
-
-  - beat: 24
+  - beat: 22
     exercise: error-handling-dict-access
     title: "Safe Dict Access"
-
-  - beat: 25
-    exercise: process-orders-with-guard
-    title: "Order Processing Cleanup"

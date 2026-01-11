@@ -119,5 +119,3 @@ contexts:
   nested-loop-predict: "Predict nested iteration."
   nested-comp-predict: "Predict nested comprehension."
   for-sum-pair-dynamic: "Sum pairs dynamically."
-  filter-orders-fn: "Create a function to filter records."
-  product-tags-to-set: "Get unique record tags as a set."

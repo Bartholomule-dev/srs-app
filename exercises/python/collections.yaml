@@ -52,7 +52,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: intro
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: write
     pattern: query
     prompt: Check if "{{item_example}}" is in {{list_name}}
@@ -72,7 +72,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: practice
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: write
     pattern: mutation
     prompt: Extend {{list_name}} with {{item_plural}} from new_{{item_plural}}
@@ -94,7 +94,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: practice
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: write
     pattern: mutation
     prompt: Remove and return the {{item_singular}} at index 2 from {{list_name}}
@@ -113,7 +113,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: practice
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: write
     pattern: query
     prompt: Find the index of "{{item_example}}" in {{list_name}}
@@ -134,7 +134,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: practice
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: write
     pattern: query
     prompt: Count occurrences of "{{item_example}}" in {{list_name}}
@@ -154,7 +154,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: practice
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: write
     pattern: mutation
     prompt: Sort {{list_name}} in place
@@ -174,7 +174,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: edge
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: write
     pattern: construction
     prompt: Return a sorted copy of {{list_name}} without modifying it
@@ -194,7 +194,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: practice
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: write
     pattern: mutation
     prompt: Reverse {{list_name}} in place
@@ -237,7 +237,7 @@ exercises:
     concept: collections
     subconcept: tuples
     level: practice
-    prereqs: [collections.tuples]
+    prereqs: [tuples]
     type: write
     pattern: construction
     prompt: Create a single-{{item_singular}} tuple with element 5 (note the syntax)
@@ -257,7 +257,7 @@ exercises:
     concept: collections
     subconcept: tuples
     level: practice
-    prereqs: [collections.tuples]
+    prereqs: [tuples]
     type: write
     pattern: assignment
     prompt: Unpack tuple {{item_singular}}_coords = (3, 4) into variables {{attr_key_1}} and {{attr_key_2}}
@@ -277,7 +277,7 @@ exercises:
     concept: collections
     subconcept: tuples
     level: intro
-    prereqs: [collections.tuples]
+    prereqs: [tuples]
     type: write
     pattern: indexing
     prompt: Get the second {{item_singular}} from tuple {{item_singular}}_data
@@ -339,7 +339,7 @@ exercises:
     concept: collections
     subconcept: dicts
     level: intro
-    prereqs: [collections.dicts]
+    prereqs: [dicts]
     type: write
     pattern: indexing
     prompt: Get the value for key "{{attr_key_1}}" from {{item_singular}}
@@ -359,7 +359,7 @@ exercises:
     concept: collections
     subconcept: dicts
     level: practice
-    prereqs: [collections.dicts]
+    prereqs: [dicts]
     type: write
     pattern: query
     prompt: Get value for key "{{attr_key_2}}" from {{item_singular}}, returning None if not found
@@ -381,7 +381,7 @@ exercises:
     concept: collections
     subconcept: dicts
     level: intro
-    prereqs: [collections.dicts]
+    prereqs: [dicts]
     type: write
     pattern: mutation
     prompt: Set the key "{{attr_key_1}}" to value "{{item_example}}" in {{item_singular}}
@@ -401,7 +401,7 @@ exercises:
     concept: collections
     subconcept: dicts
     level: intro
-    prereqs: [collections.dicts]
+    prereqs: [dicts]
     type: write
     pattern: query
     prompt: |
@@ -423,7 +423,7 @@ exercises:
     concept: collections
     subconcept: dicts
     level: intro
-    prereqs: [collections.dicts]
+    prereqs: [dicts]
     type: write
     pattern: query
     prompt: |
@@ -445,7 +445,7 @@ exercises:
     concept: collections
     subconcept: dicts
     level: practice
-    prereqs: [collections.dicts]
+    prereqs: [dicts]
     type: write
     pattern: query
     prompt: Get a view of all key-value pairs from {{item_singular}} as tuples
@@ -466,7 +466,7 @@ exercises:
     concept: collections
     subconcept: dicts
     level: practice
-    prereqs: [collections.dicts]
+    prereqs: [dicts]
     type: write
     pattern: mutation
     prompt: Remove and return the value for key "{{attr_key_1}}" from {{item_singular}}
@@ -486,7 +486,7 @@ exercises:
     concept: collections
     subconcept: dicts
     level: intro
-    prereqs: [collections.dicts]
+    prereqs: [dicts]
     type: write
     pattern: query
     prompt: |
@@ -532,7 +532,7 @@ exercises:
     concept: collections
     subconcept: sets
     level: intro
-    prereqs: [collections.sets]
+    prereqs: [sets]
     type: write
     pattern: mutation
     prompt: Add "{{item_example}}" to set {{item_singular}}_ids
@@ -552,7 +552,7 @@ exercises:
     concept: collections
     subconcept: sets
     level: practice
-    prereqs: [collections.sets]
+    prereqs: [sets]
     type: write
     pattern: mutation
     prompt: Remove "{{item_example}}" from set {{item_singular}}_ids (raises error if not found)
@@ -572,7 +572,7 @@ exercises:
     concept: collections
     subconcept: sets
     level: practice
-    prereqs: [collections.sets]
+    prereqs: [sets]
     type: write
     pattern: mutation
     prompt: Remove "{{item_example}}" from set {{item_singular}}_ids if present (no error if not found)
@@ -592,7 +592,7 @@ exercises:
     concept: collections
     subconcept: sets
     level: practice
-    prereqs: [collections.sets]
+    prereqs: [sets]
     type: write
     pattern: construction
     prompt: Get the union of {{item_singular}} sets a and b
@@ -612,7 +612,7 @@ exercises:
     concept: collections
     subconcept: sets
     level: practice
-    prereqs: [collections.sets]
+    prereqs: [sets]
     type: write
     pattern: construction
     prompt: Get the intersection of {{item_singular}} sets a and b
@@ -632,7 +632,7 @@ exercises:
     concept: collections
     subconcept: sets
     level: practice
-    prereqs: [collections.sets]
+    prereqs: [sets]
     type: write
     pattern: construction
     prompt: Get {{item_plural}} in set a but not in set b
@@ -653,7 +653,7 @@ exercises:
     concept: collections
     subconcept: unpacking
     level: intro
-    prereqs: [collections.tuples]
+    prereqs: [tuples]
     type: write
     pattern: assignment
     prompt: Unpack the {{item_singular}} tuple point = (3, 5) into variables x and y
@@ -673,7 +673,7 @@ exercises:
     concept: collections
     subconcept: unpacking
     level: intro
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: write
     pattern: assignment
     prompt: Unpack {{list_name}} = ["red", "green", "blue"] into variables a, b, c
@@ -695,7 +695,7 @@ exercises:
     concept: collections
     subconcept: unpacking
     level: intro
-    prereqs: [collections.unpacking]
+    prereqs: [unpacking]
     type: write
     pattern: assignment
     prompt: Swap the {{item_singular}} values of variables a and b using unpacking (one line)
@@ -712,7 +712,7 @@ exercises:
     concept: collections
     subconcept: unpacking
     level: edge
-    prereqs: [collections.lists, collections.tuples]
+    prereqs: [lists, tuples]
     type: write
     pattern: assignment
     prompt: Unpack first {{item_singular}} to a, rest to remaining from list [1, 2, 3, 4]
@@ -729,7 +729,7 @@ exercises:
     concept: collections
     subconcept: unpacking
     level: edge
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: write
     pattern: construction
     prompt: Call {{action_verb}}_{{item_singular}} with list args unpacked as positional arguments
@@ -746,7 +746,7 @@ exercises:
     concept: collections
     subconcept: unpacking
     level: edge
-    prereqs: [collections.dicts]
+    prereqs: [dicts]
     type: write
     pattern: construction
     prompt: Call {{action_verb}}_{{item_singular}} with dict kwargs unpacked as keyword arguments
@@ -764,7 +764,7 @@ exercises:
     concept: collections
     subconcept: mutability
     level: edge
-    prereqs: [collections.lists, fn-basics]
+    prereqs: [lists, fn-basics]
     type: write
     pattern: definition
     prompt: Define append_{{item_singular}}({{item_singular}}, target=None) avoiding mutable default
@@ -786,7 +786,7 @@ exercises:
     concept: collections
     subconcept: mutability
     level: intro
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: write
     pattern: assignment
     prompt: Create {{item_singular}}_copy that references the same list as {{list_name}} (not a copy)
@@ -803,7 +803,7 @@ exercises:
     concept: collections
     subconcept: mutability
     level: practice
-    prereqs: [collections.lists, collections.mutability]
+    prereqs: [lists, mutability]
     type: write
     pattern: construction
     prompt: Create a shallow copy of {{list_name}} using the copy method
@@ -820,7 +820,7 @@ exercises:
     concept: collections
     subconcept: mutability
     level: practice
-    prereqs: [collections.lists, collections.mutability]
+    prereqs: [lists, mutability]
     type: write
     pattern: construction
     prompt: Create a shallow copy of {{list_name}} using the list constructor
@@ -860,7 +860,7 @@ exercises:
     concept: collections
     subconcept: mutability
     level: edge
-    prereqs: [collections.lists, collections.mutability]
+    prereqs: [lists, mutability]
     type: write
     pattern: mutation
     prompt: |
@@ -883,7 +883,7 @@ exercises:
     concept: collections
     subconcept: mutability
     level: edge
-    prereqs: [collections.tuples, collections.mutability]
+    prereqs: [tuples, mutability]
     type: write
     pattern: construction
     prompt: Create new {{item_singular}} tuple by concatenating t with (4, 5) since tuples are immutable
@@ -900,7 +900,7 @@ exercises:
     concept: collections
     subconcept: mutability
     level: edge
-    prereqs: [collections.dicts, collections.lists, collections.mutability]
+    prereqs: [dicts, lists, mutability]
     type: write
     pattern: mutation
     prompt: Append {{item_singular}} ID 3 to the list stored at key "{{attr_key_1}}" in dict d
@@ -959,7 +959,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: intro
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: fill-in
     blank_position: 0
     pattern: query
@@ -979,7 +979,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: intro
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: predict
     pattern: mutation
     prompt: What does this list append code print?
@@ -1003,7 +1003,7 @@ exercises:
     concept: collections
     subconcept: dicts
     level: practice
-    prereqs: [collections.dicts]
+    prereqs: [dicts]
     type: predict
     pattern: lookup
     prompt: What does this dict.get() code print?
@@ -1023,7 +1023,7 @@ exercises:
     concept: collections
     subconcept: sets
     level: practice
-    prereqs: [collections.sets]
+    prereqs: [sets]
     type: predict
     pattern: construction
     prompt: |
@@ -1110,7 +1110,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: practice
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: write
     pattern: slicing
     generator: slice-bounds
@@ -1131,7 +1131,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: practice
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: predict
     pattern: indexing
     generator: list-values
@@ -1152,7 +1152,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: intro
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: predict
     pattern: query
     generator: list-values
@@ -1173,7 +1173,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: practice
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: predict
     pattern: mutation
     generator: list-values
@@ -1195,7 +1195,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: practice
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: predict
     pattern: mutation
     generator: list-values
@@ -1219,7 +1219,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: intro
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: write
     pattern: indexing
     generator: index-values
@@ -1231,7 +1231,7 @@ exercises:
     concept: collections
     subconcept: dicts
     level: intro
-    prereqs: [collections.dicts]
+    prereqs: [dicts]
     type: predict
     pattern: indexing
     generator: dict-values
@@ -1252,7 +1252,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: practice
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: write
     pattern: mutation
     generator: index-values
@@ -1273,7 +1273,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: practice
-    prereqs: [collections.lists]
+    prereqs: [lists]
     type: predict
     pattern: query
     generator: list-method
@@ -1292,7 +1292,7 @@ exercises:
     concept: collections
     subconcept: dicts
     level: practice
-    prereqs: [collections.dicts, collections.lists]
+    prereqs: [dicts, lists]
     type: predict
     pattern: indexing
     generator: nested-access
@@ -1311,7 +1311,7 @@ exercises:
     concept: collections
     subconcept: dicts
     level: practice
-    prereqs: [collections.dicts, collections.lists]
+    prereqs: [dicts, lists]
     type: write
     pattern: indexing
     generator: nested-access
@@ -1331,7 +1331,7 @@ exercises:
     concept: collections
     subconcept: tuples
     level: practice
-    prereqs: [collections.tuples]
+    prereqs: [tuples]
     type: predict
     pattern: indexing
     generator: tuple-access
@@ -1352,7 +1352,7 @@ exercises:
     concept: collections
     subconcept: unpacking
     level: practice
-    prereqs: [collections.unpacking]
+    prereqs: [unpacking]
     type: write
     pattern: assignment
     generator: tuple-access
@@ -1380,7 +1380,7 @@ exercises:
     concept: collections
     subconcept: sets
     level: practice
-    prereqs: [collections.sets]
+    prereqs: [sets]
     type: predict
     pattern: logical
     generator: set-ops
@@ -1402,7 +1402,7 @@ exercises:
     concept: collections
     subconcept: sets
     level: practice
-    prereqs: [collections.sets]
+    prereqs: [sets]
     type: write
     pattern: logical
     generator: set-ops
@@ -1630,7 +1630,7 @@ exercises:
     hints:
       - .items() yields (key, value) tuples
       - The f-string formats each pair as key=value
-    tags: [dicts, items, predict, f-string]
+    tags: [dicts, items, predict, fstrings]
 
   - slug: dict-sum-values
     objective: Sum all values in a dictionary
@@ -1660,7 +1660,7 @@ exercises:
     concept: collections
     subconcept: dict-iteration
     level: edge
-    prereqs: [dict-iteration, functions.define]
+    prereqs: [dict-iteration, fn-basics]
     type: write
     pattern: search
     prompt: |
@@ -1800,7 +1800,7 @@ exercises:
     concept: collections
     subconcept: lists
     level: edge
-    prereqs: [lists, dicts, comprehensions.list-comp]
+    prereqs: [lists, dicts, list-comp]
     type: write
     pattern: filtering
     prompt: |

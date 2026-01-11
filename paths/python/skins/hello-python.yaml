@@ -95,5 +95,3 @@ contexts:
   import-datetime: "get the current date using the datetime module for values."
   import-multiple-basic: "Import multiple modules."
   import-as-alias: "import a module with an alias for convenience for values."
-  discount-tier-elif: "Categorize values by tier or level."
-  order-status-ternary: "Set value status label in one line."

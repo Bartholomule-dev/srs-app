@@ -88,7 +88,7 @@ exercises:
     concept: oop
     subconcept: inheritance
     level: intro
-    prereqs: [oop.classes]
+    prereqs: [classes]
     type: write
     pattern: definition
     prompt: Write the class header for `Special{{entity_name}}` as a subclass of `{{entity_name}}`
@@ -108,7 +108,7 @@ exercises:
     concept: oop
     subconcept: inheritance
     level: intro
-    prereqs: [oop.inheritance]
+    prereqs: [inheritance]
     type: write
     pattern: invocation
     prompt: Inside a subclass `__init__`, call the parent constructor with `{{attr_key_1}}`
@@ -127,7 +127,7 @@ exercises:
     concept: oop
     subconcept: inheritance
     level: practice
-    prereqs: [oop.inheritance]
+    prereqs: [inheritance]
     type: write
     pattern: definition
     prompt: In a subclass, override `{{action_verb}}` so it returns `"{{item_example}}"`
@@ -153,7 +153,7 @@ exercises:
     concept: oop
     subconcept: inheritance
     level: practice
-    prereqs: [oop.inheritance]
+    prereqs: [inheritance]
     type: write
     pattern: invocation
     prompt: Inside an overriding `{{action_verb}}`, call the parent implementation and store it in `base_result`
@@ -172,7 +172,7 @@ exercises:
     concept: oop
     subconcept: inheritance
     level: practice
-    prereqs: [oop.inheritance]
+    prereqs: [inheritance]
     type: write
     pattern: invocation
     prompt: Write an expression that returns `True` if `{{item_singular}}` is an instance of `{{entity_name}}` (including subclasses)
@@ -191,7 +191,7 @@ exercises:
     concept: oop
     subconcept: inheritance
     level: edge
-    prereqs: [oop.inheritance]
+    prereqs: [inheritance]
     type: write
     pattern: invocation
     prompt: Write an expression that returns `True` if `Special{{entity_name}}` is a subclass of `{{entity_name}}`
@@ -211,7 +211,7 @@ exercises:
     concept: oop
     subconcept: classmethod
     level: intro
-    prereqs: [oop.methods]
+    prereqs: [methods]
     type: write
     pattern: definition
     prompt: Write the decorator and method header for a class method named `create_{{item_singular}}` (no body)
@@ -235,7 +235,7 @@ exercises:
     concept: oop
     subconcept: classmethod
     level: intro
-    prereqs: [oop.classmethod]
+    prereqs: [classmethod]
     type: write
     pattern: invocation
     prompt: Inside a `@classmethod`, return the class attribute `{{item_singular}}_count`
@@ -254,7 +254,7 @@ exercises:
     concept: oop
     subconcept: classmethod
     level: practice
-    prereqs: [oop.classmethod]
+    prereqs: [classmethod]
     type: write
     pattern: definition
     prompt: Write a `from_string` classmethod that takes `s` and returns a new instance created with `cls(s)`
@@ -279,7 +279,7 @@ exercises:
     concept: oop
     subconcept: classmethod
     level: practice
-    prereqs: [oop.classmethod]
+    prereqs: [classmethod]
     type: write
     pattern: invocation
     prompt: Call `from_string` on `{{entity_name}}` and store the returned instance in `obj`
@@ -299,7 +299,7 @@ exercises:
     concept: oop
     subconcept: classmethod
     level: practice
-    prereqs: [oop.methods]
+    prereqs: [methods]
     type: write
     pattern: definition
     prompt: Define a `@staticmethod` named `validate_{{item_singular}}(value)` that returns `True` if `value` is truthy, otherwise `False`
@@ -328,7 +328,7 @@ exercises:
     concept: oop
     subconcept: classmethod
     level: edge
-    prereqs: [oop.classmethod]
+    prereqs: [classmethod]
     type: write
     pattern: definition
     prompt: Define a `@staticmethod` `is_valid_{{item_singular}}(value)` that returns `False` for empty or whitespace-only strings
@@ -358,7 +358,7 @@ exercises:
     concept: oop
     subconcept: properties
     level: intro
-    prereqs: [oop.methods]
+    prereqs: [methods]
     type: write
     pattern: definition
     prompt: Define a `@property` named `{{item_singular}}_display` that returns `self._{{item_singular}}_display`
@@ -383,7 +383,7 @@ exercises:
     concept: oop
     subconcept: properties
     level: intro
-    prereqs: [oop.properties]
+    prereqs: [properties]
     type: write
     pattern: construction
     prompt: In a `@property` getter, return `{{attr_key_1}}` and `{{attr_key_2}}` separated by a space
@@ -404,7 +404,7 @@ exercises:
     concept: oop
     subconcept: properties
     level: practice
-    prereqs: [oop.properties]
+    prereqs: [properties]
     type: write
     pattern: definition
     prompt: Define the setter header for `{{item_singular}}_display` and assign `value` to `self._{{item_singular}}_display`
@@ -429,7 +429,7 @@ exercises:
     concept: oop
     subconcept: properties
     level: practice
-    prereqs: [oop.properties]
+    prereqs: [properties]
     type: write
     pattern: handling
     prompt: In a setter, raise `ValueError` if `value` is negative
@@ -458,7 +458,7 @@ exercises:
     concept: oop
     subconcept: properties
     level: edge
-    prereqs: [oop.properties]
+    prereqs: [properties]
     type: write
     pattern: definition
     prompt: Define a deleter for the `{{item_singular}}` property that deletes `self._{{item_singular}}`
@@ -483,7 +483,7 @@ exercises:
     concept: oop
     subconcept: properties
     level: edge
-    prereqs: [oop.properties]
+    prereqs: [properties]
     type: write
     pattern: definition
     prompt: Define a read-only `@property` named `{{attr_key_1}}` that returns `self._{{attr_key_1}}`
@@ -528,7 +528,7 @@ exercises:
     concept: oop
     subconcept: methods
     level: intro
-    prereqs: [oop.classes]
+    prereqs: [classes]
     type: fill-in
     blank_position: 0
     pattern: definition
@@ -547,7 +547,7 @@ exercises:
     concept: oop
     subconcept: inheritance
     level: practice
-    prereqs: [oop.inheritance]
+    prereqs: [inheritance]
     type: fill-in
     blank_position: 0
     pattern: invocation
@@ -567,7 +567,7 @@ exercises:
     concept: oop
     subconcept: classes
     level: intro
-    prereqs: [oop.classes]
+    prereqs: [classes]
     type: predict
     pattern: invocation
     generator: oop-instance
@@ -591,7 +591,7 @@ exercises:
     concept: oop
     subconcept: methods
     level: practice
-    prereqs: [oop.methods]
+    prereqs: [methods]
     type: predict
     pattern: invocation
     prompt: What does this code print? (Enter each line of output on a separate line)
@@ -625,7 +625,7 @@ exercises:
     concept: oop
     subconcept: inheritance
     level: practice
-    prereqs: [oop.inheritance]
+    prereqs: [inheritance]
     type: predict
     pattern: invocation
     prompt: The subclass overrides a method. What does this code print?
@@ -652,7 +652,7 @@ exercises:
     concept: oop
     subconcept: methods
     level: practice
-    prereqs: [oop.methods]
+    prereqs: [methods]
     type: predict
     pattern: invocation
     generator: class-method
@@ -671,7 +671,7 @@ exercises:
     concept: oop
     subconcept: methods
     level: practice
-    prereqs: [oop.methods]
+    prereqs: [methods]
     type: write
     pattern: invocation
     generator: class-method
@@ -692,7 +692,7 @@ exercises:
     concept: oop
     subconcept: inheritance
     level: practice
-    prereqs: [oop.inheritance]
+    prereqs: [inheritance]
     type: predict
     pattern: invocation
     generator: inheritance-method
@@ -711,7 +711,7 @@ exercises:
     concept: oop
     subconcept: inheritance
     level: practice
-    prereqs: [oop.inheritance]
+    prereqs: [inheritance]
     type: predict
     pattern: invocation
     generator: inheritance-method

@@ -132,16 +132,8 @@ beats:
       - import-as-alias
 
   # ============================================
-  # Act 5: Integrated Capstone (Beats 17-19)
+  # Act 5: Edge Cases (Beat 17)
   # ============================================
   - beat: 17
     exercise: input-to-int
     title: "Input to Integer"
-
-  - beat: 18
-    exercise: discount-tier-elif
-    title: "Discount Tier"
-
-  - beat: 19
-    exercise: order-status-ternary
-    title: "Paid Status Label"

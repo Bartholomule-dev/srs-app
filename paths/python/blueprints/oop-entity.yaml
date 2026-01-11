@@ -114,14 +114,3 @@ beats:
     sideQuests:
       - raise-exception
       - try-except-basic
-
-  # ============================================
-  # Act 5: Integrated Capstone (Beats 16-17)
-  # ============================================
-  - beat: 16
-    exercise: inventory-item-class
-    title: "Inventory Product Class"
-
-  - beat: 17
-    exercise: order-total-method
-    title: "Order Total Method"

@@ -85,10 +85,3 @@ beats:
   - beat: 12
     exercise: else-clause
     title: "Success with else"
-
-  # ============================================
-  # Act 4: Integrated Capstone (Beat 13)
-  # ============================================
-  - beat: 13
-    exercise: validate-order-status
-    title: "Validate Order Status"

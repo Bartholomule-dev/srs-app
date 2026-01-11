@@ -59,7 +59,7 @@ exercises:
     concept: comprehensions
     subconcept: dict-comp
     level: intro
-    prereqs: [comprehensions.list-comp]
+    prereqs: [list-comp]
     type: write
     pattern: mapping
     prompt: Create a dict mapping {{item_singular}}_id values 1-3 to their squares using a dict comprehension
@@ -85,7 +85,7 @@ exercises:
     concept: comprehensions
     subconcept: dict-comp
     level: intro
-    prereqs: [comprehensions.list-comp]
+    prereqs: [list-comp]
     type: predict
     pattern: mapping
     prompt: What does this dict comprehension create?
@@ -118,7 +118,7 @@ exercises:
     concept: comprehensions
     subconcept: dict-comp
     level: practice
-    prereqs: [comprehensions.dict-comp]
+    prereqs: [dict-comp]
     type: write
     pattern: filtering
 
@@ -130,7 +130,7 @@ exercises:
     concept: comprehensions
     subconcept: set-comp
     level: intro
-    prereqs: [comprehensions.list-comp]
+    prereqs: [list-comp]
     type: write
     pattern: mapping
     prompt: Create a set of squares for 1-4 using a set comprehension
@@ -154,7 +154,7 @@ exercises:
     concept: comprehensions
     subconcept: set-comp
     level: intro
-    prereqs: [comprehensions.set-comp]
+    prereqs: [set-comp]
     type: predict
     pattern: mapping
     prompt: What values are in this set? (order doesn't matter)
@@ -232,7 +232,7 @@ exercises:
     concept: comprehensions
     subconcept: generator-exp
     level: intro
-    prereqs: [comprehensions.list-comp]
+    prereqs: [list-comp]
     type: write
     pattern: mapping
     prompt: Write a generator expression that yields squares of 1 to 5
@@ -256,7 +256,7 @@ exercises:
     concept: comprehensions
     subconcept: generator-exp
     level: intro
-    prereqs: [comprehensions.list-comp]
+    prereqs: [list-comp]
     type: write
     pattern: aggregation
     prompt: Use max() with a generator expression to find the largest square from 1 to 5
@@ -280,7 +280,7 @@ exercises:
     concept: comprehensions
     subconcept: generator-exp
     level: practice
-    prereqs: [comprehensions.generator-exp]
+    prereqs: [generator-exp]
     type: write
     pattern: aggregation
     prompt: Use sum() with a generator expression to compute the sum of squares from 1 to 100
@@ -305,7 +305,7 @@ exercises:
     concept: comprehensions
     subconcept: list-comp
     level: edge
-    prereqs: [comprehensions.list-comp]
+    prereqs: [list-comp]
     type: write
     pattern: transformation
     prompt: Replace negative values with 0 in {{list_name}} using a list comprehension
@@ -331,7 +331,7 @@ exercises:
     concept: comprehensions
     subconcept: dict-comp
     level: practice
-    prereqs: [comprehensions.dict-comp]
+    prereqs: [dict-comp]
     type: write
     pattern: construction
     prompt: Create a dict mapping entries from {{list_name}} to corresponding entries in {{attr_key_1}}_values using zip() and a dict comprehension
@@ -373,7 +373,7 @@ exercises:
     concept: comprehensions
     subconcept: list-comp
     level: practice
-    prereqs: [comprehensions.list-comp]
+    prereqs: [list-comp]
     type: fill-in
     blank_position: 0
     pattern: filtering
@@ -392,7 +392,7 @@ exercises:
     concept: comprehensions
     subconcept: dict-comp
     level: practice
-    prereqs: [comprehensions.list-comp]
+    prereqs: [list-comp]
     type: fill-in
     blank_position: 0
     pattern: mapping
@@ -411,7 +411,7 @@ exercises:
     concept: comprehensions
     subconcept: set-comp
     level: practice
-    prereqs: [comprehensions.list-comp]
+    prereqs: [list-comp]
     type: fill-in
     blank_position: 0
     pattern: mapping
@@ -431,7 +431,7 @@ exercises:
     concept: comprehensions
     subconcept: list-comp
     level: intro
-    prereqs: [comprehensions.list-comp]
+    prereqs: [list-comp]
     type: predict
     pattern: mapping
     generator: comp-mapping
@@ -452,7 +452,7 @@ exercises:
     concept: comprehensions
     subconcept: list-comp
     level: practice
-    prereqs: [comprehensions.list-comp]
+    prereqs: [list-comp]
     type: predict
     pattern: filtering
     generator: comp-filter
@@ -473,7 +473,7 @@ exercises:
     concept: comprehensions
     subconcept: dict-comp
     level: practice
-    prereqs: [comprehensions.dict-comp]
+    prereqs: [dict-comp]
     type: predict
     pattern: mapping
     prompt: What dictionary gets printed?
@@ -498,7 +498,7 @@ exercises:
     concept: comprehensions
     subconcept: list-comp
     level: edge
-    prereqs: [comprehensions.list-comp]
+    prereqs: [list-comp]
     type: predict
     pattern: mapping
     prompt: What list gets printed?
@@ -524,7 +524,7 @@ exercises:
     concept: comprehensions
     subconcept: dict-comp
     level: practice
-    prereqs: [comprehensions.dict-comp]
+    prereqs: [dict-comp]
     type: predict
     pattern: mapping
     generator: dict-comp
@@ -545,7 +545,7 @@ exercises:
     concept: comprehensions
     subconcept: dict-comp
     level: practice
-    prereqs: [comprehensions.dict-comp]
+    prereqs: [dict-comp]
     type: write
     pattern: mapping
     generator: dict-comp
@@ -564,7 +564,7 @@ exercises:
     concept: comprehensions
     subconcept: list-comp
     level: practice
-    prereqs: [comprehensions.list-comp]
+    prereqs: [list-comp]
     type: predict
     pattern: mapping
     generator: list-transform
@@ -586,7 +586,7 @@ exercises:
     concept: comprehensions
     subconcept: list-comp
     level: practice
-    prereqs: [comprehensions.list-comp]
+    prereqs: [list-comp]
     type: predict
     pattern: filtering
     generator: list-transform
@@ -608,7 +608,7 @@ exercises:
     concept: comprehensions
     subconcept: list-comp
     level: practice
-    prereqs: [comprehensions.list-comp]
+    prereqs: [list-comp]
     type: write
     pattern: mapping
     generator: list-transform

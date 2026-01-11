@@ -120,7 +120,7 @@ beats:
       - main-guard-with-definition
 
   # ============================================
-  # Act 6: Integrated Capstone (Beats 17-20)
+  # Act 6: Edge Cases (Beats 17-19)
   # ============================================
   - beat: 17
     exercise: file-read-to-list
@@ -131,9 +131,5 @@ beats:
     title: "List to File"
 
   - beat: 19
-    exercise: parse-events-log
-    title: "Parse Events Log"
-
-  - beat: 20
     exercise: error-handling-file-read
     title: "Safe File Read"

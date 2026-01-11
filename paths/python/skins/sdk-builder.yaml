@@ -40,7 +40,6 @@ contexts:
   try-except-basic: "Handle network failures and invalid responses gracefully"
 
   config-loader-integrated: "Safely load endpoint configuration from JSON."
-  health-check-dataclass-integrated: "Create a health check status for endpoint services."
   import-json-parse: "Parse endpoint data from JSON format."
 
 dataPack:

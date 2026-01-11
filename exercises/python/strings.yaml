@@ -44,7 +44,7 @@ exercises:
     concept: strings
     subconcept: indexing
     level: intro
-    prereqs: [strings.basics]
+    prereqs: [basics]
     type: write
     pattern: indexing
     generator: index-values
@@ -65,7 +65,7 @@ exercises:
     concept: strings
     subconcept: slicing
     level: practice
-    prereqs: [strings.slicing]
+    prereqs: [slicing]
     type: write
     pattern: indexing
     generator: index-values
@@ -88,12 +88,12 @@ exercises:
     concept: strings
     subconcept: fstrings
     level: practice
-    prereqs: [strings.basics]
+    prereqs: [basics]
     type: write
     pattern: construction
     generator: variable-names
     target_construct:
-      type: f-string
+      type: fstrings
       feedback: "Try using an f-string f\"...{var}...\" for cleaner formatting"
     accepted_solutions:
       - 'f"Processing {{{name}}}"'
@@ -112,7 +112,7 @@ exercises:
     concept: strings
     subconcept: slicing
     level: practice
-    prereqs: [strings.indexing]
+    prereqs: [indexing]
     type: write
     pattern: indexing
     generator: slice-bounds
@@ -138,7 +138,7 @@ exercises:
     concept: strings
     subconcept: string-methods
     level: intro
-    prereqs: [strings.basics]
+    prereqs: [basics]
     type: write
     pattern: mutation
 
@@ -154,11 +154,11 @@ exercises:
     hints:
       - Start string with `f` prefix before the quote
       - Put variable names in curly braces `{variable}`
-    tags: [strings, f-strings, intermediate]
+    tags: [strings, fstrings, intermediate]
     concept: strings
     subconcept: fstrings
     level: practice
-    prereqs: [strings.basics]
+    prereqs: [basics]
     type: write
     pattern: construction
 
@@ -178,7 +178,7 @@ exercises:
     concept: strings
     subconcept: string-methods
     level: practice
-    prereqs: [strings.basics]
+    prereqs: [basics]
     type: write
     pattern: conversion
 
@@ -251,7 +251,7 @@ exercises:
     concept: strings
     subconcept: indexing
     level: intro
-    prereqs: [strings.basics]
+    prereqs: [basics]
     type: write
     pattern: indexing
     prompt: Write an expression that gets the last character of `{{item_singular}}` using negative indexing
@@ -271,7 +271,7 @@ exercises:
     concept: strings
     subconcept: indexing
     level: practice
-    prereqs: [strings.indexing]
+    prereqs: [indexing]
     type: write
     pattern: indexing
     prompt: Write an expression that gets the second-to-last character of `{{item_singular}}`
@@ -292,7 +292,7 @@ exercises:
     concept: strings
     subconcept: slicing
     level: intro
-    prereqs: [strings.indexing]
+    prereqs: [indexing]
     type: write
     pattern: indexing
     prompt: Write an expression that returns the first 5 characters of `{{item_singular}}`
@@ -312,7 +312,7 @@ exercises:
     concept: strings
     subconcept: slicing
     level: intro
-    prereqs: [strings.indexing]
+    prereqs: [indexing]
     type: write
     pattern: indexing
     prompt: Write an expression that slices `{{item_singular}}` from index 3 to the end
@@ -332,7 +332,7 @@ exercises:
     concept: strings
     subconcept: slicing
     level: practice
-    prereqs: [strings.slicing]
+    prereqs: [slicing]
     type: write
     pattern: indexing
     prompt: Write an expression that reverses `{{item_singular}}` using slicing
@@ -352,7 +352,7 @@ exercises:
     concept: strings
     subconcept: slicing
     level: practice
-    prereqs: [strings.slicing]
+    prereqs: [slicing]
     type: write
     pattern: indexing
     prompt: Write a slice that takes every other character from `{{item_singular}}`, starting at index 0
@@ -373,7 +373,7 @@ exercises:
     concept: strings
     subconcept: string-methods
     level: intro
-    prereqs: [strings.basics]
+    prereqs: [basics]
     type: write
     pattern: mutation
     prompt: Write an expression that converts `{{item_singular}}` to lowercase
@@ -393,7 +393,7 @@ exercises:
     concept: strings
     subconcept: string-methods
     level: intro
-    prereqs: [strings.basics]
+    prereqs: [basics]
     type: write
     pattern: mutation
     prompt: Write an expression that removes leading and trailing whitespace from `{{item_singular}}`
@@ -494,7 +494,7 @@ exercises:
     concept: strings
     subconcept: fstrings
     level: practice
-    prereqs: [strings.fstrings]
+    prereqs: [fstrings]
     type: write
     pattern: construction
     prompt: Write an f-string that prints the sum of `{{attr_key_1}} + {{attr_key_2}}` like `Total {{item_plural}} is <sum>`
@@ -514,7 +514,7 @@ exercises:
     concept: strings
     subconcept: fstrings
     level: edge
-    prereqs: [strings.fstrings]
+    prereqs: [fstrings]
     type: write
     pattern: construction
     prompt: Write an f-string expression that formats `{{item_singular}}_price` to exactly 2 decimal places
@@ -534,7 +534,7 @@ exercises:
     concept: strings
     subconcept: fstrings
     level: edge
-    prereqs: [strings.fstrings]
+    prereqs: [fstrings]
     type: write
     pattern: construction
     prompt: Write an f-string expression that formats `{{item_singular}}_id` as 5 digits with leading zeros
@@ -737,7 +737,7 @@ exercises:
     level: practice
     prereqs: [basics]
     pattern: construction
-    objective: Use expression in f-string
+    objective: Use expression in fstrings
     prompt: "Fill in the operator: `{{{item_singular}}_count ___ 2}`"
     template: "result = f\"Double {{item_plural}} is {{{item_singular}}_count ___ 2}\""
     blank_position: 0
@@ -959,7 +959,7 @@ exercises:
     concept: strings
     subconcept: string-methods
     level: intro
-    prereqs: [strings.basics]
+    prereqs: [basics]
     type: predict
     pattern: invocation
     generator: string-ops
@@ -981,7 +981,7 @@ exercises:
     concept: strings
     subconcept: fstrings
     level: practice
-    prereqs: [strings.fstrings]
+    prereqs: [fstrings]
     type: predict
     pattern: construction
     generator: string-format
@@ -993,7 +993,7 @@ exercises:
       - The f prefix enables string interpolation
     tags: [strings, fstrings, dynamic]
     target_construct:
-      type: f-string
+      type: fstrings
       feedback: "F-strings make string formatting cleaner and more readable"
 
   - slug: fstring-write-dynamic
@@ -1003,7 +1003,7 @@ exercises:
     concept: strings
     subconcept: fstrings
     level: practice
-    prereqs: [strings.fstrings]
+    prereqs: [fstrings]
     type: write
     pattern: construction
     generator: string-format
@@ -1017,7 +1017,7 @@ exercises:
       - Put variable names in curly braces
     tags: [strings, fstrings, dynamic, write]
     target_construct:
-      type: f-string
+      type: fstrings
       feedback: "Try using f-strings for cleaner formatting"
 
   # --- Advanced String Slicing (using string-slice generator) ---
@@ -1028,7 +1028,7 @@ exercises:
     concept: strings
     subconcept: slicing
     level: practice
-    prereqs: [strings.slicing]
+    prereqs: [slicing]
     type: predict
     pattern: slicing
     generator: string-slice
@@ -1050,7 +1050,7 @@ exercises:
     concept: strings
     subconcept: slicing
     level: edge
-    prereqs: [strings.slicing]
+    prereqs: [slicing]
     type: write
     pattern: slicing
     generator: string-slice
@@ -1076,7 +1076,7 @@ exercises:
     concept: strings
     subconcept: string-methods
     level: edge
-    prereqs: [string-methods, lists, comprehensions.list-comp]
+    prereqs: [string-methods, lists, list-comp]
     type: write
     pattern: transformation
     prompt: |
@@ -1125,7 +1125,7 @@ exercises:
     concept: strings
     subconcept: string-methods
     level: edge
-    prereqs: [string-methods, lists, comprehensions.list-comp]
+    prereqs: [string-methods, lists, list-comp]
     type: write
     pattern: transformation
     prompt: |

@@ -122,8 +122,5 @@ contexts:
   mutate-vs-reassign: "distinguish between in-place mutation and variable reassignment for users."
   error-handling-dict-access: "Safely access user dictionary keys."
   filter-list-of-dicts: "Filter users by active value."
-  inventory-reorder-loop: "Loop through users and flag items for reorder."
   loop-dict-accumulate: "Sum values from user data."
-  process-orders-with-guard: "Process users with cleanup on errors."
   sort-dict-by-value: "Sort users by their values."
-  summarize-customers: "Count active users in users."
