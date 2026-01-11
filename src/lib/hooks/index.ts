@@ -21,3 +21,5 @@ export { usePathContext } from './usePathContext';
 export type { UsePathContextReturn } from './usePathContext';
 export { useDueCount } from './useDueCount';
 export type { UseDueCountReturn } from './useDueCount';
+export { useActiveLanguage } from './useActiveLanguage';
+export type { UseActiveLanguageReturn } from './useActiveLanguage';
