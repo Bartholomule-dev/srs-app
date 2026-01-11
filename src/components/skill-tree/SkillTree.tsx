@@ -3,9 +3,12 @@
 import { useRef, useState, useCallback, useEffect, useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { useSkillTree } from '@/lib/hooks/useSkillTree';
+import { LanguageBadge } from '@/components/ui';
 import { SubconceptNode } from './SubconceptNode';
 import { DependencyLines } from './DependencyLines';
 import type { SkillTreeCluster } from '@/lib/skill-tree/types';
+
+const LANGUAGES = ['python', 'javascript'] as const;
 
 interface SkillTreeProps {
   className?: string;
@@ -40,7 +43,11 @@ export function SkillTree({ className, virtualize }: SkillTreeProps) {
   // with react-window deferred due to complexity of handling
   // dynamic cluster layouts and dependency lines.
   void virtualize; // Explicitly mark as intentionally unused
-  const { data, loading, error } = useSkillTree();
+
+  // Language tabs are VIEW ONLY - they let user view skill tree for either language
+  // without changing their preferred_language (which is what LanguageSwitcher does)
+  const [viewLanguage, setViewLanguage] = useState<typeof LANGUAGES[number]>('python');
+  const { data, loading, error } = useSkillTree(viewLanguage);
   const containerRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<Map<string, HTMLElement>>(new Map());
   const [nodePositions, setNodePositions] = useState<Record<string, Position>>(
@@ -179,6 +186,23 @@ export function SkillTree({ className, virtualize }: SkillTreeProps) {
         className
       )}
     >
+      {/* Language tabs - VIEW ONLY, doesn't change preferred_language */}
+      <div
+        data-testid="skill-tree-language-tabs"
+        className="flex gap-2 p-4 pb-0"
+      >
+        {LANGUAGES.map((lang) => (
+          <button
+            key={lang}
+            onClick={() => setViewLanguage(lang)}
+            className="transition-opacity hover:opacity-80"
+            aria-pressed={lang === viewLanguage}
+          >
+            <LanguageBadge language={lang} active={lang === viewLanguage} />
+          </button>
+        ))}
+      </div>
+
       <div data-testid="skill-tree-scroll" className="overflow-visible">
         <div
           ref={containerRef}

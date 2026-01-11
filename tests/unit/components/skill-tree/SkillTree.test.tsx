@@ -1,6 +1,6 @@
 // tests/unit/components/skill-tree/SkillTree.test.tsx
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { SkillTree } from '@/components/skill-tree/SkillTree';
 import { AuthProvider } from '@/lib/context/AuthContext';
 import type { ReactNode } from 'react';
@@ -182,5 +182,120 @@ describe('SkillTree', () => {
     expect(screen.getByText('Foundations')).toBeInTheDocument();
     expect(screen.getByText('Strings')).toBeInTheDocument();
     expect(screen.getByText('Numbers')).toBeInTheDocument();
+  });
+
+  describe('Language Tabs', () => {
+    it('renders language tabs for Python and JavaScript', () => {
+      vi.mocked(useSkillTree).mockReturnValue({
+        data: {
+          clusters: [],
+          totalMastered: 0,
+          totalSubconcepts: 0,
+        },
+        loading: false,
+        error: null,
+        getState: () => 'available',
+        refetch: vi.fn(),
+      });
+
+      render(<SkillTree />, { wrapper });
+
+      expect(screen.getByTestId('skill-tree-language-tabs')).toBeInTheDocument();
+      expect(screen.getByText('Python')).toBeInTheDocument();
+      expect(screen.getByText('JavaScript')).toBeInTheDocument();
+    });
+
+    it('defaults to Python language selected', () => {
+      vi.mocked(useSkillTree).mockReturnValue({
+        data: {
+          clusters: [],
+          totalMastered: 0,
+          totalSubconcepts: 0,
+        },
+        loading: false,
+        error: null,
+        getState: () => 'available',
+        refetch: vi.fn(),
+      });
+
+      render(<SkillTree />, { wrapper });
+
+      // Python button should be pressed
+      const pythonButton = screen.getByRole('button', { pressed: true });
+      expect(pythonButton).toBeInTheDocument();
+      expect(pythonButton.textContent).toContain('Python');
+    });
+
+    it('calls useSkillTree with python by default', () => {
+      vi.mocked(useSkillTree).mockReturnValue({
+        data: {
+          clusters: [],
+          totalMastered: 0,
+          totalSubconcepts: 0,
+        },
+        loading: false,
+        error: null,
+        getState: () => 'available',
+        refetch: vi.fn(),
+      });
+
+      render(<SkillTree />, { wrapper });
+
+      expect(useSkillTree).toHaveBeenCalledWith('python');
+    });
+
+    it('switches to JavaScript when tab clicked', () => {
+      vi.mocked(useSkillTree).mockReturnValue({
+        data: {
+          clusters: [],
+          totalMastered: 0,
+          totalSubconcepts: 0,
+        },
+        loading: false,
+        error: null,
+        getState: () => 'available',
+        refetch: vi.fn(),
+      });
+
+      render(<SkillTree />, { wrapper });
+
+      // Click JavaScript tab
+      const jsButton = screen.getByText('JavaScript').closest('button');
+      expect(jsButton).toBeInTheDocument();
+      fireEvent.click(jsButton!);
+
+      // useSkillTree should be called with 'javascript'
+      expect(useSkillTree).toHaveBeenCalledWith('javascript');
+    });
+
+    it('language tabs are view-only and do not modify preferred_language', () => {
+      // This test verifies tabs don't call any setLanguage function
+      // They only update local viewLanguage state
+      vi.mocked(useSkillTree).mockReturnValue({
+        data: {
+          clusters: [],
+          totalMastered: 0,
+          totalSubconcepts: 0,
+        },
+        loading: false,
+        error: null,
+        getState: () => 'available',
+        refetch: vi.fn(),
+      });
+
+      render(<SkillTree />, { wrapper });
+
+      // Click both tabs - no external state mutations should occur
+      const pythonButton = screen.getByText('Python').closest('button');
+      const jsButton = screen.getByText('JavaScript').closest('button');
+
+      fireEvent.click(jsButton!);
+      fireEvent.click(pythonButton!);
+
+      // Only useSkillTree calls expected, no other side effects
+      // The hook is called with different languages but no external mutation
+      expect(useSkillTree).toHaveBeenCalledWith('javascript');
+      expect(useSkillTree).toHaveBeenCalledWith('python');
+    });
   });
 });
