@@ -3,21 +3,33 @@ import Ajv from 'ajv';
 import { existsSync, readFileSync, readdirSync } from 'fs';
 import { parse } from 'yaml';
 import { join } from 'path';
+import { parseArgs } from 'util';
 import { validateYamlFile } from '../src/lib/exercise/yaml-validation';
 
 const ajv = new Ajv({ allErrors: true });
+
+// Parse command line arguments
+const { values } = parseArgs({
+  args: process.argv.slice(2),
+  options: {
+    language: { type: 'string', default: 'python' },
+  },
+});
+
+const language = values.language ?? 'python';
 
 function validateExercises() {
   const schemaPath = join(process.cwd(), 'exercises/schema.json');
   const schema = JSON.parse(readFileSync(schemaPath, 'utf-8'));
   const validate = ajv.compile(schema);
 
-  const exercisesDir = join(process.cwd(), 'exercises/python');
+  const exercisesDir = join(process.cwd(), 'exercises', language);
 
-  // Check if exercises directory exists
+  // Check if exercises directory exists - gracefully handle missing directories
   if (!existsSync(exercisesDir)) {
-    console.error(`\n❌ Exercises directory not found: ${exercisesDir}`);
-    process.exit(1);
+    console.warn(`\n⚠️  No exercises directory found for language '${language}': ${exercisesDir}`);
+    console.warn('   Skipping validation (directory does not exist yet).\n');
+    process.exit(0);
   }
 
   const files = readdirSync(exercisesDir).filter(f => f.endsWith('.yaml'));
@@ -102,10 +114,10 @@ function validateExercises() {
   }
 
   if (hasErrors) {
-    console.error('\n❌ Validation failed');
+    console.error(`\n❌ Validation failed for ${language} exercises`);
     process.exit(1);
   } else {
-    console.log('\n✓ All exercises valid');
+    console.log(`\n✓ All ${language} exercises valid`);
   }
 }
 

@@ -21,6 +21,8 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:ui": "playwright test --ui",
     "validate:exercises": "npx tsx scripts/validate-exercises.ts",
+    "validate:exercises:js": "npx tsx scripts/validate-exercises.ts --language=javascript",
+    "validate:exercises:all": "pnpm validate:exercises && pnpm validate:exercises:js",
     "validate:curriculum": "npx tsx scripts/validate-curriculum.ts",
     "validate:dynamic": "npx tsx scripts/validate-dynamic-exercises.ts",
     "validate:paths": "npx tsx scripts/validate-paths.ts",
