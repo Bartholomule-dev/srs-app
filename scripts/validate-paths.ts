@@ -108,14 +108,36 @@ async function main() {
     const skins = await loadSkins();
     console.log(`✓ Loaded ${skins.length} skins`);
 
+    // Extended structural variable validation
+    const REQUIRED_STRUCTURAL_VARS = [
+      'list_name',
+      'item_singular',
+      'item_plural',
+      'item_examples',
+      'record_keys',
+      'attr_key_1',
+      'attr_key_2',
+      'id_var',
+    ];
+
     for (const skin of skins) {
-      // Check for required vars
-      const requiredVars = ['list_name', 'item_singular', 'item_plural'];
-      for (const v of requiredVars) {
-        if (!skin.vars[v]) {
-          console.error(`  ✗ Skin ${skin.id}: missing var ${v}`);
+      // Check for required structural vars
+      for (const v of REQUIRED_STRUCTURAL_VARS) {
+        const value = skin.vars[v];
+        if (value === undefined || value === null || value === '') {
+          console.error(`  ✗ Skin ${skin.id}: missing structural var ${v}`);
           errors++;
         }
+      }
+
+      // Check array lengths
+      if (!Array.isArray(skin.vars.item_examples) || skin.vars.item_examples.length < 3) {
+        console.error(`  ✗ Skin ${skin.id}: item_examples needs 3+ values`);
+        errors++;
+      }
+      if (!Array.isArray(skin.vars.record_keys) || skin.vars.record_keys.length < 2) {
+        console.error(`  ✗ Skin ${skin.id}: record_keys needs 2+ values`);
+        errors++;
       }
       // Check blueprint references (if skin is blueprint-restricted)
       if (skin.blueprints) {
