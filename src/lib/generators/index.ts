@@ -1,45 +1,9 @@
 // src/lib/generators/index.ts
-// Generator registry and public API
+// Generator registry and public API with language-scoped routing
 
 import type { Generator, GeneratorParams, TargetConstruct, RenderedExerciseMetadata, VariantOverrides, VariantMap } from './types';
-import { sliceBoundsGenerator } from './definitions/slice-bounds';
-import { variableNamesGenerator } from './definitions/variable-names';
-import { listValuesGenerator } from './definitions/list-values';
-import { indexValuesGenerator } from './definitions/index-values';
-import { arithmeticValuesGenerator } from './definitions/arithmetic-values';
-import { loopSimulationGenerator } from './definitions/loop-simulation';
-import { comparisonLogicGenerator } from './definitions/comparison-logic';
-import { stringOpsGenerator } from './definitions/string-ops';
-import { dictValuesGenerator } from './definitions/dict-values';
-import { compMappingGenerator } from './definitions/comp-mapping';
-import { compFilterGenerator } from './definitions/comp-filter';
-import { tryExceptFlowGenerator } from './definitions/try-except-flow';
-import { oopInstanceGenerator } from './definitions/oop-instance';
-import { functionCallGenerator } from './definitions/function-call';
-import { stringFormatGenerator } from './definitions/string-format';
-import { pathOpsGenerator } from './definitions/path-ops';
-import { lambdaExprGenerator } from './definitions/lambda-expr';
-import { dictCompGenerator } from './definitions/dict-comp';
-import { classMethodGenerator } from './definitions/class-method';
-import { exceptionScenarioGenerator } from './definitions/exception-scenario';
-import { boolLogicGenerator } from './definitions/bool-logic';
-import { listMethodGenerator } from './definitions/list-method';
-import { nestedAccessGenerator } from './definitions/nested-access';
-import { stringSliceGenerator } from './definitions/string-slice';
-import { conditionalChainGenerator } from './definitions/conditional-chain';
-import { listTransformGenerator } from './definitions/list-transform';
-import { fileIOGenerator } from './definitions/file-io';
-import { inheritanceMethodGenerator } from './definitions/inheritance-method';
-import { operatorChainGenerator } from './definitions/operator-chain';
-import { defaultArgsGenerator } from './definitions/default-args';
-import { finallyFlowGenerator } from './definitions/finally-flow';
-import { tupleAccessGenerator } from './definitions/tuple-access';
-import { anyAllGenerator } from './definitions/any-all';
-import { setOpsGenerator } from './definitions/set-ops';
-import { sortedListGenerator } from './definitions/sorted-list';
-import { zipListsGenerator } from './definitions/zip-lists';
-import { typeConversionGenerator } from './definitions/type-conversion';
-import { truthinessGenerator } from './definitions/truthiness';
+import * as pythonGenerators from './python';
+import * as javascriptGenerators from './javascript';
 
 // Re-export types
 export type { Generator, GeneratorParams, TargetConstruct, RenderedExerciseMetadata, VariantOverrides, VariantMap };
@@ -49,75 +13,77 @@ export { createSeed, hashString } from './seed';
 export { seededRandom, type SeededRandom } from './utils';
 
 /**
- * Registry of all available generators.
- * Generators are registered by name for YAML reference.
+ * Supported languages for generators.
  */
-const generators: Map<string, Generator> = new Map();
+export type SupportedLanguage = 'python' | 'javascript';
 
 /**
- * Register a generator in the registry.
+ * Language module interface.
  */
-export function registerGenerator(generator: Generator): void {
-  generators.set(generator.name, generator);
+interface LanguageGeneratorModule {
+  generators: Map<string, Generator>;
+  getGenerator(name: string): Generator | undefined;
+  hasGenerator(name: string): boolean;
+  getGeneratorNames(): string[];
 }
 
 /**
- * Get a generator by name.
+ * Registry of generator modules by language.
  */
-export function getGenerator(name: string): Generator | undefined {
-  return generators.get(name);
+const generatorsByLanguage: Record<SupportedLanguage, LanguageGeneratorModule> = {
+  python: pythonGenerators,
+  javascript: javascriptGenerators,
+};
+
+/**
+ * Get a generator by name, optionally scoped to a language.
+ * Defaults to Python for backward compatibility.
+ *
+ * @param name - Generator name (e.g., 'slice-bounds')
+ * @param language - Target language (defaults to 'python')
+ * @returns Generator instance or undefined if not found
+ */
+export function getGenerator(name: string, language: SupportedLanguage = 'python'): Generator | undefined {
+  return generatorsByLanguage[language]?.getGenerator(name);
 }
 
 /**
- * Check if a generator exists.
+ * Check if a generator exists, optionally scoped to a language.
+ * Defaults to Python for backward compatibility.
+ *
+ * @param name - Generator name (e.g., 'slice-bounds')
+ * @param language - Target language (defaults to 'python')
+ * @returns true if generator exists for the given language
  */
-export function hasGenerator(name: string): boolean {
-  return generators.has(name);
+export function hasGenerator(name: string, language: SupportedLanguage = 'python'): boolean {
+  return generatorsByLanguage[language]?.hasGenerator(name) ?? false;
 }
 
 /**
- * Get all registered generator names.
+ * Get all registered generator names for a language.
+ * Defaults to Python for backward compatibility.
+ *
+ * @param language - Target language (defaults to 'python')
+ * @returns Array of generator names
  */
-export function getGeneratorNames(): string[] {
-  return Array.from(generators.keys());
+export function getGeneratorNames(language: SupportedLanguage = 'python'): string[] {
+  return generatorsByLanguage[language]?.getGeneratorNames() ?? [];
 }
 
-// Register built-in generators
-registerGenerator(sliceBoundsGenerator);
-registerGenerator(variableNamesGenerator);
-registerGenerator(listValuesGenerator);
-registerGenerator(indexValuesGenerator);
-registerGenerator(arithmeticValuesGenerator);
-registerGenerator(loopSimulationGenerator);
-registerGenerator(comparisonLogicGenerator);
-registerGenerator(stringOpsGenerator);
-registerGenerator(dictValuesGenerator);
-registerGenerator(compMappingGenerator);
-registerGenerator(compFilterGenerator);
-registerGenerator(tryExceptFlowGenerator);
-registerGenerator(oopInstanceGenerator);
-registerGenerator(functionCallGenerator);
-registerGenerator(stringFormatGenerator);
-registerGenerator(pathOpsGenerator);
-registerGenerator(lambdaExprGenerator);
-registerGenerator(dictCompGenerator);
-registerGenerator(classMethodGenerator);
-registerGenerator(exceptionScenarioGenerator);
-registerGenerator(boolLogicGenerator);
-registerGenerator(listMethodGenerator);
-registerGenerator(nestedAccessGenerator);
-registerGenerator(stringSliceGenerator);
-registerGenerator(conditionalChainGenerator);
-registerGenerator(listTransformGenerator);
-registerGenerator(fileIOGenerator);
-registerGenerator(inheritanceMethodGenerator);
-registerGenerator(operatorChainGenerator);
-registerGenerator(defaultArgsGenerator);
-registerGenerator(finallyFlowGenerator);
-registerGenerator(tupleAccessGenerator);
-registerGenerator(anyAllGenerator);
-registerGenerator(setOpsGenerator);
-registerGenerator(sortedListGenerator);
-registerGenerator(zipListsGenerator);
-registerGenerator(typeConversionGenerator);
-registerGenerator(truthinessGenerator);
+/**
+ * Get list of supported languages.
+ */
+export function getSupportedLanguages(): SupportedLanguage[] {
+  return Object.keys(generatorsByLanguage) as SupportedLanguage[];
+}
+
+/**
+ * Register a generator for a specific language.
+ * Used for dynamically adding generators at runtime.
+ *
+ * @param generator - Generator instance to register
+ * @param language - Target language (defaults to 'python')
+ */
+export function registerGenerator(generator: Generator, language: SupportedLanguage = 'python'): void {
+  generatorsByLanguage[language]?.generators.set(generator.name, generator);
+}
