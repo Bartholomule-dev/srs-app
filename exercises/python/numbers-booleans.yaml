@@ -1057,13 +1057,13 @@ exercises:
     type: write
     pattern: formatting
     prompt: |
-      Format `{{item_singular}}_value` as currency with exactly 2 decimal places.
-      Create an f-string that outputs: "{{entity_name}}: $X.XX"
-      The label "{{entity_name}}" is literal text, not a variable.
-    expected_answer: 'f"{{entity_name}}: ${{{item_singular}}_value:.2f}"'
+      Format `price` as currency with exactly 2 decimal places.
+      Create an f-string that outputs: "Total: $X.XX"
+      The label "Total" is literal text, not a variable.
+    expected_answer: 'f"Total: ${price:.2f}"'
     accepted_solutions:
-      - 'f"{{entity_name}}: ${{{item_singular}}_value:.2f}"'
-      - "f'{{entity_name}}: ${{{item_singular}}_value:.2f}'"
+      - 'f"Total: ${price:.2f}"'
+      - "f'Total: ${price:.2f}'"
     hints:
       - "Use :.2f format specifier for exactly 2 decimal places"
       - "This ensures trailing zeros (e.g., 10.50 not 10.5)"

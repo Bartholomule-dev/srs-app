@@ -343,11 +343,11 @@ exercises:
     prereqs: [io]
     type: write
     pattern: output
-    prompt: 'Use an f-string to print "Processing {{item_singular}}: " followed by the variable {{item_singular}}'
-    expected_answer: 'print(f"Processing {{item_singular}}: {{{item_singular}}}")'
+    prompt: 'Use an f-string to print "Processing item: " followed by the variable item'
+    expected_answer: 'print(f"Processing item: {item}")'
     accepted_solutions:
-      - 'print(f"Processing {{item_singular}}: {{{item_singular}}}")'
-      - "print(f'Processing {{item_singular}}: {{{item_singular}}}')"
+      - 'print(f"Processing item: {item}")'
+      - "print(f'Processing item: {item}')"
     hints:
       - Prefix string with f
       - Use {variable} for interpolation

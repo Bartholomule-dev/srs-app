@@ -854,13 +854,13 @@ exercises:
     pattern: invocation
     prompt: What does this default parameter code print?
     code: |
-      def {{action_verb}}_{{item_singular}}({{item_singular}}_name, {{status_var}}="{{item_example}}"):
-          return f"{{{status_var}}}, {{{item_singular}}_name}!"
-      print({{action_verb}}_{{item_singular}}("User"))
-    expected_answer: "{{item_example}}, User!"
+      def greet(name, greeting="Hello"):
+          return f"{greeting}, {name}!"
+      print(greet("User"))
+    expected_answer: "Hello, User!"
     hints:
       - Default value is used when not provided
-      - Only {{item_singular}}_name is passed, so {{status_var}} uses its default
+      - Only name is passed, so greeting uses its default
     tags: [functions, defaults, predict]
 
   - slug: lambda-predict

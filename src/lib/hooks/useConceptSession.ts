@@ -132,6 +132,8 @@ export function useConceptSession(): UseConceptSessionReturn {
   const [forceComplete, setForceComplete] = useState(false);
   // Track whether session has been initialized (prevents rebuilding on dueSubconcepts changes)
   const [sessionInitialized, setSessionInitialized] = useState(false);
+  // Track whether exercises have been fetched (to distinguish "loading" from "empty")
+  const [exercisesFetched, setExercisesFetched] = useState(false);
   // Track exercise types shown in session for type-balanced selection
   // Note: sessionTypeHistory is maintained for future type-balanced selection features
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -195,9 +197,11 @@ export function useConceptSession(): UseConceptSessionReturn {
         // Note: Skin vars not available yet - exercises will be re-rendered when skin is selected
         const renderedExercises = renderExercises(mappedExercises, userId, new Date());
         setExercises(renderedExercises);
+        setExercisesFetched(true);
       } catch (err) {
         if (cancelled) return;
         setError(err instanceof Error ? handleSupabaseError(err) : null);
+        setLoading(false); // Ensure loading stops on error
       }
     }
 
@@ -211,9 +215,19 @@ export function useConceptSession(): UseConceptSessionReturn {
   // Build session cards when due subconcepts and exercises are ready
   // Only runs once per session - skip if already initialized
   useEffect(() => {
-    if (srsLoading || exercises.length === 0) return;
+    // Wait for exercises to be fetched
+    if (!exercisesFetched) return;
+    if (srsLoading) return;
     if (sessionInitialized) return; // Don't rebuild mid-session
     if (!user) return;
+
+    // Handle case where exercises fetch completed but returned empty
+    // This typically indicates an auth/RLS issue (user session not valid)
+    if (exercises.length === 0) {
+      setError(handleSupabaseError(new Error('No exercises available. Please try signing out and back in.')));
+      setLoading(false);
+      return;
+    }
 
     // Capture user.id for TypeScript narrowing inside async function
     const userId = user.id;
@@ -570,7 +584,7 @@ export function useConceptSession(): UseConceptSessionReturn {
     return () => {
       cancelled = true;
     };
-  }, [dueSubconcepts, exercises, rawExercisesMap, srsLoading, getNextExercise, user, sessionInitialized, showToast, profile]);
+  }, [dueSubconcepts, exercises, exercisesFetched, rawExercisesMap, srsLoading, getNextExercise, user, sessionInitialized, showToast, profile]);
 
   // Preload Pyodide if session contains exercises that need it for grading
   // Uses getDefaultStrategy() to respect both explicit and default strategy routing
@@ -708,8 +722,11 @@ export function useConceptSession(): UseConceptSessionReturn {
 
   const retry = useCallback(() => {
     setSessionInitialized(false); // Allow session to rebuild
+    setExercisesFetched(false); // Reset exercises fetch state
     setSessionTypeHistory([]); // Reset type history for new session
     setSkinnedCards(new Map()); // Clear skinned cards for new session
+    setError(null); // Clear any previous error
+    setLoading(true); // Reset loading state
     setFetchKey((k) => k + 1);
     refetchSRS();
   }, [refetchSRS]);
