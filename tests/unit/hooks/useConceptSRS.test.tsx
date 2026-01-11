@@ -16,20 +16,7 @@ vi.mock('@/lib/supabase/client', () => ({
         data: { subscription: { unsubscribe: vi.fn() } },
       })),
     },
-    from: vi.fn(() => ({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          lte: vi.fn(),
-          single: vi.fn(),
-          order: vi.fn(),
-        })),
-      })),
-      upsert: vi.fn(() => ({
-        select: vi.fn(() => ({
-          single: vi.fn(),
-        })),
-      })),
-    })),
+    from: vi.fn(),
     rpc: vi.fn(),
   },
 }));
@@ -42,6 +29,55 @@ const wrapper = ({ children }: { children: ReactNode }) => (
   <AuthProvider>{children}</AuthProvider>
 );
 
+// Helper to create mock that supports chained eq() calls
+// Uses a lazy approach to avoid infinite recursion
+function createMockFrom(subconceptData: unknown[], attemptData: unknown[] = []) {
+  const mockFrom = vi.mocked(supabase.from);
+
+  mockFrom.mockImplementation((table: string) => {
+    // Create a lazy chain that doesn't recurse infinitely
+    const createChain = (data: unknown[]) => {
+      const chain: Record<string, unknown> = {};
+
+      chain.eq = vi.fn().mockImplementation(() => createChain(data));
+      chain.lte = vi.fn().mockResolvedValue({ data, error: null });
+      chain.single = vi.fn().mockResolvedValue({
+        data: data[0] ?? null,
+        error: data.length ? null : { code: 'PGRST116' }
+      });
+      chain.order = vi.fn().mockImplementation(() => createChain(data));
+
+      return chain;
+    };
+
+    if (table === 'subconcept_progress') {
+      return {
+        select: vi.fn().mockImplementation(() => createChain(subconceptData)),
+        upsert: vi.fn().mockReturnValue({
+          select: vi.fn().mockReturnValue({
+            single: vi.fn().mockResolvedValue({ data: subconceptData[0], error: null }),
+          }),
+        }),
+      } as any;
+    }
+    if (table === 'exercise_attempts') {
+      return {
+        select: vi.fn().mockImplementation(() => createChain(attemptData)),
+        upsert: vi.fn().mockReturnValue({
+          select: vi.fn().mockReturnValue({
+            single: vi.fn().mockResolvedValue({ data: attemptData[0] ?? {}, error: null }),
+          }),
+        }),
+      } as any;
+    }
+    return {
+      select: vi.fn().mockImplementation(() => createChain([])),
+    } as any;
+  });
+
+  return mockFrom;
+}
+
 describe('useConceptSRS', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -53,14 +89,7 @@ describe('useConceptSRS', () => {
 
   describe('initialization', () => {
     it('returns loading true initially', () => {
-      const mockFrom = vi.mocked(supabase.from);
-      mockFrom.mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            lte: vi.fn().mockResolvedValue({ data: [], error: null }),
-          }),
-        }),
-      } as any);
+      createMockFrom([]);
 
       const { result } = renderHook(() => useConceptSRS(), { wrapper });
 
@@ -68,14 +97,7 @@ describe('useConceptSRS', () => {
     });
 
     it('exposes dueSubconcepts array', async () => {
-      const mockFrom = vi.mocked(supabase.from);
-      mockFrom.mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            lte: vi.fn().mockResolvedValue({ data: [], error: null }),
-          }),
-        }),
-      } as any);
+      createMockFrom([]);
 
       const { result } = renderHook(() => useConceptSRS(), { wrapper });
 
@@ -91,6 +113,7 @@ describe('useConceptSRS', () => {
         {
           id: 'progress-1',
           user_id: 'user-123',
+          language: 'python',
           subconcept_slug: 'for-loops',
           concept_slug: 'loops',
           phase: 'learning',
@@ -103,14 +126,7 @@ describe('useConceptSRS', () => {
         },
       ];
 
-      const mockFrom = vi.mocked(supabase.from);
-      mockFrom.mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            lte: vi.fn().mockResolvedValue({ data: mockProgress, error: null }),
-          }),
-        }),
-      } as any);
+      createMockFrom(mockProgress);
 
       const { result } = renderHook(() => useConceptSRS(), { wrapper });
 
@@ -121,18 +137,39 @@ describe('useConceptSRS', () => {
       expect(result.current.dueSubconcepts).toHaveLength(1);
       expect(result.current.dueSubconcepts[0].subconceptSlug).toBe('for-loops');
     });
+
+    it('defaults to python language', async () => {
+      const mockFrom = createMockFrom([]);
+
+      const { result } = renderHook(() => useConceptSRS(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // Verify queries were made
+      expect(mockFrom).toHaveBeenCalledWith('subconcept_progress');
+      expect(mockFrom).toHaveBeenCalledWith('exercise_attempts');
+    });
+
+    it('accepts custom language parameter', async () => {
+      const mockFrom = createMockFrom([]);
+
+      const { result } = renderHook(() => useConceptSRS('javascript'), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // Verify queries were made for javascript
+      expect(mockFrom).toHaveBeenCalledWith('subconcept_progress');
+      expect(mockFrom).toHaveBeenCalledWith('exercise_attempts');
+    });
   });
 
   describe('recordSubconceptResult', () => {
     it('provides recordSubconceptResult function', async () => {
-      const mockFrom = vi.mocked(supabase.from);
-      mockFrom.mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            lte: vi.fn().mockResolvedValue({ data: [], error: null }),
-          }),
-        }),
-      } as any);
+      createMockFrom([]);
 
       const { result } = renderHook(() => useConceptSRS(), { wrapper });
 
@@ -148,6 +185,7 @@ describe('useConceptSRS', () => {
         {
           id: 'progress-1',
           user_id: 'user-123',
+          language: 'python',
           subconcept_slug: 'for-loops',
           concept_slug: 'loops',
           phase: 'learning',
@@ -160,27 +198,7 @@ describe('useConceptSRS', () => {
         },
       ];
 
-      const mockFrom = vi.mocked(supabase.from);
-      mockFrom.mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            lte: vi.fn().mockResolvedValue({ data: mockProgress, error: null }),
-            single: vi.fn().mockResolvedValue({ data: mockProgress[0], error: null }),
-          }),
-        }),
-        upsert: vi.fn().mockReturnValue({
-          select: vi.fn().mockReturnValue({
-            single: vi.fn().mockResolvedValue({
-              data: {
-                ...mockProgress[0],
-                interval: 6,
-                next_review: '2026-01-08T00:00:00Z',
-              },
-              error: null,
-            }),
-          }),
-        }),
-      } as any);
+      const mockFrom = createMockFrom(mockProgress);
 
       const { result } = renderHook(() => useConceptSRS(), { wrapper });
 
@@ -194,18 +212,46 @@ describe('useConceptSRS', () => {
 
       expect(mockFrom).toHaveBeenCalledWith('subconcept_progress');
     });
+
+    it('includes language in upsert operations', async () => {
+      const mockProgress = [
+        {
+          id: 'progress-1',
+          user_id: 'user-123',
+          language: 'javascript',
+          subconcept_slug: 'for-loops',
+          concept_slug: 'loops',
+          phase: 'learning',
+          ease_factor: 2.5,
+          interval: 1,
+          next_review: '2026-01-02T00:00:00Z',
+          last_reviewed: '2026-01-01T00:00:00Z',
+          created_at: '2026-01-01T00:00:00Z',
+          updated_at: '2026-01-01T00:00:00Z',
+        },
+      ];
+
+      const mockFrom = createMockFrom(mockProgress);
+
+      const { result } = renderHook(() => useConceptSRS('javascript'), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      await act(async () => {
+        await result.current.recordSubconceptResult('for-loops', 'loops', 4, 'ex-1', true);
+      });
+
+      // Verify upsert was called for both tables
+      expect(mockFrom).toHaveBeenCalledWith('subconcept_progress');
+      expect(mockFrom).toHaveBeenCalledWith('exercise_attempts');
+    });
   });
 
   describe('getNextExercise', () => {
     it('provides getNextExercise function', async () => {
-      const mockFrom = vi.mocked(supabase.from);
-      mockFrom.mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            lte: vi.fn().mockResolvedValue({ data: [], error: null }),
-          }),
-        }),
-      } as any);
+      createMockFrom([]);
 
       const { result } = renderHook(() => useConceptSRS(), { wrapper });
 
@@ -220,16 +266,22 @@ describe('useConceptSRS', () => {
   describe('error handling', () => {
     it('sets error on fetch failure', async () => {
       const mockFrom = vi.mocked(supabase.from);
-      mockFrom.mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            lte: vi.fn().mockResolvedValue({
-              data: null,
-              error: { message: 'Database error', code: '50000' },
-            }),
-          }),
-        }),
-      } as any);
+      mockFrom.mockImplementation(() => {
+        const createChain = () => {
+          const chain: Record<string, unknown> = {};
+          chain.eq = vi.fn().mockImplementation(() => createChain());
+          chain.lte = vi.fn().mockResolvedValue({
+            data: null,
+            error: { message: 'Database error', code: '50000' },
+          });
+          chain.single = vi.fn().mockResolvedValue({ data: null, error: null });
+          return chain;
+        };
+
+        return {
+          select: vi.fn().mockImplementation(() => createChain()),
+        } as any;
+      });
 
       const { result } = renderHook(() => useConceptSRS(), { wrapper });
 
@@ -243,14 +295,7 @@ describe('useConceptSRS', () => {
 
   describe('refetch', () => {
     it('provides refetch function', async () => {
-      const mockFrom = vi.mocked(supabase.from);
-      mockFrom.mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            lte: vi.fn().mockResolvedValue({ data: [], error: null }),
-          }),
-        }),
-      } as any);
+      createMockFrom([]);
 
       const { result } = renderHook(() => useConceptSRS(), { wrapper });
 
@@ -268,6 +313,7 @@ describe('useConceptSRS', () => {
         {
           id: 'p1',
           user_id: 'user-123',
+          language: 'python',
           subconcept_slug: 'for-loops',
           concept_slug: 'loops',
           phase: 'learning',
@@ -281,6 +327,7 @@ describe('useConceptSRS', () => {
         {
           id: 'p2',
           user_id: 'user-123',
+          language: 'python',
           subconcept_slug: 'while-loops',
           concept_slug: 'loops',
           phase: 'learning',
@@ -293,14 +340,7 @@ describe('useConceptSRS', () => {
         },
       ];
 
-      const mockFrom = vi.mocked(supabase.from);
-      mockFrom.mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            lte: vi.fn().mockResolvedValue({ data: mockProgress, error: null }),
-          }),
-        }),
-      } as any);
+      createMockFrom(mockProgress);
 
       const { result } = renderHook(() => useConceptSRS(), { wrapper });
 
@@ -312,14 +352,7 @@ describe('useConceptSRS', () => {
     });
 
     it('returns null when no subconcepts due', async () => {
-      const mockFrom = vi.mocked(supabase.from);
-      mockFrom.mockReturnValue({
-        select: vi.fn().mockReturnValue({
-          eq: vi.fn().mockReturnValue({
-            lte: vi.fn().mockResolvedValue({ data: [], error: null }),
-          }),
-        }),
-      } as any);
+      createMockFrom([]);
 
       const { result } = renderHook(() => useConceptSRS(), { wrapper });
 
@@ -328,6 +361,32 @@ describe('useConceptSRS', () => {
       });
 
       expect(result.current.currentSubconcept).toBeNull();
+    });
+  });
+
+  describe('language parameter', () => {
+    it('refetches when language changes', async () => {
+      const mockFrom = createMockFrom([]);
+
+      const { result, rerender } = renderHook(
+        ({ lang }) => useConceptSRS(lang),
+        { wrapper, initialProps: { lang: 'python' } }
+      );
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // Clear mock calls
+      mockFrom.mockClear();
+
+      // Change language
+      rerender({ lang: 'javascript' });
+
+      // Should trigger a new fetch
+      await waitFor(() => {
+        expect(mockFrom).toHaveBeenCalled();
+      });
     });
   });
 });

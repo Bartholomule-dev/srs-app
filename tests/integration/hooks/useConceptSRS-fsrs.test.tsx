@@ -27,6 +27,7 @@ vi.mock('@/lib/hooks/useAuth', () => ({
 let mockSubconceptProgress: Array<{
   id: string;
   user_id: string;
+  language: string;
   subconcept_slug: string;
   concept_slug: string;
   stability: number;
@@ -45,6 +46,7 @@ let mockSubconceptProgress: Array<{
 let mockExerciseAttempts: Array<{
   id: string;
   user_id: string;
+  language: string;
   exercise_slug: string;
   times_seen: number;
   times_correct: number;
@@ -56,38 +58,58 @@ let mockExerciseAttempts: Array<{
 let lastUpsertData: Record<string, unknown> | null = null;
 
 // Mock Supabase client
+// The chain supports: .eq('user_id', x).eq('language', y).lte('next_review', z)
 vi.mock('@/lib/supabase/client', () => ({
   supabase: {
     from: (table: string) => {
       if (table === 'subconcept_progress') {
         return {
-          select: () => ({
-            eq: (col: string, val: string) => ({
+          select: () => {
+            // Track filter conditions through the chain
+            let userId: string | null = null;
+            let language: string | null = null;
+            let subconceptSlug: string | null = null;
+
+            const createChain = () => ({
+              eq: (col: string, val: string) => {
+                if (col === 'user_id') userId = val;
+                if (col === 'language') language = val;
+                if (col === 'subconcept_slug') subconceptSlug = val;
+                return createChain();
+              },
               lte: () =>
                 Promise.resolve({
                   data: mockSubconceptProgress.filter(
                     (p) =>
-                      p.user_id === val && new Date(p.next_review) <= new Date()
+                      (userId === null || p.user_id === userId) &&
+                      (language === null || p.language === language) &&
+                      new Date(p.next_review) <= new Date()
                   ),
                   error: null,
                 }),
-              single: () =>
-                Promise.resolve({
-                  data: mockSubconceptProgress.find(
-                    (p) => p.user_id === val
-                  ) ?? null,
-                  error: mockSubconceptProgress.find((p) => p.user_id === val)
-                    ? null
-                    : { code: 'PGRST116' },
-                }),
-            }),
-          }),
+              single: () => {
+                const found = mockSubconceptProgress.find(
+                  (p) =>
+                    (userId === null || p.user_id === userId) &&
+                    (language === null || p.language === language) &&
+                    (subconceptSlug === null || p.subconcept_slug === subconceptSlug)
+                );
+                return Promise.resolve({
+                  data: found ?? null,
+                  error: found ? null : { code: 'PGRST116' },
+                });
+              },
+            });
+
+            return createChain();
+          },
           upsert: (data: Record<string, unknown>) => {
             lastUpsertData = data;
-            // Simulate upsert
+            // Simulate upsert with language support
             const existing = mockSubconceptProgress.findIndex(
               (p) =>
                 p.user_id === data.user_id &&
+                p.language === data.language &&
                 p.subconcept_slug === data.subconcept_slug
             );
             if (existing >= 0) {
@@ -99,6 +121,7 @@ vi.mock('@/lib/supabase/client', () => ({
             } else {
               mockSubconceptProgress.push({
                 id: `sp-${Date.now()}`,
+                language: 'python', // default
                 ...data,
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString(),
@@ -111,6 +134,7 @@ vi.mock('@/lib/supabase/client', () => ({
                     data: mockSubconceptProgress.find(
                       (p) =>
                         p.user_id === data.user_id &&
+                        p.language === data.language &&
                         p.subconcept_slug === data.subconcept_slug
                     ),
                     error: null,
@@ -122,17 +146,47 @@ vi.mock('@/lib/supabase/client', () => ({
       }
       if (table === 'exercise_attempts') {
         return {
-          select: () => ({
-            eq: () =>
-              Promise.resolve({
-                data: mockExerciseAttempts,
-                error: null,
-              }),
-          }),
+          select: () => {
+            // Track filter conditions through the chain
+            let userId: string | null = null;
+            let language: string | null = null;
+
+            const createChain = () => ({
+              eq: (col: string, val: string) => {
+                if (col === 'user_id') userId = val;
+                if (col === 'language') language = val;
+                return createChain();
+              },
+              lte: () =>
+                Promise.resolve({
+                  data: mockExerciseAttempts.filter(
+                    (a) =>
+                      (userId === null || a.user_id === userId) &&
+                      (language === null || a.language === language)
+                  ),
+                  error: null,
+                }),
+            });
+
+            // Return result immediately if no chain continues
+            return {
+              ...createChain(),
+              then: (resolve: (arg: { data: typeof mockExerciseAttempts; error: null }) => void) =>
+                resolve({
+                  data: mockExerciseAttempts.filter(
+                    (a) =>
+                      (userId === null || a.user_id === userId) &&
+                      (language === null || a.language === language)
+                  ),
+                  error: null,
+                }),
+            };
+          },
           upsert: (data: Record<string, unknown>) => {
             const existing = mockExerciseAttempts.findIndex(
               (a) =>
                 a.user_id === data.user_id &&
+                a.language === data.language &&
                 a.exercise_slug === data.exercise_slug
             );
             if (existing >= 0) {
@@ -143,6 +197,7 @@ vi.mock('@/lib/supabase/client', () => ({
             } else {
               mockExerciseAttempts.push({
                 id: `ea-${Date.now()}`,
+                language: 'python', // default
                 ...data,
                 created_at: new Date().toISOString(),
               } as typeof mockExerciseAttempts[0]);
@@ -154,6 +209,7 @@ vi.mock('@/lib/supabase/client', () => ({
                     data: mockExerciseAttempts.find(
                       (a) =>
                         a.user_id === data.user_id &&
+                        a.language === data.language &&
                         a.exercise_slug === data.exercise_slug
                     ),
                     error: null,
@@ -202,6 +258,7 @@ describe('useConceptSRS FSRS Integration', () => {
       {
         id: 'sp-1',
         user_id: mockUser.id,
+        language: 'python',
         subconcept_slug: 'for',
         concept_slug: 'loops',
         stability: 5,
@@ -219,6 +276,7 @@ describe('useConceptSRS FSRS Integration', () => {
       {
         id: 'sp-2',
         user_id: mockUser.id,
+        language: 'python',
         subconcept_slug: 'while',
         concept_slug: 'loops',
         stability: 3,
@@ -254,6 +312,7 @@ describe('useConceptSRS FSRS Integration', () => {
       {
         id: 'sp-1',
         user_id: mockUser.id,
+        language: 'python',
         subconcept_slug: 'for',
         concept_slug: 'loops',
         stability: 0,
@@ -302,6 +361,7 @@ describe('useConceptSRS FSRS Integration', () => {
       {
         id: 'sp-1',
         user_id: mockUser.id,
+        language: 'python',
         subconcept_slug: 'for',
         concept_slug: 'loops',
         stability: 5,
@@ -347,6 +407,7 @@ describe('useConceptSRS FSRS Integration', () => {
       {
         id: 'sp-1',
         user_id: mockUser.id,
+        language: 'python',
         subconcept_slug: 'for',
         concept_slug: 'loops',
         stability: 10,
@@ -392,6 +453,7 @@ describe('useConceptSRS FSRS Integration', () => {
       {
         id: 'sp-1',
         user_id: mockUser.id,
+        language: 'python',
         subconcept_slug: 'for',
         concept_slug: 'loops',
         stability: 0,
@@ -409,6 +471,7 @@ describe('useConceptSRS FSRS Integration', () => {
       {
         id: 'sp-2',
         user_id: mockUser.id,
+        language: 'python',
         subconcept_slug: 'while',
         concept_slug: 'loops',
         stability: 0,

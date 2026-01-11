@@ -87,8 +87,10 @@ function createInitialSubconceptState(
  * - Records results using FSRS algorithm
  * - Tracks exercise attempts
  * - Provides exercise selection using hybrid algorithm
+ *
+ * @param language - Programming language to filter by (default: 'python')
  */
-export function useConceptSRS(): UseConceptSRSReturn {
+export function useConceptSRS(language: string = 'python'): UseConceptSRSReturn {
   const { user, loading: authLoading } = useAuth();
   const [dueSubconcepts, setDueSubconcepts] = useState<SubconceptProgress[]>([]);
   const [attemptCache, setAttemptCache] = useState<Map<string, ExerciseAttempt>>(new Map());
@@ -123,11 +125,13 @@ export function useConceptSRS(): UseConceptSRSReturn {
           .from('subconcept_progress')
           .select('*')
           .eq('user_id', user.id)
+          .eq('language', language)
           .lte('next_review', now),
         supabase
           .from('exercise_attempts')
           .select('*')
-          .eq('user_id', user.id),
+          .eq('user_id', user.id)
+          .eq('language', language),
       ]);
 
       if (cancelled) return;
@@ -165,7 +169,7 @@ export function useConceptSRS(): UseConceptSRSReturn {
     return () => {
       cancelled = true;
     };
-  }, [authLoading, user, fetchTrigger]);
+  }, [authLoading, user, fetchTrigger, language]);
 
   // Refetch function
   const refetch = useCallback(() => {
@@ -215,6 +219,7 @@ export function useConceptSRS(): UseConceptSRSReturn {
             .from('subconcept_progress')
             .select('*')
             .eq('user_id', user.id)
+            .eq('language', language)
             .eq('subconcept_slug', targetSlug)
             .single();
 
@@ -230,7 +235,8 @@ export function useConceptSRS(): UseConceptSRSReturn {
             targetProgress = createInitialSubconceptState(
               targetSlug,
               conceptSlug, // Use same concept for new subconcepts
-              user.id
+              user.id,
+              language
             );
           }
         }
@@ -257,21 +263,27 @@ export function useConceptSRS(): UseConceptSRSReturn {
         // Upsert subconcept progress with FSRS fields
         const { error: upsertError } = await supabase
           .from('subconcept_progress')
-          .upsert({
-            user_id: user.id,
-            subconcept_slug: targetSlug,
-            concept_slug: targetProgress.conceptSlug,
-            stability: result.cardState.stability,
-            difficulty: result.cardState.difficulty,
-            fsrs_state: STATE_MAP[result.cardState.state],
-            reps: result.cardState.reps,
-            lapses: result.cardState.lapses,
-            elapsed_days: result.cardState.elapsedDays,
-            scheduled_days: result.cardState.scheduledDays,
-            next_review: result.cardState.due.toISOString(),
-            last_reviewed: result.cardState.lastReview?.toISOString() ?? new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          })
+          .upsert(
+            {
+              user_id: user.id,
+              language: language,
+              subconcept_slug: targetSlug,
+              concept_slug: targetProgress.conceptSlug,
+              stability: result.cardState.stability,
+              difficulty: result.cardState.difficulty,
+              fsrs_state: STATE_MAP[result.cardState.state],
+              reps: result.cardState.reps,
+              lapses: result.cardState.lapses,
+              elapsed_days: result.cardState.elapsedDays,
+              scheduled_days: result.cardState.scheduledDays,
+              next_review: result.cardState.due.toISOString(),
+              last_reviewed: result.cardState.lastReview?.toISOString() ?? new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+            },
+            {
+              onConflict: 'user_id,language,subconcept_slug',
+            }
+          )
           .select()
           .single();
 
@@ -287,13 +299,19 @@ export function useConceptSRS(): UseConceptSRSReturn {
 
       const { data: attemptData, error: attemptError } = await supabase
         .from('exercise_attempts')
-        .upsert({
-          user_id: user.id,
-          exercise_slug: exerciseSlug,
-          times_seen: timesSeen,
-          times_correct: timesCorrect,
-          last_seen_at: new Date().toISOString(),
-        })
+        .upsert(
+          {
+            user_id: user.id,
+            language: language,
+            exercise_slug: exerciseSlug,
+            times_seen: timesSeen,
+            times_correct: timesCorrect,
+            last_seen_at: new Date().toISOString(),
+          },
+          {
+            onConflict: 'user_id,language,exercise_slug',
+          }
+        )
         .select()
         .single();
 
@@ -316,7 +334,7 @@ export function useConceptSRS(): UseConceptSRSReturn {
         prev.filter((p) => !updatedSlugs.has(p.subconceptSlug))
       );
     },
-    [user, dueSubconcepts, attemptCache]
+    [user, dueSubconcepts, attemptCache, language]
   );
 
   /**
