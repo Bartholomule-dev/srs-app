@@ -21,6 +21,16 @@ BEGIN
   END IF;
 END $$;
 
+-- Add unique constraint on exercises.slug if not exists (required for FK reference)
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint WHERE conname = 'exercises_slug_key'
+  ) THEN
+    ALTER TABLE exercises ADD CONSTRAINT exercises_slug_key UNIQUE (slug);
+  END IF;
+END $$;
+
 -- Create telemetry table for future analytics
 CREATE TABLE IF NOT EXISTS grading_telemetry (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
