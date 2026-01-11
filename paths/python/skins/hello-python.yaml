@@ -1,85 +1,85 @@
-# paths/python/skins/hello-python.yaml
-
-id: hello-python
+id: "hello-python"
 title: "Hello Python"
 icon: "🐍"
-blueprints: [python-basics]
-
+blueprints:
+  - "python-basics"
 vars:
-  list_name: values
-  item_singular: value
-  item_plural: values
+  list_name: "values"
+  item_singular: "value"
+  item_plural: "values"
   item_examples:
     - "42"
     - "hello"
     - "3.14"
     - "True"
     - "name"
-  record_keys: ["name", "age", "score", "active"]
-  attr_key_1: name
-  attr_key_2: age
-  id_var: user_id
-  filename: data.txt
-  filetype: text
-  user_role: learner
-  status_var: learning
-  action_verb: practice
-  entity_name: Variable
-
+  record_keys:
+    - "name"
+    - "age"
+    - "score"
+    - "active"
+  attr_key_1: "name"
+  attr_key_2: "age"
+  id_var: "user_id"
+  filename: "data.txt"
+  filetype: "text"
+  user_role: "learner"
+  status_var: "learning"
+  action_verb: "practice"
+  entity_name: "Variable"
 dataPack:
-  list_sample: [10, 20, 30, 40]
+  list_sample:
+    - 10
+    - 20
+    - 30
+    - 40
   dict_sample:
     name: "Alice"
     age: 25
     score: 95.5
     active: true
   records_sample:
-    - { name: "Alice", score: 95 }
-    - { name: "Bob", score: 87 }
-    - { name: "Charlie", score: 92 }
+    - name: "Alice"
+      score: 95
+    - name: "Bob"
+      score: 87
+    - name: "Charlie"
+      score: 92
   string_samples:
     - "Hello, World!"
     - "Welcome to Python"
     - "Keep learning!"
     - "Great job!"
-
 contexts:
-  # Variables & Assignment
   assign-variable: "Store your username."
   variable-assign-fill: "Complete the assignment."
   variable-predict-assign: "Predict the stored value."
   variable-predict-reassign: "Predict after reassignment."
   multiple-assignment: "Assign multiple values at once."
-  swap-variables: "Swap two values."
+  swap-variables: "swap two variable values using Pythonic tuple unpacking for values."
   print-variable: "Display your username."
-  print-string: "Print a greeting."
+  print-string: "use print() to output a string to the console for values."
   io-print-fill: "Complete the print call."
   io-predict-print-concat: "Predict print output."
-
-  # Operators
   floor-division-dynamic: "Calculate whole number division."
   operator-addition-fill: "Complete the addition."
   operator-floor-division-fill: "Complete floor division."
   operator-predict-floor: "Predict floor division result."
-  modulo-dynamic: "Find the remainder."
+  modulo-dynamic: "use the modulo operator to find the remainder of division for values."
   operator-predict-modulo: "Predict modulo result."
-  exponentiation-dynamic: "Calculate powers."
+  exponentiation-dynamic: "calculate powers using the exponentiation operator for values."
   augmented-assignment-dynamic: "Update with augmented assignment."
   operator-precedence-dynamic: "Understand operator order."
-
-  # Boolean Logic
   boolean-and: "Combine conditions with AND."
   expression-and-fill: "Complete the AND expression."
-  expression-predict-and: "Predict AND result."
+  expression-predict-and: "predict boolean AND result for values."
   boolean-or: "Combine conditions with OR."
-  expression-predict-or: "Predict OR result."
-  boolean-not: "Negate a condition."
+  expression-predict-or: "predict boolean OR result for values."
+  boolean-not: "compare values for inequality using the != operator for values."
   expression-not-fill: "Complete the NOT expression."
   ternary-expression: "Conditional in one line."
-  comparison-chaining: "Chain comparisons."
-
-  # Input/Output & Imports
-  input-string: "Get user's name."
+  comparison-chaining: "chain comparison operators to check value ranges for values."
+  input-string: "read user input and store it in a variable for values."
   io-input-fill: "Complete the input call."
   input-to-int: "Convert input to number."
   print-fstring: "Format greeting with name."
@@ -92,8 +92,8 @@ contexts:
   import-fill-from: "Complete from import."
   import-predict-ceil: "Predict ceil result."
   import-random-choice: "Import random choice."
-  import-datetime: "Import datetime."
+  import-datetime: "get the current date using the datetime module for values."
   import-multiple-basic: "Import multiple modules."
-  import-as-alias: "Use import alias."
-  discount-tier-elif: "Use this step in the Hello Python workflow: Discount Tier."
-  order-status-ternary: "Use this step in the Hello Python workflow: Paid Status Label."
+  import-as-alias: "import a module with an alias for convenience for values."
+  discount-tier-elif: "Categorize values by tier or level."
+  order-status-ternary: "Set value status label in one line."

@@ -1,55 +1,59 @@
-# paths/python/skins/calculator-app.yaml
-
-id: calculator-app
+id: "calculator-app"
 title: "Calculator App"
 icon: "🧮"
-blueprints: [calculator-app]
-
+blueprints:
+  - "calculator-app"
 vars:
-  list_name: history
-  item_singular: calculation
-  item_plural: calculations
+  list_name: "history"
+  item_singular: "calculation"
+  item_plural: "calculations"
   item_examples:
     - "5 + 3"
     - "10 * 2"
     - "100 / 4"
     - "2 ** 8"
     - "15 % 4"
-  record_keys: ["expression", "result", "timestamp"]
-  attr_key_1: expression
-  attr_key_2: result
-  id_var: calc_id
-  filename: history.json
-  filetype: json
-  user_role: user
-  status_var: computed
-  action_verb: calculate
-  entity_name: Calculation
-
+  record_keys:
+    - "expression"
+    - "result"
+    - "timestamp"
+  attr_key_1: "expression"
+  attr_key_2: "result"
+  id_var: "calc_id"
+  filename: "history.json"
+  filetype: "json"
+  user_role: "user"
+  status_var: "computed"
+  action_verb: "calculate"
+  entity_name: "Calculation"
 dataPack:
-  list_sample: [1, 2, 3, 4, 5]
+  list_sample:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
   dict_sample:
     expression: "5 + 3"
     result: 8
     timestamp: "2026-01-09"
   records_sample:
-    - { expression: "10 + 5", result: 15 }
-    - { expression: "20 / 4", result: 5 }
-    - { expression: "3 * 7", result: 21 }
+    - expression: "10 + 5"
+      result: 15
+    - expression: "20 / 4"
+      result: 5
+    - expression: "3 * 7"
+      result: 21
   string_samples:
     - "Result: "
     - "Enter a number: "
     - "Invalid input!"
     - "Calculation complete"
-
 contexts:
-  # Variables & Input
   assign-variable: "Store the user's input number."
   multiple-assignment: "Store multiple values at once."
   input-string: "Get the expression from the user."
   print-variable: "Display the result to the user."
-
-  # Arithmetic Operations
   operator-addition-fill: "Add two numbers together."
   int-addition-dynamic: "Perform addition with variables."
   int-multiply-dynamic: "Multiply two numbers."
@@ -62,20 +66,14 @@ contexts:
   float-predict-round: "Predict the result of rounding."
   float-predict-division: "Predict the result of division."
   operator-precedence-dynamic: "Apply correct order of operations."
-
-  # Type Conversion
   convert-int-fill: "Convert string input to a number."
   convert-str-fill: "Convert the result back to string for display."
   convert-predict-int: "Predict integer conversion result."
   convert-predict-bool: "Predict boolean conversion result."
   conversion-write-dynamic: "Write code to convert types."
   conversion-predict-dynamic: "Predict the result of type conversion."
-
-  # Output
   f-string-basic: "Format the result nicely."
   print-fstring: "Print the formatted calculation."
-
-  # Boolean Logic
   bool-and-fill: "Check if both operands are valid."
   bool-or-fill: "Check if either operation is allowed."
   bool-predict-and: "Predict AND operation result."
@@ -84,35 +82,27 @@ contexts:
   bool-logic-write-dynamic: "Write boolean logic."
   bool-expr-dynamic: "Create boolean expressions."
   bool-compound-dynamic: "Combine multiple boolean conditions."
-
-  # Comparisons
   identity-is-none: "Check if input is None."
   identity-is-not-none: "Verify input is not None."
   identity-vs-equality: "Understand == vs is."
   comparison-chaining: "Chain comparisons for range checks."
   comparison-predict-chain: "Predict chained comparison result."
   comparison-result-dynamic: "Write comparison expressions."
-
-  # Truthiness
   truthiness-intro: "Understand truthy and falsy values."
   truthiness-empty-list: "Check if history is empty."
   truthiness-predict-empty: "Predict truthiness of empty values."
   truthiness-predict-zero: "Predict truthiness of zero."
   pythonic-if-empty-check: "Pythonic way to check empty input."
-
-  # Validation & Error Handling
   if-else-basic: "Check if input is a valid number."
   ternary-basic: "Return result or error in one line."
   try-except-basic: "Handle invalid numeric input."
   except-specific: "Catch ValueError for bad input."
-
-  # Functions
   define-function: "Create a function to perform calculations."
   function-return: "Return the calculation result."
   default-param-simple: "Add precision parameter with default."
   elif-grade: "Handle different operations (+, -, *, /)."
   match-case-basic: "Match on the operation type."
   elif-http-status: "Handle different calculator modes."
-  error-handling-conversion: "Use this step in the Calculator App workflow: Safe Type Conversion."
-  number-round-format: "Use this step in the Calculator App workflow: Round and Format."
-  parse-quantity-safe: "Use this step in the Calculator App workflow: Parse Quantity Safely."
+  error-handling-conversion: "Handle type conversion errors for calculation."
+  number-round-format: "Round and format calculation values."
+  parse-quantity-safe: "Safely parse calculation quantity."

@@ -1,50 +1,60 @@
-# paths/python/skins/api-client.yaml
-
-id: api-client
+id: "api-client"
 title: "API Client"
 icon: "🌐"
-blueprints: [api-functions]
-
+blueprints:
+  - "api-functions"
 vars:
-  list_name: endpoints
-  item_singular: endpoint
-  item_plural: endpoints
+  list_name: "endpoints"
+  item_singular: "endpoint"
+  item_plural: "endpoints"
   item_examples:
     - "/users"
     - "/posts"
     - "/comments"
     - "/auth/login"
     - "/api/v1/data"
-  record_keys: ["url", "method", "headers", "body"]
-  attr_key_1: url
-  attr_key_2: method
-  id_var: endpoint_id
-  filename: api_response.json
-  filetype: json
-  user_role: client
-  status_var: authenticated
-  action_verb: request
-  entity_name: Endpoint
-
+  record_keys:
+    - "url"
+    - "method"
+    - "headers"
+    - "body"
+  attr_key_1: "url"
+  attr_key_2: "method"
+  id_var: "endpoint_id"
+  filename: "api_response.json"
+  filetype: "json"
+  user_role: "client"
+  status_var: "authenticated"
+  action_verb: "request"
+  entity_name: "Endpoint"
 dataPack:
-  list_sample: ["GET", "POST", "PUT", "DELETE"]
+  list_sample:
+    - "GET"
+    - "POST"
+    - "PUT"
+    - "DELETE"
   dict_sample:
     url: "/api/users"
     method: "GET"
-    headers: {"Authorization": "Bearer token"}
+    headers:
+      Authorization: "Bearer token"
     status: 200
   records_sample:
-    - { endpoint: "/users", method: "GET", status: 200 }
-    - { endpoint: "/posts", method: "POST", status: 201 }
-    - { endpoint: "/auth", method: "DELETE", status: 401 }
+    - endpoint: "/users"
+      method: "GET"
+      status: 200
+    - endpoint: "/posts"
+      method: "POST"
+      status: 201
+    - endpoint: "/auth"
+      method: "DELETE"
+      status: 401
   string_samples:
     - "Request successful"
     - "Authentication failed"
     - "Rate limit exceeded"
     - "Endpoint not found"
-
 contexts:
-  # Basic Functions
   define-function: "Define a function to make API requests."
   def-keyword-fill: "Complete the function definition."
   function-no-params: "Create a simple health check function."
@@ -58,8 +68,6 @@ contexts:
   function-result-predict-dynamic: "Predict the tuple of results."
   positional-arg-intro: "Pass URL and method as positional args."
   mixed-args-intro: "Mix positional and keyword arguments."
-
-  # Parameter Flexibility
   keyword-arg-intro: "Use keyword arguments for headers."
   keyword-only-args: "Force headers as keyword-only."
   positional-only-args: "Make URL positional-only."
@@ -77,8 +85,6 @@ contexts:
   kwargs-syntax-fill: "Complete the **kwargs syntax."
   kwargs-function: "Build query string from kwargs."
   args-kwargs-combined: "Combine *args and **kwargs."
-
-  # Type Safety
   typehint-param: "Type hint the URL parameter."
   typehint-list: "Type hint list of endpoints."
   typehint-return: "Type hint the response return."
@@ -92,8 +98,6 @@ contexts:
   lambda-result-dynamic: "Predict dynamic lambda result."
   lambda-write-dynamic: "Write a lambda expression."
   lambda-call-dynamic: "Call a lambda with values."
-
-  # Scope & Advanced
   scope-intro: "Understand local vs global base URL."
   scope-global-read: "Read global API configuration."
   scope-predict: "Predict scope resolution."
@@ -103,4 +107,4 @@ contexts:
   default-args-predict-dynamic: "Predict default behavior."
   default-args-call-dynamic: "Call with various defaults."
   retry-decorator-integrated: "Add retry logic with decorator."
-  api-response-model-integrated: "Use this step in the API Client workflow: API Response Model."
+  api-response-model-integrated: "Define a data model for Endpoint API responses."

@@ -1,34 +1,30 @@
-# paths/python/skins/playlist-app.yaml
-
-id: playlist-app
+id: "playlist-app"
 title: "Playlist App"
-icon: "\U0001F3B5"
-# Global skin - works with any blueprint
-
+icon: "🎵"
 vars:
-  list_name: playlist
-  item_singular: song
-  item_plural: songs
+  list_name: "playlist"
+  item_singular: "song"
+  item_plural: "songs"
   item_examples:
     - "Bohemian Rhapsody"
     - "Stairway to Heaven"
     - "Hotel California"
     - "Imagine"
     - "Sweet Child O Mine"
-  record_keys: ["title", "artist", "duration"]
-  # Extended slots for future exercises
-  attr_key_1: title
-  attr_key_2: artist
-  id_var: track_id
-  filename: playlist.json
-  filetype: json
-  user_role: listener
-  status_var: playing
-  action_verb: play
-  entity_name: Track
-
+  record_keys:
+    - "title"
+    - "artist"
+    - "duration"
+  attr_key_1: "title"
+  attr_key_2: "artist"
+  id_var: "track_id"
+  filename: "playlist.json"
+  filetype: "json"
+  user_role: "listener"
+  status_var: "playing"
+  action_verb: "play"
+  entity_name: "Track"
 contexts:
-  # Setup & Storage
   list-create-empty: "Create an empty playlist for the user."
   list-create-values: "Initialize playlist with favorite songs."
   tuple-create: "Store immutable song info like (artist, year)."
@@ -45,8 +41,6 @@ contexts:
   input-string: "Get the song title from user."
   print-string: "Display 'Now playing...' message."
   print-variable: "Show the current song name."
-
-  # Display & Iteration
   for-loop-list: "Display all songs in the playlist."
   for-loop-string: "Display each character in the song title."
   for-loop-range: "Process playlist by position."
@@ -63,8 +57,6 @@ contexts:
   list-comp-filter-dynamic: "Find songs by a specific artist."
   list-comp-basic: "Extract just the song titles."
   list-comp-conditional: "Get songs longer than 3 minutes."
-
-  # Logic & Validation
   if-else-basic: "Check if song is currently playing."
   if-only: "Check if playlist is empty."
   boolean-and: "Check if song is by artist AND under 5 min."
@@ -81,8 +73,6 @@ contexts:
   finally-basic: "Always stop audio when done."
   try-except-finally: "Complete playback handling."
   reraise: "Re-raise after logging playback error."
-
-  # Organization & Persistence
   define-function: "Create a function to calculate playlist duration."
   function-return: "Return the formatted duration."
   return-none: "Return None when song is removed."
@@ -99,53 +89,53 @@ contexts:
   main-guard-basic: "Only start player when run directly."
   import-from: "Import audio utilities."
   import-module: "Import the player module."
-  active-users-integrated: "Use this step in the Playlist App workflow: Active Customers with Index."
-  api-response-model-integrated: "Use this step in the Playlist App workflow: API Response Model."
-  apply-coupon: "Use this step in the Playlist App workflow: Apply Coupon."
-  boolean-all-check: "Use this step in the Playlist App workflow: All Products Check."
-  conditional-dict-validation: "Use this step in the Playlist App workflow: Dict Key Validation."
-  conditional-early-return: "Use this step in the Playlist App workflow: Guard Clause Pattern."
-  conditional-list-any: "Use this step in the Playlist App workflow: Any Product Matches."
-  config-loader-integrated: "Use this step in the Playlist App workflow: Safe JSON Config Loader."
-  dict-from-parallel-lists: "Use this step in the Playlist App workflow: Dict from Two Lists."
-  discount-tier-elif: "Use this step in the Playlist App workflow: Discount Tier."
-  error-code-extractor-integrated: "Use this step in the Playlist App workflow: Error Code Extractor."
-  error-handling-conversion: "Use this step in the Playlist App workflow: Safe Type Conversion."
-  error-handling-dict-access: "Use this step in the Playlist App workflow: Safe Dict Access."
-  error-handling-file-read: "Use this step in the Playlist App workflow: Safe File Read."
-  export-orders-csv: "Use this step in the Playlist App workflow: Export Orders CSV."
-  file-read-to-list: "Use this step in the Playlist App workflow: File Lines to List."
-  file-write-from-list: "Use this step in the Playlist App workflow: List to File."
-  filter-list-of-dicts: "Use this step in the Playlist App workflow: Filter List of Dicts."
-  filter-orders-fn: "Use this step in the Playlist App workflow: Filter Orders Function."
-  for-else: "Use this step in the Playlist App workflow: For-Else Clause."
-  fstring-from-dict: "Use this step in the Playlist App workflow: F-String from Dict."
-  health-check-dataclass-integrated: "Use this step in the Playlist App workflow: Health Check with Logging."
-  high-value-orders-comp: "Use this step in the Playlist App workflow: High-Value Orders."
-  import-json-parse: "Use this step in the Playlist App workflow: JSON Parse."
-  input-to-int: "Use this step in the Playlist App workflow: Input to Integer."
-  inventory-dict-comp: "Use this step in the Playlist App workflow: Inventory Dict Comprehension."
-  inventory-item-class: "Use this step in the Playlist App workflow: Inventory Product Class."
-  inventory-reorder-loop: "Use this step in the Playlist App workflow: Inventory Reorder List."
-  list-dedup-preserve-order: "Use this step in the Playlist App workflow: Deduplicate List (Order-Preserving)."
-  list-to-dict-conversion: "Use this step in the Playlist App workflow: List of Tuples to Dict."
-  loop-dict-accumulate: "Use this step in the Playlist App workflow: Dict Value Accumulator."
-  loop-nested-flatten: "Use this step in the Playlist App workflow: Flatten Nested List."
-  number-round-format: "Use this step in the Playlist App workflow: Round and Format."
-  number-stats-from-list: "Use this step in the Playlist App workflow: List Statistics."
-  order-status-ternary: "Use this step in the Playlist App workflow: Paid Status Label."
-  order-total-method: "Use this step in the Playlist App workflow: Order Total Method."
-  orders-parse-to-records: "Use this step in the Playlist App workflow: Order Lines to Records."
-  orders-total-accumulator: "Use this step in the Playlist App workflow: Order Totals Summary."
-  parse-events-log: "Use this step in the Playlist App workflow: Parse Events Log."
-  parse-quantity-safe: "Use this step in the Playlist App workflow: Parse Quantity Safely."
-  process-orders-with-guard: "Use this step in the Playlist App workflow: Order Processing Cleanup."
-  product-tags-to-set: "Use this step in the Playlist App workflow: Product Tags Set."
-  retry-decorator-integrated: "Use this step in the Playlist App workflow: Retry Connection Decorator."
-  sort-dict-by-value: "Use this step in the Playlist App workflow: Sort Dict by Value."
-  sorted-key-lambda: "Use this step in the Playlist App workflow: Sorted with Lambda Key."
-  string-join-transformed: "Use this step in the Playlist App workflow: Transform and Join."
-  string-split-filter: "Use this step in the Playlist App workflow: Split and Filter."
-  summarize-customers: "Use this step in the Playlist App workflow: Count Active Customers."
-  typehint-callable: "Use this step in the Playlist App workflow: Type Hint Callable."
-  validate-order-status: "Use this step in the Playlist App workflow: Validate Order Status."
+  active-users-integrated: "Find songs with their position in the playlist."
+  api-response-model-integrated: "Define a data model for Track API responses."
+  apply-coupon: "Apply a discount to songs in the playlist."
+  boolean-all-check: "Check if all songs in playlist meet a condition."
+  conditional-dict-validation: "Validate song data before processing."
+  conditional-early-return: "Guard against invalid song data early."
+  conditional-list-any: "Check if any song meets the criteria."
+  config-loader-integrated: "Safely load song configuration from JSON."
+  dict-from-parallel-lists: "Combine song keys and values into a dictionary."
+  discount-tier-elif: "Categorize songs by tier or level."
+  error-code-extractor-integrated: "Extract error codes from song operation results."
+  error-handling-conversion: "Handle type conversion errors for song."
+  error-handling-dict-access: "Safely access song dictionary keys."
+  error-handling-file-read: "Handle errors when loading song data."
+  export-orders-csv: "Export playlist to a CSV file."
+  file-read-to-list: "Load playlist from a file into a list."
+  file-write-from-list: "Save playlist to a file."
+  filter-list-of-dicts: "Filter playlist by playing value."
+  filter-orders-fn: "Create a function to filter playlist."
+  for-else: "Handle the case when no song is found."
+  fstring-from-dict: "Format song details from a dictionary."
+  health-check-dataclass-integrated: "Create a health check status for song services."
+  high-value-orders-comp: "Find high-value songs using comprehension."
+  import-json-parse: "Parse song data from JSON format."
+  input-to-int: "Convert user input to song quantity."
+  inventory-dict-comp: "Build a song lookup using dict comprehension."
+  inventory-item-class: "Define a Track class."
+  inventory-reorder-loop: "Loop through playlist and flag items for reorder."
+  list-dedup-preserve-order: "Remove duplicate songs while keeping order."
+  list-to-dict-conversion: "Convert playlist to a lookup dictionary."
+  loop-dict-accumulate: "Sum values from song data."
+  loop-nested-flatten: "Flatten nested playlist into a single list."
+  number-round-format: "Round and format song values."
+  number-stats-from-list: "Calculate statistics from playlist."
+  order-status-ternary: "Set song status label in one line."
+  order-total-method: "Add a method to calculate song total."
+  orders-parse-to-records: "Parse song lines into records."
+  orders-total-accumulator: "Accumulate totals across playlist."
+  parse-events-log: "Parse song event log entries."
+  parse-quantity-safe: "Safely parse song quantity."
+  process-orders-with-guard: "Process playlist with cleanup on errors."
+  product-tags-to-set: "Get unique song tags as a set."
+  retry-decorator-integrated: "Retry failed song operations automatically."
+  sort-dict-by-value: "Sort songs by their values."
+  sorted-key-lambda: "Sort playlist using a custom key."
+  string-join-transformed: "Join songs into a formatted string."
+  string-split-filter: "Split and filter song text."
+  summarize-customers: "Count active songs in playlist."
+  typehint-callable: "Add type hints to song processing function."
+  validate-order-status: "Validate song status before changes."

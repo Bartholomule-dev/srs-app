@@ -1,50 +1,57 @@
-# paths/python/skins/pet-simulator.yaml
-
-id: pet-simulator
+id: "pet-simulator"
 title: "Pet Simulator"
 icon: "🐕"
-# Global skin - works with any blueprint
-
 vars:
-  list_name: pets
-  item_singular: pet
-  item_plural: pets
+  list_name: "pets"
+  item_singular: "pet"
+  item_plural: "pets"
   item_examples:
     - "Buddy"
     - "Max"
     - "Luna"
     - "Whiskers"
     - "Charlie"
-  record_keys: ["name", "species", "age", "health"]
-  attr_key_1: name
-  attr_key_2: health
-  id_var: pet_id
-  filename: pets.json
-  filetype: json
-  user_role: owner
-  status_var: happy
-  action_verb: feed
-  entity_name: Pet
-
+  record_keys:
+    - "name"
+    - "species"
+    - "age"
+    - "health"
+  attr_key_1: "name"
+  attr_key_2: "health"
+  id_var: "pet_id"
+  filename: "pets.json"
+  filetype: "json"
+  user_role: "owner"
+  status_var: "happy"
+  action_verb: "feed"
+  entity_name: "Pet"
 dataPack:
-  list_sample: ["dog", "cat", "bird", "fish"]
+  list_sample:
+    - "dog"
+    - "cat"
+    - "bird"
+    - "fish"
   dict_sample:
     name: "Buddy"
     species: "Dog"
     age: 3
     health: 100
   records_sample:
-    - { name: "Buddy", species: "Dog", health: 100 }
-    - { name: "Whiskers", species: "Cat", health: 95 }
-    - { name: "Tweety", species: "Bird", health: 80 }
+    - name: "Buddy"
+      species: "Dog"
+      health: 100
+    - name: "Whiskers"
+      species: "Cat"
+      health: 95
+    - name: "Tweety"
+      species: "Bird"
+      health: 80
   string_samples:
     - "Your pet is hungry!"
     - "Pet is happy!"
     - "Time for a walk!"
     - "Pet needs attention"
-
 contexts:
-  # Basic Classes
   define-class: "Create a Pet class to represent your virtual pet."
   class-keyword-fill: "Use the class keyword to define Pet."
   init-method: "Initialize a pet with name and species."
@@ -57,8 +64,6 @@ contexts:
   method-call-predict: "Predict what pet.feed() returns."
   method-call-dynamic: "Call the pet's method dynamically."
   instance-method-write-dynamic: "Write a method to play with the pet."
-
-  # Inheritance
   inheritance-basic: "Create a Dog class that inherits from Pet."
   inheritance-predict: "Predict what Dog inherits from Pet."
   inheritance-isinstance: "Check if buddy is an instance of Pet."
@@ -70,16 +75,12 @@ contexts:
   inheritance-predict-dynamic: "Predict inherited behavior."
   inheritance-super-method: "Extend parent's behavior in subclass."
   method-resolution-order: "Understand Pet → Dog method lookup."
-
-  # Properties
   property-getter: "Add a health property with a getter."
   property-return: "Return the pet's health level."
   property-readonly: "Make species a read-only property."
   property-setter: "Add a setter to validate health changes."
   property-setter-validation: "Validate health is between 0-100."
   property-deleter: "Clean up when pet is released."
-
-  # Class Methods & Static
   classmethod-basic: "Add a class method to count all pets."
   classmethod-cls-parameter: "Use cls to access Pet class."
   classmethod-call: "Call the class method on Pet."
@@ -87,57 +88,55 @@ contexts:
   api-response-model-integrated: "Parse pet data from API response."
   staticmethod-basic: "Add a static method for age calculation."
   staticmethod-vs-classmethod: "Understand when to use each."
-
-  # Error Handling
   custom-exception: "Create a PetError for invalid operations."
   raise-exception: "Raise PetError when health is negative."
   try-except-basic: "Handle errors when feeding a pet."
-  active-users-integrated: "Use this step in the Pet Simulator workflow: Active Customers with Index."
-  apply-coupon: "Use this step in the Pet Simulator workflow: Apply Coupon."
-  boolean-all-check: "Use this step in the Pet Simulator workflow: All Products Check."
-  conditional-dict-validation: "Use this step in the Pet Simulator workflow: Dict Key Validation."
-  conditional-early-return: "Use this step in the Pet Simulator workflow: Guard Clause Pattern."
-  conditional-list-any: "Use this step in the Pet Simulator workflow: Any Product Matches."
-  config-loader-integrated: "Use this step in the Pet Simulator workflow: Safe JSON Config Loader."
-  dict-from-parallel-lists: "Use this step in the Pet Simulator workflow: Dict from Two Lists."
-  discount-tier-elif: "Use this step in the Pet Simulator workflow: Discount Tier."
-  error-code-extractor-integrated: "Use this step in the Pet Simulator workflow: Error Code Extractor."
-  error-handling-conversion: "Use this step in the Pet Simulator workflow: Safe Type Conversion."
-  error-handling-dict-access: "Use this step in the Pet Simulator workflow: Safe Dict Access."
-  error-handling-file-read: "Use this step in the Pet Simulator workflow: Safe File Read."
-  export-orders-csv: "Use this step in the Pet Simulator workflow: Export Orders CSV."
-  file-read-to-list: "Use this step in the Pet Simulator workflow: File Lines to List."
-  file-write-from-list: "Use this step in the Pet Simulator workflow: List to File."
-  filter-list-of-dicts: "Use this step in the Pet Simulator workflow: Filter List of Dicts."
-  filter-orders-fn: "Use this step in the Pet Simulator workflow: Filter Orders Function."
-  for-else: "Use this step in the Pet Simulator workflow: For-Else Clause."
-  fstring-from-dict: "Use this step in the Pet Simulator workflow: F-String from Dict."
-  health-check-dataclass-integrated: "Use this step in the Pet Simulator workflow: Health Check with Logging."
-  high-value-orders-comp: "Use this step in the Pet Simulator workflow: High-Value Orders."
-  import-json-parse: "Use this step in the Pet Simulator workflow: JSON Parse."
-  input-to-int: "Use this step in the Pet Simulator workflow: Input to Integer."
-  inventory-dict-comp: "Use this step in the Pet Simulator workflow: Inventory Dict Comprehension."
-  inventory-item-class: "Use this step in the Pet Simulator workflow: Inventory Product Class."
-  inventory-reorder-loop: "Use this step in the Pet Simulator workflow: Inventory Reorder List."
-  list-dedup-preserve-order: "Use this step in the Pet Simulator workflow: Deduplicate List (Order-Preserving)."
-  list-to-dict-conversion: "Use this step in the Pet Simulator workflow: List of Tuples to Dict."
-  loop-dict-accumulate: "Use this step in the Pet Simulator workflow: Dict Value Accumulator."
-  loop-nested-flatten: "Use this step in the Pet Simulator workflow: Flatten Nested List."
-  number-round-format: "Use this step in the Pet Simulator workflow: Round and Format."
-  number-stats-from-list: "Use this step in the Pet Simulator workflow: List Statistics."
-  order-status-ternary: "Use this step in the Pet Simulator workflow: Paid Status Label."
-  order-total-method: "Use this step in the Pet Simulator workflow: Order Total Method."
-  orders-parse-to-records: "Use this step in the Pet Simulator workflow: Order Lines to Records."
-  orders-total-accumulator: "Use this step in the Pet Simulator workflow: Order Totals Summary."
-  parse-events-log: "Use this step in the Pet Simulator workflow: Parse Events Log."
-  parse-quantity-safe: "Use this step in the Pet Simulator workflow: Parse Quantity Safely."
-  process-orders-with-guard: "Use this step in the Pet Simulator workflow: Order Processing Cleanup."
-  product-tags-to-set: "Use this step in the Pet Simulator workflow: Product Tags Set."
-  retry-decorator-integrated: "Use this step in the Pet Simulator workflow: Retry Connection Decorator."
-  sort-dict-by-value: "Use this step in the Pet Simulator workflow: Sort Dict by Value."
-  sorted-key-lambda: "Use this step in the Pet Simulator workflow: Sorted with Lambda Key."
-  string-join-transformed: "Use this step in the Pet Simulator workflow: Transform and Join."
-  string-split-filter: "Use this step in the Pet Simulator workflow: Split and Filter."
-  summarize-customers: "Use this step in the Pet Simulator workflow: Count Active Customers."
-  typehint-callable: "Use this step in the Pet Simulator workflow: Type Hint Callable."
-  validate-order-status: "Use this step in the Pet Simulator workflow: Validate Order Status."
+  active-users-integrated: "Find pets with their position in the pets."
+  apply-coupon: "Apply a discount to pets in the pets."
+  boolean-all-check: "Check if all pets in pets meet a condition."
+  conditional-dict-validation: "Validate pet data before processing."
+  conditional-early-return: "Guard against invalid pet data early."
+  conditional-list-any: "Check if any pet meets the criteria."
+  config-loader-integrated: "Safely load pet configuration from JSON."
+  dict-from-parallel-lists: "Combine pet keys and values into a dictionary."
+  discount-tier-elif: "Categorize pets by tier or level."
+  error-code-extractor-integrated: "Extract error codes from pet operation results."
+  error-handling-conversion: "Handle type conversion errors for pet."
+  error-handling-dict-access: "Safely access pet dictionary keys."
+  error-handling-file-read: "Handle errors when loading pet data."
+  export-orders-csv: "Export pets to a CSV file."
+  file-read-to-list: "Load pets from a file into a list."
+  file-write-from-list: "Save pets to a file."
+  filter-list-of-dicts: "Filter pets by happy value."
+  filter-orders-fn: "Create a function to filter pets."
+  for-else: "Handle the case when no pet is found."
+  fstring-from-dict: "Format pet details from a dictionary."
+  health-check-dataclass-integrated: "Create a health check status for pet services."
+  high-value-orders-comp: "Find high-value pets using comprehension."
+  import-json-parse: "Parse pet data from JSON format."
+  input-to-int: "Convert user input to pet quantity."
+  inventory-dict-comp: "Build a pet lookup using dict comprehension."
+  inventory-item-class: "For Pet, define a Pet class."
+  inventory-reorder-loop: "Loop through pets and flag items for reorder."
+  list-dedup-preserve-order: "Remove duplicate pets while keeping order."
+  list-to-dict-conversion: "Convert pets to a lookup dictionary."
+  loop-dict-accumulate: "Sum values from pet data."
+  loop-nested-flatten: "Flatten nested pets into a single list."
+  number-round-format: "Round and format pet values."
+  number-stats-from-list: "Calculate statistics from pets."
+  order-status-ternary: "Set pet status label in one line."
+  order-total-method: "Add a method to calculate pet total."
+  orders-parse-to-records: "Parse pet lines into records."
+  orders-total-accumulator: "Accumulate totals across pets."
+  parse-events-log: "Parse pet event log entries."
+  parse-quantity-safe: "Safely parse pet quantity."
+  process-orders-with-guard: "Process pets with cleanup on errors."
+  product-tags-to-set: "Get unique pet tags as a set."
+  retry-decorator-integrated: "Retry failed pet operations automatically."
+  sort-dict-by-value: "Sort pets by their values."
+  sorted-key-lambda: "Sort pets using a custom key."
+  string-join-transformed: "Join pets into a formatted string."
+  string-split-filter: "Split and filter pet text."
+  summarize-customers: "Count active pets in pets."
+  typehint-callable: "Add type hints to pet processing function."
+  validate-order-status: "Validate pet status before changes."

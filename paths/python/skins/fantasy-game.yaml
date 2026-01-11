@@ -1,16 +1,10 @@
-# paths/python/skins/fantasy-game.yaml
-# Global skin - no blueprints restriction = usable with any Python blueprint
-
-id: fantasy-game
+id: "fantasy-game"
 title: "Fantasy Game"
-icon: "\u2694\uFE0F"
-# NO blueprints field = global skin (usable with any blueprint)
-
+icon: "⚔️"
 vars:
-  # REQUIRED existing fields (match current SkinVars interface)
-  list_name: inventory
-  item_singular: item
-  item_plural: items
+  list_name: "inventory"
+  item_singular: "item"
+  item_plural: "items"
   item_examples:
     - "sword"
     - "shield"
@@ -18,38 +12,47 @@ vars:
     - "helmet"
     - "bow"
     - "staff"
-  record_keys: ["name", "rarity", "damage", "weight"]
-
-  # Extended optional slots for broader exercise coverage
-  attr_key_1: name
-  attr_key_2: rarity
-  id_var: item_id
-  filename: inventory.json
-  filetype: json
-  user_role: player
-  status_var: equipped
-  action_verb: equip
-  entity_name: Item
-
+  record_keys:
+    - "name"
+    - "rarity"
+    - "damage"
+    - "weight"
+  attr_key_1: "name"
+  attr_key_2: "rarity"
+  id_var: "item_id"
+  filename: "inventory.json"
+  filetype: "json"
+  user_role: "player"
+  status_var: "equipped"
+  action_verb: "equip"
+  entity_name: "Item"
 dataPack:
-  list_sample: ["sword", "shield", "potion", "bow"]
+  list_sample:
+    - "sword"
+    - "shield"
+    - "potion"
+    - "bow"
   dict_sample:
     name: "Excalibur"
     rarity: "legendary"
     damage: 100
     weight: 5
   records_sample:
-    - { name: "sword", rarity: "common", damage: 10 }
-    - { name: "shield", rarity: "rare", damage: 0 }
-    - { name: "potion", rarity: "common", damage: 0 }
+    - name: "sword"
+      rarity: "common"
+      damage: 10
+    - name: "shield"
+      rarity: "rare"
+      damage: 0
+    - name: "potion"
+      rarity: "common"
+      damage: 0
   string_samples:
     - "Quest accepted!"
     - "Enemy defeated!"
     - "Level up!"
     - "Item acquired!"
-
 contexts:
-  # Setup & Storage
   list-create-empty: "Every adventurer needs an inventory to carry their loot."
   list-create-values: "Start with basic adventuring gear."
   tuple-create: "Store immutable item properties like (id, rarity)."
@@ -66,8 +69,6 @@ contexts:
   input-string: "Get the player's command."
   print-string: "Display a message to the player."
   print-variable: "Show the item's description."
-
-  # Display & Iteration
   for-loop-list: "Display all items in your inventory."
   for-loop-string: "Display each character in the item name."
   for-loop-range: "Process inventory slots by position."
@@ -85,8 +86,6 @@ contexts:
   list-comp-filter-dynamic: "Filter your inventory to show only rare items."
   list-comp-basic: "Create a list of item names from your inventory."
   list-comp-conditional: "Get all items with damage above threshold."
-
-  # Logic & Validation
   if-else-basic: "Check if the player has enough gold to buy an item."
   if-only: "Check if inventory is empty."
   boolean-and: "Check if item is rare AND unequipped."
@@ -103,8 +102,6 @@ contexts:
   finally-basic: "Always release the file lock after saving."
   try-except-finally: "Complete save handling with cleanup."
   reraise: "Re-raise after logging the game error."
-
-  # Organization & Persistence
   define-function: "Create a function to calculate total inventory weight."
   function-return: "Return the calculated damage value."
   return-none: "Return None when item is consumed."
@@ -121,63 +118,59 @@ contexts:
   main-guard-basic: "Only start game when run directly."
   import-from: "Import game utility functions."
   import-module: "Import the game engine module."
-
-  # Comprehensions
   dict-comp-basic: "Create a lookup table of item names to damage values."
   dict-comp-intro: "Build a dict of item properties."
-
-  # OOP
   define-class: "Create an Item class to represent inventory items."
   init-method: "Initialize item with name and stats."
   instance-attribute: "Store item damage as an instance attribute."
   custom-exception: "Create a custom GameError exception."
-  active-users-integrated: "Use this step in the Fantasy Game workflow: Active Customers with Index."
-  api-response-model-integrated: "Use this step in the Fantasy Game workflow: API Response Model."
-  apply-coupon: "Use this step in the Fantasy Game workflow: Apply Coupon."
-  boolean-all-check: "Use this step in the Fantasy Game workflow: All Products Check."
-  conditional-dict-validation: "Use this step in the Fantasy Game workflow: Dict Key Validation."
-  conditional-early-return: "Use this step in the Fantasy Game workflow: Guard Clause Pattern."
-  conditional-list-any: "Use this step in the Fantasy Game workflow: Any Product Matches."
-  config-loader-integrated: "Use this step in the Fantasy Game workflow: Safe JSON Config Loader."
-  dict-from-parallel-lists: "Use this step in the Fantasy Game workflow: Dict from Two Lists."
-  discount-tier-elif: "Use this step in the Fantasy Game workflow: Discount Tier."
-  error-code-extractor-integrated: "Use this step in the Fantasy Game workflow: Error Code Extractor."
-  error-handling-conversion: "Use this step in the Fantasy Game workflow: Safe Type Conversion."
-  error-handling-dict-access: "Use this step in the Fantasy Game workflow: Safe Dict Access."
-  error-handling-file-read: "Use this step in the Fantasy Game workflow: Safe File Read."
-  export-orders-csv: "Use this step in the Fantasy Game workflow: Export Orders CSV."
-  file-read-to-list: "Use this step in the Fantasy Game workflow: File Lines to List."
-  file-write-from-list: "Use this step in the Fantasy Game workflow: List to File."
-  filter-list-of-dicts: "Use this step in the Fantasy Game workflow: Filter List of Dicts."
-  filter-orders-fn: "Use this step in the Fantasy Game workflow: Filter Orders Function."
-  for-else: "Use this step in the Fantasy Game workflow: For-Else Clause."
-  fstring-from-dict: "Use this step in the Fantasy Game workflow: F-String from Dict."
-  health-check-dataclass-integrated: "Use this step in the Fantasy Game workflow: Health Check with Logging."
-  high-value-orders-comp: "Use this step in the Fantasy Game workflow: High-Value Orders."
-  import-json-parse: "Use this step in the Fantasy Game workflow: JSON Parse."
-  input-to-int: "Use this step in the Fantasy Game workflow: Input to Integer."
-  inventory-dict-comp: "Use this step in the Fantasy Game workflow: Inventory Dict Comprehension."
-  inventory-item-class: "Use this step in the Fantasy Game workflow: Inventory Product Class."
-  inventory-reorder-loop: "Use this step in the Fantasy Game workflow: Inventory Reorder List."
-  list-dedup-preserve-order: "Use this step in the Fantasy Game workflow: Deduplicate List (Order-Preserving)."
-  list-to-dict-conversion: "Use this step in the Fantasy Game workflow: List of Tuples to Dict."
-  loop-dict-accumulate: "Use this step in the Fantasy Game workflow: Dict Value Accumulator."
-  loop-nested-flatten: "Use this step in the Fantasy Game workflow: Flatten Nested List."
-  number-round-format: "Use this step in the Fantasy Game workflow: Round and Format."
-  number-stats-from-list: "Use this step in the Fantasy Game workflow: List Statistics."
-  order-status-ternary: "Use this step in the Fantasy Game workflow: Paid Status Label."
-  order-total-method: "Use this step in the Fantasy Game workflow: Order Total Method."
-  orders-parse-to-records: "Use this step in the Fantasy Game workflow: Order Lines to Records."
-  orders-total-accumulator: "Use this step in the Fantasy Game workflow: Order Totals Summary."
-  parse-events-log: "Use this step in the Fantasy Game workflow: Parse Events Log."
-  parse-quantity-safe: "Use this step in the Fantasy Game workflow: Parse Quantity Safely."
-  process-orders-with-guard: "Use this step in the Fantasy Game workflow: Order Processing Cleanup."
-  product-tags-to-set: "Use this step in the Fantasy Game workflow: Product Tags Set."
-  retry-decorator-integrated: "Use this step in the Fantasy Game workflow: Retry Connection Decorator."
-  sort-dict-by-value: "Use this step in the Fantasy Game workflow: Sort Dict by Value."
-  sorted-key-lambda: "Use this step in the Fantasy Game workflow: Sorted with Lambda Key."
-  string-join-transformed: "Use this step in the Fantasy Game workflow: Transform and Join."
-  string-split-filter: "Use this step in the Fantasy Game workflow: Split and Filter."
-  summarize-customers: "Use this step in the Fantasy Game workflow: Count Active Customers."
-  typehint-callable: "Use this step in the Fantasy Game workflow: Type Hint Callable."
-  validate-order-status: "Use this step in the Fantasy Game workflow: Validate Order Status."
+  active-users-integrated: "Find items with their position in the inventory."
+  api-response-model-integrated: "Define a data model for Item API responses."
+  apply-coupon: "Apply a discount to items in the inventory."
+  boolean-all-check: "Check if all items in inventory meet a condition."
+  conditional-dict-validation: "Validate item data before processing."
+  conditional-early-return: "Guard against invalid item data early."
+  conditional-list-any: "Check if any item meets the criteria."
+  config-loader-integrated: "Safely load item configuration from JSON."
+  dict-from-parallel-lists: "Combine item keys and values into a dictionary."
+  discount-tier-elif: "Categorize items by tier or level."
+  error-code-extractor-integrated: "Extract error codes from item operation results."
+  error-handling-conversion: "Handle type conversion errors for item."
+  error-handling-dict-access: "Safely access item dictionary keys."
+  error-handling-file-read: "Handle errors when loading item data."
+  export-orders-csv: "Export inventory to a CSV file."
+  file-read-to-list: "Load inventory from a file into a list."
+  file-write-from-list: "Save inventory to a file."
+  filter-list-of-dicts: "Filter inventory by equipped value."
+  filter-orders-fn: "Create a function to filter inventory."
+  for-else: "Handle the case when no item is found."
+  fstring-from-dict: "Format item details from a dictionary."
+  health-check-dataclass-integrated: "Create a health check status for item services."
+  high-value-orders-comp: "Find high-value items using comprehension."
+  import-json-parse: "Parse item data from JSON format."
+  input-to-int: "Convert user input to item quantity."
+  inventory-dict-comp: "Build a item lookup using dict comprehension."
+  inventory-item-class: "Define a Item class."
+  inventory-reorder-loop: "Loop through inventory and flag items for reorder."
+  list-dedup-preserve-order: "Remove duplicate items while keeping order."
+  list-to-dict-conversion: "Convert inventory to a lookup dictionary."
+  loop-dict-accumulate: "Sum values from item data."
+  loop-nested-flatten: "Flatten nested inventory into a single list."
+  number-round-format: "Round and format item values."
+  number-stats-from-list: "Calculate statistics from inventory."
+  order-status-ternary: "Set item status label in one line."
+  order-total-method: "Add a method to calculate item total."
+  orders-parse-to-records: "Parse item lines into records."
+  orders-total-accumulator: "Accumulate totals across inventory."
+  parse-events-log: "Parse item event log entries."
+  parse-quantity-safe: "Safely parse item quantity."
+  process-orders-with-guard: "Process inventory with cleanup on errors."
+  product-tags-to-set: "Get unique item tags as a set."
+  retry-decorator-integrated: "Retry failed item operations automatically."
+  sort-dict-by-value: "Sort items by their values."
+  sorted-key-lambda: "Sort inventory using a custom key."
+  string-join-transformed: "Join items into a formatted string."
+  string-split-filter: "Split and filter item text."
+  summarize-customers: "Count active items in inventory."
+  typehint-callable: "Add type hints to item processing function."
+  validate-order-status: "Validate item status before changes."

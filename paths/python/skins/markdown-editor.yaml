@@ -1,50 +1,59 @@
-# paths/python/skins/markdown-editor.yaml
-
-id: markdown-editor
+id: "markdown-editor"
 title: "Markdown Editor"
 icon: "📝"
-blueprints: [text-formatter]
-
+blueprints:
+  - "text-formatter"
 vars:
-  list_name: documents
-  item_singular: document
-  item_plural: documents
+  list_name: "documents"
+  item_singular: "document"
+  item_plural: "documents"
   item_examples:
     - "README.md"
     - "notes.md"
     - "draft.md"
     - "changelog.md"
     - "guide.md"
-  record_keys: ["title", "content", "author", "date"]
-  attr_key_1: title
-  attr_key_2: content
-  id_var: doc_id
-  filename: output.md
-  filetype: markdown
-  user_role: editor
-  status_var: formatted
-  action_verb: format
-  entity_name: Document
-
+  record_keys:
+    - "title"
+    - "content"
+    - "author"
+    - "date"
+  attr_key_1: "title"
+  attr_key_2: "content"
+  id_var: "doc_id"
+  filename: "output.md"
+  filetype: "markdown"
+  user_role: "editor"
+  status_var: "formatted"
+  action_verb: "format"
+  entity_name: "Document"
 dataPack:
-  list_sample: ["# Heading", "**bold**", "*italic*", "`code`"]
+  list_sample:
+    - "# Heading"
+    - "**bold**"
+    - "*italic*"
+    - "`code`"
   dict_sample:
     title: "My Document"
     content: "Hello world"
     author: "user"
     created: "2024-01-15"
   records_sample:
-    - { title: "README", content: "Welcome", format: "md" }
-    - { title: "Notes", content: "Ideas", format: "txt" }
-    - { title: "Draft", content: "WIP", format: "md" }
+    - title: "README"
+      content: "Welcome"
+      format: "md"
+    - title: "Notes"
+      content: "Ideas"
+      format: "txt"
+    - title: "Draft"
+      content: "WIP"
+      format: "md"
   string_samples:
     - "# Welcome to Markdown"
     - "This is **bold** text"
     - "A `code` snippet"
     - "---"
-
 contexts:
-  # String Basics
   string-length: "Count characters in the document title."
   string-len-fill: "Complete the length check."
   string-predict-len: "Predict the title length."
@@ -64,12 +73,10 @@ contexts:
   string-slice-end: "Get the end of text."
   string-slice-start-fill: "Complete the start slice."
   string-slice-end-fill: "Complete the end slice."
-
-  # String Transforms
   string-predict-slice: "Predict the slice result."
   string-slice-advanced-dynamic: "Complex content slicing."
-  string-slice-step-dynamic: "Slice with step."
-  string-reverse: "Reverse the text."
+  string-slice-step-dynamic: "Extract portions of document data."
+  string-reverse: "Extract portions of document data."
   string-predict-reverse: "Predict reversed result."
   string-reverse-dynamic: "Dynamic text reversal."
   string-every-other: "Get alternating characters."
@@ -78,15 +85,13 @@ contexts:
   string-predict-upper: "Predict uppercase result."
   string-lower: "Convert to lowercase."
   string-strip: "Remove whitespace from input."
-  string-strip-fill: "Complete the strip."
+  string-strip-fill: "Process document text values."
   string-replace: "Replace markdown syntax."
   string-predict-replace: "Predict replacement."
   string-split: "Split content into lines."
   string-join: "Join lines back together."
   string-find: "Find markdown marker."
   string-startswith: "Check if heading starts with #."
-
-  # F-Strings
   f-string-basic: "Format document title."
   fstring-basic-fill: "Complete the f-string."
   fstring-predict-basic: "Predict f-string output."
@@ -95,10 +100,10 @@ contexts:
   fstring-expression-fill: "Complete the expression."
   fstring-predict-expr: "Predict expression result."
   fstring-greeting-dynamic: "Generate document header."
-  fstring-write-dynamic: "Write the f-string."
+  fstring-write-dynamic: "Format document data for display."
   fstring-format-number: "Format page numbers."
-  fstring-padding: "Pad line numbers."
+  fstring-padding: "Format document data for display."
   string-method-dynamic: "Apply string method."
   string-slice-from-end-dynamic: "Get ending of content."
-  string-join-transformed: "Use this step in the Markdown Editor workflow: Transform and Join."
-  string-split-filter: "Use this step in the Markdown Editor workflow: Split and Filter."
+  string-join-transformed: "Join documents into a formatted string."
+  string-split-filter: "Split and filter document text."

@@ -42,6 +42,9 @@ contexts:
   define-function: "Define a function to handle {{action_verb}} actions"
   function-return: "Return the updated game state after processing a command"
 
+  conditional-list-any: "Check if any item meets the criteria."
+  fstring-from-dict: "Format item details from a dictionary."
+
 dataPack:
   list_sample: '["torch", "rusty key", "healing potion"]'
   dict_sample: '{"health": 100, "room": "entrance", "gold": 50}'
@@ -50,5 +53,3 @@ dataPack:
     - "go north"
     - "take torch"
     - "use healing potion"
-  conditional-list-any: "Use this step in the Dungeon Crawler workflow: Any Product Matches."
-  fstring-from-dict: "Use this step in the Dungeon Crawler workflow: F-String from Dict."

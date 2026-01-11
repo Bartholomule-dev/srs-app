@@ -1,61 +1,68 @@
-# paths/python/skins/config-manager.yaml
-
-id: config-manager
+id: "config-manager"
 title: "Config Manager"
 icon: "⚙️"
-blueprints: [file-manager]
-
+blueprints:
+  - "file-manager"
 vars:
-  list_name: configs
-  item_singular: config
-  item_plural: configs
+  list_name: "configs"
+  item_singular: "config"
+  item_plural: "configs"
   item_examples:
     - "settings.json"
     - "config.yaml"
     - ".env"
     - "app.ini"
     - "database.conf"
-  record_keys: ["key", "value", "type", "required"]
-  attr_key_1: key
-  attr_key_2: value
-  id_var: config_id
-  filename: config.json
-  filetype: json
-  user_role: admin
-  status_var: loaded
-  action_verb: configure
-  entity_name: Config
-
+  record_keys:
+    - "key"
+    - "value"
+    - "type"
+    - "required"
+  attr_key_1: "key"
+  attr_key_2: "value"
+  id_var: "config_id"
+  filename: "config.json"
+  filetype: "json"
+  user_role: "admin"
+  status_var: "loaded"
+  action_verb: "configure"
+  entity_name: "Config"
 dataPack:
-  list_sample: ["debug", "production", "staging", "test"]
+  list_sample:
+    - "debug"
+    - "production"
+    - "staging"
+    - "test"
   dict_sample:
     database_url: "postgres://localhost"
     debug: true
     port: 8080
     secret_key: "***"
   records_sample:
-    - { key: "DEBUG", value: "true", required: false }
-    - { key: "PORT", value: "8080", required: true }
-    - { key: "SECRET", value: "***", required: true }
+    - key: "DEBUG"
+      value: "true"
+      required: false
+    - key: "PORT"
+      value: "8080"
+      required: true
+    - key: "SECRET"
+      value: "***"
+      required: true
   string_samples:
     - "Config loaded"
     - "Missing required key"
     - "Invalid format"
     - "Settings saved"
-
 contexts:
-  # Imports
   import-module: "Import the json module."
   import-keyword-fill: "Complete the import."
   import-from: "Import Path from pathlib."
   from-import-fill: "Complete from import."
   import-multiple: "Import multiple modules."
-  import-alias: "Alias json as j."
-
-  # Reading Files
+  import-alias: "Import utilities for config handling."
   file-open-read: "Open config file for reading."
   with-keyword-fill: "Complete the with statement."
-  file-read-all: "Read entire config."
+  file-read-all: "Load configs from a saved file."
   file-read-predict: "Predict read result."
   file-read-dynamic: "Dynamic file reading."
   file-read-lines: "Read config line by line."
@@ -64,32 +71,26 @@ contexts:
   context-intro: "Understand context managers."
   file-context-dynamic: "Dynamic context usage."
   context-manager-multiple: "Handle multiple files."
-
-  # Writing Files
   file-open-write: "Open config for writing."
-  file-write-mode-dynamic: "Choose write mode."
+  file-write-mode-dynamic: "Load configs from a saved file."
   file-write-text: "Write config content."
   file-writelines: "Write multiple settings."
-  file-open-append: "Append new setting."
-
-  # Path Handling
+  file-open-append: "Save configs to a file."
   pathlib-intro: "Use pathlib for config paths."
-  pathlib-create-path: "Create config path."
+  pathlib-create-path: "Manage file paths for config storage."
   pathlib-join-paths: "Join config directory."
   path-join-predict: "Predict joined path."
   path-join-dynamic: "Dynamic path joining."
   pathlib-get-parent: "Get config directory."
   path-parent-dynamic: "Dynamic parent access."
-  path-stem-dynamic: "Get filename stem."
-  path-suffix-dynamic: "Get file extension."
+  path-stem-dynamic: "Manage file paths for config storage."
+  path-suffix-dynamic: "Manage file paths for config storage."
   pathlib-check-exists: "Check if config exists."
-
-  # Main Guard
   main-guard-basic: "Add main guard for CLI."
   name-main-predict: "Predict __name__ value."
-  main-guard-call-main: "Call main function."
+  main-guard-call-main: "write a main guard that calls a main() function for configs."
   main-guard-with-definition: "Define and guard main."
-  error-handling-file-read: "Use this step in the Config Manager workflow: Safe File Read."
-  file-read-to-list: "Use this step in the Config Manager workflow: File Lines to List."
-  file-write-from-list: "Use this step in the Config Manager workflow: List to File."
-  parse-events-log: "Use this step in the Config Manager workflow: Parse Events Log."
+  error-handling-file-read: "Handle errors when loading config data."
+  file-read-to-list: "Load configs from a file into a list."
+  file-write-from-list: "Save configs to a file."
+  parse-events-log: "Parse config event log entries."

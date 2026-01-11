@@ -1,34 +1,30 @@
-# paths/python/skins/task-manager.yaml
-
-id: task-manager
+id: "task-manager"
 title: "Task Manager"
-icon: "\u2705"
-# Global skin - works with any blueprint
-
+icon: "✅"
 vars:
-  list_name: tasks
-  item_singular: task
-  item_plural: tasks
+  list_name: "tasks"
+  item_singular: "task"
+  item_plural: "tasks"
   item_examples:
     - "buy groceries"
     - "call mom"
     - "email boss"
     - "finish report"
     - "schedule meeting"
-  record_keys: ["title", "done", "priority"]
-  # Extended slots for future exercises
-  attr_key_1: title
-  attr_key_2: priority
-  id_var: task_id
-  filename: tasks.json
-  filetype: json
-  user_role: user
-  status_var: done
-  action_verb: complete
-  entity_name: Task
-
+  record_keys:
+    - "title"
+    - "done"
+    - "priority"
+  attr_key_1: "title"
+  attr_key_2: "priority"
+  id_var: "task_id"
+  filename: "tasks.json"
+  filetype: "json"
+  user_role: "user"
+  status_var: "done"
+  action_verb: "complete"
+  entity_name: "Task"
 contexts:
-  # Setup & Storage
   list-create-empty: "Every task manager needs somewhere to store tasks."
   list-create-values: "Initialize the task list with some default tasks."
   tuple-create: "Store immutable task metadata like creation date."
@@ -45,8 +41,6 @@ contexts:
   input-string: "Get the task description from the user."
   print-string: "Display a message to the user."
   print-variable: "Show the current task to the user."
-
-  # Display & Iteration
   for-loop-list: "Display all tasks so the user can see what's pending."
   for-loop-string: "Display each character in the task description."
   for-loop-range: "Process tasks by index position."
@@ -63,8 +57,6 @@ contexts:
   list-comp-filter-dynamic: "Show only incomplete tasks."
   list-comp-basic: "Extract just the task titles into a new list."
   list-comp-conditional: "Filter tasks based on their completion status."
-
-  # Logic & Validation
   if-else-basic: "Check if a task is marked as complete."
   if-only: "Check if the task list is empty."
   boolean-and: "Check if task is urgent AND incomplete."
@@ -81,8 +73,6 @@ contexts:
   finally-basic: "Always save task state, even after errors."
   try-except-finally: "Complete error handling with cleanup."
   reraise: "Re-raise an exception after logging the error."
-
-  # Organization & Persistence
   define-function: "Create a function to add a new task."
   function-return: "Return the newly created task."
   return-none: "Return None when task deletion succeeds."
@@ -99,53 +89,53 @@ contexts:
   main-guard-basic: "Only run task CLI when executed directly."
   import-from: "Import utility functions for task handling."
   import-module: "Import the tasks module."
-  active-users-integrated: "Use this step in the Task Manager workflow: Active Customers with Index."
-  api-response-model-integrated: "Use this step in the Task Manager workflow: API Response Model."
-  apply-coupon: "Use this step in the Task Manager workflow: Apply Coupon."
-  boolean-all-check: "Use this step in the Task Manager workflow: All Products Check."
-  conditional-dict-validation: "Use this step in the Task Manager workflow: Dict Key Validation."
-  conditional-early-return: "Use this step in the Task Manager workflow: Guard Clause Pattern."
-  conditional-list-any: "Use this step in the Task Manager workflow: Any Product Matches."
-  config-loader-integrated: "Use this step in the Task Manager workflow: Safe JSON Config Loader."
-  dict-from-parallel-lists: "Use this step in the Task Manager workflow: Dict from Two Lists."
-  discount-tier-elif: "Use this step in the Task Manager workflow: Discount Tier."
-  error-code-extractor-integrated: "Use this step in the Task Manager workflow: Error Code Extractor."
-  error-handling-conversion: "Use this step in the Task Manager workflow: Safe Type Conversion."
-  error-handling-dict-access: "Use this step in the Task Manager workflow: Safe Dict Access."
-  error-handling-file-read: "Use this step in the Task Manager workflow: Safe File Read."
-  export-orders-csv: "Use this step in the Task Manager workflow: Export Orders CSV."
-  file-read-to-list: "Use this step in the Task Manager workflow: File Lines to List."
-  file-write-from-list: "Use this step in the Task Manager workflow: List to File."
-  filter-list-of-dicts: "Use this step in the Task Manager workflow: Filter List of Dicts."
-  filter-orders-fn: "Use this step in the Task Manager workflow: Filter Orders Function."
-  for-else: "Use this step in the Task Manager workflow: For-Else Clause."
-  fstring-from-dict: "Use this step in the Task Manager workflow: F-String from Dict."
-  health-check-dataclass-integrated: "Use this step in the Task Manager workflow: Health Check with Logging."
-  high-value-orders-comp: "Use this step in the Task Manager workflow: High-Value Orders."
-  import-json-parse: "Use this step in the Task Manager workflow: JSON Parse."
-  input-to-int: "Use this step in the Task Manager workflow: Input to Integer."
-  inventory-dict-comp: "Use this step in the Task Manager workflow: Inventory Dict Comprehension."
-  inventory-item-class: "Use this step in the Task Manager workflow: Inventory Product Class."
-  inventory-reorder-loop: "Use this step in the Task Manager workflow: Inventory Reorder List."
-  list-dedup-preserve-order: "Use this step in the Task Manager workflow: Deduplicate List (Order-Preserving)."
-  list-to-dict-conversion: "Use this step in the Task Manager workflow: List of Tuples to Dict."
-  loop-dict-accumulate: "Use this step in the Task Manager workflow: Dict Value Accumulator."
-  loop-nested-flatten: "Use this step in the Task Manager workflow: Flatten Nested List."
-  number-round-format: "Use this step in the Task Manager workflow: Round and Format."
-  number-stats-from-list: "Use this step in the Task Manager workflow: List Statistics."
-  order-status-ternary: "Use this step in the Task Manager workflow: Paid Status Label."
-  order-total-method: "Use this step in the Task Manager workflow: Order Total Method."
-  orders-parse-to-records: "Use this step in the Task Manager workflow: Order Lines to Records."
-  orders-total-accumulator: "Use this step in the Task Manager workflow: Order Totals Summary."
-  parse-events-log: "Use this step in the Task Manager workflow: Parse Events Log."
-  parse-quantity-safe: "Use this step in the Task Manager workflow: Parse Quantity Safely."
-  process-orders-with-guard: "Use this step in the Task Manager workflow: Order Processing Cleanup."
-  product-tags-to-set: "Use this step in the Task Manager workflow: Product Tags Set."
-  retry-decorator-integrated: "Use this step in the Task Manager workflow: Retry Connection Decorator."
-  sort-dict-by-value: "Use this step in the Task Manager workflow: Sort Dict by Value."
-  sorted-key-lambda: "Use this step in the Task Manager workflow: Sorted with Lambda Key."
-  string-join-transformed: "Use this step in the Task Manager workflow: Transform and Join."
-  string-split-filter: "Use this step in the Task Manager workflow: Split and Filter."
-  summarize-customers: "Use this step in the Task Manager workflow: Count Active Customers."
-  typehint-callable: "Use this step in the Task Manager workflow: Type Hint Callable."
-  validate-order-status: "Use this step in the Task Manager workflow: Validate Order Status."
+  active-users-integrated: "Find tasks with their position in the tasks."
+  api-response-model-integrated: "Define a data model for Task API responses."
+  apply-coupon: "Apply a discount to tasks in the tasks."
+  boolean-all-check: "Check if all tasks in tasks meet a condition."
+  conditional-dict-validation: "Validate task data before processing."
+  conditional-early-return: "Guard against invalid task data early."
+  conditional-list-any: "Check if any task meets the criteria."
+  config-loader-integrated: "Safely load task configuration from JSON."
+  dict-from-parallel-lists: "Combine task keys and values into a dictionary."
+  discount-tier-elif: "Categorize tasks by tier or level."
+  error-code-extractor-integrated: "Extract error codes from task operation results."
+  error-handling-conversion: "Handle type conversion errors for task."
+  error-handling-dict-access: "Safely access task dictionary keys."
+  error-handling-file-read: "Handle errors when loading task data."
+  export-orders-csv: "Export tasks to a CSV file."
+  file-read-to-list: "Load tasks from a file into a list."
+  file-write-from-list: "Save tasks to a file."
+  filter-list-of-dicts: "Filter tasks by done value."
+  filter-orders-fn: "Create a function to filter tasks."
+  for-else: "Handle the case when no task is found."
+  fstring-from-dict: "Format task details from a dictionary."
+  health-check-dataclass-integrated: "Create a health check status for task services."
+  high-value-orders-comp: "Find high-value tasks using comprehension."
+  import-json-parse: "Parse task data from JSON format."
+  input-to-int: "Convert user input to task quantity."
+  inventory-dict-comp: "Build a task lookup using dict comprehension."
+  inventory-item-class: "Define a Task class."
+  inventory-reorder-loop: "Loop through tasks and flag items for reorder."
+  list-dedup-preserve-order: "Remove duplicate tasks while keeping order."
+  list-to-dict-conversion: "Convert tasks to a lookup dictionary."
+  loop-dict-accumulate: "Sum values from task data."
+  loop-nested-flatten: "Flatten nested tasks into a single list."
+  number-round-format: "Round and format task values."
+  number-stats-from-list: "Calculate statistics from tasks."
+  order-status-ternary: "Set task status label in one line."
+  order-total-method: "Add a method to calculate task total."
+  orders-parse-to-records: "Parse task lines into records."
+  orders-total-accumulator: "Accumulate totals across tasks."
+  parse-events-log: "Parse task event log entries."
+  parse-quantity-safe: "Safely parse task quantity."
+  process-orders-with-guard: "Process tasks with cleanup on errors."
+  product-tags-to-set: "Get unique task tags as a set."
+  retry-decorator-integrated: "Retry failed task operations automatically."
+  sort-dict-by-value: "Sort tasks by their values."
+  sorted-key-lambda: "Sort tasks using a custom key."
+  string-join-transformed: "Join tasks into a formatted string."
+  string-split-filter: "Split and filter task text."
+  summarize-customers: "Count active tasks in tasks."
+  typehint-callable: "Add type hints to task processing function."
+  validate-order-status: "Validate task status before changes."

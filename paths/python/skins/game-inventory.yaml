@@ -1,34 +1,30 @@
-# paths/python/skins/game-inventory.yaml
-
-id: game-inventory
+id: "game-inventory"
 title: "Game Inventory"
-icon: "\U0001F3AE"
-# Global skin - works with any blueprint
-
+icon: "🎮"
 vars:
-  list_name: inventory
-  item_singular: item
-  item_plural: items
+  list_name: "inventory"
+  item_singular: "item"
+  item_plural: "items"
   item_examples:
     - "health potion"
     - "iron sword"
     - "magic ring"
     - "leather armor"
     - "gold coins"
-  record_keys: ["name", "quantity", "weight"]
-  # Extended slots for future exercises
-  attr_key_1: name
-  attr_key_2: rarity
-  id_var: item_id
-  filename: inventory.json
-  filetype: json
-  user_role: player
-  status_var: equipped
-  action_verb: equip
-  entity_name: Item
-
+  record_keys:
+    - "name"
+    - "quantity"
+    - "weight"
+  attr_key_1: "name"
+  attr_key_2: "rarity"
+  id_var: "item_id"
+  filename: "inventory.json"
+  filetype: "json"
+  user_role: "player"
+  status_var: "equipped"
+  action_verb: "equip"
+  entity_name: "Item"
 contexts:
-  # Setup & Storage
   list-create-empty: "Create the player's empty inventory."
   list-create-values: "Initialize inventory with starter items."
   tuple-create: "Store immutable item info like (type, rarity)."
@@ -45,8 +41,6 @@ contexts:
   input-string: "Get the item name from player."
   print-string: "Display 'Item equipped!' message."
   print-variable: "Show the item's stats."
-
-  # Display & Iteration
   for-loop-list: "Display all items in the player's inventory."
   for-loop-string: "Display each character of item name."
   for-loop-range: "Process inventory slots by index."
@@ -63,8 +57,6 @@ contexts:
   list-comp-filter-dynamic: "Show only items that can be equipped."
   list-comp-basic: "Extract just the item names."
   list-comp-conditional: "Get all rare or better items."
-
-  # Logic & Validation
   if-else-basic: "Check if player can carry more items."
   if-only: "Check if inventory is empty."
   boolean-and: "Check if item is rare AND unequipped."
@@ -81,8 +73,6 @@ contexts:
   finally-basic: "Always update inventory weight."
   try-except-finally: "Complete item handling with cleanup."
   reraise: "Re-raise after logging game error."
-
-  # Organization & Persistence
   define-function: "Create a function to calculate total weight."
   function-return: "Return the encumbrance level."
   return-none: "Return None when item is discarded."
@@ -99,53 +89,53 @@ contexts:
   main-guard-basic: "Only start game when run directly."
   import-from: "Import game utilities."
   import-module: "Import the game engine module."
-  active-users-integrated: "Use this step in the Game Inventory workflow: Active Customers with Index."
-  api-response-model-integrated: "Use this step in the Game Inventory workflow: API Response Model."
-  apply-coupon: "Use this step in the Game Inventory workflow: Apply Coupon."
-  boolean-all-check: "Use this step in the Game Inventory workflow: All Products Check."
-  conditional-dict-validation: "Use this step in the Game Inventory workflow: Dict Key Validation."
-  conditional-early-return: "Use this step in the Game Inventory workflow: Guard Clause Pattern."
-  conditional-list-any: "Use this step in the Game Inventory workflow: Any Product Matches."
-  config-loader-integrated: "Use this step in the Game Inventory workflow: Safe JSON Config Loader."
-  dict-from-parallel-lists: "Use this step in the Game Inventory workflow: Dict from Two Lists."
-  discount-tier-elif: "Use this step in the Game Inventory workflow: Discount Tier."
-  error-code-extractor-integrated: "Use this step in the Game Inventory workflow: Error Code Extractor."
-  error-handling-conversion: "Use this step in the Game Inventory workflow: Safe Type Conversion."
-  error-handling-dict-access: "Use this step in the Game Inventory workflow: Safe Dict Access."
-  error-handling-file-read: "Use this step in the Game Inventory workflow: Safe File Read."
-  export-orders-csv: "Use this step in the Game Inventory workflow: Export Orders CSV."
-  file-read-to-list: "Use this step in the Game Inventory workflow: File Lines to List."
-  file-write-from-list: "Use this step in the Game Inventory workflow: List to File."
-  filter-list-of-dicts: "Use this step in the Game Inventory workflow: Filter List of Dicts."
-  filter-orders-fn: "Use this step in the Game Inventory workflow: Filter Orders Function."
-  for-else: "Use this step in the Game Inventory workflow: For-Else Clause."
-  fstring-from-dict: "Use this step in the Game Inventory workflow: F-String from Dict."
-  health-check-dataclass-integrated: "Use this step in the Game Inventory workflow: Health Check with Logging."
-  high-value-orders-comp: "Use this step in the Game Inventory workflow: High-Value Orders."
-  import-json-parse: "Use this step in the Game Inventory workflow: JSON Parse."
-  input-to-int: "Use this step in the Game Inventory workflow: Input to Integer."
-  inventory-dict-comp: "Use this step in the Game Inventory workflow: Inventory Dict Comprehension."
-  inventory-item-class: "Use this step in the Game Inventory workflow: Inventory Product Class."
-  inventory-reorder-loop: "Use this step in the Game Inventory workflow: Inventory Reorder List."
-  list-dedup-preserve-order: "Use this step in the Game Inventory workflow: Deduplicate List (Order-Preserving)."
-  list-to-dict-conversion: "Use this step in the Game Inventory workflow: List of Tuples to Dict."
-  loop-dict-accumulate: "Use this step in the Game Inventory workflow: Dict Value Accumulator."
-  loop-nested-flatten: "Use this step in the Game Inventory workflow: Flatten Nested List."
-  number-round-format: "Use this step in the Game Inventory workflow: Round and Format."
-  number-stats-from-list: "Use this step in the Game Inventory workflow: List Statistics."
-  order-status-ternary: "Use this step in the Game Inventory workflow: Paid Status Label."
-  order-total-method: "Use this step in the Game Inventory workflow: Order Total Method."
-  orders-parse-to-records: "Use this step in the Game Inventory workflow: Order Lines to Records."
-  orders-total-accumulator: "Use this step in the Game Inventory workflow: Order Totals Summary."
-  parse-events-log: "Use this step in the Game Inventory workflow: Parse Events Log."
-  parse-quantity-safe: "Use this step in the Game Inventory workflow: Parse Quantity Safely."
-  process-orders-with-guard: "Use this step in the Game Inventory workflow: Order Processing Cleanup."
-  product-tags-to-set: "Use this step in the Game Inventory workflow: Product Tags Set."
-  retry-decorator-integrated: "Use this step in the Game Inventory workflow: Retry Connection Decorator."
-  sort-dict-by-value: "Use this step in the Game Inventory workflow: Sort Dict by Value."
-  sorted-key-lambda: "Use this step in the Game Inventory workflow: Sorted with Lambda Key."
-  string-join-transformed: "Use this step in the Game Inventory workflow: Transform and Join."
-  string-split-filter: "Use this step in the Game Inventory workflow: Split and Filter."
-  summarize-customers: "Use this step in the Game Inventory workflow: Count Active Customers."
-  typehint-callable: "Use this step in the Game Inventory workflow: Type Hint Callable."
-  validate-order-status: "Use this step in the Game Inventory workflow: Validate Order Status."
+  active-users-integrated: "Find items with their position in the inventory."
+  api-response-model-integrated: "Define a data model for Item API responses."
+  apply-coupon: "Apply a discount to items in the inventory."
+  boolean-all-check: "Check if all items in inventory meet a condition."
+  conditional-dict-validation: "Validate item data before processing."
+  conditional-early-return: "Guard against invalid item data early."
+  conditional-list-any: "Check if any item meets the criteria."
+  config-loader-integrated: "Safely load item configuration from JSON."
+  dict-from-parallel-lists: "Combine item keys and values into a dictionary."
+  discount-tier-elif: "Categorize items by tier or level."
+  error-code-extractor-integrated: "Extract error codes from item operation results."
+  error-handling-conversion: "Handle type conversion errors for item."
+  error-handling-dict-access: "Safely access item dictionary keys."
+  error-handling-file-read: "Handle errors when loading item data."
+  export-orders-csv: "Export inventory to a CSV file."
+  file-read-to-list: "Load inventory from a file into a list."
+  file-write-from-list: "Save inventory to a file."
+  filter-list-of-dicts: "Filter inventory by equipped value."
+  filter-orders-fn: "Create a function to filter inventory."
+  for-else: "Handle the case when no item is found."
+  fstring-from-dict: "Format item details from a dictionary."
+  health-check-dataclass-integrated: "Create a health check status for item services."
+  high-value-orders-comp: "Find high-value items using comprehension."
+  import-json-parse: "Parse item data from JSON format."
+  input-to-int: "Convert user input to item quantity."
+  inventory-dict-comp: "Build a item lookup using dict comprehension."
+  inventory-item-class: "Define a Item class."
+  inventory-reorder-loop: "Loop through inventory and flag items for reorder."
+  list-dedup-preserve-order: "Remove duplicate items while keeping order."
+  list-to-dict-conversion: "Convert inventory to a lookup dictionary."
+  loop-dict-accumulate: "Sum values from item data."
+  loop-nested-flatten: "Flatten nested inventory into a single list."
+  number-round-format: "Round and format item values."
+  number-stats-from-list: "Calculate statistics from inventory."
+  order-status-ternary: "Set item status label in one line."
+  order-total-method: "Add a method to calculate item total."
+  orders-parse-to-records: "Parse item lines into records."
+  orders-total-accumulator: "Accumulate totals across inventory."
+  parse-events-log: "Parse item event log entries."
+  parse-quantity-safe: "Safely parse item quantity."
+  process-orders-with-guard: "Process inventory with cleanup on errors."
+  product-tags-to-set: "Get unique item tags as a set."
+  retry-decorator-integrated: "Retry failed item operations automatically."
+  sort-dict-by-value: "Sort items by their values."
+  sorted-key-lambda: "Sort inventory using a custom key."
+  string-join-transformed: "Join items into a formatted string."
+  string-split-filter: "Split and filter item text."
+  summarize-customers: "Count active items in inventory."
+  typehint-callable: "Add type hints to item processing function."
+  validate-order-status: "Validate item status before changes."

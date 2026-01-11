@@ -39,6 +39,10 @@ contexts:
   custom-exception: "Define {{entity_name}}Error for SDK-specific failures"
   try-except-basic: "Handle network failures and invalid responses gracefully"
 
+  config-loader-integrated: "Safely load endpoint configuration from JSON."
+  health-check-dataclass-integrated: "Create a health check status for endpoint services."
+  import-json-parse: "Parse endpoint data from JSON format."
+
 dataPack:
   list_sample: '["/users", "/auth", "/data"]'
   dict_sample: '{"base_url": "https://api.example.com", "api_key": "sk-xxx"}'
@@ -47,6 +51,3 @@ dataPack:
     - "https://api.example.com"
     - "Bearer sk-xxx123"
     - "application/json"
-  config-loader-integrated: "Use this step in the SDK Builder workflow: Safe JSON Config Loader."
-  health-check-dataclass-integrated: "Use this step in the SDK Builder workflow: Health Check with Logging."
-  import-json-parse: "Use this step in the SDK Builder workflow: JSON Parse."

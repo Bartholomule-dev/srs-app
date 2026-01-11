@@ -1,34 +1,30 @@
-# paths/python/skins/recipe-book.yaml
-
-id: recipe-book
+id: "recipe-book"
 title: "Recipe Book"
-icon: "\U0001F4D6"
-# Global skin - works with any blueprint
-
+icon: "📖"
 vars:
-  list_name: recipes
-  item_singular: recipe
-  item_plural: recipes
+  list_name: "recipes"
+  item_singular: "recipe"
+  item_plural: "recipes"
   item_examples:
     - "spaghetti carbonara"
     - "chicken curry"
     - "chocolate cake"
     - "caesar salad"
     - "beef stew"
-  record_keys: ["name", "servings", "time_minutes"]
-  # Extended slots for future exercises
-  attr_key_1: name
-  attr_key_2: cuisine
-  id_var: recipe_id
-  filename: recipes.json
-  filetype: json
-  user_role: chef
-  status_var: favorite
-  action_verb: cook
-  entity_name: Recipe
-
+  record_keys:
+    - "name"
+    - "servings"
+    - "time_minutes"
+  attr_key_1: "name"
+  attr_key_2: "cuisine"
+  id_var: "recipe_id"
+  filename: "recipes.json"
+  filetype: "json"
+  user_role: "chef"
+  status_var: "favorite"
+  action_verb: "cook"
+  entity_name: "Recipe"
 contexts:
-  # Setup & Storage
   list-create-empty: "Start your recipe book with an empty collection."
   list-create-values: "Initialize with your favorite recipes."
   tuple-create: "Store immutable recipe info like (cuisine, difficulty)."
@@ -45,8 +41,6 @@ contexts:
   input-string: "Get the recipe name from user."
   print-string: "Display 'Recipe saved!' message."
   print-variable: "Show the recipe name."
-
-  # Display & Iteration
   for-loop-list: "List all your saved recipes."
   for-loop-string: "Display each character of recipe name."
   for-loop-range: "Process recipes by index."
@@ -63,8 +57,6 @@ contexts:
   list-comp-filter-dynamic: "Find quick recipes under 30 minutes."
   list-comp-basic: "Extract just the recipe names."
   list-comp-conditional: "Get vegetarian recipes."
-
-  # Logic & Validation
   if-else-basic: "Check if recipe is vegetarian."
   if-only: "Check if cookbook is empty."
   boolean-and: "Check if recipe is quick AND easy."
@@ -81,8 +73,6 @@ contexts:
   finally-basic: "Always close cookbook file."
   try-except-finally: "Complete recipe handling."
   reraise: "Re-raise after logging error."
-
-  # Organization & Persistence
   define-function: "Create a function to calculate total prep time."
   function-return: "Return the total cooking time."
   return-none: "Return None when recipe is deleted."
@@ -99,53 +89,53 @@ contexts:
   main-guard-basic: "Only run cookbook app when executed directly."
   import-from: "Import recipe utilities."
   import-module: "Import the cookbook module."
-  active-users-integrated: "Use this step in the Recipe Book workflow: Active Customers with Index."
-  api-response-model-integrated: "Use this step in the Recipe Book workflow: API Response Model."
-  apply-coupon: "Use this step in the Recipe Book workflow: Apply Coupon."
-  boolean-all-check: "Use this step in the Recipe Book workflow: All Products Check."
-  conditional-dict-validation: "Use this step in the Recipe Book workflow: Dict Key Validation."
-  conditional-early-return: "Use this step in the Recipe Book workflow: Guard Clause Pattern."
-  conditional-list-any: "Use this step in the Recipe Book workflow: Any Product Matches."
-  config-loader-integrated: "Use this step in the Recipe Book workflow: Safe JSON Config Loader."
-  dict-from-parallel-lists: "Use this step in the Recipe Book workflow: Dict from Two Lists."
-  discount-tier-elif: "Use this step in the Recipe Book workflow: Discount Tier."
-  error-code-extractor-integrated: "Use this step in the Recipe Book workflow: Error Code Extractor."
-  error-handling-conversion: "Use this step in the Recipe Book workflow: Safe Type Conversion."
-  error-handling-dict-access: "Use this step in the Recipe Book workflow: Safe Dict Access."
-  error-handling-file-read: "Use this step in the Recipe Book workflow: Safe File Read."
-  export-orders-csv: "Use this step in the Recipe Book workflow: Export Orders CSV."
-  file-read-to-list: "Use this step in the Recipe Book workflow: File Lines to List."
-  file-write-from-list: "Use this step in the Recipe Book workflow: List to File."
-  filter-list-of-dicts: "Use this step in the Recipe Book workflow: Filter List of Dicts."
-  filter-orders-fn: "Use this step in the Recipe Book workflow: Filter Orders Function."
-  for-else: "Use this step in the Recipe Book workflow: For-Else Clause."
-  fstring-from-dict: "Use this step in the Recipe Book workflow: F-String from Dict."
-  health-check-dataclass-integrated: "Use this step in the Recipe Book workflow: Health Check with Logging."
-  high-value-orders-comp: "Use this step in the Recipe Book workflow: High-Value Orders."
-  import-json-parse: "Use this step in the Recipe Book workflow: JSON Parse."
-  input-to-int: "Use this step in the Recipe Book workflow: Input to Integer."
-  inventory-dict-comp: "Use this step in the Recipe Book workflow: Inventory Dict Comprehension."
-  inventory-item-class: "Use this step in the Recipe Book workflow: Inventory Product Class."
-  inventory-reorder-loop: "Use this step in the Recipe Book workflow: Inventory Reorder List."
-  list-dedup-preserve-order: "Use this step in the Recipe Book workflow: Deduplicate List (Order-Preserving)."
-  list-to-dict-conversion: "Use this step in the Recipe Book workflow: List of Tuples to Dict."
-  loop-dict-accumulate: "Use this step in the Recipe Book workflow: Dict Value Accumulator."
-  loop-nested-flatten: "Use this step in the Recipe Book workflow: Flatten Nested List."
-  number-round-format: "Use this step in the Recipe Book workflow: Round and Format."
-  number-stats-from-list: "Use this step in the Recipe Book workflow: List Statistics."
-  order-status-ternary: "Use this step in the Recipe Book workflow: Paid Status Label."
-  order-total-method: "Use this step in the Recipe Book workflow: Order Total Method."
-  orders-parse-to-records: "Use this step in the Recipe Book workflow: Order Lines to Records."
-  orders-total-accumulator: "Use this step in the Recipe Book workflow: Order Totals Summary."
-  parse-events-log: "Use this step in the Recipe Book workflow: Parse Events Log."
-  parse-quantity-safe: "Use this step in the Recipe Book workflow: Parse Quantity Safely."
-  process-orders-with-guard: "Use this step in the Recipe Book workflow: Order Processing Cleanup."
-  product-tags-to-set: "Use this step in the Recipe Book workflow: Product Tags Set."
-  retry-decorator-integrated: "Use this step in the Recipe Book workflow: Retry Connection Decorator."
-  sort-dict-by-value: "Use this step in the Recipe Book workflow: Sort Dict by Value."
-  sorted-key-lambda: "Use this step in the Recipe Book workflow: Sorted with Lambda Key."
-  string-join-transformed: "Use this step in the Recipe Book workflow: Transform and Join."
-  string-split-filter: "Use this step in the Recipe Book workflow: Split and Filter."
-  summarize-customers: "Use this step in the Recipe Book workflow: Count Active Customers."
-  typehint-callable: "Use this step in the Recipe Book workflow: Type Hint Callable."
-  validate-order-status: "Use this step in the Recipe Book workflow: Validate Order Status."
+  active-users-integrated: "Find recipes with their position in the recipes."
+  api-response-model-integrated: "Define a data model for Recipe API responses."
+  apply-coupon: "Apply a discount to recipes in the recipes."
+  boolean-all-check: "Check if all recipes in recipes meet a condition."
+  conditional-dict-validation: "Validate recipe data before processing."
+  conditional-early-return: "Guard against invalid recipe data early."
+  conditional-list-any: "Check if any recipe meets the criteria."
+  config-loader-integrated: "Safely load recipe configuration from JSON."
+  dict-from-parallel-lists: "Combine recipe keys and values into a dictionary."
+  discount-tier-elif: "Categorize recipes by tier or level."
+  error-code-extractor-integrated: "Extract error codes from recipe operation results."
+  error-handling-conversion: "Handle type conversion errors for recipe."
+  error-handling-dict-access: "Safely access recipe dictionary keys."
+  error-handling-file-read: "Handle errors when loading recipe data."
+  export-orders-csv: "Export recipes to a CSV file."
+  file-read-to-list: "Load recipes from a file into a list."
+  file-write-from-list: "Save recipes to a file."
+  filter-list-of-dicts: "Filter recipes by favorite value."
+  filter-orders-fn: "Create a function to filter recipes."
+  for-else: "Handle the case when no recipe is found."
+  fstring-from-dict: "Format recipe details from a dictionary."
+  health-check-dataclass-integrated: "Create a health check status for recipe services."
+  high-value-orders-comp: "Find high-value recipes using comprehension."
+  import-json-parse: "Parse recipe data from JSON format."
+  input-to-int: "Convert user input to recipe quantity."
+  inventory-dict-comp: "Build a recipe lookup using dict comprehension."
+  inventory-item-class: "Define a Recipe class."
+  inventory-reorder-loop: "Loop through recipes and flag items for reorder."
+  list-dedup-preserve-order: "Remove duplicate recipes while keeping order."
+  list-to-dict-conversion: "Convert recipes to a lookup dictionary."
+  loop-dict-accumulate: "Sum values from recipe data."
+  loop-nested-flatten: "Flatten nested recipes into a single list."
+  number-round-format: "Round and format recipe values."
+  number-stats-from-list: "Calculate statistics from recipes."
+  order-status-ternary: "Set recipe status label in one line."
+  order-total-method: "Add a method to calculate recipe total."
+  orders-parse-to-records: "Parse recipe lines into records."
+  orders-total-accumulator: "Accumulate totals across recipes."
+  parse-events-log: "Parse recipe event log entries."
+  parse-quantity-safe: "Safely parse recipe quantity."
+  process-orders-with-guard: "Process recipes with cleanup on errors."
+  product-tags-to-set: "Get unique recipe tags as a set."
+  retry-decorator-integrated: "Retry failed recipe operations automatically."
+  sort-dict-by-value: "Sort recipes by their values."
+  sorted-key-lambda: "Sort recipes using a custom key."
+  string-join-transformed: "Join recipes into a formatted string."
+  string-split-filter: "Split and filter recipe text."
+  summarize-customers: "Count active recipes in recipes."
+  typehint-callable: "Add type hints to recipe processing function."
+  validate-order-status: "Validate recipe status before changes."

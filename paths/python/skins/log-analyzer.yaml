@@ -1,50 +1,59 @@
-# paths/python/skins/log-analyzer.yaml
-
-id: log-analyzer
+id: "log-analyzer"
 title: "Log Analyzer"
 icon: "📊"
-blueprints: [data-transformer]
-
+blueprints:
+  - "data-transformer"
 vars:
-  list_name: logs
-  item_singular: log
-  item_plural: logs
+  list_name: "logs"
+  item_singular: "log"
+  item_plural: "logs"
   item_examples:
     - "INFO: Started"
     - "ERROR: Failed"
     - "WARN: Timeout"
     - "DEBUG: Value=42"
     - "INFO: Complete"
-  record_keys: ["level", "message", "timestamp", "source"]
-  attr_key_1: level
-  attr_key_2: message
-  id_var: log_id
-  filename: analysis.json
-  filetype: json
-  user_role: analyst
-  status_var: processed
-  action_verb: analyze
-  entity_name: LogEntry
-
+  record_keys:
+    - "level"
+    - "message"
+    - "timestamp"
+    - "source"
+  attr_key_1: "level"
+  attr_key_2: "message"
+  id_var: "log_id"
+  filename: "analysis.json"
+  filetype: "json"
+  user_role: "analyst"
+  status_var: "processed"
+  action_verb: "analyze"
+  entity_name: "LogEntry"
 dataPack:
-  list_sample: ["INFO", "ERROR", "WARN", "DEBUG"]
+  list_sample:
+    - "INFO"
+    - "ERROR"
+    - "WARN"
+    - "DEBUG"
   dict_sample:
     level: "ERROR"
     message: "Connection failed"
     timestamp: 1704067200
     source: "api"
   records_sample:
-    - { level: "INFO", message: "Started", count: 150 }
-    - { level: "ERROR", message: "Failed", count: 23 }
-    - { level: "WARN", message: "Slow", count: 45 }
+    - level: "INFO"
+      message: "Started"
+      count: 150
+    - level: "ERROR"
+      message: "Failed"
+      count: 23
+    - level: "WARN"
+      message: "Slow"
+      count: 45
   string_samples:
     - "Processing logs..."
     - "Found 23 errors"
     - "Analysis complete"
     - "Generating report"
-
 contexts:
-  # List Comprehensions
   list-comp-basic: "Extract log levels from entries."
   list-comp-for-fill: "Complete the comprehension loop."
   list-comp-predict: "Predict transformed output."
@@ -58,8 +67,6 @@ contexts:
   nested-comp: "Nested log extraction."
   nested-comp-predict: "Predict nested result."
   active-users-integrated: "Filter active log sources."
-
-  # Dict & Set Comprehensions
   dict-comp-intro: "Create level-to-count mapping."
   dict-comp-predict-intro: "Predict dict result."
   dict-comp-colon-fill: "Complete dict comprehension."
@@ -69,11 +76,9 @@ contexts:
   dict-comp-zip: "Zip levels and counts."
   dict-comp-write-dynamic: "Write dict comprehension."
   set-comp-intro: "Get unique log levels."
-  set-comp-predict-intro: "Predict unique set."
+  set-comp-predict-intro: "predict the output of a set comprehension with duplicates for logs."
   set-comp-basic: "Extract unique sources."
   set-comp-brace-fill: "Complete set syntax."
-
-  # Generators
   generator-exp-intro: "Stream large log files."
   generator-exp-basic: "Basic log generator."
   generator-predict-lazy: "Predict lazy evaluation."
@@ -81,7 +86,7 @@ contexts:
   generator-countdown: "Countdown log processor."
   generator-evens: "Filter even timestamps."
   generator-fibonacci: "Generate sequence IDs."
-  dict-from-parallel-lists: "Use this step in the Log Analyzer workflow: Dict from Two Lists."
-  inventory-dict-comp: "Use this step in the Log Analyzer workflow: Inventory Dict Comprehension."
-  list-dedup-preserve-order: "Use this step in the Log Analyzer workflow: Deduplicate List (Order-Preserving)."
-  loop-nested-flatten: "Use this step in the Log Analyzer workflow: Flatten Nested List."
+  dict-from-parallel-lists: "Combine log keys and values into a dictionary."
+  inventory-dict-comp: "Build a log lookup using dict comprehension."
+  list-dedup-preserve-order: "Remove duplicate logs while keeping order."
+  loop-nested-flatten: "Flatten nested logs into a single list."

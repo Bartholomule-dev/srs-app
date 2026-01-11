@@ -1,16 +1,10 @@
-# paths/python/skins/devops-toolkit.yaml
-# Global skin - no blueprints restriction = usable with any Python blueprint
-
-id: devops-toolkit
+id: "devops-toolkit"
 title: "DevOps Toolkit"
-icon: "\U0001F528"
-# NO blueprints field = global skin (usable with any blueprint)
-
+icon: "🔨"
 vars:
-  # REQUIRED existing fields (match current SkinVars interface)
-  list_name: servers
-  item_singular: server
-  item_plural: servers
+  list_name: "servers"
+  item_singular: "server"
+  item_plural: "servers"
   item_examples:
     - "web-01"
     - "db-01"
@@ -18,38 +12,47 @@ vars:
     - "api-01"
     - "worker-01"
     - "proxy-01"
-  record_keys: ["hostname", "ip", "status", "cpu"]
-
-  # Extended optional slots for broader exercise coverage
-  attr_key_1: hostname
-  attr_key_2: ip
-  id_var: server_id
-  filename: inventory.yaml
-  filetype: yaml
-  user_role: sysadmin
-  status_var: healthy
-  action_verb: deploy
-  entity_name: Server
-
+  record_keys:
+    - "hostname"
+    - "ip"
+    - "status"
+    - "cpu"
+  attr_key_1: "hostname"
+  attr_key_2: "ip"
+  id_var: "server_id"
+  filename: "inventory.yaml"
+  filetype: "yaml"
+  user_role: "sysadmin"
+  status_var: "healthy"
+  action_verb: "deploy"
+  entity_name: "Server"
 dataPack:
-  list_sample: ["web-01", "db-01", "cache-01", "api-01"]
+  list_sample:
+    - "web-01"
+    - "db-01"
+    - "cache-01"
+    - "api-01"
   dict_sample:
     hostname: "web-01"
     ip: "10.0.0.1"
     status: "running"
     cpu: 45
   records_sample:
-    - { hostname: "web-01", ip: "10.0.0.1", status: "running" }
-    - { hostname: "db-01", ip: "10.0.0.2", status: "stopped" }
-    - { hostname: "cache-01", ip: "10.0.0.3", status: "running" }
+    - hostname: "web-01"
+      ip: "10.0.0.1"
+      status: "running"
+    - hostname: "db-01"
+      ip: "10.0.0.2"
+      status: "stopped"
+    - hostname: "cache-01"
+      ip: "10.0.0.3"
+      status: "running"
   string_samples:
     - "Deployment started"
     - "Health check passed"
     - "Container restarted"
     - "Service scaled to 3 replicas"
-
 contexts:
-  # Setup & Storage
   list-create-empty: "Initialize an empty list to store server instances."
   list-create-values: "Define the list of servers to manage."
   tuple-create: "Store immutable config like (hostname, port)."
@@ -66,8 +69,6 @@ contexts:
   input-string: "Get the deployment target from operator."
   print-string: "Log a status message to the console."
   print-variable: "Display the current server status."
-
-  # Display & Iteration
   for-loop-list: "Iterate over all servers for health checks."
   for-loop-string: "Parse each character in a config string."
   for-loop-range: "Process servers in batches by index."
@@ -85,8 +86,6 @@ contexts:
   list-comp-filter-dynamic: "Filter to only running servers."
   list-comp-basic: "Get list of all hostnames."
   list-comp-conditional: "Get servers with CPU above threshold."
-
-  # Logic & Validation
   if-else-basic: "Check if server is running or needs restart."
   if-only: "Check if cluster is empty."
   boolean-and: "Check if server is healthy AND under load limit."
@@ -103,8 +102,6 @@ contexts:
   finally-basic: "Always close the SSH connection."
   try-except-finally: "Complete connection handling with cleanup."
   reraise: "Re-raise after logging the deployment error."
-
-  # Organization & Persistence
   define-function: "Create a function to check server health."
   function-return: "Return the health check result."
   return-none: "Return None when server not found."
@@ -121,63 +118,59 @@ contexts:
   main-guard-basic: "Only run deployment script when executed directly."
   import-from: "Import deployment utility functions."
   import-module: "Import the infrastructure module."
-
-  # Comprehensions
   dict-comp-basic: "Create hostname to IP mapping."
   dict-comp-intro: "Build a dict of server configurations."
-
-  # OOP
   define-class: "Create a Server class to represent infrastructure."
   init-method: "Initialize server with hostname and IP."
   instance-attribute: "Store server status as instance attribute."
   custom-exception: "Create a custom DeploymentError exception."
-  active-users-integrated: "Use this step in the DevOps Toolkit workflow: Active Customers with Index."
-  api-response-model-integrated: "Use this step in the DevOps Toolkit workflow: API Response Model."
-  apply-coupon: "Use this step in the DevOps Toolkit workflow: Apply Coupon."
-  boolean-all-check: "Use this step in the DevOps Toolkit workflow: All Products Check."
-  conditional-dict-validation: "Use this step in the DevOps Toolkit workflow: Dict Key Validation."
-  conditional-early-return: "Use this step in the DevOps Toolkit workflow: Guard Clause Pattern."
-  conditional-list-any: "Use this step in the DevOps Toolkit workflow: Any Product Matches."
-  config-loader-integrated: "Use this step in the DevOps Toolkit workflow: Safe JSON Config Loader."
-  dict-from-parallel-lists: "Use this step in the DevOps Toolkit workflow: Dict from Two Lists."
-  discount-tier-elif: "Use this step in the DevOps Toolkit workflow: Discount Tier."
-  error-code-extractor-integrated: "Use this step in the DevOps Toolkit workflow: Error Code Extractor."
-  error-handling-conversion: "Use this step in the DevOps Toolkit workflow: Safe Type Conversion."
-  error-handling-dict-access: "Use this step in the DevOps Toolkit workflow: Safe Dict Access."
-  error-handling-file-read: "Use this step in the DevOps Toolkit workflow: Safe File Read."
-  export-orders-csv: "Use this step in the DevOps Toolkit workflow: Export Orders CSV."
-  file-read-to-list: "Use this step in the DevOps Toolkit workflow: File Lines to List."
-  file-write-from-list: "Use this step in the DevOps Toolkit workflow: List to File."
-  filter-list-of-dicts: "Use this step in the DevOps Toolkit workflow: Filter List of Dicts."
-  filter-orders-fn: "Use this step in the DevOps Toolkit workflow: Filter Orders Function."
-  for-else: "Use this step in the DevOps Toolkit workflow: For-Else Clause."
-  fstring-from-dict: "Use this step in the DevOps Toolkit workflow: F-String from Dict."
-  health-check-dataclass-integrated: "Use this step in the DevOps Toolkit workflow: Health Check with Logging."
-  high-value-orders-comp: "Use this step in the DevOps Toolkit workflow: High-Value Orders."
-  import-json-parse: "Use this step in the DevOps Toolkit workflow: JSON Parse."
-  input-to-int: "Use this step in the DevOps Toolkit workflow: Input to Integer."
-  inventory-dict-comp: "Use this step in the DevOps Toolkit workflow: Inventory Dict Comprehension."
-  inventory-item-class: "Use this step in the DevOps Toolkit workflow: Inventory Product Class."
-  inventory-reorder-loop: "Use this step in the DevOps Toolkit workflow: Inventory Reorder List."
-  list-dedup-preserve-order: "Use this step in the DevOps Toolkit workflow: Deduplicate List (Order-Preserving)."
-  list-to-dict-conversion: "Use this step in the DevOps Toolkit workflow: List of Tuples to Dict."
-  loop-dict-accumulate: "Use this step in the DevOps Toolkit workflow: Dict Value Accumulator."
-  loop-nested-flatten: "Use this step in the DevOps Toolkit workflow: Flatten Nested List."
-  number-round-format: "Use this step in the DevOps Toolkit workflow: Round and Format."
-  number-stats-from-list: "Use this step in the DevOps Toolkit workflow: List Statistics."
-  order-status-ternary: "Use this step in the DevOps Toolkit workflow: Paid Status Label."
-  order-total-method: "Use this step in the DevOps Toolkit workflow: Order Total Method."
-  orders-parse-to-records: "Use this step in the DevOps Toolkit workflow: Order Lines to Records."
-  orders-total-accumulator: "Use this step in the DevOps Toolkit workflow: Order Totals Summary."
-  parse-events-log: "Use this step in the DevOps Toolkit workflow: Parse Events Log."
-  parse-quantity-safe: "Use this step in the DevOps Toolkit workflow: Parse Quantity Safely."
-  process-orders-with-guard: "Use this step in the DevOps Toolkit workflow: Order Processing Cleanup."
-  product-tags-to-set: "Use this step in the DevOps Toolkit workflow: Product Tags Set."
-  retry-decorator-integrated: "Use this step in the DevOps Toolkit workflow: Retry Connection Decorator."
-  sort-dict-by-value: "Use this step in the DevOps Toolkit workflow: Sort Dict by Value."
-  sorted-key-lambda: "Use this step in the DevOps Toolkit workflow: Sorted with Lambda Key."
-  string-join-transformed: "Use this step in the DevOps Toolkit workflow: Transform and Join."
-  string-split-filter: "Use this step in the DevOps Toolkit workflow: Split and Filter."
-  summarize-customers: "Use this step in the DevOps Toolkit workflow: Count Active Customers."
-  typehint-callable: "Use this step in the DevOps Toolkit workflow: Type Hint Callable."
-  validate-order-status: "Use this step in the DevOps Toolkit workflow: Validate Order Status."
+  active-users-integrated: "Find servers with their position in the servers."
+  api-response-model-integrated: "Define a data model for Server API responses."
+  apply-coupon: "Apply a discount to servers in the servers."
+  boolean-all-check: "Check if all servers in servers meet a condition."
+  conditional-dict-validation: "Validate server data before processing."
+  conditional-early-return: "Guard against invalid server data early."
+  conditional-list-any: "Check if any server meets the criteria."
+  config-loader-integrated: "Safely load server configuration from JSON."
+  dict-from-parallel-lists: "Combine server keys and values into a dictionary."
+  discount-tier-elif: "Categorize servers by tier or level."
+  error-code-extractor-integrated: "Extract error codes from server operation results."
+  error-handling-conversion: "Handle type conversion errors for server."
+  error-handling-dict-access: "Safely access server dictionary keys."
+  error-handling-file-read: "Handle errors when loading server data."
+  export-orders-csv: "Export servers to a CSV file."
+  file-read-to-list: "Load servers from a file into a list."
+  file-write-from-list: "Save servers to a file."
+  filter-list-of-dicts: "Filter servers by healthy value."
+  filter-orders-fn: "Create a function to filter servers."
+  for-else: "Handle the case when no server is found."
+  fstring-from-dict: "Format server details from a dictionary."
+  health-check-dataclass-integrated: "Create a health check status for server services."
+  high-value-orders-comp: "Find high-value servers using comprehension."
+  import-json-parse: "Parse server data from JSON format."
+  input-to-int: "Convert user input to server quantity."
+  inventory-dict-comp: "Build a server lookup using dict comprehension."
+  inventory-item-class: "Define a Server class."
+  inventory-reorder-loop: "Loop through servers and flag items for reorder."
+  list-dedup-preserve-order: "Remove duplicate servers while keeping order."
+  list-to-dict-conversion: "Convert servers to a lookup dictionary."
+  loop-dict-accumulate: "Sum values from server data."
+  loop-nested-flatten: "Flatten nested servers into a single list."
+  number-round-format: "Round and format server values."
+  number-stats-from-list: "Calculate statistics from servers."
+  order-status-ternary: "Set server status label in one line."
+  order-total-method: "Add a method to calculate server total."
+  orders-parse-to-records: "Parse server lines into records."
+  orders-total-accumulator: "Accumulate totals across servers."
+  parse-events-log: "Parse server event log entries."
+  parse-quantity-safe: "Safely parse server quantity."
+  process-orders-with-guard: "Process servers with cleanup on errors."
+  product-tags-to-set: "Get unique server tags as a set."
+  retry-decorator-integrated: "Retry failed server operations automatically."
+  sort-dict-by-value: "Sort servers by their values."
+  sorted-key-lambda: "Sort servers using a custom key."
+  string-join-transformed: "Join servers into a formatted string."
+  string-split-filter: "Split and filter server text."
+  summarize-customers: "Count active servers in servers."
+  typehint-callable: "Add type hints to server processing function."
+  validate-order-status: "Validate server status before changes."

@@ -45,6 +45,14 @@ contexts:
   except-specific: "Catch ValueError when {{attr_key_2}} is not a number"
   file-open-write: "Write the processed {{item_plural}} to output file"
 
+  boolean-all-check: "Check if all records in records meet a condition."
+  error-code-extractor-integrated: "Extract error codes from record operation results."
+  export-orders-csv: "Export records to a CSV file."
+  high-value-orders-comp: "Find high-value records using comprehension."
+  number-stats-from-list: "Calculate statistics from records."
+  orders-parse-to-records: "Parse record lines into records."
+  orders-total-accumulator: "Accumulate totals across records."
+
 dataPack:
   list_sample: '["alice,25,engineer", "bob,30,designer", "carol,28,manager"]'
   dict_sample: '{"name": "alice", "age": 25, "role": "engineer"}'
@@ -53,10 +61,3 @@ dataPack:
     - "alice,25,engineer"
     - "  bob,30,designer  "
     - "carol,28"
-  boolean-all-check: "Use this step in the CSV Data Parser workflow: All Products Check."
-  error-code-extractor-integrated: "Use this step in the CSV Data Parser workflow: Error Code Extractor."
-  export-orders-csv: "Use this step in the CSV Data Parser workflow: Export Orders CSV."
-  high-value-orders-comp: "Use this step in the CSV Data Parser workflow: High-Value Orders."
-  number-stats-from-list: "Use this step in the CSV Data Parser workflow: List Statistics."
-  orders-parse-to-records: "Use this step in the CSV Data Parser workflow: Order Lines to Records."
-  orders-total-accumulator: "Use this step in the CSV Data Parser workflow: Order Totals Summary."

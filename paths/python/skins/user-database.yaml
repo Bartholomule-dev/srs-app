@@ -1,76 +1,83 @@
-# paths/python/skins/user-database.yaml
-
-id: user-database
+id: "user-database"
 title: "User Database"
 icon: "🗄️"
-blueprints: [data-store]
-
+blueprints:
+  - "data-store"
 vars:
-  list_name: users
-  item_singular: user
-  item_plural: users
+  list_name: "users"
+  item_singular: "user"
+  item_plural: "users"
   item_examples:
     - "alice"
     - "bob"
     - "charlie"
     - "diana"
     - "eve"
-  record_keys: ["id", "username", "email", "role"]
-  attr_key_1: username
-  attr_key_2: email
-  id_var: user_id
-  filename: users.json
-  filetype: json
-  user_role: admin
-  status_var: active
-  action_verb: query
-  entity_name: User
-
+  record_keys:
+    - "id"
+    - "username"
+    - "email"
+    - "role"
+  attr_key_1: "username"
+  attr_key_2: "email"
+  id_var: "user_id"
+  filename: "users.json"
+  filetype: "json"
+  user_role: "admin"
+  status_var: "active"
+  action_verb: "query"
+  entity_name: "User"
 dataPack:
-  list_sample: ["alice", "bob", "charlie", "diana"]
+  list_sample:
+    - "alice"
+    - "bob"
+    - "charlie"
+    - "diana"
   dict_sample:
     id: 1
     username: "alice"
     email: "alice@example.com"
     role: "admin"
   records_sample:
-    - { id: 1, username: "alice", role: "admin" }
-    - { id: 2, username: "bob", role: "user" }
-    - { id: 3, username: "charlie", role: "guest" }
+    - id: 1
+      username: "alice"
+      role: "admin"
+    - id: 2
+      username: "bob"
+      role: "user"
+    - id: 3
+      username: "charlie"
+      role: "guest"
   string_samples:
     - "User created"
     - "User not found"
     - "Access granted"
     - "Database updated"
-
 contexts:
-  # Lists
   list-create-empty: "Initialize empty user list."
   list-create-values: "Create list with initial users."
   list-bracket-fill: "Complete the list syntax."
-  list-append-dynamic: "Add a new user."
+  list-append-dynamic: "Manage the users collection."
   list-append-predict: "Predict list after append."
-  list-extend-method: "Add multiple users."
+  list-extend-method: "Manage the users collection."
   list-indexing-dynamic: "Get user by position."
   list-access-index-dynamic: "Access specific user."
-  list-negative-index-dynamic: "Get last user."
+  list-negative-index-dynamic: "Manage the users collection."
   list-index: "Find user's position."
-  list-pop-dynamic: "Remove a user."
+  list-pop-dynamic: "Manage the users collection."
   list-pop-index: "Remove user at index."
   list-insert-dynamic: "Insert user at position."
   list-slice-write-dynamic: "Get subset of users."
-  list-len-dynamic: "Count total users."
+  list-len-dynamic: "Manage the users collection."
   list-method-predict-dynamic: "Predict list operation."
-
-  # Dictionaries
-  dict-create-values: "Create user record."
+  dict-create-values: "Store user data with key-value pairs."
   dict-create-empty: "Initialize empty record."
   dict-brace-fill: "Complete dict syntax."
-  dict-set-item: "Update user field."
+  dict-set-item: "Store user data with key-value pairs."
   dict-bracket-access: "Access user attribute."
-  dict-access-dynamic: "Get user property."
+  dict-access-dynamic: "Store user data with key-value pairs."
   dict-get-default: "Safe attribute access."
-  dict-get-predict: "Predict get result."
+  dict-get-predict: "Store user data with key-value pairs."
   dict-in-check: "Check if user exists."
   dict-pop: "Remove user attribute."
   dict-keys-method: "Get all field names."
@@ -81,46 +88,42 @@ contexts:
   dict-values-loop: "Loop through field values."
   dict-items-fill: "Complete items loop."
   dict-values-fill: "Complete values access."
-
-  # Sets & Tuples
   set-create: "Create unique roles set."
-  set-add: "Add new role."
-  set-remove: "Remove role."
-  set-discard: "Safely remove role."
-  set-union: "Combine role sets."
+  set-add: "Track unique user values."
+  set-remove: "Track unique user values."
+  set-discard: "Track unique user values."
+  set-union: "Track unique user values."
   set-union-predict: "Predict union result."
-  set-intersection: "Find common roles."
-  set-difference: "Find unique roles."
+  set-intersection: "Track unique user values."
+  set-difference: "Track unique user values."
   set-operation-dynamic: "Dynamic set operation."
   tuple-create: "Create immutable user record."
   tuple-single: "Single-element tuple."
   tuple-index: "Access tuple element."
   tuple-index-dynamic: "Dynamic tuple access."
-  tuple-unpack: "Unpack user data."
-  tuple-unpack-dynamic: "Dynamic unpacking."
+  tuple-unpack: "Group related user data."
+  tuple-unpack-dynamic: "write unpacking for a dynamically generated tuple for users."
   tuple-immutability: "Understand tuple immutability."
-
-  # Advanced Patterns
-  unpacking-intro: "Unpack user fields."
-  unpacking-list-intro: "Unpack from list."
-  unpacking-swap-intro: "Swap two users."
+  unpacking-intro: "unpack a tuple into individual variables for users."
+  unpacking-list-intro: "unpack a list into individual variables for users."
+  unpacking-swap-intro: "use unpacking to swap two variables for users."
   star-unpack: "Unpack remaining fields."
   dict-iteration-predict: "Predict dict iteration."
   dict-items-predict: "Predict items output."
-  dict-sum-values: "Sum numeric fields."
-  dict-find-key: "Find key by value."
+  dict-sum-values: "Loop through user data entries."
+  dict-find-key: "Loop through user data entries."
   nested-access-predict-dynamic: "Access nested user data."
   nested-access-write-dynamic: "Write nested access."
   dict-mutable-values: "Handle mutable dict values."
-  shallow-copy-method: "Copy user record."
+  shallow-copy-method: "create a shallow copy of a list using the copy method for users."
   shallow-copy-constructor: "Copy with constructor."
   deep-copy: "Deep copy nested data."
   list-aliasing: "Understand list aliasing."
-  mutate-vs-reassign: "Mutate vs reassign."
-  error-handling-dict-access: "Use this step in the User Database workflow: Safe Dict Access."
-  filter-list-of-dicts: "Use this step in the User Database workflow: Filter List of Dicts."
-  inventory-reorder-loop: "Use this step in the User Database workflow: Inventory Reorder List."
-  loop-dict-accumulate: "Use this step in the User Database workflow: Dict Value Accumulator."
-  process-orders-with-guard: "Use this step in the User Database workflow: Order Processing Cleanup."
-  sort-dict-by-value: "Use this step in the User Database workflow: Sort Dict by Value."
-  summarize-customers: "Use this step in the User Database workflow: Count Active Customers."
+  mutate-vs-reassign: "distinguish between in-place mutation and variable reassignment for users."
+  error-handling-dict-access: "Safely access user dictionary keys."
+  filter-list-of-dicts: "Filter users by active value."
+  inventory-reorder-loop: "Loop through users and flag items for reorder."
+  loop-dict-accumulate: "Sum values from user data."
+  process-orders-with-guard: "Process users with cleanup on errors."
+  sort-dict-by-value: "Sort users by their values."
+  summarize-customers: "Count active users in users."

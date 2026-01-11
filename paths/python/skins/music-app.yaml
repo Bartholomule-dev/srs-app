@@ -1,16 +1,10 @@
-# paths/python/skins/music-app.yaml
-# Global skin - no blueprints restriction = usable with any Python blueprint
-
-id: music-app
+id: "music-app"
 title: "Music Streaming"
-icon: "\U0001F3B6"
-# NO blueprints field = global skin (usable with any blueprint)
-
+icon: "🎶"
 vars:
-  # REQUIRED existing fields (match current SkinVars interface)
-  list_name: playlist
-  item_singular: track
-  item_plural: tracks
+  list_name: "playlist"
+  item_singular: "track"
+  item_plural: "tracks"
   item_examples:
     - "Bohemian Rhapsody"
     - "Stairway to Heaven"
@@ -18,38 +12,47 @@ vars:
     - "Imagine"
     - "Smells Like Teen Spirit"
     - "Purple Rain"
-  record_keys: ["title", "artist", "duration", "album"]
-
-  # Extended optional slots for broader exercise coverage
-  attr_key_1: title
-  attr_key_2: duration
-  id_var: track_id
-  filename: playlist.json
-  filetype: json
-  user_role: listener
-  status_var: playing
-  action_verb: play
-  entity_name: Track
-
+  record_keys:
+    - "title"
+    - "artist"
+    - "duration"
+    - "album"
+  attr_key_1: "title"
+  attr_key_2: "duration"
+  id_var: "track_id"
+  filename: "playlist.json"
+  filetype: "json"
+  user_role: "listener"
+  status_var: "playing"
+  action_verb: "play"
+  entity_name: "Track"
 dataPack:
-  list_sample: ["rock", "pop", "jazz", "classical"]
+  list_sample:
+    - "rock"
+    - "pop"
+    - "jazz"
+    - "classical"
   dict_sample:
     title: "Bohemian Rhapsody"
     artist: "Queen"
     duration: 354
     album: "A Night at the Opera"
   records_sample:
-    - { title: "Imagine", artist: "John Lennon", duration: 187 }
-    - { title: "Yesterday", artist: "The Beatles", duration: 125 }
-    - { title: "Purple Rain", artist: "Prince", duration: 520 }
+    - title: "Imagine"
+      artist: "John Lennon"
+      duration: 187
+    - title: "Yesterday"
+      artist: "The Beatles"
+      duration: 125
+    - title: "Purple Rain"
+      artist: "Prince"
+      duration: 520
   string_samples:
     - "Now playing..."
     - "Added to queue"
     - "Shuffling playlist"
     - "Repeat mode on"
-
 contexts:
-  # Setup & Storage
   list-create-empty: "Every music app needs a playlist to store tracks."
   list-create-values: "Initialize playlist with favorite tracks."
   tuple-create: "Store immutable track data like (artist, album)."
@@ -66,8 +69,6 @@ contexts:
   input-string: "Get the track title from user."
   print-string: "Display 'Now playing...' message."
   print-variable: "Show the current track name."
-
-  # Display & Iteration
   for-loop-list: "Display all tracks in the playlist."
   for-loop-string: "Display each character in the track title."
   for-loop-range: "Process playlist by track position."
@@ -85,8 +86,6 @@ contexts:
   list-comp-filter-dynamic: "Filter to show only tracks by a specific artist."
   list-comp-basic: "Create a list of track titles from the playlist."
   list-comp-conditional: "Get all tracks longer than 3 minutes."
-
-  # Logic & Validation
   if-else-basic: "Check if a track is longer than 5 minutes."
   if-only: "Check if playlist is empty."
   boolean-and: "Check if track is by artist AND under 5 min."
@@ -103,8 +102,6 @@ contexts:
   finally-basic: "Always stop audio stream when done."
   try-except-finally: "Complete playback handling with cleanup."
   reraise: "Re-raise after logging playback error."
-
-  # Organization & Persistence
   define-function: "Create a function to calculate total playlist duration."
   function-return: "Return the formatted duration string."
   return-none: "Return None when track is removed."
@@ -121,63 +118,59 @@ contexts:
   main-guard-basic: "Only start player when run directly."
   import-from: "Import audio processing utilities."
   import-module: "Import the music player module."
-
-  # Comprehensions
   dict-comp-basic: "Create a lookup table of track titles to durations."
   dict-comp-intro: "Build a dict of track metadata."
-
-  # OOP
   define-class: "Create a Track class to represent songs."
   init-method: "Initialize track with title and artist."
   instance-attribute: "Store track duration as an instance attribute."
   custom-exception: "Create a custom PlaybackError exception."
-  active-users-integrated: "Use this step in the Music Streaming workflow: Active Customers with Index."
-  api-response-model-integrated: "Use this step in the Music Streaming workflow: API Response Model."
-  apply-coupon: "Use this step in the Music Streaming workflow: Apply Coupon."
-  boolean-all-check: "Use this step in the Music Streaming workflow: All Products Check."
-  conditional-dict-validation: "Use this step in the Music Streaming workflow: Dict Key Validation."
-  conditional-early-return: "Use this step in the Music Streaming workflow: Guard Clause Pattern."
-  conditional-list-any: "Use this step in the Music Streaming workflow: Any Product Matches."
-  config-loader-integrated: "Use this step in the Music Streaming workflow: Safe JSON Config Loader."
-  dict-from-parallel-lists: "Use this step in the Music Streaming workflow: Dict from Two Lists."
-  discount-tier-elif: "Use this step in the Music Streaming workflow: Discount Tier."
-  error-code-extractor-integrated: "Use this step in the Music Streaming workflow: Error Code Extractor."
-  error-handling-conversion: "Use this step in the Music Streaming workflow: Safe Type Conversion."
-  error-handling-dict-access: "Use this step in the Music Streaming workflow: Safe Dict Access."
-  error-handling-file-read: "Use this step in the Music Streaming workflow: Safe File Read."
-  export-orders-csv: "Use this step in the Music Streaming workflow: Export Orders CSV."
-  file-read-to-list: "Use this step in the Music Streaming workflow: File Lines to List."
-  file-write-from-list: "Use this step in the Music Streaming workflow: List to File."
-  filter-list-of-dicts: "Use this step in the Music Streaming workflow: Filter List of Dicts."
-  filter-orders-fn: "Use this step in the Music Streaming workflow: Filter Orders Function."
-  for-else: "Use this step in the Music Streaming workflow: For-Else Clause."
-  fstring-from-dict: "Use this step in the Music Streaming workflow: F-String from Dict."
-  health-check-dataclass-integrated: "Use this step in the Music Streaming workflow: Health Check with Logging."
-  high-value-orders-comp: "Use this step in the Music Streaming workflow: High-Value Orders."
-  import-json-parse: "Use this step in the Music Streaming workflow: JSON Parse."
-  input-to-int: "Use this step in the Music Streaming workflow: Input to Integer."
-  inventory-dict-comp: "Use this step in the Music Streaming workflow: Inventory Dict Comprehension."
-  inventory-item-class: "Use this step in the Music Streaming workflow: Inventory Product Class."
-  inventory-reorder-loop: "Use this step in the Music Streaming workflow: Inventory Reorder List."
-  list-dedup-preserve-order: "Use this step in the Music Streaming workflow: Deduplicate List (Order-Preserving)."
-  list-to-dict-conversion: "Use this step in the Music Streaming workflow: List of Tuples to Dict."
-  loop-dict-accumulate: "Use this step in the Music Streaming workflow: Dict Value Accumulator."
-  loop-nested-flatten: "Use this step in the Music Streaming workflow: Flatten Nested List."
-  number-round-format: "Use this step in the Music Streaming workflow: Round and Format."
-  number-stats-from-list: "Use this step in the Music Streaming workflow: List Statistics."
-  order-status-ternary: "Use this step in the Music Streaming workflow: Paid Status Label."
-  order-total-method: "Use this step in the Music Streaming workflow: Order Total Method."
-  orders-parse-to-records: "Use this step in the Music Streaming workflow: Order Lines to Records."
-  orders-total-accumulator: "Use this step in the Music Streaming workflow: Order Totals Summary."
-  parse-events-log: "Use this step in the Music Streaming workflow: Parse Events Log."
-  parse-quantity-safe: "Use this step in the Music Streaming workflow: Parse Quantity Safely."
-  process-orders-with-guard: "Use this step in the Music Streaming workflow: Order Processing Cleanup."
-  product-tags-to-set: "Use this step in the Music Streaming workflow: Product Tags Set."
-  retry-decorator-integrated: "Use this step in the Music Streaming workflow: Retry Connection Decorator."
-  sort-dict-by-value: "Use this step in the Music Streaming workflow: Sort Dict by Value."
-  sorted-key-lambda: "Use this step in the Music Streaming workflow: Sorted with Lambda Key."
-  string-join-transformed: "Use this step in the Music Streaming workflow: Transform and Join."
-  string-split-filter: "Use this step in the Music Streaming workflow: Split and Filter."
-  summarize-customers: "Use this step in the Music Streaming workflow: Count Active Customers."
-  typehint-callable: "Use this step in the Music Streaming workflow: Type Hint Callable."
-  validate-order-status: "Use this step in the Music Streaming workflow: Validate Order Status."
+  active-users-integrated: "Find tracks with their position in the playlist."
+  api-response-model-integrated: "Define a data model for Track API responses."
+  apply-coupon: "Apply a discount to tracks in the playlist."
+  boolean-all-check: "Check if all tracks in playlist meet a condition."
+  conditional-dict-validation: "Validate track data before processing."
+  conditional-early-return: "Guard against invalid track data early."
+  conditional-list-any: "Check if any track meets the criteria."
+  config-loader-integrated: "Safely load track configuration from JSON."
+  dict-from-parallel-lists: "Combine track keys and values into a dictionary."
+  discount-tier-elif: "Categorize tracks by tier or level."
+  error-code-extractor-integrated: "Extract error codes from track operation results."
+  error-handling-conversion: "Handle type conversion errors for track."
+  error-handling-dict-access: "Safely access track dictionary keys."
+  error-handling-file-read: "Handle errors when loading track data."
+  export-orders-csv: "Export playlist to a CSV file."
+  file-read-to-list: "Load playlist from a file into a list."
+  file-write-from-list: "Save playlist to a file."
+  filter-list-of-dicts: "Filter playlist by playing value."
+  filter-orders-fn: "Create a function to filter playlist."
+  for-else: "Handle the case when no track is found."
+  fstring-from-dict: "Format track details from a dictionary."
+  health-check-dataclass-integrated: "Create a health check status for track services."
+  high-value-orders-comp: "Find high-value tracks using comprehension."
+  import-json-parse: "Parse track data from JSON format."
+  input-to-int: "Convert user input to track quantity."
+  inventory-dict-comp: "Build a track lookup using dict comprehension."
+  inventory-item-class: "Define a Track class."
+  inventory-reorder-loop: "Loop through playlist and flag items for reorder."
+  list-dedup-preserve-order: "Remove duplicate tracks while keeping order."
+  list-to-dict-conversion: "Convert playlist to a lookup dictionary."
+  loop-dict-accumulate: "Sum values from track data."
+  loop-nested-flatten: "Flatten nested playlist into a single list."
+  number-round-format: "Round and format track values."
+  number-stats-from-list: "Calculate statistics from playlist."
+  order-status-ternary: "Set track status label in one line."
+  order-total-method: "Add a method to calculate track total."
+  orders-parse-to-records: "Parse track lines into records."
+  orders-total-accumulator: "Accumulate totals across playlist."
+  parse-events-log: "Parse track event log entries."
+  parse-quantity-safe: "Safely parse track quantity."
+  process-orders-with-guard: "Process playlist with cleanup on errors."
+  product-tags-to-set: "Get unique track tags as a set."
+  retry-decorator-integrated: "Retry failed track operations automatically."
+  sort-dict-by-value: "Sort tracks by their values."
+  sorted-key-lambda: "Sort playlist using a custom key."
+  string-join-transformed: "Join tracks into a formatted string."
+  string-split-filter: "Split and filter track text."
+  summarize-customers: "Count active tracks in playlist."
+  typehint-callable: "Add type hints to track processing function."
+  validate-order-status: "Validate track status before changes."
