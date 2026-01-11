@@ -17,7 +17,7 @@ export interface UseSkillTreeReturn {
   refetch: () => Promise<void>;
 }
 
-export function useSkillTree(): UseSkillTreeReturn {
+export function useSkillTree(language: string = 'python'): UseSkillTreeReturn {
   const { user, loading: authLoading } = useAuth();
   const [data, setData] = useState<SkillTreeData | null>(null);
   const [dataLoading, setDataLoading] = useState(false);
@@ -37,7 +37,8 @@ export function useSkillTree(): UseSkillTreeReturn {
       const { data: progressData, error: fetchError } = await supabase
         .from('subconcept_progress')
         .select('*')
-        .eq('user_id', user.id);
+        .eq('user_id', user.id)
+        .eq('language', language);
 
       if (fetchError) {
         throw new Error(fetchError.message);
@@ -46,7 +47,7 @@ export function useSkillTree(): UseSkillTreeReturn {
       const progress = (progressData ?? []).map((row) =>
         mapDbToSubconceptProgress(row as DbSubconceptProgress)
       );
-      const treeData = buildSkillTreeData(progress);
+      const treeData = buildSkillTreeData(progress, language);
       setData(treeData);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load skill tree');
@@ -54,7 +55,7 @@ export function useSkillTree(): UseSkillTreeReturn {
     } finally {
       setDataLoading(false);
     }
-  }, [user]);
+  }, [user, language]);
 
   useEffect(() => {
     if (authLoading) return;

@@ -5,6 +5,24 @@ import { useSkillTree } from '@/lib/hooks/useSkillTree';
 import { AuthProvider } from '@/lib/context/AuthContext';
 import type { ReactNode } from 'react';
 
+// Helper to create chainable mock for Supabase queries
+function createQueryMock(resolvedValue: { data: unknown; error: unknown }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const eqMock: any = vi.fn(() => Promise.resolve(resolvedValue));
+  // Allow chaining multiple .eq() calls
+  eqMock.mockImplementation(() => ({
+    eq: eqMock,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    then: (resolve: any) => Promise.resolve(resolvedValue).then(resolve),
+  }));
+  return {
+    select: vi.fn(() => ({
+      eq: eqMock,
+    })),
+    _eqMock: eqMock,
+  };
+}
+
 // Mock Supabase client
 vi.mock('@/lib/supabase/client', () => ({
   supabase: {
@@ -18,7 +36,9 @@ vi.mock('@/lib/supabase/client', () => ({
     },
     from: vi.fn(() => ({
       select: vi.fn(() => ({
-        eq: vi.fn(() => Promise.resolve({ data: [], error: null })),
+        eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({ data: [], error: null })),
+        })),
       })),
     })),
   },
@@ -58,11 +78,8 @@ describe('useSkillTree', () => {
       error: null,
     } as never);
 
-    vi.mocked(supabase.from).mockReturnValue({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => Promise.resolve({ data: [], error: null })),
-      })),
-    } as never);
+    const queryMock = createQueryMock({ data: [], error: null });
+    vi.mocked(supabase.from).mockReturnValue(queryMock as never);
 
     const { result } = renderHook(() => useSkillTree(), { wrapper });
 
@@ -101,11 +118,8 @@ describe('useSkillTree', () => {
       },
     ];
 
-    vi.mocked(supabase.from).mockReturnValue({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => Promise.resolve({ data: mockProgress, error: null })),
-      })),
-    } as never);
+    const queryMock = createQueryMock({ data: mockProgress, error: null });
+    vi.mocked(supabase.from).mockReturnValue(queryMock as never);
 
     const { result } = renderHook(() => useSkillTree(), { wrapper });
 
@@ -148,11 +162,8 @@ describe('useSkillTree', () => {
       },
     ];
 
-    vi.mocked(supabase.from).mockReturnValue({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => Promise.resolve({ data: mockProgress, error: null })),
-      })),
-    } as never);
+    const queryMock = createQueryMock({ data: mockProgress, error: null });
+    vi.mocked(supabase.from).mockReturnValue(queryMock as never);
 
     const { result } = renderHook(() => useSkillTree(), { wrapper });
 
@@ -191,14 +202,8 @@ describe('useSkillTree', () => {
       error: null,
     } as never);
 
-    vi.mocked(supabase.from).mockReturnValue({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => Promise.resolve({
-          data: null,
-          error: { message: 'Database error' }
-        })),
-      })),
-    } as never);
+    const queryMock = createQueryMock({ data: null, error: { message: 'Database error' } });
+    vi.mocked(supabase.from).mockReturnValue(queryMock as never);
 
     const { result } = renderHook(() => useSkillTree(), { wrapper });
 
@@ -216,11 +221,8 @@ describe('useSkillTree', () => {
       error: null,
     } as never);
 
-    vi.mocked(supabase.from).mockReturnValue({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => Promise.resolve({ data: [], error: null })),
-      })),
-    } as never);
+    const queryMock = createQueryMock({ data: [], error: null });
+    vi.mocked(supabase.from).mockReturnValue(queryMock as never);
 
     const { result } = renderHook(() => useSkillTree(), { wrapper });
 
@@ -231,5 +233,114 @@ describe('useSkillTree', () => {
     // getState should return the state for any subconcept
     expect(result.current.getState('variables')).toBe('available');
     expect(result.current.getState('operators')).toBe('locked'); // prereq not met
+  });
+
+  describe('language parameter', () => {
+    it('loads curriculum for specified language (python)', async () => {
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
+        data: { user: mockUser },
+        error: null,
+      } as never);
+
+      const queryMock = createQueryMock({ data: [], error: null });
+      vi.mocked(supabase.from).mockReturnValue(queryMock as never);
+
+      const { result } = renderHook(() => useSkillTree('python'), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // Python curriculum has 11 clusters (concepts)
+      expect(result.current.data?.clusters).toHaveLength(11);
+      expect(result.current.data?.totalSubconcepts).toBe(65);
+    });
+
+    it('loads curriculum for javascript language', async () => {
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
+        data: { user: mockUser },
+        error: null,
+      } as never);
+
+      const queryMock = createQueryMock({ data: [], error: null });
+      vi.mocked(supabase.from).mockReturnValue(queryMock as never);
+
+      const { result } = renderHook(() => useSkillTree('javascript'), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // JavaScript curriculum has 3 clusters (concepts)
+      expect(result.current.data?.clusters).toHaveLength(3);
+      // JavaScript has fewer subconcepts (9 total in the current curriculum)
+      expect(result.current.data?.totalSubconcepts).toBe(9);
+    });
+
+    it('filters progress by language in query', async () => {
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
+        data: { user: mockUser },
+        error: null,
+      } as never);
+
+      const queryMock = createQueryMock({ data: [], error: null });
+      vi.mocked(supabase.from).mockReturnValue(queryMock as never);
+
+      renderHook(() => useSkillTree('javascript'), { wrapper });
+
+      await waitFor(() => {
+        expect(supabase.from).toHaveBeenCalledWith('subconcept_progress');
+      });
+
+      // Verify that .eq was called (for user_id and language)
+      expect(queryMock._eqMock).toHaveBeenCalled();
+    });
+
+    it('defaults to python when no language specified', async () => {
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
+        data: { user: mockUser },
+        error: null,
+      } as never);
+
+      const queryMock = createQueryMock({ data: [], error: null });
+      vi.mocked(supabase.from).mockReturnValue(queryMock as never);
+
+      const { result } = renderHook(() => useSkillTree(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // Should load Python curriculum by default
+      expect(result.current.data?.clusters).toHaveLength(11);
+    });
+
+    it('refetches when language changes', async () => {
+      vi.mocked(supabase.auth.getUser).mockResolvedValue({
+        data: { user: mockUser },
+        error: null,
+      } as never);
+
+      const queryMock = createQueryMock({ data: [], error: null });
+      vi.mocked(supabase.from).mockReturnValue(queryMock as never);
+
+      const { result, rerender } = renderHook(
+        ({ lang }) => useSkillTree(lang),
+        { wrapper, initialProps: { lang: 'python' } }
+      );
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      expect(result.current.data?.clusters).toHaveLength(11);
+
+      // Change to JavaScript
+      rerender({ lang: 'javascript' });
+
+      await waitFor(() => {
+        expect(result.current.data?.clusters).toHaveLength(3);
+      });
+    });
   });
 });
