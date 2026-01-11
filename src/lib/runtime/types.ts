@@ -34,8 +34,11 @@ export interface LanguageRuntime {
   /** Execute code and capture output */
   execute(code: string, timeoutMs?: number): Promise<ExecutionResult>;
 
-  /** Tokenize code for comparison */
-  tokenize(code: string): Promise<[number, string][] | null>;
+  /** Tokenize code for comparison
+   * Python returns [tokenType: number, value: string]
+   * JavaScript returns [tokenLabel: string, value: string]
+   */
+  tokenize(code: string): Promise<[number | string, string][] | null>;
 
   /** Compare code by tokens */
   compareByTokens(
