@@ -45,49 +45,141 @@ exercises:
       - Use = for assignment
     tags: [variables, assignment, dynamic]
 
-  - slug: multiple-assignment
-    objective: Use tuple unpacking to initialize multiple values at once
-    title: Multiple Values
-    difficulty: 2
+  - slug: assign-float
+    objective: Store a decimal value in a variable
+    title: Float Variable
+    difficulty: 1
+    concept: foundations
+    subconcept: variables
+    level: intro
+    prereqs: []
+    type: write
+    pattern: assignment
+    prompt: Create a variable called `{{item_singular}}_price` and set it to `19.99`
+    expected_answer: "{{item_singular}}_price = 19.99"
+    accepted_solutions:
+      - "{{item_singular}}_price = 19.99"
+      - "{{item_singular}}_price=19.99"
+    hints:
+      - Decimal numbers (floats) use a dot as separator
+      - No quotes needed for numbers
+    tags: [variables, assignment]
+
+  - slug: variable-reassign
+    objective: Update a variable to a new value
+    title: Variable Reassignment
+    difficulty: 1
     concept: foundations
     subconcept: variables
     level: practice
     prereqs: [variables]
     type: write
     pattern: assignment
-    prompt: In a single line, assign `"{{item_example}}"`, `1`, and `True` to `{{item_singular}}`, `{{item_singular}}_id`, and `{{status_var}}`
-    expected_answer: '{{item_singular}}, {{item_singular}}_id, {{status_var}} = "{{item_example}}", 1, True'
+    prompt: |
+      Given that `{{item_singular}}_count` already exists with value 5,
+      write a statement to change it to 10
+    expected_answer: "{{item_singular}}_count = 10"
     accepted_solutions:
-      - '{{item_singular}}, {{item_singular}}_id, {{status_var}} = "{{item_example}}", 1, True'
-      - "{{item_singular}}, {{item_singular}}_id, {{status_var}} = '{{item_example}}', 1, True"
+      - "{{item_singular}}_count = 10"
+      - "{{item_singular}}_count=10"
     hints:
-      - Separate variables with commas
-      - Match the number of values
-    tags: [variables, assignment, unpacking]
-
-  - slug: swap-variables
-    objective: Swap two variable values using Pythonic tuple unpacking
-    title: Swap Values
-    difficulty: 2
-    concept: foundations
-    subconcept: variables
-    level: practice
-    prereqs: [variables]
-    type: write
-    pattern: swap
-    prompt: Swap `current_{{item_singular}}` and `next_{{item_singular}}` using tuple unpacking (no temp variable)
-    expected_answer: "current_{{item_singular}}, next_{{item_singular}} = next_{{item_singular}}, current_{{item_singular}}"
-    accepted_solutions:
-      - "current_{{item_singular}}, next_{{item_singular}} = next_{{item_singular}}, current_{{item_singular}}"
-      - "next_{{item_singular}}, current_{{item_singular}} = current_{{item_singular}}, next_{{item_singular}}"
-      - "(current_{{item_singular}}, next_{{item_singular}}) = (next_{{item_singular}}, current_{{item_singular}})"
-    hints:
-      - Python allows simultaneous assignment
-      - No temp variable needed
-    tags: [variables, swap]
+      - Simply assign the new value with =
+      - The old value is replaced
+    tags: [variables, assignment]
 
   # --- Operators Subconcept ---
   # Static add-numbers removed - covered by int-addition-dynamic
+
+  # --- Basic Arithmetic Exercises ---
+  - slug: addition-write-dynamic
+    objective: Write a simple addition expression
+    title: Simple Addition
+    difficulty: 1
+    concept: foundations
+    subconcept: operators
+    level: intro
+    prereqs: []
+    type: write
+    pattern: arithmetic
+    generator: arithmetic-values
+    prompt: Write an expression to add {{x}} and {{y}}
+    expected_answer: "{{x}} + {{y}}"
+    accepted_solutions:
+      - "{{x}} + {{y}}"
+      - "{{x}}+{{y}}"
+      - "({{x}} + {{y}})"
+      - "{{y}} + {{x}}"
+    hints:
+      - Use the + operator to add numbers
+      - Addition is commutative (order doesn't matter)
+    tags: [operators, arithmetic, dynamic]
+
+  - slug: subtraction-write-dynamic
+    objective: Write a simple subtraction expression
+    title: Simple Subtraction
+    difficulty: 1
+    concept: foundations
+    subconcept: operators
+    level: intro
+    prereqs: []
+    type: write
+    pattern: arithmetic
+    generator: arithmetic-values
+    prompt: Write an expression to subtract {{y}} from {{x}}
+    expected_answer: "{{x}} - {{y}}"
+    accepted_solutions:
+      - "{{x}} - {{y}}"
+      - "{{x}}-{{y}}"
+      - "({{x}} - {{y}})"
+    hints:
+      - Use the - operator for subtraction
+      - First operand minus second operand
+    tags: [operators, arithmetic, dynamic]
+
+  - slug: multiplication-write-dynamic
+    objective: Write a simple multiplication expression
+    title: Simple Multiplication
+    difficulty: 1
+    concept: foundations
+    subconcept: operators
+    level: intro
+    prereqs: []
+    type: write
+    pattern: arithmetic
+    generator: arithmetic-values
+    prompt: Write an expression to multiply {{x}} by {{y}}
+    expected_answer: "{{x}} * {{y}}"
+    accepted_solutions:
+      - "{{x}} * {{y}}"
+      - "{{x}}*{{y}}"
+      - "({{x}} * {{y}})"
+      - "{{y}} * {{x}}"
+    hints:
+      - Use the * operator for multiplication
+      - Multiplication is commutative (order doesn't matter)
+    tags: [operators, arithmetic, dynamic]
+
+  - slug: division-write-dynamic
+    objective: Write a simple division expression
+    title: Simple Division
+    difficulty: 1
+    concept: foundations
+    subconcept: operators
+    level: intro
+    prereqs: []
+    type: write
+    pattern: arithmetic
+    generator: arithmetic-values
+    prompt: Write an expression to divide {{x}} by {{y}} (regular division, not floor)
+    expected_answer: "{{x}} / {{y}}"
+    accepted_solutions:
+      - "{{x}} / {{y}}"
+      - "{{x}}/{{y}}"
+      - "({{x}} / {{y}})"
+    hints:
+      - Use the / operator for regular division
+      - Returns a float result even if both operands are integers
+    tags: [operators, arithmetic, division, dynamic]
 
   - slug: floor-division-dynamic
     objective: Apply floor division operator for integer division results
@@ -155,31 +247,142 @@ exercises:
       - Equivalent to {{item_singular}}_count = {{item_singular}}_count + value
     tags: [operators, assignment, augmented, dynamic]
 
-  - slug: comparison-chaining
-    objective: Chain comparison operators to check value ranges
-    title: Comparison Chaining
-    difficulty: 2
+  # --- Explicit Comparisons ---
+  - slug: comparison-greater-than
+    objective: Write a greater-than comparison expression
+    title: Greater Than
+    difficulty: 1
+    concept: foundations
+    subconcept: operators
+    level: intro
+    prereqs: [operators]
+    type: write
+    pattern: comparison
+    prompt: Write an expression that is True when `{{item_singular}}_count` is greater than 50
+    expected_answer: "{{item_singular}}_count > 50"
+    accepted_solutions:
+      - "{{item_singular}}_count > 50"
+      - "{{item_singular}}_count>50"
+      - "({{item_singular}}_count > 50)"
+      - "50 < {{item_singular}}_count"
+    hints:
+      - Use > for greater than comparison
+      - Returns True or False
+    tags: [operators, comparison]
+
+  - slug: comparison-less-than
+    objective: Write a less-than comparison expression
+    title: Less Than
+    difficulty: 1
+    concept: foundations
+    subconcept: operators
+    level: intro
+    prereqs: [operators]
+    type: write
+    pattern: comparison
+    prompt: Write an expression that is True when `{{item_singular}}_count` is less than 10
+    expected_answer: "{{item_singular}}_count < 10"
+    accepted_solutions:
+      - "{{item_singular}}_count < 10"
+      - "{{item_singular}}_count<10"
+      - "({{item_singular}}_count < 10)"
+      - "10 > {{item_singular}}_count"
+    hints:
+      - Use < for less than comparison
+      - Returns True or False
+    tags: [operators, comparison]
+
+  - slug: comparison-equal
+    objective: Write an equality comparison expression
+    title: Equality Check
+    difficulty: 1
+    concept: foundations
+    subconcept: operators
+    level: intro
+    prereqs: [operators]
+    type: write
+    pattern: comparison
+    prompt: Write an expression that is True when `{{item_singular}}_status` equals `"{{status_var}}"`
+    expected_answer: '{{item_singular}}_status == "{{status_var}}"'
+    accepted_solutions:
+      - '{{item_singular}}_status == "{{status_var}}"'
+      - "{{item_singular}}_status == '{{status_var}}'"
+      - '"{{status_var}}" == {{item_singular}}_status'
+      - "'{{status_var}}' == {{item_singular}}_status"
+    hints:
+      - Use == for equality (not = which is assignment)
+      - Works with strings, numbers, and other types
+    tags: [operators, comparison, equality]
+
+  - slug: comparison-not-equal
+    objective: Write an inequality comparison expression
+    title: Inequality Check
+    difficulty: 1
+    concept: foundations
+    subconcept: operators
+    level: intro
+    prereqs: [operators]
+    type: write
+    pattern: comparison
+    prompt: Write an expression that is True when `{{item_singular}}_count` is not equal to 0
+    expected_answer: "{{item_singular}}_count != 0"
+    accepted_solutions:
+      - "{{item_singular}}_count != 0"
+      - "{{item_singular}}_count!=0"
+      - "({{item_singular}}_count != 0)"
+      - "0 != {{item_singular}}_count"
+    hints:
+      - Use != for not equal comparison
+      - Returns True if values are different
+    tags: [operators, comparison]
+
+  - slug: comparison-greater-equal
+    objective: Write a greater-than-or-equal comparison expression
+    title: Greater or Equal
+    difficulty: 1
     concept: foundations
     subconcept: operators
     level: practice
     prereqs: [operators]
     type: write
     pattern: comparison
-    prompt: Write an expression that is True when `{{item_singular}}_count` is strictly between 0 and 10
-    expected_answer: 0 < {{item_singular}}_count < 10
+    prompt: Write an expression that is True when `{{item_singular}}_count` is at least 100
+    expected_answer: "{{item_singular}}_count >= 100"
     accepted_solutions:
-      - 0 < {{item_singular}}_count < 10
-      - (0 < {{item_singular}}_count < 10)
-      - (0 < {{item_singular}}_count) and ({{item_singular}}_count < 10)
-      - 0 < {{item_singular}}_count and {{item_singular}}_count < 10
-      - "{{item_singular}}_count > 0 and {{item_singular}}_count < 10"
-      - "({{item_singular}}_count > 0) and ({{item_singular}}_count < 10)"
+      - "{{item_singular}}_count >= 100"
+      - "{{item_singular}}_count>=100"
+      - "({{item_singular}}_count >= 100)"
+      - "100 <= {{item_singular}}_count"
     hints:
-      - Python allows chaining comparisons like 0 < x < 10
-      - Alternatively use 'and' to combine two conditions
-    tags: [operators, comparison, chaining]
+      - '"At least" means greater than or equal'
+      - Use >= for this comparison
+    tags: [operators, comparison]
+
+  - slug: comparison-less-equal
+    objective: Write a less-than-or-equal comparison expression
+    title: Less or Equal
+    difficulty: 1
+    concept: foundations
+    subconcept: operators
+    level: practice
+    prereqs: [operators]
+    type: write
+    pattern: comparison
+    prompt: Write an expression that is True when `{{item_singular}}_count` is at most 5
+    expected_answer: "{{item_singular}}_count <= 5"
+    accepted_solutions:
+      - "{{item_singular}}_count <= 5"
+      - "{{item_singular}}_count<=5"
+      - "({{item_singular}}_count <= 5)"
+      - "5 >= {{item_singular}}_count"
+    hints:
+      - '"At most" means less than or equal'
+      - Use <= for this comparison
+    tags: [operators, comparison]
 
   # --- Expressions Subconcept ---
+  # Boolean operators as standalone expressions (preparation for conditionals)
+
   - slug: boolean-and
     objective: Combine conditions using the logical AND operator
     title: Boolean AND
@@ -187,10 +390,10 @@ exercises:
     concept: foundations
     subconcept: expressions
     level: intro
-    prereqs: []
+    prereqs: [operators]
     type: write
     pattern: logical
-    prompt: Write a boolean expression that is True only if both `has_{{attr_key_1}}` and `has_{{attr_key_2}}` are True
+    prompt: Write a boolean expression that is True only when both `has_{{attr_key_1}}` and `has_{{attr_key_2}}` are True
     expected_answer: has_{{attr_key_1}} and has_{{attr_key_2}}
     accepted_solutions:
       - has_{{attr_key_1}} and has_{{attr_key_2}}
@@ -198,9 +401,9 @@ exercises:
       - (has_{{attr_key_1}} and has_{{attr_key_2}})
       - (has_{{attr_key_2}} and has_{{attr_key_1}})
     hints:
-      - Use the 'and' keyword
-      - Both conditions must be true
-    tags: [expressions, boolean, and]
+      - Use the 'and' keyword between conditions
+      - Both conditions must be True for the result to be True
+    tags: [expressions, boolean]
 
   - slug: boolean-or
     objective: Combine conditions using the logical OR operator
@@ -209,10 +412,10 @@ exercises:
     concept: foundations
     subconcept: expressions
     level: intro
-    prereqs: []
+    prereqs: [operators]
     type: write
     pattern: logical
-    prompt: Write a boolean expression that is True if either `is_{{status_var}}` or `is_{{attr_key_1}}` is True
+    prompt: Write a boolean expression that is True when either `is_{{status_var}}` or `is_{{attr_key_1}}` is True
     expected_answer: is_{{status_var}} or is_{{attr_key_1}}
     accepted_solutions:
       - is_{{status_var}} or is_{{attr_key_1}}
@@ -220,9 +423,9 @@ exercises:
       - (is_{{status_var}} or is_{{attr_key_1}})
       - (is_{{attr_key_1}} or is_{{status_var}})
     hints:
-      - Use the 'or' keyword
-      - Either condition can be true
-    tags: [expressions, boolean, or]
+      - Use the 'or' keyword between conditions
+      - Only one condition needs to be True
+    tags: [expressions, boolean]
 
   - slug: boolean-not
     objective: Compare values for inequality using the != operator
@@ -248,27 +451,119 @@ exercises:
       - Alternatively, bool() converts to True/False based on truthiness
     tags: [expressions, boolean, inequality]
 
-  - slug: ternary-expression
-    objective: Write conditional expressions using Python ternary syntax
-    title: Ternary Expression
-    difficulty: 2
+  # --- Simple Conditionals (Explicit Comparisons Only) ---
+  - slug: if-simple-comparison
+    objective: Write a simple if statement with explicit comparison
+    title: Simple If Check
+    difficulty: 1
     concept: foundations
     subconcept: expressions
     level: practice
-    prereqs: [expressions]
+    prereqs: [operators]
     type: write
     pattern: conditional
-    prompt: Write a conditional expression that returns `"{{status_var}}"` when `is_{{status_var}}` is True, otherwise returns `"pending"`
-    expected_answer: '"{{status_var}}" if is_{{status_var}} else "pending"'
+    prompt: |
+      Write an if statement that prints "High {{item_singular}} count" when {{item_singular}}_count is greater than 100
+    expected_answer: |
+      if {{item_singular}}_count > 100:
+          print("High {{item_singular}} count")
     accepted_solutions:
-      - '"{{status_var}}" if is_{{status_var}} else "pending"'
-      - "'{{status_var}}' if is_{{status_var}} else 'pending'"
-      - '("{{status_var}}" if is_{{status_var}} else "pending")'
-      - "('{{status_var}}' if is_{{status_var}} else 'pending')"
+      - |
+        if {{item_singular}}_count > 100:
+            print("High {{item_singular}} count")
+      - |
+        if {{item_singular}}_count > 100:
+            print('High {{item_singular}} count')
     hints:
-      - Format is value_if_true if condition else value_if_false
-      - Boolean variables don't need == True comparison
-    tags: [expressions, ternary, conditional]
+      - Use > for greater than comparison
+      - If statement ends with a colon
+    tags: [expressions, conditional, if]
+
+  - slug: if-else-simple
+    objective: Write a simple if-else statement with explicit comparison
+    title: Simple If-Else
+    difficulty: 1
+    concept: foundations
+    subconcept: expressions
+    level: practice
+    prereqs: [operators]
+    type: write
+    pattern: conditional
+    prompt: |
+      Write an if-else statement:
+      - If {{item_singular}}_count >= 10, print "Enough {{item_plural}}"
+      - Otherwise, print "Need more {{item_plural}}"
+    expected_answer: |
+      if {{item_singular}}_count >= 10:
+          print("Enough {{item_plural}}")
+      else:
+          print("Need more {{item_plural}}")
+    accepted_solutions:
+      - |
+        if {{item_singular}}_count >= 10:
+            print("Enough {{item_plural}}")
+        else:
+            print("Need more {{item_plural}}")
+      - |
+        if {{item_singular}}_count >= 10:
+            print('Enough {{item_plural}}')
+        else:
+            print('Need more {{item_plural}}')
+    hints:
+      - Use >= for greater than or equal
+      - else clause handles the "otherwise" case
+    tags: [expressions, conditional]
+
+  - slug: if-equality-check
+    objective: Write an if statement with equality comparison
+    title: Equality Check
+    difficulty: 1
+    concept: foundations
+    subconcept: expressions
+    level: practice
+    prereqs: [operators]
+    type: write
+    pattern: conditional
+    prompt: |
+      Write an if statement that prints "{{item_singular}} found" when {{item_singular}}_name equals "{{item_example}}"
+    expected_answer: |
+      if {{item_singular}}_name == "{{item_example}}":
+          print("{{item_singular}} found")
+    accepted_solutions:
+      - |
+        if {{item_singular}}_name == "{{item_example}}":
+            print("{{item_singular}} found")
+      - |
+        if {{item_singular}}_name == '{{item_example}}':
+            print('{{item_singular}} found')
+    hints:
+      - Use == for equality comparison (not = which is assignment)
+      - Don't forget the colon after the condition
+    tags: [expressions, conditional, equality]
+
+  - slug: if-predict-simple
+    objective: Predict the output of a simple if-else
+    title: If-Else Predict
+    difficulty: 1
+    concept: foundations
+    subconcept: expressions
+    level: practice
+    prereqs: [operators]
+    type: predict
+    grading_strategy: execution
+    pattern: conditional
+    prompt: What does this if-else code print?
+    code: |
+      {{item_singular}}_count = 25
+      if {{item_singular}}_count > 20:
+          print("High")
+      else:
+          print("Low")
+    expected_answer: "High"
+    hints:
+      - Compare 25 > 20
+      - True runs the if block, False runs the else block
+    tags: [expressions, conditional, predict]
 
   # --- IO Subconcept ---
   - slug: print-string
@@ -489,7 +784,7 @@ exercises:
     prereqs: [operators]
     pattern: logical
     objective: Use the logical AND operator
-    prompt: Fill in the operator that is True only when both conditions are True
+    prompt: Fill in the keyword that requires BOTH conditions to be True
     template: "is_valid = has_{{attr_key_1}} ___ has_{{attr_key_2}}"
     blank_position: 0
     expected_answer: "and"
@@ -497,6 +792,26 @@ exercises:
     hints:
       - Python uses the word 'and' for logical AND
       - True only if both sides are True
+    tags: [expressions, boolean]
+
+  - slug: expression-or-fill
+    title: Boolean OR
+    type: fill-in
+    difficulty: 1
+    concept: foundations
+    subconcept: expressions
+    level: intro
+    prereqs: [operators]
+    pattern: logical
+    objective: Use the logical OR operator
+    prompt: Fill in the keyword that requires AT LEAST ONE condition to be True
+    template: "can_proceed = is_{{status_var}} ___ is_{{attr_key_1}}"
+    blank_position: 0
+    expected_answer: "or"
+    accepted_solutions: ["or"]
+    hints:
+      - Python uses the word 'or' for logical OR
+      - True if either side is True
     tags: [expressions, boolean]
 
   - slug: expression-not-fill
@@ -664,38 +979,36 @@ exercises:
     prereqs: [operators]
     pattern: logical
     objective: Predict boolean AND result
-    prompt: What does this boolean AND code print?
+    prompt: What does this boolean AND expression print?
     code: |
-      is_{{status_var}} = True and False
-      print(is_{{status_var}})
+      result = True and False
+      print(result)
     expected_answer: "False"
-    accepted_solutions: []
     hints:
-      - AND requires both {{item_singular}} conditions to be True
+      - AND requires BOTH conditions to be True
       - True AND False = False
-    tags: [expressions, boolean]
+    tags: [expressions, boolean, predict]
 
   - slug: expression-predict-or
     title: Boolean OR Result
     type: predict
     grading_strategy: execution
-    difficulty: 2
+    difficulty: 1
     concept: foundations
     subconcept: expressions
-    level: practice
+    level: intro
     prereqs: [operators]
     pattern: logical
     objective: Predict boolean OR result
-    prompt: What does this boolean OR code print?
+    prompt: What does this boolean OR expression print?
     code: |
-      has_{{attr_key_1}} = True or False
-      print(has_{{attr_key_1}})
+      result = True or False
+      print(result)
     expected_answer: "True"
-    accepted_solutions: []
     hints:
-      - OR returns True if either {{item_singular}} value is True
+      - OR requires AT LEAST ONE condition to be True
       - True OR False = True
-    tags: [expressions, boolean]
+    tags: [expressions, boolean, predict]
 
   - slug: io-predict-print-concat
     title: Print Concatenation
@@ -740,49 +1053,109 @@ exercises:
       - Default sep is a single space
     tags: [io, print]
 
-  - slug: exponentiation-dynamic
-    objective: Calculate powers using the exponentiation operator
-    title: Dynamic Exponentiation
-    difficulty: 2
-    concept: foundations
-    subconcept: operators
-    level: practice
-    prereqs: [operators]
-    type: write
-    pattern: arithmetic
-    generator: arithmetic-values
-    prompt: Write an expression that raises `{{x}}` to the power of `{{y}}`
-    expected_answer: "{{x}} ** {{y}}"
-    accepted_solutions:
-      - "{{x}} ** {{y}}"
-      - "{{x}}**{{y}}"
-      - "({{x}} ** {{y}})"
-      - "pow({{x}}, {{y}})"
-    hints:
-      - Use ** for exponentiation
-      - Not ^ like some other languages
-    tags: [operators, power, exponent, dynamic]
+  # Exponentiation and operator precedence moved to Numbers & Booleans
 
-  # --- Operator Precedence Dynamic Exercises ---
-  - slug: operator-precedence-dynamic
-    objective: Predict the result of an expression with multiple operators
-    title: Dynamic Operator Precedence
-    difficulty: 2
+  # --- Basic String Operations (Moved from Strings) ---
+  - slug: string-concatenate-basic
+    objective: Use the + operator to join strings together
+    title: String Concatenation
+    difficulty: 1
     concept: foundations
-    subconcept: expressions
-    level: practice
-    prereqs: [operators]
-    type: predict
-    grading_strategy: execution
-    pattern: arithmetic
-    generator: operator-chain
-    prompt: "What does this expression evaluate to?"
-    code: "{{code}}"
-    expected_answer: "{{resultStr}}"
+    subconcept: io
+    level: intro
+    prereqs: [io]
+    type: write
+    pattern: construction
+    prompt: Write an expression that joins `{{item_singular}}_first` and `{{item_singular}}_last` together
+    expected_answer: "{{item_singular}}_first + {{item_singular}}_last"
+    accepted_solutions:
+      - "{{item_singular}}_first + {{item_singular}}_last"
+      - "{{item_singular}}_first+{{item_singular}}_last"
     hints:
-      - "Remember: {{description}}"
-      - "Evaluate step by step following precedence rules"
-    tags: [operators, precedence, dynamic, predict]
+      - Use the + operator between two string variables
+      - Creates a new string from both inputs
+    tags: [io, strings, concatenation]
+
+  - slug: string-concatenate-space
+    objective: Concatenate strings with a space separator
+    title: Concatenate with Space
+    difficulty: 1
+    concept: foundations
+    subconcept: io
+    level: practice
+    prereqs: [io]
+    type: write
+    pattern: construction
+    prompt: 'Write an expression that joins `{{item_singular}}_first`, a space " ", and `{{item_singular}}_last`'
+    expected_answer: '{{item_singular}}_first + " " + {{item_singular}}_last'
+    accepted_solutions:
+      - '{{item_singular}}_first + " " + {{item_singular}}_last'
+      - "{{item_singular}}_first + ' ' + {{item_singular}}_last"
+      - '{{item_singular}}_first+" "+{{item_singular}}_last'
+    hints:
+      - Join three parts with + operators
+      - The space needs to be in quotes
+    tags: [io, strings, concatenation]
+
+  - slug: string-upper-basic
+    objective: Apply the upper() method to convert string case
+    title: String Uppercase
+    difficulty: 1
+    concept: foundations
+    subconcept: io
+    level: practice
+    prereqs: [io]
+    type: write
+    pattern: mutation
+    prompt: Write an expression that converts `{{item_singular}}_name` to uppercase
+    expected_answer: "{{item_singular}}_name.upper()"
+    accepted_solutions:
+      - "{{item_singular}}_name.upper()"
+      - "{{item_singular}}_name.upper( )"
+    hints:
+      - Use the `.upper()` method on a string
+      - Returns a new string (strings are immutable)
+    tags: [io, strings, methods]
+
+  - slug: string-lower-basic
+    objective: Apply the lower() method to convert string case
+    title: String Lowercase
+    difficulty: 1
+    concept: foundations
+    subconcept: io
+    level: practice
+    prereqs: [io]
+    type: write
+    pattern: mutation
+    prompt: Write an expression that converts `{{item_singular}}_name` to lowercase
+    expected_answer: "{{item_singular}}_name.lower()"
+    accepted_solutions:
+      - "{{item_singular}}_name.lower()"
+      - "{{item_singular}}_name.lower( )"
+    hints:
+      - Use the `.lower()` method on a string
+      - Returns a new string (strings are immutable)
+    tags: [io, strings, methods]
+
+  - slug: string-strip-basic
+    objective: Use the strip() method to remove whitespace from string boundaries
+    title: String Strip
+    difficulty: 1
+    concept: foundations
+    subconcept: io
+    level: practice
+    prereqs: [io]
+    type: write
+    pattern: mutation
+    prompt: Write an expression that removes leading and trailing whitespace from `{{item_singular}}_input`
+    expected_answer: "{{item_singular}}_input.strip()"
+    accepted_solutions:
+      - "{{item_singular}}_input.strip()"
+      - "{{item_singular}}_input.strip( )"
+    hints:
+      - Use the `.strip()` method
+      - Commonly used when processing user input
+    tags: [io, strings, methods, whitespace]
 
   # --- Basic Imports Subconcept ---
   - slug: import-math
@@ -844,9 +1217,9 @@ exercises:
       - Then you can use sqrt() directly
     tags: [imports, from, math]
 
-  - slug: import-random-choice
-    objective: Use the random module for random selection
-    title: Random Choice
+  - slug: import-random-randint
+    objective: Use the random module to generate random integers
+    title: Random Integer
     difficulty: 2
     concept: foundations
     subconcept: imports-basic
@@ -854,19 +1227,19 @@ exercises:
     prereqs: [imports-basic]
     type: write
     pattern: invocation
-    prompt: Assume `import random` has already run. Return a random element from `{{list_name}}`
-    expected_answer: random.choice({{list_name}})
+    prompt: Assume `import random` has already run. Generate a random integer between 1 and 10 (inclusive)
+    expected_answer: random.randint(1, 10)
     accepted_solutions:
-      - random.choice({{list_name}})
-      - (random.choice({{list_name}}))
+      - random.randint(1, 10)
+      - (random.randint(1, 10))
     hints:
-      - random.choice() picks one element from a sequence
-      - Pass the list as the argument
-    tags: [imports, random, choice]
+      - random.randint(a, b) returns an integer N such that a <= N <= b
+      - Both endpoints are included
+    tags: [imports, random]
 
-  - slug: import-datetime
-    objective: Get the current date using the datetime module
-    title: Today's Date
+  - slug: import-random-dice
+    objective: Simulate a dice roll using random.randint
+    title: Dice Roll
     difficulty: 2
     concept: foundations
     subconcept: imports-basic
@@ -874,16 +1247,37 @@ exercises:
     prereqs: [imports-basic]
     type: write
     pattern: invocation
-    prompt: Assume `import datetime` has already run. Get today's date
-    expected_answer: datetime.date.today()
+    prompt: Assume `import random` has already run. Simulate rolling a 6-sided die (result from 1 to 6)
+    expected_answer: random.randint(1, 6)
     accepted_solutions:
-      - datetime.date.today()
-      - datetime.datetime.today().date()
-      - datetime.datetime.now().date()
+      - random.randint(1, 6)
+      - (random.randint(1, 6))
     hints:
-      - datetime module has a date class
-      - date.today() returns current date
-    tags: [imports, datetime, date]
+      - A standard die has faces 1, 2, 3, 4, 5, 6
+      - randint includes both endpoints
+    tags: [imports, random]
+
+  - slug: import-random-predict
+    objective: Understand random.randint boundaries
+    title: Random Range Predict
+    difficulty: 2
+    concept: foundations
+    subconcept: imports-basic
+    level: practice
+    prereqs: [imports-basic]
+    type: predict
+    grading_strategy: exact
+    pattern: invocation
+    prompt: What is the SMALLEST possible value from this code?
+    code: |
+      import random
+      result = random.randint(5, 10)
+      print(result)
+    expected_answer: "5"
+    hints:
+      - randint(a, b) can return any integer from a to b
+      - The first argument is the minimum
+    tags: [imports, random, predict]
 
   - slug: import-fill-from
     objective: Complete the from import syntax
@@ -966,6 +1360,26 @@ exercises:
       - Always rounds {{item_plural}} toward positive infinity
     tags: [imports, math, ceil, predict, dynamic]
 
+  - slug: import-math-floor
+    objective: Use math.floor to round down to nearest integer
+    title: Math Floor
+    difficulty: 2
+    concept: foundations
+    subconcept: imports-basic
+    level: practice
+    prereqs: [imports-basic]
+    type: write
+    pattern: invocation
+    prompt: Assume `import math` has already run. Write an expression that rounds 7.8 down to the nearest integer
+    expected_answer: math.floor(7.8)
+    accepted_solutions:
+      - math.floor(7.8)
+      - (math.floor(7.8))
+    hints:
+      - floor() always rounds DOWN toward negative infinity
+      - 7.8 rounded down is 7
+    tags: [imports, math, floor]
+
   - slug: import-multiple-basic
     objective: Import multiple items from a module in one statement
     title: Multiple Imports Basic
@@ -998,10 +1412,10 @@ exercises:
     prereqs: [imports-basic]
     type: write
     pattern: import
-    prompt: Import `datetime` using the alias `dt`
-    expected_answer: import datetime as dt
+    prompt: Import `random` using the alias `rnd`
+    expected_answer: import random as rnd
     accepted_solutions:
-      - import datetime as dt
+      - import random as rnd
     hints:
       - Use 'as' to create an alias
       - Common for modules with long names

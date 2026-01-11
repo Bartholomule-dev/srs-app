@@ -121,26 +121,6 @@ exercises:
     accepted_solutions:
       - "{{item_singular}}[-{{end}}:]"
 
-  - slug: string-upper
-    objective: "Apply the upper() method to convert string case"
-    title: String Uppercase
-    difficulty: 1
-    prompt: Write an expression that converts `{{item_singular}}` to uppercase
-    expected_answer: "{{item_singular}}.upper()"
-    accepted_solutions:
-      - "{{item_singular}}.upper()"
-      - "{{item_singular}}.upper( )"
-    hints:
-      - Use the `.upper()` method on a string
-      - Returns a new string (strings are immutable)
-    tags: [strings, methods, beginner]
-    concept: strings
-    subconcept: string-methods
-    level: intro
-    prereqs: [basics]
-    type: write
-    pattern: mutation
-
   - slug: f-string-basic
     objective: "Construct a formatted message using f-string formatting"
     title: F-String Format
@@ -182,25 +162,7 @@ exercises:
     pattern: conversion
 
   # --- Additional Basics Subconcept ---
-  - slug: string-concatenate
-    objective: "Use the + operator to join strings together"
-    title: String Concatenation
-    difficulty: 1
-    concept: strings
-    subconcept: basics
-    level: intro
-    prereqs: [foundations]
-    type: write
-    pattern: construction
-    prompt: Write a single expression that concatenates `{{attr_key_1}}` and `{{attr_key_2}}`
-    expected_answer: "{{attr_key_1}} + {{attr_key_2}}"
-    accepted_solutions:
-      - "{{attr_key_1}} + {{attr_key_2}}"
-      - "{{attr_key_1}}+{{attr_key_2}}"
-    hints:
-      - Use the + operator between two string variables
-      - Creates a new string from both inputs
-    tags: [strings, concatenation, beginner]
+  # Basic string-concatenate moved to foundations.yaml
 
   - slug: string-repeat
     objective: "Use the * operator to repeat a string multiple times"
@@ -365,46 +327,6 @@ exercises:
     tags: [strings, slicing, step]
 
   # --- Additional Methods Subconcept ---
-  - slug: string-lower
-    objective: "Apply the lower() method to convert string case"
-    title: String Lowercase
-    difficulty: 1
-    concept: strings
-    subconcept: string-methods
-    level: intro
-    prereqs: [basics]
-    type: write
-    pattern: mutation
-    prompt: Write an expression that converts `{{item_singular}}` to lowercase
-    expected_answer: "{{item_singular}}.lower()"
-    accepted_solutions:
-      - "{{item_singular}}.lower()"
-      - "{{item_singular}}.lower( )"
-    hints:
-      - Use the `.lower()` method on a string
-      - Returns a new string (strings are immutable)
-    tags: [strings, methods, beginner]
-
-  - slug: string-strip
-    objective: "Use the strip() method to remove whitespace from string boundaries"
-    title: String Strip
-    difficulty: 1
-    concept: strings
-    subconcept: string-methods
-    level: intro
-    prereqs: [basics]
-    type: write
-    pattern: mutation
-    prompt: Write an expression that removes leading and trailing whitespace from `{{item_singular}}`
-    expected_answer: "{{item_singular}}.strip()"
-    accepted_solutions:
-      - "{{item_singular}}.strip()"
-      - "{{item_singular}}.strip( )"
-    hints:
-      - Use the `.strip()` method
-      - "`.lstrip()` and `.rstrip()` remove from one side only"
-    tags: [strings, methods, whitespace]
-
   - slug: string-replace
     objective: "Use the replace() method to substitute text within a string"
     title: String Replace

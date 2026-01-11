@@ -646,6 +646,49 @@ exercises:
     tags: [sets, difference, operation]
 
   # --- Unpacking Subconcept ---
+  # Moved from foundations - multiple value assignment
+  - slug: multiple-assignment
+    objective: Use tuple unpacking to initialize multiple values at once
+    title: Multiple Values
+    difficulty: 1
+    concept: collections
+    subconcept: unpacking
+    level: intro
+    prereqs: [tuples]
+    type: write
+    pattern: assignment
+    prompt: In a single line, assign `"{{item_example}}"`, `1`, and `True` to `{{item_singular}}`, `{{item_singular}}_id`, and `{{status_var}}`
+    expected_answer: '{{item_singular}}, {{item_singular}}_id, {{status_var}} = "{{item_example}}", 1, True'
+    accepted_solutions:
+      - '{{item_singular}}, {{item_singular}}_id, {{status_var}} = "{{item_example}}", 1, True'
+      - "{{item_singular}}, {{item_singular}}_id, {{status_var}} = '{{item_example}}', 1, True"
+    hints:
+      - Separate variables with commas
+      - Match the number of values
+    tags: [unpacking, assignment]
+
+  # Moved from foundations - variable swap
+  - slug: swap-variables
+    objective: Swap two variable values using Pythonic tuple unpacking
+    title: Swap Values
+    difficulty: 1
+    concept: collections
+    subconcept: unpacking
+    level: intro
+    prereqs: [unpacking]
+    type: write
+    pattern: swap
+    prompt: Swap `current_{{item_singular}}` and `next_{{item_singular}}` using tuple unpacking (no temp variable)
+    expected_answer: "current_{{item_singular}}, next_{{item_singular}} = next_{{item_singular}}, current_{{item_singular}}"
+    accepted_solutions:
+      - "current_{{item_singular}}, next_{{item_singular}} = next_{{item_singular}}, current_{{item_singular}}"
+      - "next_{{item_singular}}, current_{{item_singular}} = current_{{item_singular}}, next_{{item_singular}}"
+      - "(current_{{item_singular}}, next_{{item_singular}}) = (next_{{item_singular}}, current_{{item_singular}})"
+    hints:
+      - Python allows simultaneous assignment
+      - No temp variable needed
+    tags: [unpacking, swap]
+
   - slug: unpacking-intro
     objective: Unpack a tuple into individual variables
     title: Basic Tuple Unpacking

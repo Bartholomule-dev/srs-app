@@ -468,6 +468,31 @@ exercises:
       - Same as (1 < {{item_singular}}_count) and ({{item_singular}}_count < 10)
     tags: [comparisons, chaining]
 
+  # Moved from foundations - comparison chaining write exercise
+  - slug: comparison-chaining
+    objective: Chain comparison operators to check value ranges
+    title: Comparison Chaining
+    difficulty: 2
+    concept: numbers-booleans
+    subconcept: comparisons
+    level: practice
+    prereqs: [comparisons]
+    type: write
+    pattern: comparison
+    prompt: Write an expression that is True when `{{item_singular}}_count` is strictly between 0 and 10
+    expected_answer: 0 < {{item_singular}}_count < 10
+    accepted_solutions:
+      - 0 < {{item_singular}}_count < 10
+      - (0 < {{item_singular}}_count < 10)
+      - (0 < {{item_singular}}_count) and ({{item_singular}}_count < 10)
+      - 0 < {{item_singular}}_count and {{item_singular}}_count < 10
+      - "{{item_singular}}_count > 0 and {{item_singular}}_count < 10"
+      - "({{item_singular}}_count > 0) and ({{item_singular}}_count < 10)"
+    hints:
+      - Python allows chaining comparisons like 0 < x < 10
+      - Alternatively use 'and' to combine two conditions
+    tags: [comparisons, chaining]
+
   - slug: comparison-predict-is
     title: Identity vs Equality
     type: predict
@@ -561,47 +586,49 @@ exercises:
     tags: [integers, modulo, dynamic]
     generator: arithmetic-values
 
-  - slug: int-subtract-write-dynamic
-    title: Dynamic Subtraction Expression
-    type: write
-    difficulty: 1
+  # --- Exponentiation and Precedence (Moved from Foundations) ---
+  - slug: exponentiation-dynamic
+    objective: Calculate powers using the exponentiation operator
+    title: Dynamic Exponentiation
+    difficulty: 2
     concept: numbers-booleans
     subconcept: integers
-    level: intro
-    prereqs: [variables]
+    level: practice
+    prereqs: [integers]
+    type: write
     pattern: arithmetic
-    objective: Write a subtraction expression with varying operands
-    prompt: "Write an expression to subtract {{y}} from {{x}}"
-    expected_answer: "{{x}} - {{y}}"
-    accepted_solutions:
-      - "{{x}} - {{y}}"
-      - "{{x}}-{{y}}"
-    hints:
-      - Use the subtraction operator -
-      - First operand minus second operand
-    tags: [integers, arithmetic, dynamic]
     generator: arithmetic-values
+    prompt: Write an expression that raises `{{x}}` to the power of `{{y}}`
+    expected_answer: "{{x}} ** {{y}}"
+    accepted_solutions:
+      - "{{x}} ** {{y}}"
+      - "{{x}}**{{y}}"
+      - "({{x}} ** {{y}})"
+      - "pow({{x}}, {{y}})"
+    hints:
+      - Use ** for exponentiation
+      - Not ^ like some other languages
+    tags: [integers, power, exponent, dynamic]
 
-  - slug: variable-assign-dynamic
-    title: Dynamic Variable Assignment
-    type: write
-    difficulty: 1
+  - slug: operator-precedence-dynamic
+    objective: Predict the result of an expression with multiple operators
+    title: Dynamic Operator Precedence
+    difficulty: 2
     concept: numbers-booleans
     subconcept: integers
-    level: intro
-    prereqs: [variables]
-    pattern: assignment
-    objective: Assign a value to a variable with varying names
-    prompt: "Assign the value 42 to a variable named {{name}}"
-    expected_answer: "{{name}} = 42"
-    accepted_solutions:
-      - "{{name}} = 42"
-      - "{{name}}=42"
+    level: practice
+    prereqs: [integers]
+    type: predict
+    grading_strategy: execution
+    pattern: arithmetic
+    generator: operator-chain
+    prompt: "What does this expression evaluate to?"
+    code: "{{code}}"
+    expected_answer: "{{resultStr}}"
     hints:
-      - Use the assignment operator =
-      - Variable name goes on the left
-    tags: [variables, assignment, dynamic]
-    generator: variable-names
+      - "Remember: {{description}}"
+      - "Evaluate step by step following precedence rules"
+    tags: [integers, precedence, dynamic, predict]
 
   # --- Dynamic Boolean Logic Exercises ---
   - slug: bool-expression-dynamic
